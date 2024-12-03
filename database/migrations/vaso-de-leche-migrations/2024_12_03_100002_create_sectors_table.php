@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('sectors', function (Blueprint $table) {
             $table->id();
+            $table->string('name');                             //Nombre del sector
+            $table->text('description')->nullable();            //Descripción del lugar, creo que es dirección o algo asi
+            $table->string('responsible_person')->nullable();   //Persona responsable del sector
             $table->timestamps();
         });
     }

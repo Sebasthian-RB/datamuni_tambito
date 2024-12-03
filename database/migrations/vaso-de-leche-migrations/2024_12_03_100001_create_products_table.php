@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('committee_vaso_leche_family_members', function (Blueprint $table) {
-            $table->id();
+        Schema::create('products', function (Blueprint $table) {
+            $table->id();                               //Id autogenerado
+            $table->string('name');                     //Nombre del producto
+            $table->text('description')->nullable();    //Descripción de la descripción
             $table->timestamps();
         });
     }
@@ -22,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('committee_vaso_leche_family_members');
+        Schema::dropIfExists('products');
     }
 };
