@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\VasoDeLecheControllers;
 
-use App\Models\VasoLecheMinor;
+use App\Models\VasoLecheFamilyMemberProduct;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class VasoLecheMinorController extends Controller
+class VasoLecheFamilyMemberProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +35,7 @@ class VasoLecheMinorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(VasoLecheMinor $vasoLecheMinor)
+    public function show(VasoLecheFamilyMemberProduct $vasoLecheFamilyMemberProduct)
     {
         //
     }
@@ -42,7 +43,7 @@ class VasoLecheMinorController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(VasoLecheMinor $vasoLecheMinor)
+    public function edit(VasoLecheFamilyMemberProduct $vasoLecheFamilyMemberProduct)
     {
         //
     }
@@ -50,7 +51,7 @@ class VasoLecheMinorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, VasoLecheMinor $vasoLecheMinor)
+    public function update(Request $request, VasoLecheFamilyMemberProduct $vasoLecheFamilyMemberProduct)
     {
         //
     }
@@ -58,7 +59,7 @@ class VasoLecheMinorController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(VasoLecheMinor $vasoLecheMinor)
+    public function destroy(VasoLecheFamilyMemberProduct $vasoLecheFamilyMemberProduct)
     {
         //
     }

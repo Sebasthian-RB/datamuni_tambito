@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\VasoDeLecheControllers;
 
-use App\Models\Committee;
+use App\Models\CommitteeVasoLecheFamilyMember;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class CommitteeController extends Controller
+class CommitteeVasoLecheFamilyMemberController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +35,7 @@ class CommitteeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Committee $committee)
+    public function show(CommitteeVasoLecheFamilyMember $committeeVasoLecheFamilyMember)
     {
         //
     }
@@ -42,7 +43,7 @@ class CommitteeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Committee $committee)
+    public function edit(CommitteeVasoLecheFamilyMember $committeeVasoLecheFamilyMember)
     {
         //
     }
@@ -50,7 +51,7 @@ class CommitteeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Committee $committee)
+    public function update(Request $request, CommitteeVasoLecheFamilyMember $committeeVasoLecheFamilyMember)
     {
         //
     }
@@ -58,7 +59,7 @@ class CommitteeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Committee $committee)
+    public function destroy(CommitteeVasoLecheFamilyMember $committeeVasoLecheFamilyMember)
     {
         //
     }

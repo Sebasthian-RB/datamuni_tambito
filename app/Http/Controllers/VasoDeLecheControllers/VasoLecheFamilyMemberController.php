@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\VasoDeLecheControllers;
 
-use App\Models\Sector;
+use App\Models\VasoLecheFamilyMember;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class SectorController extends Controller
+class VasoLecheFamilyMemberController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +35,7 @@ class SectorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Sector $sector)
+    public function show(VasoLecheFamilyMember $vasoLecheFamilyMember)
     {
         //
     }
@@ -42,7 +43,7 @@ class SectorController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Sector $sector)
+    public function edit(VasoLecheFamilyMember $vasoLecheFamilyMember)
     {
         //
     }
@@ -50,7 +51,7 @@ class SectorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Sector $sector)
+    public function update(Request $request, VasoLecheFamilyMember $vasoLecheFamilyMember)
     {
         //
     }
@@ -58,7 +59,7 @@ class SectorController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Sector $sector)
+    public function destroy(VasoLecheFamilyMember $vasoLecheFamilyMember)
     {
         //
     }
