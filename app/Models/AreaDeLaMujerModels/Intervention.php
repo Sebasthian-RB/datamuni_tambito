@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Intervention extends Model
 {
    use HasFactory;
-   
+
    protected $fillable = [
-        'appointment',
-        'derivation',
-        'appointment_date',
+        'appointment',      // Cita: texto grande
+        'derivation',       // Derivación: texto grande
+        'appointment_date', // Fecha y hora de la cita (datetime)
     ];
 
     public function amPersons()

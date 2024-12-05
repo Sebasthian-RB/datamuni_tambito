@@ -10,9 +10,13 @@ class Event extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'description',
-        'event_date',
+        'name',         // Nombre del evento
+        'description',  // Descripción del evento
+        'place',        // Lugar del evento
+        'start_date',   // Fecha de inicio del evento
+        'end_date',     // Fecha de finalización del evento
+        'status',       // Estado del evento
+        'program_id',   // ID del programa (foráneo)
     ];
 
     public function amPersons()

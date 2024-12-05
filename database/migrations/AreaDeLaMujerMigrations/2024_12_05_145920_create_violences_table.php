@@ -12,15 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('violences', function (Blueprint $table) {
-            $table->id();
-            $table->string('kind_violence');
-            $table->text('description');
-            $table->string('place');
-            $table->date('start_date');
-            $table->date('end_date')->nullable();
-            $table->string('status');
-            $table->foreignId('program_id')->constrained();
-            $table->timestamps();
+            $table->id();                       // ID único
+            $table->string('kind_violence');    // Tipo de violencia: varchar
+            $table->text('description');        // Descripción: texto grande
+            $table->timestamps();               // Timestamps para created_at y updated_at
         });
     }
 

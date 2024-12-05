@@ -10,9 +10,9 @@ class AmPersonViolence extends Model
     use HasFactory;
 
     protected $fillable = [
-        'am_person_id',
-        'violence_id',
-        'registration_date',
+        'am_person_id',         // ID de la persona (foráneo de am_persons)
+        'violence_id',          // ID de la violencia (foráneo de violences)
+        'registration_date',    // Fecha de registro de la violencia
     ];
 
     public function amPerson()

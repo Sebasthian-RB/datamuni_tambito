@@ -10,14 +10,14 @@ class AmPerson extends Model
     use HasFactory;
 
     protected $fillable = [
-        'identity_document',
-        'given_name',
-        'paternal_last_name',
-        'maternal_last_name',
-        'address',
-        'sex_type',
-        'phone_number',
-        'attendance_date',
+        'identity_document',    // Documento de identidad (enum: DNI, PASAPORTE, CARNET, CEDULA)
+        'given_name',           // Nombre
+        'paternal_last_name',   // Apellido paterno
+        'maternal_last_name',   // Apellido materno
+        'address',              // Dirección
+        'sex_type',             // Tipo de sexo (booleano: 0 para femenino, 1 para masculino)
+        'phone_number',         // Número de teléfono
+        'attendance_date',      // Fecha y hora de asistencia (datetime)
     ];
 
     public function events()

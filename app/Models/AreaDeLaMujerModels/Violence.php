@@ -10,13 +10,8 @@ class Violence extends Model
     use HasFactory;
 
     protected $fillable = [
-        'kind_violence',
-        'description',
-        'place',
-        'start_date',
-        'end_date',
-        'status',
-        'program_id',
+        'kind_violence',    //Tipo de violencia que añaden los gerente
+        'description',      //Descripción de la violencia
     ];
 
     public function amPersons()

@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('am_person_events', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('am_person_id')->constrained('am_persons');
-            $table->foreignId('event_id')->constrained('events');
-            $table->string('attendance');
-            $table->timestamps();
+            $table->id();                                                   // ID único
+            $table->foreignId('am_person_id')->constrained('am_persons');   // ID de la persona (foráneo de am_persons)
+            $table->foreignId('event_id')->constrained('events');           // ID del evento (foráneo de events)
+            $table->string('attendance');                                   // Asistencia (varchar)
+            $table->timestamps();                                           // Timestamps para created_at y updated_at
         });
     }
 
