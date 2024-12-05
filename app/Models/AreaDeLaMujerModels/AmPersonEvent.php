@@ -12,7 +12,7 @@ class AmPersonEvent extends Model
     protected $fillable = [
         'am_person_id', // ID de la persona (foráneo de am_persons)
         'event_id',     // ID del evento (foráneo de events)
-        'attendance',   // Asistencia (varchar)
+        'status',   // Asistencia (status enum)
     ];
 
     public function amPerson()
