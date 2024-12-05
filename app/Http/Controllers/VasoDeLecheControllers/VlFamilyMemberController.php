@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\VasoDeLecheControllers;
 
-use App\Models\CommitteeVasoLecheFamilyMember;
+use App\Models\VlFamilyMember;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class CommitteeVasoLecheFamilyMemberController extends Controller
+class VlFamilyMemberController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -35,7 +35,7 @@ class CommitteeVasoLecheFamilyMemberController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CommitteeVasoLecheFamilyMember $committeeVasoLecheFamilyMember)
+    public function show(VlFamilyMember $vlFamilyMember)
     {
         //
     }
@@ -43,7 +43,7 @@ class CommitteeVasoLecheFamilyMemberController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CommitteeVasoLecheFamilyMember $committeeVasoLecheFamilyMember)
+    public function edit(VlFamilyMember $vlFamilyMember)
     {
         //
     }
@@ -51,7 +51,7 @@ class CommitteeVasoLecheFamilyMemberController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CommitteeVasoLecheFamilyMember $committeeVasoLecheFamilyMember)
+    public function update(Request $request, VlFamilyMember $vlFamilyMember)
     {
         //
     }
@@ -59,7 +59,7 @@ class CommitteeVasoLecheFamilyMemberController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CommitteeVasoLecheFamilyMember $committeeVasoLecheFamilyMember)
+    public function destroy(VlFamilyMember $vlFamilyMember)
     {
         //
     }

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\VasoDeLecheControllers;
 
-use App\Models\VasoLecheMinor;
+use App\Models\VlMinor;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class VasoLecheMinorController extends Controller
+class VlMinorController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -35,7 +35,7 @@ class VasoLecheMinorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(VasoLecheMinor $vasoLecheMinor)
+    public function show(VlMinor $vlMinor)
     {
         //
     }
@@ -43,7 +43,7 @@ class VasoLecheMinorController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(VasoLecheMinor $vasoLecheMinor)
+    public function edit(VlMinor $vlMinor)
     {
         //
     }
@@ -51,7 +51,7 @@ class VasoLecheMinorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, VasoLecheMinor $vasoLecheMinor)
+    public function update(Request $request, VlMinor $vlMinor)
     {
         //
     }
@@ -59,7 +59,7 @@ class VasoLecheMinorController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(VasoLecheMinor $vasoLecheMinor)
+    public function destroy(VlMinor $vlMinor)
     {
         //
     }

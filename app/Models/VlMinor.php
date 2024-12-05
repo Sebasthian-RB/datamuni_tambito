@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CommitteeVasoLecheFamilyMember extends Model
+class VlMinor extends Model
 {
     //
 }

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class VasoLecheFamilyMemberProduct extends Model
+class VlFamilyMemberProduct extends Model
 {
     //
 }
