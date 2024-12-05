@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('programs', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->text('description');
+            $table->string('program_type');
+            $table->date('start_date');
+            $table->date('end_date')->nullable();
+            $table->string('status');
             $table->timestamps();
         });
     }

@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('violences', function (Blueprint $table) {
             $table->id();
+            $table->string('kind_violence');
+            $table->text('description');
+            $table->string('place');
+            $table->date('start_date');
+            $table->date('end_date')->nullable();
+            $table->string('status');
+            $table->foreignId('program_id')->constrained();
             $table->timestamps();
         });
     }

@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('am_people', function (Blueprint $table) {
             $table->id();
+            $table->string('identity_document');
+            $table->string('given_name');
+            $table->string('paternal_last_name');
+            $table->string('maternal_last_name');
+            $table->string('address');
+            $table->string('sex_type');
+            $table->string('phone_number');
+            $table->date('attendance_date');
             $table->timestamps();
         });
     }

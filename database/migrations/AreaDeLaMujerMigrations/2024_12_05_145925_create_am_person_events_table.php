@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('am_person_events', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('am_person_id')->constrained('am_persons');
+            $table->foreignId('event_id')->constrained('events');
+            $table->string('attendance');
             $table->timestamps();
         });
     }
