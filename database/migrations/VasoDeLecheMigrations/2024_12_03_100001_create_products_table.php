@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id();                               //Id autogenerado
-            $table->string('name');                     //Nombre del producto
-            $table->text('description')->nullable();    //Descripción del producto
-            $table->timestamps();
+            $table->id();                               // Id autogenerado
+            $table->string('name');                     // Nombre del producto
+            $table->text('description')->nullable();    // Descripción del producto
+            $table->timestamps();                       // Columnas created_at y updated_at
         });
     }
 
