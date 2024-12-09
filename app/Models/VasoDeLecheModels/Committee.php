@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\VasoDeLecheModels;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +13,9 @@ class Committee extends Model
      * The attributes that are mass assignable.
      *
      * @var array
-     */
+    */
+
+    // Campos que son asignables masivamente
     protected $fillable = [
         'name', // Nombre del comité
         'president', // Nombre del presidente
@@ -22,11 +24,16 @@ class Committee extends Model
         'sector_id', // Clave foránea del sector
     ];
 
+    // Definir las relaciones
+
     /**
-     * Get the sector that owns the committee.
+     * Relación con el modelo Sector (sectores)
      */
     public function sector()
     {
         return $this->belongsTo(Sector::class);
     }
+
+    // Actualizar automáticamente con las fechas correspondientes cada vez que se cree o actualice el registro 
+    public $timestamps = true;
 }

@@ -14,7 +14,7 @@ class CommitteeVlFamilyMemberController extends Controller
      */
     public function index()
     {
-        //
+        return view('areas.VasoDeLecheViews.CommitteeVlFamilyMembers.index');
     }
 
     /**
@@ -22,7 +22,7 @@ class CommitteeVlFamilyMemberController extends Controller
      */
     public function create()
     {
-        //
+        return view('areas.VasoDeLecheViews.CommitteeVlFamilyMembers.create');
     }
 
     /**
@@ -38,7 +38,7 @@ class CommitteeVlFamilyMemberController extends Controller
      */
     public function show(CommitteeVlFamilyMember $committeeVlFamilyMember)
     {
-        //
+        return view('areas.VasoDeLecheViews.CommitteeVlFamilyMembers.show');
     }
 
     /**

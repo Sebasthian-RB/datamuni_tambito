@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\VasoDeLecheControllers;
 
-use App\Models\Committee;
+use App\Models\VasoDeLecheModels\Committee;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -13,7 +13,7 @@ class CommitteeController extends Controller
      */
     public function index()
     {
-        //
+        return view('areas.VasoDeLecheViews.Committees.index');
     }
 
     /**
@@ -21,7 +21,7 @@ class CommitteeController extends Controller
      */
     public function create()
     {
-        //
+        return view('areas.VasoDeLecheViews.Committees.create');
     }
 
     /**
@@ -37,7 +37,7 @@ class CommitteeController extends Controller
      */
     public function show(Committee $committee)
     {
-        //
+        return view('areas.VasoDeLecheViews.Committees.show', compact('committee'));
     }
 
     /**

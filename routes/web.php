@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+//Controladores del área: VASO DE LECHE
 use App\Http\Controllers\VasoDeLecheControllers\CommitteeController;
 use App\Http\Controllers\VasoDeLecheControllers\CommitteeVlFamilyMemberController;
 use App\Http\Controllers\VasoDeLecheControllers\ProductController;
