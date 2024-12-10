@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\VasoDeLecheControllers;
 
-use App\Models\Sector;
+use App\Models\VasoDeLecheModels\Sector;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 

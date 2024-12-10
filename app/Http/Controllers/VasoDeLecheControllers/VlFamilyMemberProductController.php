@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\VasoDeLecheControllers;
 
-use App\Models\VlFamilyMemberProduct;
+use App\Models\VasoDeLecheModels\VlFamilyMemberProduct;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 

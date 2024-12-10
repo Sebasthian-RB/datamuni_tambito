@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\VasoDeLecheControllers;
 
-use App\Models\VlMinor;
+use App\Models\VasoDeLecheModels\VlMinor;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 

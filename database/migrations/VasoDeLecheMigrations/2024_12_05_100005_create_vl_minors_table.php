@@ -25,7 +25,7 @@ return new class extends Migration
             $table->enum('dwelling_type', ['Propio', 'Alquilado']);                                                     // (Tipo) Vivienda del menor
             $table->enum('education_level', ['Ninguno', 'Inicial', 'Primaria', 'Secundaria', 'Técnico', 'Superior']);   // Grado de Instrucción del menor
             $table->enum('condition',  ['Gest.', 'Lact.', 'Anc.']);                                                     // Condición del menor (GEST. | LACT. | ANC.)
-            $table->boolean('disability');                                                                              // Apellido Materno del menor
+            $table->boolean('disability');                                                                              // Discapacidad del menor
             $table->string('vl_family_member_id');                                                                      // Clave foránea hacia el Miembro de Familia
             $table->timestamps();                                                                                       // Timestamps para created_at y updated_at
 

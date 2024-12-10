@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreignId('intervention_id')->constrained('interventions');         // ID de la intervención (foráneo de interventions)
             $table->enum('status', ['Atendida', 'No atendida', 'Se esta atendiendo']);  // Estado del evento: enum
             $table->timestamps();  
-                  // Definición de la clave foránea con acción de eliminación en cascada            // Timestamps para created_at y updated_at
         });
     }
 

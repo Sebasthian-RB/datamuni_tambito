@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('am_people', function (Blueprint $table) {
             $table->id();                                                                   // ID único
             $table->enum('identity_document', ['DNI', 'Pasaporte', 'Carnet', 'Cedula']);    // Documento de identidad: puede ser DNI, PASAPORTE, CARNET o CEDULA
-            $table->string('given_name');                                                   // Nombre
+            $table->string('given_name', 100);                                              // Nombre
             $table->string('paternal_last_name');                                           // Apellido paterno
             $table->string('maternal_last_name');                                           // Apellido materno
             $table->string('address');                                                      // Dirección
@@ -23,7 +23,7 @@ return new class extends Migration
             $table->dateTime('attendance_date');                                            // Fecha y hora de asistencia
             $table->timestamps();                                                           // Timestamps para created_at y updated_at
         });
-    } //TMR TODO DOCUMENTADO POR EL SEBAS ASO OE <3
+    }
 
     /**
      * Reverse the migrations.
