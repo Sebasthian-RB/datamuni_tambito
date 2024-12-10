@@ -136,6 +136,26 @@
         .links-container a:hover {
             text-decoration: underline;
         }
+        .ingresar-title {
+            display: block;
+            /* Asegura que esté en su propia línea */
+            font-size: 2rem;
+            /* Tamaño grande para destacar */
+            font-weight: bold;
+            /* Negrita */
+            color: #E1AD01;
+            /* Color profesional, puedes ajustarlo según el diseño */
+            text-transform: uppercase;
+            /* Texto en mayúsculas para mayor impacto */
+            letter-spacing: 2px;
+            /* Espaciado elegante */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            /* Sombra para resaltar */
+            margin-top: 10px;
+            /* Separación del título principal */
+            margin-bottom: 20px;
+            /* Separación con el subtítulo */
+        }
     </style>
 </head>
 
@@ -147,7 +167,7 @@
         <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Logo" class="logo">
         
         <div class="form-container">
-            <h2 class="form-title text-dark">Iniciar sesión</h2>
+            <h2 class="ingresar-title">Iniciar sesión</h2>
             <form method="POST" action="{{ route('login') }}">
                 @csrf
                 <input type="email" name="email" class="form-control" placeholder="Correo electrónico" required autofocus>
