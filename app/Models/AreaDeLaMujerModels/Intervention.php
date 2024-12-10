@@ -15,6 +15,14 @@ class Intervention extends Model
         'appointment_date', // Fecha y hora de la cita (datetime)
     ];
 
+    protected $casts = [
+        'appointment' => 'string',         // Texto de la cita
+        'derivation' => 'string',          // Texto de la derivación (si aplica)
+        'appointment_date' => 'datetime',  // Fecha y hora como objeto datetime
+        'created_at' => 'datetime',        // Fecha de creación
+        'updated_at' => 'datetime',        // Fecha de actualización
+    ];
+
     public function amPersons()
     {
         return $this->hasMany(AmPersonIntervention::class);

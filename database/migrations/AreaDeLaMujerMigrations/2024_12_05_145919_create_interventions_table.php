@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('interventions', function (Blueprint $table) {
-            $table->id();                           // ID único
-            $table->text('appointment');            // Cita: texto grande
-            $table->text('derivation');             // Derivación: texto grande
-            $table->dateTime('appointment_date');   // Fecha y hora de la cita
-            $table->timestamps();                   // Timestamps para created_at y updated_at
+            $table->id();                                // ID único autoincremental
+            $table->text('appointment');                 // Detalle de la cita
+            $table->text('derivation')->nullable();      // Derivación opcional
+            $table->dateTime('appointment_date')->index(); // Fecha y hora de la cita con índice para búsquedas
+            $table->timestamps();                        // created_at y updated_at
         });
     }
 

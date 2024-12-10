@@ -12,16 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('am_people', function (Blueprint $table) {
-            $table->id();                                                                   // ID único
-            $table->enum('identity_document', ['DNI', 'Pasaporte', 'Carnet', 'Cedula']);    // Documento de identidad: puede ser DNI, PASAPORTE, CARNET o CEDULA
-            $table->string('given_name', 100);                                              // Nombre
-            $table->string('paternal_last_name');                                           // Apellido paterno
-            $table->string('maternal_last_name');                                           // Apellido materno
-            $table->string('address');                                                      // Dirección
-            $table->boolean('sex_type');                                                    // Tipo de sexo: 0 para femenino, 1 para masculino
-            $table->string('phone_number');                                                 // Número de teléfono
-            $table->dateTime('attendance_date');                                            // Fecha y hora de asistencia
-            $table->timestamps();                                                           // Timestamps para created_at y updated_at
+            $table->string('id', 36)->primary();                                            // ID único que se puede escribir
+            $table->enum('identity_document', ['DNI', 'Pasaporte', 'Carnet', 'Cedula']);    // Solo estas opciones
+            $table->string('given_name', 50);                                               // Máximo 50 caracteres
+            $table->string('paternal_last_name', 50);                                       // Máximo 50 caracteres
+            $table->string('maternal_last_name', 50);                                       // Máximo 50 caracteres
+            $table->string('address', 255)->nullable();                                     // Dirección opcional, máximo 255 caracteres
+            $table->boolean('sex_type');                                                    // 0 para femenino, 1 para masculino
+            $table->string('phone_number', 50)->nullable();                                 // Máximo 50 caracteres, opcional
+            $table->dateTime('attendance_date')->index();                                   // Con índice para búsquedas
+            $table->timestamps();                                                           // Campos created_at y updated_at
         });
     }
 

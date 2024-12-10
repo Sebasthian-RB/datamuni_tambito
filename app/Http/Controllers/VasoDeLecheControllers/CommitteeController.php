@@ -13,7 +13,9 @@ class CommitteeController extends Controller
      */
     public function index()
     {
-        return view('areas.VasoDeLecheViews.Committees.index');
+        $committees = Committee::paginate(15);
+
+        return view('areas.VasoDeLecheViews.Committees.index', compact('committees'));
     }
 
     /**
@@ -27,7 +29,7 @@ class CommitteeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCommittee $request)
     {
         //
     }
@@ -45,7 +47,7 @@ class CommitteeController extends Controller
      */
     public function edit(Committee $committee)
     {
-        //
+        return view('areas.VasoDeLecheViews.Committees.edit', compact('committees'));
     }
 
     /**
@@ -61,6 +63,18 @@ class CommitteeController extends Controller
      */
     public function destroy(Committee $committee)
     {
-        //
+        try 
+        {
+            // Intentamos eliminar el comité de la base de datos
+            $committee->delete();
+
+            // Si la eliminación fue exitosa, redirigimos con un mensaje de éxito
+            return redirect()->route('committees.index')->with('success', 'Comité eliminado correctamente');
+        } 
+        catch (\Exception $e) 
+        {
+            // Si ocurre un error, se captura la excepción y redirige con un mensaje de error
+            return redirect()->route('committees.index')->with('error', 'No se pudo eliminar el comité');
+        }
     }
 }
