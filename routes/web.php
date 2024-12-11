@@ -27,7 +27,7 @@ Route::middleware([
     })->name('dashboard');
 
     // Rutas del controlador AmPerson dentro del grupo de autenticación
-    Route::resource('amPerson', AmPersonController::class);
+    Route::resource('am_people', AmPersonController::class);
 });
 
 
