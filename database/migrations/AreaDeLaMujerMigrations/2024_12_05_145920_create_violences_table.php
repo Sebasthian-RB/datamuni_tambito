@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('violences', function (Blueprint $table) {
-            $table->id();                       // ID único
-            $table->string('kind_violence');    // Tipo de violencia: varchar
-            $table->text('description');        // Descripción: texto grande
-            $table->timestamps();               // Timestamps para created_at y updated_at
+            $table->id();
+            $table->string('kind_violence', 70); // Tipo de violencia
+            $table->text('description'); // Descripción de la violencia
+            $table->timestamps();
         });
     }
 

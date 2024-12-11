@@ -12,14 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('programs', function (Blueprint $table) {
-            $table->id();                                                                   // ID único
-            $table->string('name');                                                         // Nombre del programa
-            $table->text('description');                                                    // Descripción del programa: texto grande
-            $table->string('program_type');                                                 // Tipo de programa: varchar
-            $table->date('start_date');                                                     // Fecha de inicio
-            $table->date('end_date')->nullable();                                           // Fecha de finalización (puede ser nula)
-            $table->enum('status', ['Pendiente', 'Finalizado', 'En proceso', 'Cancelado']); // Estado del programa: enum
-            $table->timestamps();                                                           // Timestamps para created_at y updated_at
+            $table->id();
+            $table->string('name', 50); // Nombre del programa
+            $table->text('description'); // Descripción del programa
+            $table->string('program_type', 50); // Tipo de programa
+            $table->date('start_date'); // Fecha de inicio del programa
+            $table->date('end_date')->nullable(); // Fecha de finalización del programa
+            $table->enum('status', ['Pendiente', 'Finalizado', 'En proceso', 'Cancelado']); // Estado del programa
+            $table->timestamps();
         });
     }
     /**

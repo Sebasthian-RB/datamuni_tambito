@@ -25,6 +25,6 @@ class Intervention extends Model
 
     public function amPersons()
     {
-        return $this->hasMany(AmPersonIntervention::class);
+        return $this->belongsToMany(AmPerson::class, 'am_person_interventions')->withPivot('status');
     }
 }

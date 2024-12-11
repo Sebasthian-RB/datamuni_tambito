@@ -12,11 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('am_person_interventions', function (Blueprint $table) {
-            $table->id();                                                               // ID único
-            $table->foreignId('am_person_id')->constrained('am_people');               // ID de la persona (foráneo de am_persons)
-            $table->foreignId('intervention_id')->constrained('interventions');         // ID de la intervención (foráneo de interventions)
-            $table->enum('status', ['Atendida', 'No atendida', 'Se esta atendiendo']);  // Estado del evento: enum
-            $table->timestamps();  
+            $table->id();
+            $table->string('am_person_id', 36); // Relación con am_people
+            $table->foreign('am_person_id')->references('id')->on('am_people')->cascadeOnDelete(); // Relación con am_people
+            $table->foreignId('intervention_id')->constrained('interventions')->cascadeOnDelete(); // Relación con interventions
+            $table->enum('status', ['Completado', 'En progreso', 'Cancelado']); // Estado del evento
+            $table->timestamps();
         });
     }
 

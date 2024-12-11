@@ -18,8 +18,17 @@ class Program extends Model
         'status',       // Estado del programa (enum: Pendiente, Finalizado, En proceso, Cancelado)
     ];
 
-    public function violences()
+    protected $casts = [
+        'name' => 'string',
+        'description' => 'string',
+        'program_type' => 'string',
+        'start_date' => 'date',
+        'end_date' => 'date',
+        'status' => 'string',
+    ];
+    
+    public function events()
     {
-        return $this->hasMany(Violence::class);
+        return $this->hasMany(Event::class);
     }
 }

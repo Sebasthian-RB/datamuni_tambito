@@ -41,16 +41,16 @@ class AmPerson extends Model
 
     public function events()
     {
-        return $this->hasMany(AmPersonEvent::class);
+        return $this->belongsToMany(Event::class, 'am_person_events')->withPivot('status');
     }
 
     public function interventions()
     {
-        return $this->hasMany(AmPersonIntervention::class);
+        return $this->belongsToMany(Intervention::class, 'am_person_interventions')->withPivot('status');
     }
 
     public function violences()
     {
-        return $this->hasMany(AmPersonViolence::class);
+        return $this->belongsToMany(Violence::class, 'am_person_violences')->withPivot('registration_date');
     }
 }

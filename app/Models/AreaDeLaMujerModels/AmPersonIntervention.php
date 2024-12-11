@@ -14,13 +14,19 @@ class AmPersonIntervention extends Model
         'status',           // Estado de la intervención (varchar)
     ];
 
+    protected $casts = [
+        'am_person_id' => 'string',
+        'intervention_id' => 'integer',
+        'status' => 'string',
+    ];
+
     public function amPerson()
     {
-        return $this->belongsTo(AmPerson::class);
+        return $this->belongsTo(AmPerson::class, 'am_person_id');
     }
 
     public function intervention()
     {
-        return $this->belongsTo(Intervention::class);
+        return $this->belongsTo(Intervention::class, 'intervention_id');
     }
 }

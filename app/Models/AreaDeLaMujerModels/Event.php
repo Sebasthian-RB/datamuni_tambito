@@ -19,8 +19,24 @@ class Event extends Model
         'program_id',   // ID del programa (foráneo)
     ];
 
+    protected $casts = [
+        'name' => 'string',
+        'description' => 'string',
+        'place' => 'string',
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+        'status' => 'string',
+        'program_id' => 'integer',
+    ];
+
+
+    public function program()
+    {
+        return $this->belongsTo(Program::class);
+    }
+
     public function amPersons()
     {
-        return $this->hasMany(AmPersonEvent::class);
+        return $this->belongsToMany(AmPerson::class, 'am_person_events')->withPivot('status');
     }
 }

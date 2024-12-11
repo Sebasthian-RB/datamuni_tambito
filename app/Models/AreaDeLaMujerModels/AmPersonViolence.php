@@ -15,13 +15,19 @@ class AmPersonViolence extends Model
         'registration_date',    // Fecha de registro de la violencia
     ];
 
+    protected $casts = [
+        'am_person_id' => 'string',
+        'violence_id' => 'integer',
+        'registration_date' => 'datetime',
+    ];
+
     public function amPerson()
     {
-        return $this->belongsTo(AmPerson::class);
+        return $this->belongsTo(AmPerson::class, 'am_person_id');
     }
 
     public function violence()
     {
-        return $this->belongsTo(Violence::class);
+        return $this->belongsTo(Violence::class, 'violence_id');
     }
 }

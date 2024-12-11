@@ -14,13 +14,13 @@ class Violence extends Model
         'description',      //Descripción de la violencia
     ];
 
+    protected $casts = [
+        'kind_violence' => 'string',
+        'description' => 'string',
+    ];
+
     public function amPersons()
     {
-        return $this->hasMany(AmPersonViolence::class);
-    }
-
-    public function program()
-    {
-        return $this->belongsTo(Program::class);
+        return $this->belongsToMany(AmPerson::class, 'am_person_violences')->withPivot('registration_date');
     }
 }

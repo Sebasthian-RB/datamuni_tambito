@@ -15,13 +15,19 @@ class AmPersonEvent extends Model
         'status',   // Asistencia (status enum)
     ];
 
+    protected $casts = [
+        'am_person_id' => 'string',
+        'event_id' => 'integer',
+        'status' => 'string',
+    ];
+
     public function amPerson()
     {
-        return $this->belongsTo(AmPerson::class);
+        return $this->belongsTo(AmPerson::class, 'am_person_id');
     }
 
     public function event()
     {
-        return $this->belongsTo(Event::class);
+        return $this->belongsTo(Event::class, 'event_id');
     }
 }

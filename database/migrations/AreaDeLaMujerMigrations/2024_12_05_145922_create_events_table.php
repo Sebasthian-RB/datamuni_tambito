@@ -12,15 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('events', function (Blueprint $table) {
-            $table->id();                                                                   // ID único
-            $table->string('name');                                                         // Nombre del evento
-            $table->text('description');                                                    // Descripción del evento: texto grande
-            $table->string('place');                                                        // Lugar del evento
-            $table->date('start_date');                                                     // Fecha de inicio del evento
-            $table->date('end_date')->nullable();                                           // Fecha de finalización del evento (puede ser nula)
-            $table->enum('status', ['En proceso', 'Pendiente', 'Finalizado', 'Cancelado']); // Estado del evento: enum
-            $table->foreignId('program_id')->constrained();                                 // ID del programa (foráneo de programs)
-            $table->timestamps();                                                           // Timestamps para created_at y updated_at
+            $table->id();
+            $table->string('name', 50); // Nombre del evento
+            $table->text('description'); // Descripción del evento
+            $table->string('place', 150); // Lugar del evento
+            $table->dateTime('start_date'); // Fecha de inicio del evento
+            $table->dateTime('end_date'); // Fecha de finalización del evento
+            $table->enum('status', ['Pendiente', 'Finalizado', 'En proceso', 'Cancelado']); // Estado del evento
+            $table->foreignId('program_id')->constrained('programs')->cascadeOnDelete(); // Relación con programas
+            $table->timestamps();
         });
     }
 

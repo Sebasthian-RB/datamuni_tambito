@@ -12,11 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('am_person_violences', function (Blueprint $table) {
-            $table->id();                                                   // ID único
-            $table->foreignId('am_person_id')->constrained('am_people');   // ID de la persona (foráneo de am_persons)
-            $table->foreignId('violence_id')->constrained('violences');     // ID de la violencia (foráneo de violences)
-            $table->date('registration_date');                              // Fecha de registro de la violencia
-            $table->timestamps();                                           // Timestamps para created_at y updated_at
+            $table->id();
+            $table->string('am_person_id', 36); // Relación con am_people
+            $table->foreign('am_person_id')->references('id')->on('am_people')->cascadeOnDelete(); // Relación con am_people
+            $table->foreignId('violence_id')->constrained('violences')->cascadeOnDelete(); // Relación con violences
+            $table->dateTime('registration_date'); // Fecha de registro
+            $table->timestamps();
         });
     }
 
