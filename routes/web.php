@@ -10,7 +10,7 @@ use App\Http\Controllers\VasoDeLecheControllers\SectorController;
 use App\Http\Controllers\VasoDeLecheControllers\VlFamilyMemberController;
 use App\Http\Controllers\VasoDeLecheControllers\VlFamilyMemberProductController;
 use App\Http\Controllers\VasoDeLecheControllers\VlMinorController;
-//Controladores deL Área: ÁREA DE LA MUJER yoyo
+//Controladores deL Área: ÁREA DE LA MUJER
 use App\Http\Controllers\AreaDeLaMujerControllers\AmPersonController;
 
 Route::get('/', function () {
@@ -27,10 +27,10 @@ Route::middleware([
     })->name('dashboard');
 
     // Rutas del controlador AmPerson dentro del grupo de autenticación
-    Route::resource('amPerson', AmPersonController::class);
 });
 
 
+    Route::resource('am_people', AmPersonController::class);
 
 Route::resource('committees', CommitteeController::class);
 Route::resource('committee_vl_family_members', CommitteeVlFamilyMemberController::class);
