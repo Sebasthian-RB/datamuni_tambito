@@ -33,9 +33,7 @@ class AmPersonController extends Controller
      */
     public function store(Request $request)
     {
-        // Validaciones de los datos de la persona
-        $validator = Validator::make($request->all(), [
-            'id' => 'required|string|max:36',
+        $rules = [
             'identity_document' => ['required', 'string', 'in:DNI,Pasaporte,Carnet,Cedula'],
             'given_name' => 'required|string|max:50',
             'paternal_last_name' => 'required|string|max:50',
@@ -44,7 +42,21 @@ class AmPersonController extends Controller
             'sex_type' => 'required|boolean',
             'phone_number' => 'nullable|string|max:50',
             'attendance_date' => 'required|date',
-        ]);
+        ];
+    
+        // Reglas dinámicas para el campo 'id' dependiendo del tipo de documento
+        if ($request->identity_document == 'DNI') {
+            $rules['id'] = 'required|string|size:8|unique:am_people,id';  // Validación para DNI
+        } elseif ($request->identity_document == 'Pasaporte') {
+            $rules['id'] = 'required|string|max:20|unique:am_people,id';  // Validación para Pasaporte
+        } elseif ($request->identity_document == 'Cedula') {
+            $rules['id'] = 'required|string|max:20|unique:am_people,id';  // Validación para Cédula
+        } else {
+            $rules['id'] = 'required|string|max:50|unique:am_people,id';  // Para otros documentos
+        }
+    
+        // Validamos los datos que llegaron en el request
+        $validator = Validator::make($request->all(), $rules);
 
         // Si la validación falla, retorna los errores
         if ($validator->fails()) {
