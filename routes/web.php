@@ -10,7 +10,7 @@ use App\Http\Controllers\VasoDeLecheControllers\SectorController;
 use App\Http\Controllers\VasoDeLecheControllers\VlFamilyMemberController;
 use App\Http\Controllers\VasoDeLecheControllers\VlFamilyMemberProductController;
 use App\Http\Controllers\VasoDeLecheControllers\VlMinorController;
-//Controladores deL Área: ÁREA DE LA MUJER
+//Controladores deL Área: ÁREA DE LA MUJER yoyo
 use App\Http\Controllers\AreaDeLaMujerControllers\AmPersonController;
 
 Route::get('/', function () {
