@@ -16,7 +16,7 @@ class ProductController extends Controller
     {
         // Recuperar todos los productos
         $products = Product::all();
-        return view('vaso_de_leche.products.index', compact('products'));
+        return view('areas.VasoDeLecheViews.products.index', compact('products'));
     }
 
     /**
@@ -25,7 +25,7 @@ class ProductController extends Controller
     public function create()
     {
         // Mostrar formulario de creación
-        return view('vaso_de_leche.products.create');
+        return view('areas.VasoDeLecheViews.products.create');
     }
 
     /**
@@ -40,7 +40,7 @@ class ProductController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('products.create')
+            return redirect()->route('areas.VasoDeLecheViews.products.create')
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -48,7 +48,7 @@ class ProductController extends Controller
         // Crear un nuevo producto
         Product::create($request->only(['name', 'description']));
 
-        return redirect()->route('products.index')->with('success', 'Producto creado correctamente.');
+        return redirect()->route('areas.VasoDeLecheViews.products.index')->with('success', 'Producto creado correctamente.');
     }
 
     /**
@@ -57,7 +57,7 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         // Mostrar detalles de un producto
-        return view('vaso_de_leche.products.show', compact('product'));
+        return view('areas.VasoDeLecheViews.products.show', compact('product'));
     }
 
     /**
@@ -66,7 +66,7 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         // Mostrar formulario de edición
-        return view('vaso_de_leche.products.edit', compact('product'));
+        return view('areas.VasoDeLecheViews.products.edit', compact('product'));
     }
 
     /**
@@ -81,7 +81,7 @@ class ProductController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('products.edit', $product->id)
+            return redirect()->route('areas.VasoDeLecheViews.products.edit', $product->id)
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -89,7 +89,7 @@ class ProductController extends Controller
         // Actualizar el producto
         $product->update($request->only(['name', 'description']));
 
-        return redirect()->route('products.index')->with('success', 'Producto actualizado correctamente.');
+        return redirect()->route('areas.VasoDeLecheViews.products.index')->with('success', 'Producto actualizado correctamente.');
     }
 
     /**
@@ -100,6 +100,6 @@ class ProductController extends Controller
         // Eliminar el producto
         $product->delete();
 
-        return redirect()->route('products.index')->with('success', 'Producto eliminado correctamente.');
+        return redirect()->route('areas.VasoDeLecheViews.products.index')->with('success', 'Producto eliminado correctamente.');
     }
 }
