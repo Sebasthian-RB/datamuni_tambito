@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AmPersonController;
 use Illuminate\Support\Facades\Route;
 
 //Controladores del área: VASO DE LECHE
@@ -23,6 +24,9 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+    // Rutas del controlador AmPerson dentro del grupo de autenticación
+    Route::resource('amPerson', AmPersonController::class);
 });
 
 
