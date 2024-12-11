@@ -25,7 +25,7 @@
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>N° Documento</th>
                         <th>Documento de Identidad</th>
                         <th>Nombre</th>
                         <th>Acciones</th>

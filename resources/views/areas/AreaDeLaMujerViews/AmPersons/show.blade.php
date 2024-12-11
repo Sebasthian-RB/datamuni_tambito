@@ -15,7 +15,7 @@
         </div>
         <div class="card-body">
             <dl class="row">
-                <dt class="col-sm-4">ID</dt>
+                <dt class="col-sm-4">N° Documento</dt>
                 <dd class="col-sm-8">{{ $amPerson->id }}</dd>
 
                 <dt class="col-sm-4">Documento de Identidad</dt>

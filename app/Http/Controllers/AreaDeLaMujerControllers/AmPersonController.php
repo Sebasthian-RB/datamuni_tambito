@@ -40,7 +40,7 @@ class AmPersonController extends Controller
             'maternal_last_name' => 'required|string|max:50',
             'address' => 'nullable|string|max:255',
             'sex_type' => 'required|boolean',
-            'phone_number' => 'nullable|string|max:50',
+            'phone_number' => 'nullable|regex:/^\d{9}$/',
             'attendance_date' => 'required|date',
         ];
     
@@ -114,7 +114,7 @@ class AmPersonController extends Controller
         'maternal_last_name' => 'required|string|max:50',
         'address' => 'nullable|string|max:255',
         'sex_type' => 'required|boolean',
-        'phone_number' => 'nullable|string|max:50',
+        'phone_number' => 'nullable|regex:/^\d{9}$/',
         'attendance_date' => 'required|date',
     ];
 

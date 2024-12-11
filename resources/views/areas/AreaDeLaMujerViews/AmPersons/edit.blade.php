@@ -19,7 +19,7 @@
             </div>
             <div class="card-body">
                 <div class="form-group">
-                    <label for="id">ID</label>
+                    <label for="id">N° Documento</label>
                     <input type="text" class="form-control @error('id') is-invalid @enderror" id="id" name="id" value="{{ old('id', $amPerson->id) }}" required>
                     @error('id')
                         <span class="invalid-feedback">{{ $message }}</span>
