@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\AreaDeLaMujerControllers;
 
-use App\Models\AmPersonEvent;
+use App\Models\AreaDeLaMujerModels\AmPersonEvent;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class AmPersonEventController extends Controller

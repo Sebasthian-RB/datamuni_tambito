@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\AreaDeLaMujerControllers;
 
-use App\Models\Program;
+use App\Models\AreaDeLaMujerModels\Program;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class ProgramController extends Controller

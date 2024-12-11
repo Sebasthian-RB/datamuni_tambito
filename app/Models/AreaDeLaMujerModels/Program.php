@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\AreaDeLaMujerModels;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,7 +26,7 @@ class Program extends Model
         'end_date' => 'date',
         'status' => 'string',
     ];
-    
+
     public function events()
     {
         return $this->hasMany(Event::class);

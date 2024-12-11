@@ -9,7 +9,7 @@
 
 @section('content')
 <div class="container">
-    <form action="{{ route('amPerson.store') }}" method="POST">
+    <form action="{{ route('am_people.store') }}" method="POST">
         @csrf
 
         <div class="card">

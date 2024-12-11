@@ -44,8 +44,8 @@
             </dl>
         </div>
         <div class="card-footer">
-            <a href="{{ route('amPerson.edit', $amPerson->id) }}" class="btn btn-warning">Editar</a>
-            <a href="{{ route('amPerson.index') }}" class="btn btn-secondary">Volver al listado</a>
+            <a href="{{ route('am_people.edit', $amPerson->id) }}" class="btn btn-warning">Editar</a>
+            <a href="{{ route('am_people.index') }}" class="btn btn-secondary">Volver al listado</a>
         </div>
     </div>
 </div>

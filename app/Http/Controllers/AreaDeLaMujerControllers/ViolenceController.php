@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\AreaDeLaMujerControllers;
 
-use App\Models\Violence;
+use App\Models\AreaDeLaMujerModels\Violence;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class ViolenceController extends Controller

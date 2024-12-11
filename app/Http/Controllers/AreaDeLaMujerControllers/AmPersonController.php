@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\AreaDeLaMujerControllers;
 
-use App\Models\AmPerson;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\AreaDeLaMujerModels\AmPerson;
 use Illuminate\Support\Facades\Validator;
 
 class AmPersonController extends Controller
@@ -47,7 +48,7 @@ class AmPersonController extends Controller
 
         // Si la validación falla, retorna los errores
         if ($validator->fails()) {
-            return redirect()->route('amPerson.create')
+            return redirect()->route('am_people.create')
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -67,7 +68,7 @@ class AmPersonController extends Controller
 
         $person->save();
 
-        return redirect()->route('AmPerson.index')->with('success', 'Persona creada correctamente.');
+        return redirect()->route('am_people.index')->with('success', 'Persona creada correctamente.');
     }
 
     /**
@@ -93,26 +94,41 @@ class AmPersonController extends Controller
      */
     public function update(Request $request, AmPerson $amPerson)
     {
-        // Validaciones de los datos de la persona
-        $validator = Validator::make($request->all(), [
-            'identity_document' => ['required', 'string', 'in:DNI,Pasaporte,Carnet,Cedula'],
-            'given_name' => 'required|string|max:50',
-            'paternal_last_name' => 'required|string|max:50',
-            'maternal_last_name' => 'required|string|max:50',
-            'address' => 'nullable|string|max:255',
-            'sex_type' => 'required|boolean',
-            'phone_number' => 'nullable|string|max:50',
-            'attendance_date' => 'required|date',
-        ]);
+        // Inicializar reglas de validación para los campos comunes
+    $rules = [
+        'identity_document' => ['required', 'string', 'in:DNI,Pasaporte,Carnet,Cedula'],
+        'given_name' => 'required|string|max:50',
+        'paternal_last_name' => 'required|string|max:50',
+        'maternal_last_name' => 'required|string|max:50',
+        'address' => 'nullable|string|max:255',
+        'sex_type' => 'required|boolean',
+        'phone_number' => 'nullable|string|max:50',
+        'attendance_date' => 'required|date',
+    ];
+
+    // Validación dinámica del campo 'id' según el tipo de documento
+    if ($request->identity_document == 'DNI') {
+        $rules['id'] = 'required|string|size:8'; // Para DNI, debe tener exactamente 8 caracteres
+    } elseif ($request->identity_document == 'Pasaporte') {
+        $rules['id'] = 'required|string|max:20'; // Para Pasaporte, hasta 20 caracteres
+    } elseif ($request->identity_document == 'Cedula') {
+        $rules['id'] = 'required|string|max:20'; // Para Cedula, hasta 20 caracteres
+    } else {
+        $rules['id'] = 'required|string|max:50'; // Para otros documentos, hasta 50 caracteres
+    }
+
+    // Realizar la validación
+    $validator = Validator::make($request->all(), $rules);
 
         // Si la validación falla, retorna los errores
         if ($validator->fails()) {
-            return redirect()->route('amPerson.edit', $amPerson->id)
+            return redirect()->route('am_people.edit', $amPerson->id)
                 ->withErrors($validator)
                 ->withInput();
         }
         // Actualizamos la persona con los datos proporcionados
         $amPerson->update([
+            'id' => $request->id,  // Aquí se actualiza el ID manualmente
             'identity_document' => $request->identity_document,
             'given_name' => $request->given_name,
             'paternal_last_name' => $request->paternal_last_name,
@@ -123,7 +139,7 @@ class AmPersonController extends Controller
             'attendance_date' => $request->attendance_date,
         ]);
 
-        return redirect()->route('AmPerson.index')->with('success', 'Persona actualizada correctamente.');
+        return redirect()->route('am_people.index')->with('success', 'Persona actualizada correctamente.');
     }
 
     /**
@@ -134,6 +150,6 @@ class AmPersonController extends Controller
         // Eliminar la persona
         $amPerson->delete();
 
-        return redirect()->route('AmPerson.index')->with('success', 'Persona eliminada correctamente.');
+        return redirect()->route('am_people.index')->with('success', 'Persona eliminada correctamente.');
     }
 }

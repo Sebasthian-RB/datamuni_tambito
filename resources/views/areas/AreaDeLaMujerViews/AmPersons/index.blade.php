@@ -9,7 +9,7 @@
 
 @section('content')
 <div class="container">
-    <a href="{{ route('amPerson.create') }}" class="btn btn-primary mb-3">Agregar Persona</a>
+    <a href="{{ route('am_people.create') }}" class="btn btn-primary mb-3">Agregar Persona</a>
 
     @if(session('success'))
         <div class="alert alert-success">
@@ -38,9 +38,9 @@
                             <td>{{ $person->identity_document }}</td>
                             <td>{{ $person->given_name }} {{ $person->paternal_last_name }} {{ $person->maternal_last_name }}</td>
                             <td>
-                                <a href="{{ route('amPerson.show', $person->id) }}" class="btn btn-info btn-sm">Ver</a>
-                                <a href="{{ route('amPerson.edit', $person->id) }}" class="btn btn-warning btn-sm">Editar</a>
-                                <form action="{{ route('amPerson.destroy', $person->id) }}" method="POST" style="display:inline-block;">
+                                <a href="{{ route('am_people.show', $person->id) }}" class="btn btn-info btn-sm">Ver</a>
+                                <a href="{{ route('am_people.edit', $person->id) }}" class="btn btn-warning btn-sm">Editar</a>
+                                <form action="{{ route('am_people.destroy', $person->id) }}" method="POST" style="display:inline-block;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>

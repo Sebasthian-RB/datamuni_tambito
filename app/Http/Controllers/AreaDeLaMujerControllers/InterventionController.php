@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\AreaDeLaMujerControllers;
 
-use App\Models\Intervention;
+use App\Models\AreaDeLaMujerModels\Intervention;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class InterventionController extends Controller
