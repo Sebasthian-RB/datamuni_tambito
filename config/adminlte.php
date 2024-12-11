@@ -309,6 +309,9 @@ return [
             'type' => 'fullscreen-widget',
             'topnav_right' => true,
         ],
+        [
+            'text' => '111'
+        ],
 
         // Sidebar items:
         [
