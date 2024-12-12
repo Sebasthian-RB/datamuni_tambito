@@ -13,7 +13,8 @@ class ViolenceController extends Controller
      */
     public function index()
     {
-        //
+        $violences = Violence::all();
+        return view('areas.AreaDeLaMujerViews.Violencess.index', compact('violences'));
     }
 
     /**
