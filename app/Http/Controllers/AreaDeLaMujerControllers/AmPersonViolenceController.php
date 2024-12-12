@@ -4,6 +4,8 @@ namespace App\Http\Controllers\AreaDeLaMujerControllers;
 
 use App\Models\AreaDeLaMujerModels\AmPersonViolence;
 use App\Http\Controllers\Controller;
+use App\Models\AreaDeLaMujerModels\AmPerson;
+use App\Models\AreaDeLaMujerModels\Violence;
 use Illuminate\Http\Request;
 
 class AmPersonViolenceController extends Controller
@@ -13,7 +15,8 @@ class AmPersonViolenceController extends Controller
      */
     public function index()
     {
-        //
+        $amPersonViolences = AmPersonViolence::with(['amPerson', 'violence'])->get();
+        return view('areas.AreaDeLaMujerViews.AmPersonViolences.index', compact('amPersonViolences'));
     }
 
     /**
@@ -21,7 +24,9 @@ class AmPersonViolenceController extends Controller
      */
     public function create()
     {
-        //
+        $amPersons = AmPerson::all();
+        $violences = Violence::all();
+        return view('areas.AreaDeLaMujerViews.AmPersonViolences.create', compact('amPersons', 'violences'));
     }
 
     /**
@@ -29,7 +34,15 @@ class AmPersonViolenceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'am_person_id' => 'required|exists:am_people,id',
+            'violence_id' => 'required|exists:violences,id',
+            'registration_date' => 'required|date',
+        ]);
+
+        AmPersonViolence::create($request->all());
+
+        return redirect()->route('am_person_violences.index')->with('success', 'Relación creada exitosamente.');
     }
 
     /**
@@ -37,7 +50,7 @@ class AmPersonViolenceController extends Controller
      */
     public function show(AmPersonViolence $amPersonViolence)
     {
-        //
+        return view('areas.AreaDeLaMujerViews.AmPersonViolences.show', compact('amPersonViolence'));
     }
 
     /**
@@ -45,7 +58,9 @@ class AmPersonViolenceController extends Controller
      */
     public function edit(AmPersonViolence $amPersonViolence)
     {
-        //
+        $amPersons = AmPerson::all();
+        $violences = Violence::all();
+        return view('areas.AreaDeLaMujerViews.AmPersonViolences.edit', compact('amPersonViolence', 'amPersons', 'violences'));
     }
 
     /**
@@ -53,7 +68,15 @@ class AmPersonViolenceController extends Controller
      */
     public function update(Request $request, AmPersonViolence $amPersonViolence)
     {
-        //
+        $request->validate([
+            'am_person_id' => 'required|exists:am_people,id',
+            'violence_id' => 'required|exists:violences,id',
+            'registration_date' => 'required|date',
+        ]);
+
+        $amPersonViolence->update($request->all());
+
+        return redirect()->route('am_person_violences.index')->with('success', 'Relación actualizada exitosamente.');
     }
 
     /**
@@ -61,6 +84,8 @@ class AmPersonViolenceController extends Controller
      */
     public function destroy(AmPersonViolence $amPersonViolence)
     {
-        //
+        $amPersonViolence->delete();
+
+        return redirect()->route('am_person_violences.index')->with('success', 'Relación eliminada exitosamente.');
     }
 }

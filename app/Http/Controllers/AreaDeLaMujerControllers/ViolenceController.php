@@ -14,7 +14,7 @@ class ViolenceController extends Controller
     public function index()
     {
         $violences = Violence::all();
-        return view('areas.AreaDeLaMujerViews.Violencess.index', compact('violences'));
+        return view('areas.AreaDeLaMujerViews.Violences.index', compact('violences'));
     }
 
     /**
@@ -22,7 +22,7 @@ class ViolenceController extends Controller
      */
     public function create()
     {
-        //
+        return view('areas.AreaDeLaMujerViews.Violences.create');
     }
 
     /**
@@ -30,7 +30,14 @@ class ViolenceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'kind_violence' => 'required|string|max:70',
+            'description' => 'required|string',
+        ]);
+
+        Violence::create($request->all());
+
+        return redirect()->route('violences.index')->with('success', 'Violencia creada exitosamente.');
     }
 
     /**
@@ -38,7 +45,7 @@ class ViolenceController extends Controller
      */
     public function show(Violence $violence)
     {
-        //
+        return view('areas.AreaDeLaMujerViews.Violences.show', compact('violence'));
     }
 
     /**
@@ -46,7 +53,7 @@ class ViolenceController extends Controller
      */
     public function edit(Violence $violence)
     {
-        //
+        return view('areas.AreaDeLaMujerViews.Violences.edit', compact('violence'));
     }
 
     /**
@@ -54,7 +61,14 @@ class ViolenceController extends Controller
      */
     public function update(Request $request, Violence $violence)
     {
-        //
+        $request->validate([
+            'kind_violence' => 'required|string|max:70',
+            'description' => 'required|string',
+        ]);
+
+        $violence->update($request->all());
+
+        return redirect()->route('violences.index')->with('success', 'Violencia actualizada exitosamente.');
     }
 
     /**
@@ -62,6 +76,8 @@ class ViolenceController extends Controller
      */
     public function destroy(Violence $violence)
     {
-        //
+        $violence->delete();
+
+        return redirect()->route('violences.index')->with('success', 'Violencia eliminada exitosamente.');
     }
 }
