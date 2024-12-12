@@ -4,6 +4,7 @@ namespace App\Http\Controllers\AreaDeLaMujerControllers;
 
 use App\Models\AreaDeLaMujerModels\Event;
 use App\Http\Controllers\Controller;
+use App\Models\AreaDeLaMujerModels\Program;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -13,7 +14,8 @@ class EventController extends Controller
      */
     public function index()
     {
-        //
+        $events = Event::with('program')->get();
+        return view('areas.AreaDeLaMujerViews.Events.index', compact('events'));
     }
 
     /**
@@ -21,7 +23,8 @@ class EventController extends Controller
      */
     public function create()
     {
-        //
+        $programs = Program::all();
+        return view('areas.AreaDeLaMujerViews.Events.create', compact('programs'));
     }
 
     /**
@@ -29,7 +32,18 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:50',
+            'description' => 'required|string',
+            'place' => 'required|string|max:150',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'status' => 'required|in:Pendiente,Finalizado,En proceso,Cancelado',
+            'program_id' => 'required|exists:programs,id',
+        ]);
+
+        Event::create($request->all());
+        return redirect()->route('events.index')->with('success', 'Evento creado con éxito.');
     }
 
     /**
@@ -37,7 +51,7 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
-        //
+        return view('areas.AreaDeLaMujerViews.Events.show', compact('event'));
     }
 
     /**
@@ -45,7 +59,8 @@ class EventController extends Controller
      */
     public function edit(Event $event)
     {
-        //
+        $programs = Program::all();
+        return view('areas.AreaDeLaMujerViews.Events.edit', compact('event', 'programs'));
     }
 
     /**
@@ -53,7 +68,18 @@ class EventController extends Controller
      */
     public function update(Request $request, Event $event)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:50',
+            'description' => 'required|string',
+            'place' => 'required|string|max:150',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'status' => 'required|in:Pendiente,Finalizado,En proceso,Cancelado',
+            'program_id' => 'required|exists:programs,id',
+        ]);
+
+        $event->update($request->all());
+        return redirect()->route('events.index')->with('success', 'Evento actualizado con éxito.');
     }
 
     /**
@@ -61,6 +87,7 @@ class EventController extends Controller
      */
     public function destroy(Event $event)
     {
-        //
+        $event->delete();
+        return redirect()->route('events.index')->with('success', 'Evento eliminado con éxito.');
     }
 }

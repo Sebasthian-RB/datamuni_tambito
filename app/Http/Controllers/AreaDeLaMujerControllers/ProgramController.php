@@ -13,7 +13,8 @@ class ProgramController extends Controller
      */
     public function index()
     {
-        //
+        $programs = Program::all();
+        return view('areas.AreaDeLaMujerViews.Programs.index', compact('programs'));
     }
 
     /**
@@ -21,7 +22,7 @@ class ProgramController extends Controller
      */
     public function create()
     {
-        //
+        return view('areas.AreaDeLaMujerViews.Programs.create');
     }
 
     /**
@@ -29,7 +30,17 @@ class ProgramController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:50',
+            'description' => 'required|string',
+            'program_type' => 'required|string|max:50',
+            'start_date' => 'required|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'status' => 'required|in:Pendiente,Finalizado,En proceso,Cancelado',
+        ]);
+
+        Program::create($request->all());
+        return redirect()->route('programs.index')->with('success', 'Programa creado con éxito.');
     }
 
     /**
@@ -37,7 +48,7 @@ class ProgramController extends Controller
      */
     public function show(Program $program)
     {
-        //
+        return view('areas.AreaDeLaMujerViews.Programs.show', compact('program'));
     }
 
     /**
@@ -45,7 +56,7 @@ class ProgramController extends Controller
      */
     public function edit(Program $program)
     {
-        //
+        return view('areas.AreaDeLaMujerViews.Programs.edit', compact('program'));
     }
 
     /**
@@ -53,7 +64,17 @@ class ProgramController extends Controller
      */
     public function update(Request $request, Program $program)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:50',
+            'description' => 'required|string',
+            'program_type' => 'required|string|max:50',
+            'start_date' => 'required|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'status' => 'required|in:Pendiente,Finalizado,En proceso,Cancelado',
+        ]);
+
+        $program->update($request->all());
+        return redirect()->route('programs.index')->with('success', 'Programa actualizado con éxito.');
     }
 
     /**
@@ -61,6 +82,7 @@ class ProgramController extends Controller
      */
     public function destroy(Program $program)
     {
-        //
+        $program->delete();
+        return redirect()->route('programs.index')->with('success', 'Programa eliminado con éxito.');
     }
 }
