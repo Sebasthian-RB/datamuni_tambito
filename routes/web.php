@@ -12,8 +12,13 @@ use App\Http\Controllers\VasoDeLecheControllers\VlFamilyMemberProductController;
 use App\Http\Controllers\VasoDeLecheControllers\VlMinorController;
 //Controladores deL Área: ÁREA DE LA MUJER
 use App\Http\Controllers\AreaDeLaMujerControllers\AmPersonController;
+use App\Http\Controllers\AreaDeLaMujerControllers\AmPersonEventController;
 use App\Http\Controllers\AreaDeLaMujerControllers\AmPersonInterventionController;
+use App\Http\Controllers\AreaDeLaMujerControllers\AmPersonViolenceController;
+use App\Http\Controllers\AreaDeLaMujerControllers\EventController;
 use App\Http\Controllers\AreaDeLaMujerControllers\InterventionController;
+use App\Http\Controllers\AreaDeLaMujerControllers\ProgramController;
+use App\Http\Controllers\AreaDeLaMujerControllers\ViolenceController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -31,12 +36,12 @@ Route::middleware([
     // Rutas del controlador AmPerson dentro del grupo de autenticación
     Route::resource('am_people', AmPersonController::class);
     Route::resource('interventions', InterventionController::class);
-    Route::resource('violences', AmPersonController::class);
-    Route::resource('programs', AmPersonController::class);
-    Route::resource('events', AmPersonController::class);
+    Route::resource('violences', ViolenceController::class);
+    Route::resource('programs', ProgramController::class);
+    Route::resource('events', EventController::class);
     Route::resource('am_person_interventions', AmPersonInterventionController::class);
-    Route::resource('am_person_violences', AmPersonController::class);
-    Route::resource('am_person_events', AmPersonController::class);
+    Route::resource('am_person_violences', AmPersonViolenceController::class);
+    Route::resource('am_person_events', AmPersonEventController::class);
 });
 
 
