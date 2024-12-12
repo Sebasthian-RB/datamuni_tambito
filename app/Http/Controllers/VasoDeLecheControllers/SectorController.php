@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\VasoDeLecheControllers;
 
-use App\Models\VasoDeLecheModels\Sector;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\VasoDeLecheModels\Sector;
+use Illuminate\Support\Facades\Validator;
 
 class SectorController extends Controller
 {
@@ -13,7 +14,9 @@ class SectorController extends Controller
      */
     public function index()
     {
-        //
+        // Recuperar todos los sectores
+        $sectors = Sector::all();
+        return view('areas.VasoDeLecheViews.Sectors.index', compact('sectors'));
     }
 
     /**
@@ -21,7 +24,8 @@ class SectorController extends Controller
      */
     public function create()
     {
-        //
+        // Mostrar formulario de creación
+        return view('areas.VasoDeLecheViews.Sectors.create');
     }
 
     /**
@@ -29,7 +33,23 @@ class SectorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validar los datos del formulario
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'responsible_person' => 'required|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('sectors.create')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        // Crear un nuevo sector
+        Sector::create($request->only(['name', 'description', 'responsible_person']));
+
+        return redirect()->route('sectors.index')->with('success', 'Sector creado correctamente.');
     }
 
     /**
@@ -37,7 +57,8 @@ class SectorController extends Controller
      */
     public function show(Sector $sector)
     {
-        //
+        // Mostrar detalles de un sector
+        return view('areas.VasoDeLecheViews.Sectors.show', compact('sector'));
     }
 
     /**
@@ -45,7 +66,8 @@ class SectorController extends Controller
      */
     public function edit(Sector $sector)
     {
-        //
+        // Mostrar formulario de edición
+        return view('areas.VasoDeLecheViews.Sectors.edit', compact('sector'));
     }
 
     /**
@@ -53,7 +75,23 @@ class SectorController extends Controller
      */
     public function update(Request $request, Sector $sector)
     {
-        //
+        // Validar los datos del formulario
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'responsible_person' => 'required|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('sectors.edit', $sector->id)
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        // Actualizar el sector
+        $sector->update($request->only(['name', 'description', 'responsible_person']));
+
+        return redirect()->route('sectors.index')->with('success', 'Sector actualizado correctamente.');
     }
 
     /**
@@ -61,6 +99,9 @@ class SectorController extends Controller
      */
     public function destroy(Sector $sector)
     {
-        //
+        // Eliminar el sector
+        $sector->delete();
+
+        return redirect()->route('sectors.index')->with('success', 'Sector eliminado correctamente.');
     }
 }

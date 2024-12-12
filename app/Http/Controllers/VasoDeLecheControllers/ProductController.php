@@ -35,8 +35,21 @@ class ProductController extends Controller
     {
         // Validar los datos del formulario
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[a-zA-Z0-9\s]+$/', // Solo letras, números y espacios
+            ],
+            'description' => [
+                'nullable',
+                'string',
+                'max:1000',
+                'regex:/^[a-zA-Z0-9\s.,;:"\'()-]+$/', // Permite letras, números, espacios y ciertos caracteres especiales básicos
+            ],
+        ], [
+            'name.regex' => 'El nombre solo puede contener letras, números y espacios.',
+            'description.regex' => 'La descripción contiene caracteres no permitidos.',
         ]);
 
         if ($validator->fails()) {
@@ -76,8 +89,21 @@ class ProductController extends Controller
     {
         // Validar los datos del formulario
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[a-zA-Z0-9\s]+$/', // Solo letras, números y espacios
+            ],
+            'description' => [
+                'nullable',
+                'string',
+                'max:1000',
+                'regex:/^[a-zA-Z0-9\s.,;:"\'()-]+$/', // Permite letras, números, espacios y ciertos caracteres especiales básicos
+            ],
+        ], [
+            'name.regex' => 'El nombre solo puede contener letras, números y espacios.',
+            'description.regex' => 'La descripción contiene caracteres no permitidos.',
         ]);
 
         if ($validator->fails()) {
