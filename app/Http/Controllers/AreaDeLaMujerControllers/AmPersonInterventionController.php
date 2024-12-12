@@ -4,6 +4,8 @@ namespace App\Http\Controllers\AreaDeLaMujerControllers;
 
 use App\Models\AreaDeLaMujerModels\AmPersonIntervention;
 use App\Http\Controllers\Controller;
+use App\Models\AreaDeLaMujerModels\AmPerson;
+use App\Models\AreaDeLaMujerModels\Intervention;
 use Illuminate\Http\Request;
 
 class AmPersonInterventionController extends Controller
@@ -13,7 +15,8 @@ class AmPersonInterventionController extends Controller
      */
     public function index()
     {
-        //
+        $amPersonInterventions = AmPersonIntervention::with(['amPerson', 'intervention'])->get();
+        return view('areas.AreaDeLaMujerViews.AmPersonInterventions.index', compact('amPersonInterventions'));
     }
 
     /**
@@ -21,7 +24,9 @@ class AmPersonInterventionController extends Controller
      */
     public function create()
     {
-        //
+        $amPersons = AmPerson::all();
+        $interventions = Intervention::all();
+        return view('areas.AreaDeLaMujerViews.AmPersonInterventions.create', compact('amPersons', 'interventions'));
     }
 
     /**
@@ -29,7 +34,15 @@ class AmPersonInterventionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'am_person_id' => 'required|exists:am_people,id',
+            'intervention_id' => 'required|exists:interventions,id',
+            'status' => 'required|in:Completado,En progreso,Cancelado',
+        ]);
+
+        AmPersonIntervention::create($request->all());
+
+        return redirect()->route('am_person_interventions.index')->with('success', 'Relación creada exitosamente.');
     }
 
     /**
@@ -37,7 +50,7 @@ class AmPersonInterventionController extends Controller
      */
     public function show(AmPersonIntervention $amPersonIntervention)
     {
-        //
+        return view('areas.AreaDeLaMujerViews.AmPersonInterventions.show', compact('amPersonIntervention'));
     }
 
     /**
@@ -45,7 +58,9 @@ class AmPersonInterventionController extends Controller
      */
     public function edit(AmPersonIntervention $amPersonIntervention)
     {
-        //
+        $amPersons = AmPerson::all();
+        $interventions = Intervention::all();
+        return view('areas.AreaDeLaMujerViews.AmPersonInterventions.edit', compact('amPersonIntervention', 'amPersons', 'interventions'));
     }
 
     /**
@@ -53,7 +68,15 @@ class AmPersonInterventionController extends Controller
      */
     public function update(Request $request, AmPersonIntervention $amPersonIntervention)
     {
-        //
+        $request->validate([
+            'am_person_id' => 'required|exists:am_people,id',
+            'intervention_id' => 'required|exists:interventions,id',
+            'status' => 'required|in:Completado,En progreso,Cancelado',
+        ]);
+
+        $amPersonIntervention->update($request->all());
+
+        return redirect()->route('am_person_interventions.index')->with('success', 'Relación actualizada exitosamente.');
     }
 
     /**
@@ -61,6 +84,7 @@ class AmPersonInterventionController extends Controller
      */
     public function destroy(AmPersonIntervention $amPersonIntervention)
     {
-        //
+        $amPersonIntervention->delete();
+        return redirect()->route('am_person_interventions.index')->with('success', 'Relación eliminada correctamente.');
     }
 }

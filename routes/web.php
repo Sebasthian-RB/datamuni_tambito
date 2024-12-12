@@ -12,6 +12,8 @@ use App\Http\Controllers\VasoDeLecheControllers\VlFamilyMemberProductController;
 use App\Http\Controllers\VasoDeLecheControllers\VlMinorController;
 //Controladores deL Área: ÁREA DE LA MUJER
 use App\Http\Controllers\AreaDeLaMujerControllers\AmPersonController;
+use App\Http\Controllers\AreaDeLaMujerControllers\AmPersonInterventionController;
+use App\Http\Controllers\AreaDeLaMujerControllers\InterventionController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -28,11 +30,11 @@ Route::middleware([
 
     // Rutas del controlador AmPerson dentro del grupo de autenticación
     Route::resource('am_people', AmPersonController::class);
-    Route::resource('interventions', AmPersonController::class);
+    Route::resource('interventions', InterventionController::class);
     Route::resource('violences', AmPersonController::class);
     Route::resource('programs', AmPersonController::class);
     Route::resource('events', AmPersonController::class);
-    Route::resource('am_person_interventions', AmPersonController::class);
+    Route::resource('am_person_interventions', AmPersonInterventionController::class);
     Route::resource('am_person_violences', AmPersonController::class);
     Route::resource('am_person_events', AmPersonController::class);
 });

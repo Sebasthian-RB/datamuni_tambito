@@ -13,7 +13,8 @@ class InterventionController extends Controller
      */
     public function index()
     {
-        //
+        $interventions = Intervention::all();
+        return view('areas.AreaDeLaMujerViews.Interventions.index', compact('interventions'));
     }
 
     /**
@@ -21,7 +22,7 @@ class InterventionController extends Controller
      */
     public function create()
     {
-        //
+        return view('areas.AreaDeLaMujerViews.Interventions.create');
     }
 
     /**
@@ -29,7 +30,15 @@ class InterventionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'appointment' => 'required|string',
+            'derivation' => 'nullable|string',
+            'appointment_date' => 'required|date',
+        ]);
+
+        Intervention::create($validated);
+
+        return redirect()->route('interventions.index')->with('success', 'Intervención creada correctamente.');
     }
 
     /**
@@ -37,7 +46,7 @@ class InterventionController extends Controller
      */
     public function show(Intervention $intervention)
     {
-        //
+        return view('areas.AreaDeLaMujerViews.Interventions.show', compact('intervention'));
     }
 
     /**
@@ -45,7 +54,7 @@ class InterventionController extends Controller
      */
     public function edit(Intervention $intervention)
     {
-        //
+        return view('areas.AreaDeLaMujerViews.Interventions.edit', compact('intervention'));
     }
 
     /**
@@ -53,7 +62,15 @@ class InterventionController extends Controller
      */
     public function update(Request $request, Intervention $intervention)
     {
-        //
+        $validated = $request->validate([
+            'appointment' => 'required|string',
+            'derivation' => 'nullable|string',
+            'appointment_date' => 'required|date',
+        ]);
+
+        $intervention->update($validated);
+
+        return redirect()->route('interventions.index')->with('success', 'Intervención actualizada correctamente.');
     }
 
     /**
@@ -61,6 +78,7 @@ class InterventionController extends Controller
      */
     public function destroy(Intervention $intervention)
     {
-        //
+        $intervention->delete();
+        return redirect()->route('interventions.index')->with('success', 'Intervención eliminada correctamente.');
     }
 }
