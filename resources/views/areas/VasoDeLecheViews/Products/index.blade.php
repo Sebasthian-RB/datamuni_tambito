@@ -1,14 +1,15 @@
 @extends('adminlte::page')
 
-@section('title', 'Listado de Productos')
+@section('title', 'Productos')
 
 @section('content_header')
-    <h1>Listado de Productos</h1>
+    <h1>Lista de Productos</h1>
 @stop
 
 @section('content')
 <div class="container">
-    <a href="{{ route('products.create') }}" class="btn btn-primary mb-3">Agregar Producto</a>
+    <a href="{{ route('products.create') }}" class="btn btn-info mb-3">Agregar Producto</a>
+    <a href="{{ route('sectors.create') }}" class="btn btn-danger mb-3">Volver</a>
 
     @if(session('success'))
         <div class="alert alert-success">
@@ -22,7 +23,7 @@
         </div>
         <div class="card-body">
             <table class="table table-bordered table-striped">
-                <thead>
+                <thead class="bg-dark text-white">
                     <tr>
                         <th>ID</th>
                         <th>Nombre</th>
@@ -35,8 +36,13 @@
                         <tr>
                             <td>{{ $product->id }}</td>
                             <td>{{ $product->name }}</td>
-                            <td>{{ $product->description }}</td>
                             <td>
+                                @if($product->description)
+                                    {{ $product->description }}
+                                @else
+                                    <span class="text-secondary"> (Sin descripción)</span>
+                                @endif
+                            </td>                            <td>
                                 <a href="{{ route('products.show', $product->id) }}" class="btn btn-info btn-sm">Ver</a>
                                 <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning btn-sm">Editar</a>
                                 <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline-block;">

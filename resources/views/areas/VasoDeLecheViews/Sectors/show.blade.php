@@ -9,14 +9,20 @@
 @section('content')
 <div class="container">
     <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Información del Sector</h3>
+        <div class="card-header bg-success p-0 d-flex justify-content-center align-items-center" style="height: 60px;">
+            <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="img-fluid" style="height: 80%; width: auto;">
         </div>
         <div class="card-body">
             <p><strong>ID:</strong> {{ $sector->id }}</p>
             <p><strong>Nombre:</strong> {{ $sector->name }}</p>
-            <p><strong>Descripción:</strong> {{ $sector->description ?? 'Sin descripción' }}</p>
             <p><strong>Responsable:</strong> {{ $sector->responsible_person }}</p>
+            <p><strong>Descripción:</strong> 
+                @if($sector->description)
+                    {{ $sector->description }}
+                @else
+                    <span class="text-secondary"> (Sin descripción)</span>
+                @endif
+            </p>             
         </div>
         <div class="card-footer">
             <a href="{{ route('sectors.index') }}" class="btn btn-secondary">Volver</a>

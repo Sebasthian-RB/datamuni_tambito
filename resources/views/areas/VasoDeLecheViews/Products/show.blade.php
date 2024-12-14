@@ -1,24 +1,31 @@
 @extends('adminlte::page')
 
-@section('title', 'Listado de Productos')
+@section('title', 'Detalle del Producto')
 
 @section('content_header')
-    <h1>Listado de Productos</h1>
+    <h1>Detalle del Producto</h1>
 @stop
 
 @section('content')
 <div class="container">
-    <h1>Detalles del Producto</h1>
-
     <div class="card">
-        <div class="card-header">
-            <strong>{{ $product->name }}</strong>
+        <div class="card-header bg-success p-0 d-flex justify-content-center align-items-center" style="height: 60px;">
+            <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="img-fluid" style="height: 80%; width: auto;">
         </div>
         <div class="card-body">
-            <p><strong>Descripción:</strong> {{ $product->description }}</p>
+            <p><strong>ID:</strong> {{ $product->id }}</p>
+            <p><strong>Nombre:</strong> {{ $product->name }}</p>
+            <p><strong>Descripción:</strong> 
+                @if($product->description)
+                    {{ $product->description }}
+                @else
+                    <span class="text-secondary"> (Sin descripción)</span>
+                @endif
+            </p>    
+        </div>
+        <div class="card-footer">
+            <a href="{{ route('products.index') }}" class="btn btn-secondary">Volver</a>
         </div>
     </div>
-
-    <a href="{{ route('products.index') }}" class="btn btn-secondary mt-3">Volver a la Lista</a>
 </div>
 @stop
