@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('committee_id');     // Clave foránea hacia 'committees'
             $table->string('vl_family_member_id');          // Clave foránea hacia 'vaso_leche_family_members'
             $table->date('change_date');                    // Fecha de cambio
-            $table->string('description', 255)->nullable(); // Descripción, puede ser nula
+            $table->string('description')->nullable(); // Descripción, puede ser nula
             $table->boolean('status')->default(1);          // Estado, por defecto activo (1)
             $table->timestamps();                           // Timestamps (created_at, updated_at)
             

@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('vl_family_members', function (Blueprint $table) {
             $table->string('id')->primary()->unique();  // Número de documento de identidad como clave primaria
-            $table->string('identity_document');        // Columna para el tipo documento de identidad, debe ser único
-            $table->string('given_name');               // Columna para los nombres
-            $table->string('paternal_last_name');       // Columna para el apellido paterno
-            $table->string('maternal_last_name');       // Columna para el apellido materno
+            $table->string('identity_document', 80);        // Columna para el tipo documento de identidad, debe ser único
+            $table->string('given_name', 80);               // Columna para los nombres
+            $table->string('paternal_last_name', 50);       // Columna para el apellido paterno
+            $table->string('maternal_last_name', 50);       // Columna para el apellido materno
             $table->timestamps();                       // Columnas created_at y updated_at
         });
     }

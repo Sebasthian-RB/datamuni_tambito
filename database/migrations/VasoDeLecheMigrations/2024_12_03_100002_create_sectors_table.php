@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('sectors', function (Blueprint $table) {
             $table->id();
-            $table->string('name');                     // Nombre del sector
+            $table->string('name', 30);                     // Nombre del sector
             $table->text('description')->nullable();    // Descripción del sector
             $table->string('responsible_person');       // Persona responsable del sector
             $table->timestamps();                       // Columnas created_at y updated_at

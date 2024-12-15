@@ -30,6 +30,11 @@ class VlFamilyMember extends Model
         'maternal_last_name' //Apellido Materno
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
     // Definir los tipos de datos de las columnas para asegurarse de que Laravel maneje correctamente estos campos cuando interactúas con ellos.
     protected $casts = [
         'id' => 'string',

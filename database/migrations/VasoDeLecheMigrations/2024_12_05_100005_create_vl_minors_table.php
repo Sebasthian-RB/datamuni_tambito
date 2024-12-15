@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('vl_minors', function (Blueprint $table) {
             $table->string('id')->primary();                                                                            // Número de documento de identidad como clave primaria
-            $table->string('identity_document');                                                                        // Tipo de documento de identificación
-            $table->string('given_name');                                                                               // Nombre del menor
-            $table->string('paternal_last_name');                                                                       // Apellido Paterno del menor
-            $table->string('maternal_last_name');                                                                       // Apellido Materno del menor
+            $table->string('identity_document', 80);                                                                        // Tipo de documento de identificación
+            $table->string('given_name', 80);                                                                               // Nombre del menor
+            $table->string('paternal_last_name', 50);                                                                       // Apellido Paterno del menor
+            $table->string('maternal_last_name', 50);                                                                       // Apellido Materno del menor
             $table->date('birth_date');                                                                                 // Fecha de Nacimiento del menor
-            $table->string('sex_type');                                                                                 // Sexo del menor
+            $table->boolean('sex_type');                                                                                 // Sexo del menor | 0 para femenino, 1 para masculino
             $table->date('registration_date');                                                                          // Fecha de Empadronamiento del menor
             $table->date('withdrawal_date');                                                                            // Fecha de Retiro del menor
             $table->string('address');                                                                                  // Domicilio del menor (Dirección)
