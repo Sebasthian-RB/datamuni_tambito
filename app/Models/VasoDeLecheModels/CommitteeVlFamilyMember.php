@@ -10,24 +10,35 @@ class CommitteeVLFamilyMember extends Model
     use HasFactory;
 
     /**
-     * The attributes that are mass assignable.
+     * Los atributos que son asignables masivamente.
      *
      * @var array
-    */
-
-    // Campos que son asignables masivamente
+     */
     protected $fillable = [
-        'committee_id', // ID del comité
-        'vl_family_member_id',// ID del familiar
-        'change_date', // Fecha de cambio del sector
-        'description', // Descripción del cambio de sector
-        'status', // Estado del cambio de sector (0 - Inactivo | 1 - Activo)
+        'committee_id',        // ID del comité al que está asignado el miembro de la familia
+        'vl_family_member_id', // ID del familiar de vaso de leche
+        'change_date',         // Fecha en la que se realiza el cambio de sector
+        'description',         // Descripción del cambio de sector (opcional)
+        'status',              // Estado del cambio de sector (0 - Inactivo | 1 - Activo)
     ];
 
-    // Definir las relaciones
+    /**
+     * Casts: Conversión de datos a tipos nativos de PHP.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'committee_id' => 'integer',           // Convierte 'committee_id' a tipo entero
+        'vl_family_member_id' => 'string',     // Convierte 'vl_family_member_id' a tipo string
+        'change_date' => 'date',               // Convierte 'change_date' a tipo date
+        'status' => 'boolean',                 // Convierte 'status' a tipo booleano (0 o 1)
+    ];
 
     /**
-     * Relación con el modelo Committee (comités)
+     * Relación con el modelo Committee.
+     * Un miembro de la familia de vaso de leche está asignado a un comité.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function committee()
     {
@@ -35,13 +46,20 @@ class CommitteeVLFamilyMember extends Model
     }
 
     /**
-     * Relación con el modelo VLFamiliesMember (miembros de familia de vaso de leche)
+     * Relación con el modelo VlFamilyMember.
+     * Un registro en CommitteeVLFamilyMember pertenece a un miembro de familia de vaso de leche.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function vlFamilyMember()
     {
         return $this->belongsTo(VlFamilyMember::class, 'vl_family_member_id');
     }
 
-    // Actualizar automáticamente con las fechas correspondientes cada vez que se cree o actualice el registro 
+    /**
+     * Activar el manejo automático de timestamps.
+     *
+     * @var bool
+     */
     public $timestamps = true;
 }

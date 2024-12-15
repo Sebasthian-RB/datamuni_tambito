@@ -10,18 +10,41 @@ class Sector extends Model
     use HasFactory;
 
     /**
-     * The attributes that are mass assignable.
+     * Atributos asignables masivamente.
      *
      * @var array
-    */
-
-    // Campos que son asignables masivamente
+     */
     protected $fillable = [
-        'name', // Nombre del sector
-        'description', // Descripción del lugar
+        'name',             // Nombre del sector
+        'description',      // Descripción del lugar
         'responsible_person', // Persona responsable del sector
     ];
 
-    // Actualizar automáticamente con las fechas correspondientes cada vez que se cree o actualice el registro 
+    /**
+     * Activar el manejo automático de timestamps.
+     *
+     * @var bool
+     */
     public $timestamps = true;
+
+    /**
+     * Accesor: Obtener el nombre completo de la persona responsable en mayúsculas.
+     *
+     * @return string
+     */
+    public function getResponsiblePersonFullNameAttribute()
+    {
+        return strtoupper($this->responsible_person);
+    }
+
+    /**
+     * Mutador: Establecer el nombre completo de la persona responsable de manera formateada.
+     *
+     * @param string $value
+     */
+    public function setResponsiblePersonAttribute($value)
+    {
+        // Removes extra spaces and capitalizes each word
+        $this->attributes['responsible_person'] = ucwords(strtolower(trim($value)));
+    }
 }

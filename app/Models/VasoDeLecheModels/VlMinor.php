@@ -10,18 +10,24 @@ class VlMinor extends Model
     use HasFactory;
 
     /**
-     * The attributes that are mass assignable.
+     * La clave primaria de la tabla.
      *
-     * @var array
-    */
-
-    // Definir la clave primaria de la tabla
+     * @var string
+     */
     protected $primaryKey = 'id';
 
-    // Deshabilitar la autoincrementación, ya que estamos usando una cadena como clave primaria
+    /**
+     * Deshabilitar la autoincrementación, ya que se usa una cadena como clave primaria.
+     *
+     * @var bool
+     */
     public $incrementing = false;
 
-    // Definir los campos que pueden ser asignados de forma masiva (mass assignable)
+    /**
+     * Los atributos que se pueden asignar masivamente.
+     *
+     * @var array
+     */
     protected $fillable = [
         'id', // Id del menor 
         'identity_document', // Tipo de documento
@@ -40,15 +46,11 @@ class VlMinor extends Model
         'vl_family_member_id', // Id del familiar
     ];
 
-    // Definir las relaciones con otros modelos
-
-    // Relación con el modelo 'VlFamilyMember' (pertenece a un miembro de familia)
-    public function vlFamilyMember()
-    {
-        return $this->belongsTo(VlFamilyMember::class, 'vl_family_member_id');
-    }
-
-    // Definir los tipos de datos de las columnas (opcional)
+    /**
+     * Los atributos que deben ser convertidos a tipos nativos.
+     *
+     * @var array
+     */
     protected $casts = [
         'id' => 'string',
         'identity_document' => 'string',
@@ -56,7 +58,7 @@ class VlMinor extends Model
         'paternal_last_name' => 'string',
         'maternal_last_name' => 'string',
         'birth_date' => 'date',
-        'sex_type' => 'string',
+        'sex_type' => 'boolean',
         'registration_date' => 'date',
         'withdrawal_date' => 'date',
         'address' => 'string',
@@ -67,6 +69,78 @@ class VlMinor extends Model
         'vl_family_member_id' => 'string',
     ];
 
-    // Actualizar automáticamente con las fechas correspondientes cada vez que se cree o actualice el registro 
+    /**
+     * Relación con el modelo 'VlFamilyMember' (pertenece a un miembro de familia).
+     */
+    public function vlFamilyMember()
+    {
+        return $this->belongsTo(VlFamilyMember::class, 'vl_family_member_id');
+    }
+
+    /**
+     * Mutador para asegurar que el nombre siempre se almacene con la primera letra en mayúscula.
+     *
+     * @param string $value
+     */
+    public function setGivenNameAttribute($value)
+    {
+        $this->attributes['given_name'] = ucfirst(strtolower($value));
+    }
+
+    /**
+     * Accesor para obtener el nombre con la primera letra de cada palabra en mayúscula.
+     *
+     * @return string
+     */
+    public function getGivenNameAttribute()
+    {
+        return ucwords($this->attributes['given_name']);
+    }
+
+    /**
+     * Mutador para asegurar que el apellido paterno siempre se almacene en mayúsculas.
+     *
+     * @param string $value
+     */
+    public function setPaternalLastNameAttribute($value)
+    {
+        $this->attributes['paternal_last_name'] = strtoupper($value);
+    }
+
+    /**
+     * Accesor para obtener el apellido paterno en mayúsculas.
+     *
+     * @return string
+     */
+    public function getPaternalLastNameAttribute()
+    {
+        return strtoupper($this->attributes['paternal_last_name']);
+    }
+
+    /**
+     * Mutador para asegurar que el apellido materno siempre se almacene en mayúsculas.
+     *
+     * @param string $value
+     */
+    public function setMaternalLastNameAttribute($value)
+    {
+        $this->attributes['maternal_last_name'] = strtoupper($value);
+    }
+
+    /**
+     * Accesor para obtener el apellido materno en mayúsculas.
+     *
+     * @return string
+     */
+    public function getMaternalLastNameAttribute()
+    {
+        return strtoupper($this->attributes['maternal_last_name']);
+    }
+
+    /**
+     * Indica si el modelo debe manejar las marcas de tiempo.
+     *
+     * @var bool
+     */
     public $timestamps = true;
 }

@@ -10,32 +10,37 @@ class VlFamilyMember extends Model
     use HasFactory;
 
     /**
-     * The attributes that are mass assignable.
+     * La clave primaria de la tabla.
      *
-     * @var array
-    */
-
-    // Definir la clave primaria de la tabla
+     * @var string
+     */
     protected $primaryKey = 'id';
 
-    // Deshabilitar la autoincrementación, ya que estamos usando una cadena como clave primaria
+    /**
+     * Deshabilitar la autoincrementación de la clave primaria.
+     *
+     * @var bool
+     */
     public $incrementing = false;
 
-    // Campos que son asignables masivamente
-    protected $fillable = [
-        'id', // Número de documento de identidad como clave primaria
-        'identity_document', // Tipo documento de identidad
-        'given_name', // Nombres
-        'paternal_last_name', //Apellido Paterno
-        'maternal_last_name' //Apellido Materno
-    ];
-
     /**
-     * The attributes that should be cast.
+     * Atributos asignables masivamente.
      *
      * @var array
      */
-    // Definir los tipos de datos de las columnas para asegurarse de que Laravel maneje correctamente estos campos cuando interactúas con ellos.
+    protected $fillable = [
+        'id',                    // Número de documento de identidad como clave primaria
+        'identity_document',     // Tipo de documento de identidad
+        'given_name',            // Nombres
+        'paternal_last_name',    // Apellido paterno
+        'maternal_last_name',    // Apellido materno
+    ];
+
+    /**
+     * Atributos que deben ser convertidos a tipos nativos.
+     *
+     * @var array
+     */
     protected $casts = [
         'id' => 'string',
         'identity_document' => 'string',
@@ -44,6 +49,73 @@ class VlFamilyMember extends Model
         'maternal_last_name' => 'string',
     ];
 
-    // Actualizar automáticamente con las fechas correspondientes cada vez que se cree o actualice el registro 
+    /**
+     * Activar el manejo automático de timestamps.
+     *
+     * @var bool
+     */
     public $timestamps = true;
+
+    /**
+     * Mutador: Formatear y almacenar el nombre del miembro en mayúscula la primera letra de cada palabra.
+     *
+     * @param string $value
+     */
+    public function setGivenNameAttribute($value)
+    {
+        // Capitalizar la primera letra de cada palabra y eliminar espacios en exceso
+        $this->attributes['given_name'] = ucwords(strtolower(trim($value)));
+    }
+
+    /**
+     * Accesor: Obtener el nombre del miembro con la primera letra de cada palabra en mayúscula.
+     *
+     * @return string
+     */
+    public function getGivenNameAttribute()
+    {
+        return ucwords($this->attributes['given_name']);
+    }
+
+    /**
+     * Mutador: Formatear y almacenar el apellido paterno.
+     *
+     * @param string $value
+     */
+    public function setPaternalLastNameAttribute($value)
+    {
+        // Capitalizar la primera letra de cada palabra y eliminar espacios en exceso
+        $this->attributes['paternal_last_name'] = ucwords(strtolower(trim($value)));
+    }
+
+    /**
+     * Accesor: Obtener el apellido paterno con la primera letra de cada palabra en mayúscula.
+     *
+     * @return string
+     */
+    public function getPaternalLastNameAttribute()
+    {
+        return ucwords($this->attributes['paternal_last_name']);
+    }
+
+    /**
+     * Mutador: Formatear y almacenar el apellido materno.
+     *
+     * @param string $value
+     */
+    public function setMaternalLastNameAttribute($value)
+    {
+        // Capitalizar la primera letra de cada palabra y eliminar espacios en exceso
+        $this->attributes['maternal_last_name'] = ucwords(strtolower(trim($value)));
+    }
+
+    /**
+     * Accesor: Obtener el apellido materno con la primera letra de cada palabra en mayúscula.
+     *
+     * @return string
+     */
+    public function getMaternalLastNameAttribute()
+    {
+        return ucwords($this->attributes['maternal_last_name']);
+    }
 }

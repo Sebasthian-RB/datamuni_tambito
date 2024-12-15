@@ -10,40 +10,53 @@ class VlFamilyMemberProduct extends Model
     use HasFactory;
 
     /**
-     * The attributes that are mass assignable.
+     * Los atributos que son asignables masivamente.
      *
      * @var array
-    */
-
-    // Definir la clave primaria de la tabla
-    protected $primaryKey = 'id';
-
-    // Campos que son asignables masivamente
+     */
     protected $fillable = [
-        'vl_family_member_id', // Id del familiar
-        'product_id', // Id del producto
-        'quantity' // Cantidad
+        'vl_family_member_id', // Id del miembro de la familia
+        'product_id',          // Id del producto
+        'quantity',            // Cantidad del producto
     ];
 
-    // Definir la relación con el modelo 'VlFamilyMember' (uno a muchos inverso)
+    /**
+     * Casts: Conversión de datos a tipos nativos de PHP.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'vl_family_member_id' => 'string',  // Convierte 'vl_family_member_id' a tipo string
+        'product_id' => 'integer',          // Convierte 'product_id' a tipo entero
+        'quantity' => 'integer',            // Convierte 'quantity' a tipo entero
+    ];
+
+    /**
+     * Relación con el modelo 'VlFamilyMember'.
+     * Un producto pertenece a un miembro de la familia.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function vlFamilyMember()
     {
         return $this->belongsTo(VlFamilyMember::class, 'vl_family_member_id');
     }
 
-    // Definir la relación con el modelo 'Product' (uno a muchos inverso)
+    /**
+     * Relación con el modelo 'Product'.
+     * Un producto pertenece a un registro de producto.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
 
-    // Definir los tipos de datos de las columnas para asegurarse de que Laravel maneje correctamente estos campos cuando interactúas con ellos.
-    protected $casts = [
-        'vl_family_member_id' => 'string',
-        'product_id' => 'integer',
-        'quantity' => 'integer'
-    ];
-
-    // Actualizar automáticamente con las fechas correspondientes cada vez que se cree o actualice el registro
+    /**
+     * Activar el manejo automático de timestamps.
+     *
+     * @var bool
+     */
     public $timestamps = true;
 }
