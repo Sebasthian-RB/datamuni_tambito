@@ -2,106 +2,100 @@
 
 namespace App\Http\Controllers\VasoDeLecheControllers;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\VasoDeLecheModels\Sector;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\VasoDeLecheRequests\Sectors\IndexSectorRequest;
+use App\Http\Requests\VasoDeLecheRequests\Sectors\ShowSectorRequest;
+use App\Http\Requests\VasoDeLecheRequests\Sectors\CreateSectorRequest;
+use App\Http\Requests\VasoDeLecheRequests\Sectors\StoreSectorRequest;
+use App\Http\Requests\VasoDeLecheRequests\Sectors\EditSectorRequest;
+use App\Http\Requests\VasoDeLecheRequests\Sectors\UpdateSectorRequest;
+use App\Http\Requests\VasoDeLecheRequests\Sectors\DestroySectorRequest;
 
 class SectorController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Muestra una lista de todos los sectores.
+     *
+     * @param IndexSectorRequest $request
+     * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(IndexSectorRequest $request)
     {
-        // Recuperar todos los sectores
         $sectors = Sector::all();
         return view('areas.VasoDeLecheViews.Sectors.index', compact('sectors'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Muestra el formulario para crear un nuevo sector.
+     *
+     * @param CreateSectorRequest $request
+     * @return \Illuminate\View\View
      */
-    public function create()
+    public function create(CreateSectorRequest $request)
     {
-        // Mostrar formulario de creación
         return view('areas.VasoDeLecheViews.Sectors.create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Almacena un sector recién creado en la base de datos.
+     *
+     * @param StoreSectorRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreSectorRequest $request)
     {
-        // Validar los datos del formulario
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'responsible_person' => 'required|string|max:255',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->route('sectors.create')
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        // Crear un nuevo sector
-        Sector::create($request->only(['name', 'description', 'responsible_person']));
-
+        Sector::create($request->validated());
         return redirect()->route('sectors.index')->with('success', 'Sector creado correctamente.');
     }
 
     /**
-     * Display the specified resource.
+     * Muestra los detalles de un sector específico.
+     *
+     * @param ShowSectorRequest $request
+     * @param Sector $sector
+     * @return \Illuminate\View\View
      */
-    public function show(Sector $sector)
+    public function show(ShowSectorRequest $request, Sector $sector)
     {
-        // Mostrar detalles de un sector
         return view('areas.VasoDeLecheViews.Sectors.show', compact('sector'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Muestra el formulario para editar un sector existente.
+     *
+     * @param EditSectorRequest $request
+     * @param Sector $sector
+     * @return \Illuminate\View\View
      */
-    public function edit(Sector $sector)
+    public function edit(EditSectorRequest $request, Sector $sector)
     {
-        // Mostrar formulario de edición
         return view('areas.VasoDeLecheViews.Sectors.edit', compact('sector'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza un sector existente en la base de datos.
+     *
+     * @param UpdateSectorRequest $request
+     * @param Sector $sector
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Sector $sector)
+    public function update(UpdateSectorRequest $request, Sector $sector)
     {
-        // Validar los datos del formulario
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'responsible_person' => 'required|string|max:255',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->route('sectors.edit', $sector->id)
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        // Actualizar el sector
-        $sector->update($request->only(['name', 'description', 'responsible_person']));
-
+        $sector->update($request->validated());
         return redirect()->route('sectors.index')->with('success', 'Sector actualizado correctamente.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina un sector de la base de datos.
+     *
+     * @param DestroySectorRequest $request
+     * @param Sector $sector
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Sector $sector)
+    public function destroy(DestroySectorRequest $request, Sector $sector)
     {
-        // Eliminar el sector
         $sector->delete();
-
         return redirect()->route('sectors.index')->with('success', 'Sector eliminado correctamente.');
     }
 }

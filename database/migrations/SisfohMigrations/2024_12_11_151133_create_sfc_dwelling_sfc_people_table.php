@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('sfc_dwelling_sfc_people', function (Blueprint $table) {
             $table->id();            
             $table->string('sfh_person_id', 36); // Relación con sfh_people
-            $table->unsignedBigInteger('sfh_dwelling_id');
             $table->enum('status', ['Activo', 'Inactivo']); // Estado de la visita
             $table->date('update_date'); // Fecha de actualización
 

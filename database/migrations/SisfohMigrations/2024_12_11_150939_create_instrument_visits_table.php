@@ -13,8 +13,6 @@ return new class extends Migration
     {
         Schema::create('instrument_visits', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('instrument_id');
-            $table->unsignedBigInteger('visit_id');
             $table->date('application_date'); // Fecha de aplicación
             $table->text('descriptions')->nullable(); // Descripciones adicionales
 
