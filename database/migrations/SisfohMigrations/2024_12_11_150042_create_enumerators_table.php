@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('enumerators', function (Blueprint $table) {
-            $table->id();
-            $table->string('given_name', 50); // Nombres completos 
+            $table->string('id', 36)->primary();
+            $table->enum('identity_document', ['DNI', 'Pasaporte', 'Carnet', 'Cedula']); // Solo estas opciones - tipos de documentos
+            $table->string('given_name', 80); // Nombres completos 
             $table->string('paternal_last_name', 50); // Apellido paterno
             $table->string('maternal_last_name', 50); // Apellido materno
             $table->string('phone_number', 15)->nullable(); // Número de teléfono (opcional)

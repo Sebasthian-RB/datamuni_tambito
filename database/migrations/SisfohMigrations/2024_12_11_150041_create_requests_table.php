@@ -12,10 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('requests', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->date('request_date'); // Fecha de la solicitud
-            $table->text('description'); // Descripción de la solicitud
+            $table->text('description')->nullable(); // Descripción de la solicitud
             $table->string('sfh_person_id', 36); // Relación con sfh_people
+
+            // Relacion de las tablas foraneas
             $table->foreign('sfh_person_id')->references('id')->on('sfh_people')->cascadeOnDelete(); // Relación con sfh_people
             $table->timestamps();
         });

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('sfh_dwellings', function (Blueprint $table) {
             $table->id(); 
-            $table->string('street_address', 255); // Dirección de la vivienda
+            $table->string('street_address'); // Dirección de la vivienda
             $table->string('reference', 255)->nullable(); // Referencia opcional
             $table->string('neighborhood', 100)->nullable(); // Barrio opcional
             $table->string('district', 100); // Distrito obligatorio

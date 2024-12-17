@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('instrument_visits', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('instrument_id')->constrained('instruments')->cascadeOnDelete(); // Elimina el registro si se elimina el instrumento
-            $table->foreignId('visit_id')->constrained('visits')->cascadeOnDelete(); // Elimina el registro si se elimina la visita
+            $table->unsignedBigInteger('instrument_id');
+            $table->unsignedBigInteger('visit_id');
             $table->date('application_date'); // Fecha de aplicación
             $table->text('descriptions')->nullable(); // Descripciones adicionales
+
+            $table->foreignId('instrument_id')->constrained('instruments')->cascadeOnDelete(); // Elimina el registro si se elimina el instrumento
+            $table->foreignId('visit_id')->constrained('visits')->cascadeOnDelete(); // Elimina el registro si se elimina la visita
             $table->timestamps();
         });
     }

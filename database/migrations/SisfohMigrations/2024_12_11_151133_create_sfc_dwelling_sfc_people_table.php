@@ -12,12 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('sfc_dwelling_sfc_people', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->foreignId('sfh_dwelling_id')->constrained('sfh_dwellings')->cascadeOnDelete(); // Elimina el registro si se elimina la vivienda
+            $table->id();            
             $table->string('sfh_person_id', 36); // Relación con sfh_people
-            $table->foreign('sfh_person_id')->references('id')->on('sfh_people')->cascadeOnDelete(); // Relación con sfh_people
-            $table->string('status', 50); // Estado de la relación
+            $table->unsignedBigInteger('sfh_dwelling_id');
+            $table->enum('status', ['Activo', 'Inactivo']); // Estado de la visita
             $table->date('update_date'); // Fecha de actualización
+
+            // Relaciones de claves foráneas
+            $table->foreign('sfh_person_id')->references('id')->on('sfh_people')->cascadeOnDelete(); // Relación con sfh_people
+            $table->foreignId('sfh_dwelling_id')->constrained('sfh_dwellings')->cascadeOnDelete(); // Elimina el registro si se elimina la vivienda
+
             $table->timestamps();
         });
     }
