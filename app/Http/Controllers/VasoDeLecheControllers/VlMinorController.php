@@ -2,65 +2,106 @@
 
 namespace App\Http\Controllers\VasoDeLecheControllers;
 
-use App\Models\VasoDeLecheModels\VlMinor;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\VasoDeLecheModels\VlMinor;
+use App\Http\Requests\VasoDeLecheRequests\VlMinors\IndexVlMinorRequest;
+use App\Http\Requests\VasoDeLecheRequests\VlMinors\ShowVlMinorRequest;
+use App\Http\Requests\VasoDeLecheRequests\VlMinors\CreateVlMinorRequest;
+use App\Http\Requests\VasoDeLecheRequests\VlMinors\StoreVlMinorRequest;
+use App\Http\Requests\VasoDeLecheRequests\VlMinors\EditVlMinorRequest;
+use App\Http\Requests\VasoDeLecheRequests\VlMinors\UpdateVlMinorRequest;
+use App\Http\Requests\VasoDeLecheRequests\VlMinors\DestroyVlMinorRequest;
 
 class VlMinorController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Muestra una lista de todos los menores.
+     *
+     * @param IndexVlMinorRequest $request
+     * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(IndexVlMinorRequest $request)
     {
-        //
+        $vlMinors = VlMinor::all();
+        return view('areas.VasoDeLecheViews.Minors.index', compact('vlMinors'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Muestra el formulario para crear un nuevo menor.
+     *
+     * @param CreateVlMinorRequest $request
+     * @return \Illuminate\View\View
      */
-    public function create()
+    public function create(CreateVlMinorRequest $request)
     {
-        //
+        return view('areas.VasoDeLecheViews.Minors.create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Almacena un menor recién creado en la base de datos.
+     *
+     * @param StoreVlMinorRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreVlMinorRequest $request)
     {
-        //
+        // Validación de datos y creación del registro
+        VlMinor::create($request->validated());
+
+        // Redirección con mensaje de éxito
+        return redirect()->route('vl-minors.index')->with('success', 'Menor registrado correctamente.');
     }
 
     /**
-     * Display the specified resource.
+     * Muestra los detalles de un menor específico.
+     *
+     * @param ShowVlMinorRequest $request
+     * @param VlMinor $vlMinor
+     * @return \Illuminate\View\View
      */
-    public function show(VlMinor $vlMinor)
+    public function show(ShowVlMinorRequest $request, VlMinor $vlMinor)
     {
-        //
+        return view('areas.VasoDeLecheViews.Minors.show', compact('vlMinor'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Muestra el formulario para editar un menor existente.
+     *
+     * @param EditVlMinorRequest $request
+     * @param VlMinor $vlMinor
+     * @return \Illuminate\View\View
      */
-    public function edit(VlMinor $vlMinor)
+    public function edit(EditVlMinorRequest $request, VlMinor $vlMinor)
     {
-        //
+        return view('areas.VasoDeLecheViews.Minors.edit', compact('vlMinor'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza un menor existente en la base de datos.
+     *
+     * @param UpdateVlMinorRequest $request
+     * @param VlMinor $vlMinor
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, VlMinor $vlMinor)
+    public function update(UpdateVlMinorRequest $request, VlMinor $vlMinor)
     {
-        //
+        // Validación de datos y actualización del registro
+        $vlMinor->update($request->validated());
+
+        // Redirección con mensaje de éxito
+        return redirect()->route('vl-minors.index')->with('success', 'Datos del menor actualizados correctamente.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina un menor de la base de datos.
+     *
+     * @param DestroyVlMinorRequest $request
+     * @param VlMinor $vlMinor
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(VlMinor $vlMinor)
+    public function destroy(DestroyVlMinorRequest $request, VlMinor $vlMinor)
     {
-        //
+        $vlMinor->delete();
+        return redirect()->route('vl-minors.index')->with('success', 'Menor eliminado correctamente.');
     }
 }

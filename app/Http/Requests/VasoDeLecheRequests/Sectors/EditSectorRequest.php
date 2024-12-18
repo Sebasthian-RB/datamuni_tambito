@@ -37,7 +37,7 @@ class EditSectorRequest extends FormRequest
     public function messages()
     {
         return [
-            // Mensajes para eliminar un producto
+            // Mensajes
         ];
     }
 }

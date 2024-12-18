@@ -2,65 +2,100 @@
 
 namespace App\Http\Controllers\VasoDeLecheControllers;
 
-use App\Models\VasoDeLecheModels\VlFamilyMember;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\VasoDeLecheModels\VlFamilyMember;
+use App\Http\Requests\VasoDeLecheRequests\VlFamilyMembers\IndexVlFamilyMemberRequest;
+use App\Http\Requests\VasoDeLecheRequests\VlFamilyMembers\ShowVlFamilyMemberRequest;
+use App\Http\Requests\VasoDeLecheRequests\VlFamilyMembers\CreateVlFamilyMemberRequest;
+use App\Http\Requests\VasoDeLecheRequests\VlFamilyMembers\StoreVlFamilyMemberRequest;
+use App\Http\Requests\VasoDeLecheRequests\VlFamilyMembers\EditVlFamilyMemberRequest;
+use App\Http\Requests\VasoDeLecheRequests\VlFamilyMembers\UpdateVlFamilyMemberRequest;
+use App\Http\Requests\VasoDeLecheRequests\VlFamilyMembers\DestroyVlFamilyMemberRequest;
 
 class VlFamilyMemberController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Muestra una lista de todos los miembros familiares.
+     *
+     * @param IndexVlFamilyMemberRequest $request
+     * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(IndexVlFamilyMemberRequest $request)
     {
-        //
+        $familyMembers = VlFamilyMember::all();
+        return view('areas.VasoDeLecheViews.FamilyMembers.index', compact('familyMembers'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Muestra el formulario para crear un nuevo miembro familiar.
+     *
+     * @param CreateVlFamilyMemberRequest $request
+     * @return \Illuminate\View\View
      */
-    public function create()
+    public function create(CreateVlFamilyMemberRequest $request)
     {
-        //
+        return view('areas.VasoDeLecheViews.FamilyMembers.create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Almacena un miembro familiar recién creado en la base de datos.
+     *
+     * @param StoreVlFamilyMemberRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreVlFamilyMemberRequest $request)
     {
-        //
+        VlFamilyMember::create($request->validated());
+        return redirect()->route('family_members.index')->with('success', 'Miembro familiar creado correctamente.');
     }
 
     /**
-     * Display the specified resource.
+     * Muestra los detalles de un miembro familiar específico.
+     *
+     * @param ShowVlFamilyMemberRequest $request
+     * @param VlFamilyMember $familyMember
+     * @return \Illuminate\View\View
      */
-    public function show(VlFamilyMember $vlFamilyMember)
+    public function show(ShowVlFamilyMemberRequest $request, VlFamilyMember $familyMember)
     {
-        //
+        return view('areas.VasoDeLecheViews.FamilyMembers.show', compact('familyMember'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Muestra el formulario para editar un miembro familiar existente.
+     *
+     * @param EditVlFamilyMemberRequest $request
+     * @param VlFamilyMember $familyMember
+     * @return \Illuminate\View\View
      */
-    public function edit(VlFamilyMember $vlFamilyMember)
+    public function edit(EditVlFamilyMemberRequest $request, VlFamilyMember $familyMember)
     {
-        //
+        return view('areas.VasoDeLecheViews.FamilyMembers.edit', compact('familyMember'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza un miembro familiar existente en la base de datos.
+     *
+     * @param UpdateVlFamilyMemberRequest $request
+     * @param VlFamilyMember $familyMember
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, VlFamilyMember $vlFamilyMember)
+    public function update(UpdateVlFamilyMemberRequest $request, VlFamilyMember $familyMember)
     {
-        //
+        $familyMember->update($request->validated());
+        return redirect()->route('family_members.index')->with('success', 'Miembro familiar actualizado correctamente.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina un miembro familiar de la base de datos.
+     *
+     * @param DestroyVlFamilyMemberRequest $request
+     * @param VlFamilyMember $familyMember
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(VlFamilyMember $vlFamilyMember)
+    public function destroy(DestroyVlFamilyMemberRequest $request, VlFamilyMember $familyMember)
     {
-        //
+        $familyMember->delete();
+        return redirect()->route('family_members.index')->with('success', 'Miembro familiar eliminado correctamente.');
     }
 }
