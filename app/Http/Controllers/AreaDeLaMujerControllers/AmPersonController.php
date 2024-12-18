@@ -4,6 +4,8 @@ namespace App\Http\Controllers\AreaDeLaMujerControllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AreaDeLaMujerRequests\AmPeople\StoreAmPersonRequest;
+use App\Http\Requests\AreaDeLaMujerRequests\AmPeople\UpdateAmPersonRequest;
 use App\Models\AreaDeLaMujerModels\AmPerson;
 use Illuminate\Support\Facades\Validator;
 
@@ -31,55 +33,9 @@ class AmPersonController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreAmPersonRequest $request)
     {
-        $rules = [
-            'identity_document' => ['required', 'string', 'in:DNI,Pasaporte,Carnet,Cedula'],
-            'given_name' => 'required|string|max:50',
-            'paternal_last_name' => 'required|string|max:50',
-            'maternal_last_name' => 'required|string|max:50',
-            'address' => 'nullable|string|max:255',
-            'sex_type' => 'required|boolean',
-            'phone_number' => 'nullable|regex:/^\d{9}$/',
-            'attendance_date' => 'required|date',
-        ];
-    
-        // Reglas dinámicas para el campo 'id' dependiendo del tipo de documento
-        if ($request->identity_document == 'DNI') {
-            $rules['id'] = 'required|string|size:8|unique:am_people,id';  // Validación para DNI
-        } elseif ($request->identity_document == 'Pasaporte') {
-            $rules['id'] = 'required|string|max:20|unique:am_people,id';  // Validación para Pasaporte
-        } elseif ($request->identity_document == 'Cedula') {
-            $rules['id'] = 'required|string|max:20|unique:am_people,id';  // Validación para Cédula
-        } else {
-            $rules['id'] = 'required|string|max:50|unique:am_people,id';  // Para otros documentos
-        }
-    
-        // Validamos los datos que llegaron en el request
-        $validator = Validator::make($request->all(), $rules);
-
-        // Si la validación falla, retorna los errores
-        if ($validator->fails()) {
-            return redirect()->route('am_people.create')
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        // Guardamos la nueva persona con los datos proporcionados
-        $person = new AmPerson([
-            'id' => $request->id, // El ID es proporcionado manualmente por el usuario
-            'identity_document' => $request->identity_document,
-            'given_name' => $request->given_name,
-            'paternal_last_name' => $request->paternal_last_name,
-            'maternal_last_name' => $request->maternal_last_name,
-            'address' => $request->address,
-            'sex_type' => $request->sex_type,
-            'phone_number' => $request->phone_number,
-            'attendance_date' => $request->attendance_date,
-        ]);
-
-        $person->save();
-
+        AmPerson::create($request->validated());
         return redirect()->route('am_people.index')->with('success', 'Persona creada correctamente.');
     }
 
@@ -104,53 +60,9 @@ class AmPersonController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, AmPerson $amPerson)
+    public function update(UpdateAmPersonRequest $request, AmPerson $amPerson)
     {
-        // Inicializar reglas de validación para los campos comunes
-    $rules = [
-        'identity_document' => ['required', 'string', 'in:DNI,Pasaporte,Carnet,Cedula'],
-        'given_name' => 'required|string|max:50',
-        'paternal_last_name' => 'required|string|max:50',
-        'maternal_last_name' => 'required|string|max:50',
-        'address' => 'nullable|string|max:255',
-        'sex_type' => 'required|boolean',
-        'phone_number' => 'nullable|regex:/^\d{9}$/',
-        'attendance_date' => 'required|date',
-    ];
-
-    // Validación dinámica del campo 'id' según el tipo de documento
-    if ($request->identity_document == 'DNI') {
-        $rules['id'] = 'required|string|size:8'; // Para DNI, debe tener exactamente 8 caracteres
-    } elseif ($request->identity_document == 'Pasaporte') {
-        $rules['id'] = 'required|string|max:20'; // Para Pasaporte, hasta 20 caracteres
-    } elseif ($request->identity_document == 'Cedula') {
-        $rules['id'] = 'required|string|max:20'; // Para Cedula, hasta 20 caracteres
-    } else {
-        $rules['id'] = 'required|string|max:50'; // Para otros documentos, hasta 50 caracteres
-    }
-
-    // Realizar la validación
-    $validator = Validator::make($request->all(), $rules);
-
-        // Si la validación falla, retorna los errores
-        if ($validator->fails()) {
-            return redirect()->route('am_people.edit', $amPerson->id)
-                ->withErrors($validator)
-                ->withInput();
-        }
-        // Actualizamos la persona con los datos proporcionados
-        $amPerson->update([
-            'id' => $request->id,  // Aquí se actualiza el ID manualmente
-            'identity_document' => $request->identity_document,
-            'given_name' => $request->given_name,
-            'paternal_last_name' => $request->paternal_last_name,
-            'maternal_last_name' => $request->maternal_last_name,
-            'address' => $request->address,
-            'sex_type' => $request->sex_type,
-            'phone_number' => $request->phone_number,
-            'attendance_date' => $request->attendance_date,
-        ]);
-
+        $amPerson->update($request->validated());
         return redirect()->route('am_people.index')->with('success', 'Persona actualizada correctamente.');
     }
 
