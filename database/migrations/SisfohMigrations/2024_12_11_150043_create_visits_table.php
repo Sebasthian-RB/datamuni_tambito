@@ -16,7 +16,7 @@ return new class extends Migration
             $table->date('visit_date'); // Fecha de la visita
             $table->enum('status', ['Visitado', 'No visitado', 'No encontrado']); // Estado de la visita
             $table->text('observations')->nullable(); // Observaciones, puede ser nulo
-           
+
             $table->string('enumerator_id', 36);
 
             // Relaciones de claves foráneas
