@@ -379,21 +379,46 @@ return [
                 ],
             ],
         ],
-        ['header' => 'labels'],
+        ['header' => 'Area de la Mujer'],
         [
-            'text' => 'important',
+            'text' => 'Personas',
+            'url' => 'am_people',
             'icon_color' => 'red',
-            'url' => '#',
         ],
         [
-            'text' => 'warning',
+            'text' => 'Intervenciones',
+            'url' => 'interventions',
             'icon_color' => 'yellow',
-            'url' => '#',
         ],
         [
-            'text' => 'information',
+            'text' => 'Violencias',
+            'url' => 'violences',
             'icon_color' => 'cyan',
-            'url' => '#',
+        ],
+        [
+            'text' => 'Programas',
+            'url' => 'programs',
+            'icon_color' => 'green',
+        ],
+        [
+            'text' => 'Eventos',
+            'url' => 'events',
+            'icon_color' => 'blue',
+        ],
+        [
+            'text' => 'Intervenciones por Persona',
+            'url' => 'am_person_interventions',
+            'icon_color' => 'purple',
+        ],
+        [
+            'text' => 'Violencias por Persona',
+            'url' => 'am_person_violences',
+            'icon_color' => 'orange',
+        ],
+        [
+            'text' => 'Eventos por Persona',
+            'url' => 'am_person_events',
+            'icon_color' => 'pink',
         ],
     ],
 
