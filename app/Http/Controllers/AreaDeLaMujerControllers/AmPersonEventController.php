@@ -4,6 +4,8 @@ namespace App\Http\Controllers\AreaDeLaMujerControllers;
 
 use App\Models\AreaDeLaMujerModels\AmPersonEvent;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AreaDeLaMujerRequests\AmPersonEvents\StoreAmPersonEventRequest;
+use App\Http\Requests\AreaDeLaMujerRequests\AmPersonEvents\UpdateAmPersonEventRequest;
 use App\Models\AreaDeLaMujerModels\AmPerson;
 use App\Models\AreaDeLaMujerModels\Event;
 use Illuminate\Http\Request;
@@ -36,24 +38,20 @@ class AmPersonEventController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreAmPersonEventRequest $request)
     {
-        // Validaciones
-        $request->validate([
-            'am_person_id' => 'required|exists:am_people,id',
-            'event_id' => 'required|exists:events,id',
-            'status' => 'required|in:Asistió,No Asistió,Justificado',
-        ]);
 
-        // Crear un nuevo registro
-        AmPersonEvent::create($request->all());
+        // Crea un nuevo registro utilizando los datos validados.
+        AmPersonEvent::create($request->validated());
 
         return redirect()->route('am_person_events.index')->with('success', 'Registro creado correctamente.');
     
     }
 
-    /**
-     * Display the specified resource.
+     /**
+     * Muestra el detalle de un registro específico.
+     *
+     * @param AmPersonEvent $amPersonEvent
      */
     public function show(AmPersonEvent $amPersonEvent)
     {
@@ -76,25 +74,24 @@ class AmPersonEventController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza un registro en la base de datos.
+     *
+     * @param UpdateAmPersonEventRequest $request
+     * @param AmPersonEvent $amPersonEvent
      */
-    public function update(Request $request, AmPersonEvent $amPersonEvent)
+    public function update(UpdateAmPersonEventRequest $request, AmPersonEvent $amPersonEvent)
     {
-        // Validaciones
-        $request->validate([
-            'am_person_id' => 'required|exists:am_people,id',
-            'event_id' => 'required|exists:events,id',
-            'status' => 'required|in:Asistió,No Asistió,Justificado',
-        ]);
 
-        // Actualizar el registro
-        $amPersonEvent->update($request->all());
+        // Actualiza el registro utilizando los datos validados.
+        $amPersonEvent->update($request->validated());
 
         return redirect()->route('am_person_events.index')->with('success', 'Registro actualizado correctamente.');
     }
 
-    /**
-     * Remove the specified resource from storage.
+     /**
+     * Elimina un registro de la base de datos.
+     *
+     * @param AmPersonEvent $amPersonEvent
      */
     public function destroy(AmPersonEvent $amPersonEvent)
     {
