@@ -10,11 +10,26 @@ class Committee extends Model
     use HasFactory;
 
     /**
+     * La clave primaria de la tabla.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
+    /**
+     * Deshabilitar la autoincrementación, ya que se usa una cadena como clave primaria.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
      * Campos asignables masivamente.
      *
      * @var array
      */
     protected $fillable = [
+        'id',                   // ID personalizado de comité 
         'name',                 // Nombre del comité
         'president',            // Nombre del presidente
         'urban_core',           // Núcleo urbano
@@ -28,6 +43,7 @@ class Committee extends Model
      * @var array
      */
     protected $casts = [
+        'id' => 'string',
         'name' => 'string',
         'president' => 'string',
         'urban_core' => 'string',

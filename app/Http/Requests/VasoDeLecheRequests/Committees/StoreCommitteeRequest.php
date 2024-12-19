@@ -26,6 +26,13 @@ class StoreCommitteeRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'id' => [
+                'required',
+                'string',
+                'unique:committees,id,' . $this->route('committee'), // Se permite actualizar el mismo ID
+                'regex:/^\d+$/', // El id_custom debe ser un número entero
+            ],
+
             'name' => [
                 'required',
                 'string',
@@ -64,6 +71,9 @@ class StoreCommitteeRequest extends FormRequest
     public function messages()
     {
         return [
+            'id.required' => 'El número de comité es obligatorio.',
+            'id.unique' => 'El número de comité ya está en uso.',
+            'id.regex' => 'El número de comité debe ser un número entero.',
             'name.required' => 'El nombre del comité es obligatorio.',
             'name.max' => 'El nombre no debe exceder los 100 caracteres.',
             'name.regex' => 'El nombre solo puede contener letras, números y espacios.',
@@ -89,6 +99,7 @@ class StoreCommitteeRequest extends FormRequest
     public function attributes()
     {
         return [
+            'id' => 'Número de comité',
             'name' => 'nombre del comité',
             'president' => 'presidente(a)',
             'urban_core' => 'núcleo urbano',
