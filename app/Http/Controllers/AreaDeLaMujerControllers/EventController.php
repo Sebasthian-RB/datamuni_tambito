@@ -4,6 +4,8 @@ namespace App\Http\Controllers\AreaDeLaMujerControllers;
 
 use App\Models\AreaDeLaMujerModels\Event;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AreaDeLaMujerRequests\Events\StoreEventRequest;
+use App\Http\Requests\AreaDeLaMujerRequests\Events\UpdateEventRequest;
 use App\Models\AreaDeLaMujerModels\Program;
 use Illuminate\Http\Request;
 
@@ -30,19 +32,9 @@ class EventController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreEventRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:50',
-            'description' => 'required|string',
-            'place' => 'required|string|max:150',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'status' => 'required|in:Pendiente,Finalizado,En proceso,Cancelado',
-            'program_id' => 'required|exists:programs,id',
-        ]);
-
-        Event::create($request->all());
+        Event::create($request->validated());
         return redirect()->route('events.index')->with('success', 'Evento creado con éxito.');
     }
 
@@ -66,19 +58,9 @@ class EventController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Event $event)
+    public function update(UpdateEventRequest $request, Event $event)
     {
-        $request->validate([
-            'name' => 'required|string|max:50',
-            'description' => 'required|string',
-            'place' => 'required|string|max:150',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'status' => 'required|in:Pendiente,Finalizado,En proceso,Cancelado',
-            'program_id' => 'required|exists:programs,id',
-        ]);
-
-        $event->update($request->all());
+        $event->update($request->validated());
         return redirect()->route('events.index')->with('success', 'Evento actualizado con éxito.');
     }
 

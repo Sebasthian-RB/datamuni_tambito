@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\AreaDeLaMujerRequests\AmPersonInterventions;
+namespace App\Http\Requests\AreaDeLaMujerRequests\AmPersonViolences;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateAmPersonInterventionsRequest extends FormRequest
+class StoreViolenceRequest extends FormRequest
 {
     /**
      * Determina si el usuario está autorizado a realizar esta solicitud.
@@ -17,16 +17,16 @@ class UpdateAmPersonInterventionsRequest extends FormRequest
     }
 
     /**
-     * Reglas de validación para actualizar una relación existente.
+     * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
             'am_person_id' => 'required|exists:am_people,id', // Validar que la persona exista.
-            'intervention_id' => 'required|exists:interventions,id', // Validar que la intervención exista.
-            'status' => 'required|in:Completado,En progreso,Cancelado', // Validar estado permitido.
+            'violence_id' => 'required|exists:violences,id', // Validar que el tipo de violencia exista.
+            'registration_date' => 'required|date', // Validar que sea una fecha válida.
         ];
     }
 
@@ -40,10 +40,10 @@ class UpdateAmPersonInterventionsRequest extends FormRequest
         return [
             'am_person_id.required' => 'El campo "Persona" es obligatorio.',
             'am_person_id.exists' => 'La persona seleccionada no existe.',
-            'intervention_id.required' => 'El campo "Intervención" es obligatorio.',
-            'intervention_id.exists' => 'La intervención seleccionada no existe.',
-            'status.required' => 'El campo "Estado" es obligatorio.',
-            'status.in' => 'El estado debe ser uno de los siguientes: Completado, En progreso o Cancelado.',
+            'violence_id.required' => 'El campo "Violencia" es obligatorio.',
+            'violence_id.exists' => 'El tipo de violencia seleccionado no existe.',
+            'registration_date.required' => 'El campo "Fecha de registro" es obligatorio.',
+            'registration_date.date' => 'El campo "Fecha de registro" debe ser una fecha válida.',
         ];
     }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\AreaDeLaMujerControllers;
 
 use App\Models\AreaDeLaMujerModels\AmPersonViolence;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AreaDeLaMujerRequests\AmPersonEvents\StoreAmPersonEventRequest;
+use App\Http\Requests\AreaDeLaMujerRequests\AmPersonEvents\UpdateAmPersonEventRequest;
 use App\Models\AreaDeLaMujerModels\AmPerson;
 use App\Models\AreaDeLaMujerModels\Violence;
 use Illuminate\Http\Request;
@@ -32,16 +34,9 @@ class AmPersonViolenceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreAmPersonEventRequest $request)
     {
-        $request->validate([
-            'am_person_id' => 'required|exists:am_people,id',
-            'violence_id' => 'required|exists:violences,id',
-            'registration_date' => 'required|date',
-        ]);
-
-        AmPersonViolence::create($request->all());
-
+        AmPersonViolence::create($request->validated());
         return redirect()->route('am_person_violences.index')->with('success', 'Relación creada exitosamente.');
     }
 
@@ -66,16 +61,9 @@ class AmPersonViolenceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, AmPersonViolence $amPersonViolence)
+    public function update(UpdateAmPersonEventRequest $request, AmPersonViolence $amPersonViolence)
     {
-        $request->validate([
-            'am_person_id' => 'required|exists:am_people,id',
-            'violence_id' => 'required|exists:violences,id',
-            'registration_date' => 'required|date',
-        ]);
-
-        $amPersonViolence->update($request->all());
-
+        $amPersonViolence->update($request->validated());
         return redirect()->route('am_person_violences.index')->with('success', 'Relación actualizada exitosamente.');
     }
 

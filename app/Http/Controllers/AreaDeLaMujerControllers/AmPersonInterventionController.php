@@ -4,6 +4,8 @@ namespace App\Http\Controllers\AreaDeLaMujerControllers;
 
 use App\Models\AreaDeLaMujerModels\AmPersonIntervention;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AreaDeLaMujerRequests\AmPersonInterventions\StoreAmPersonInterventionsRequest;
+use App\Http\Requests\AreaDeLaMujerRequests\AmPersonInterventions\UpdateAmPersonInterventionsRequest;
 use App\Models\AreaDeLaMujerModels\AmPerson;
 use App\Models\AreaDeLaMujerModels\Intervention;
 use Illuminate\Http\Request;
@@ -32,16 +34,9 @@ class AmPersonInterventionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreAmPersonInterventionsRequest $request)
     {
-        $request->validate([
-            'am_person_id' => 'required|exists:am_people,id',
-            'intervention_id' => 'required|exists:interventions,id',
-            'status' => 'required|in:Completado,En progreso,Cancelado',
-        ]);
-
-        AmPersonIntervention::create($request->all());
-
+        AmPersonIntervention::create($request->validated());
         return redirect()->route('am_person_interventions.index')->with('success', 'Relación creada exitosamente.');
     }
 
@@ -66,16 +61,9 @@ class AmPersonInterventionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, AmPersonIntervention $amPersonIntervention)
+    public function update(UpdateAmPersonInterventionsRequest $request, AmPersonIntervention $amPersonIntervention)
     {
-        $request->validate([
-            'am_person_id' => 'required|exists:am_people,id',
-            'intervention_id' => 'required|exists:interventions,id',
-            'status' => 'required|in:Completado,En progreso,Cancelado',
-        ]);
-
-        $amPersonIntervention->update($request->all());
-
+        $amPersonIntervention->update($request->validated());
         return redirect()->route('am_person_interventions.index')->with('success', 'Relación actualizada exitosamente.');
     }
 
