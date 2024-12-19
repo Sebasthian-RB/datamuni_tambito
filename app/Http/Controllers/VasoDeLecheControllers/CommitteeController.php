@@ -12,6 +12,8 @@ use App\Http\Requests\VasoDeLecheRequests\Committees\EditCommitteeRequest;
 use App\Http\Requests\VasoDeLecheRequests\Committees\UpdateCommitteeRequest;
 use App\Http\Requests\VasoDeLecheRequests\Committees\DestroyCommitteeRequest;
 
+use App\Models\VasoDeLecheModels\Sector;
+
 class CommitteeController extends Controller
 {
     /**
@@ -22,7 +24,9 @@ class CommitteeController extends Controller
      */
     public function index(IndexCommitteeRequest $request)
     {
-        $committees = Committee::all();
+        // Obtener todos los comités con los sectores relacionados
+        $committees = Committee::with('sector')->get();
+
         return view('areas.VasoDeLecheViews.Committees.index', compact('committees'));
     }
 
@@ -34,7 +38,14 @@ class CommitteeController extends Controller
      */
     public function create(CreateCommitteeRequest $request)
     {
-        return view('areas.VasoDeLecheViews.Committees.create');
+        // Obtener los sectores desde el modelo Sector
+        $sectors = Sector::all();  // O la consulta adecuada para obtener los sectores
+
+        //Definir los Núcleos Urbanos
+        $urbanCores = ['Urbano', 'Rural'];
+
+        // Pasar los sectores a la vista
+        return view('areas.VasoDeLecheViews.Committees.create', compact('sectors', 'urbanCores'));
     }
 
     /**
@@ -70,7 +81,13 @@ class CommitteeController extends Controller
      */
     public function edit(EditCommitteeRequest $request, Committee $committee)
     {
-        return view('areas.VasoDeLecheViews.Committees.edit', compact('committee'));
+        // Obtener todos los sectores para pasarlos a la vista
+        $sectors = Sector::all();
+
+        //Definir los Núcleos Urbanos
+        $urbanCores = ['Urbano', 'Rural'];
+
+        return view('areas.VasoDeLecheViews.Committees.edit', compact('committee', 'sectors', 'urbanCores'));    
     }
 
     /**

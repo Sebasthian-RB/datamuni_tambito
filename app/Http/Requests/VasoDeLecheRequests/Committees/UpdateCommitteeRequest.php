@@ -3,6 +3,7 @@
 namespace App\Http\Requests\VasoDeLecheRequests\Committees;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 /**
  * Form Request para actualizar un comité.
@@ -26,29 +27,40 @@ class UpdateCommitteeRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'id' => [
+                'required',
+                'string',
+                Rule::unique('committees', 'id')->ignore($this->route('committee')), // Usar ignore para excluir el ID actual
+                'regex:/^\d+$/', // El id_custom debe ser un número entero
+            ],
+
             'name' => [
                 'required',
                 'string',
                 'max:100',
                 'regex:/^[a-zA-Z0-9\s]+$/', // Solo letras, números y espacios
             ],
+
             'president' => [
                 'required',
                 'string',
                 'max:100',
                 'regex:/^[a-zA-Z\s]+$/', // Solo letras y espacios
             ],
+
             'urban_core' => [
                 'required',
                 'string',
                 'max:100',
                 'regex:/^[a-zA-Z0-9\s]+$/', // Solo letras, números y espacios
             ],
+
             'beneficiaries_count' => [
                 'required',
                 'integer',
                 'min:1', // Al menos 1 beneficiario
             ],
+
             'sector_id' => [
                 'required',
                 'exists:sectors,id', // Debe existir en la tabla sectors
@@ -64,6 +76,9 @@ class UpdateCommitteeRequest extends FormRequest
     public function messages()
     {
         return [
+            'id.required' => 'El número de comité es obligatorio.',
+            'id.unique' => 'El número de comité ya está en uso.',
+            'id.regex' => 'El número de comité debe ser un número entero.',
             'name.required' => 'El nombre del comité es obligatorio.',
             'name.max' => 'El nombre no debe exceder los 100 caracteres.',
             'name.regex' => 'El nombre solo puede contener letras, números y espacios.',
@@ -89,6 +104,7 @@ class UpdateCommitteeRequest extends FormRequest
     public function attributes()
     {
         return [
+            'id' => 'Número de comité',
             'name' => 'nombre del comité',
             'president' => 'presidente(a)',
             'urban_core' => 'núcleo urbano',
