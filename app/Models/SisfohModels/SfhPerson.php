@@ -60,7 +60,9 @@ class SfhPerson extends Model
      */
     public function dwellings()
     {
-        return $this->belongsToMany(SfhDwelling::class, 'sfc_dwelling_sfc_people', 'sfh_person_id', 'sfh_dwelling_id');
+        return $this->belongsToMany(SfhDwelling::class, 'sfh_dwellings_sfh_person')
+                    ->withPivot('status', 'update_date')
+                    ->withTimestamps();
     }
 
     /**

@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 class Request extends Model
 {
     use HasFactory;
@@ -15,7 +14,7 @@ class Request extends Model
      * @var array
      */
     protected $fillable = [
-        'id',              // Identificador único (ID)
+        'id',
         'request_date',    // Fecha de la solicitud
         'description',     // Descripción de la solicitud
         'sfh_person_id',   // ID de la persona relacionada (sfh_people)
@@ -27,7 +26,7 @@ class Request extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'string',                  // ID como string
+        
         'request_date' => 'date',          // Fecha de la solicitud como objeto Carbon
         'description' => 'string',         // Descripción como string
         'sfh_person_id' => 'string',       // ID de la persona como string (36 caracteres)
@@ -43,6 +42,16 @@ class Request extends Model
     public function sfhPerson()
     {
         return $this->belongsTo(SfhPerson::class, 'sfh_person_id');
+    }
+
+    /**
+     * Relación con el modelo Visit (Uno a Muchos).
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function Visit()
+    {
+        return $this->hasMany(Visit::class, 'request_id');
     }
 
     /**

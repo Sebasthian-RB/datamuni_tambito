@@ -14,7 +14,7 @@ class SfcDwellingSfcPerson extends Model
      * @var array
      */
     protected $fillable = [
-        'id',                // Identificador único (ID)
+        
         'sfh_person_id',     // ID de la persona relacionada (sfh_people)
         'status',            // Estado de la visita (Activo/Inactivo)
         'update_date',       // Fecha de actualización
@@ -27,7 +27,7 @@ class SfcDwellingSfcPerson extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'string',                // ID como string
+        
         'sfh_person_id' => 'string',     // ID de la persona como string
         'status' => 'string',            // Estado como string
         'update_date' => 'date',        // Fecha de actualización como objeto Carbon

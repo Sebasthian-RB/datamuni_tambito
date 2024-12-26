@@ -14,14 +14,14 @@ class Instrument extends Model
      * @var array
      */
     protected $fillable = [
-        'id',                  // ID  
+        'id',
         'name_instruments',    // Nombre del instrumento
         'type_instruments',    // Tipo de instrumento
         'description',         // Descripción del instrumento
     ];
 
     protected $casts = [
-        'id' => 'string',                 // ID                               
+
         'name_instruments' => 'string',    // Nombre del instrumento como string  
         'type_instruments' => 'string',    // Tipo de instrumento como string 
         'description' => 'string',         // Descripción del instrumento como string

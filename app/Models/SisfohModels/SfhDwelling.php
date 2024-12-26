@@ -14,7 +14,7 @@ class SfhDwelling extends Model
      * @var array
      */
     protected $fillable = [
-        'id',            // Identificador único (ID)
+        'id',
         'street_address', // Dirección de la vivienda
         'reference',      // Referencia opcional
         'neighborhood',    // Barrio opcional
@@ -29,7 +29,7 @@ class SfhDwelling extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'string',       // ID como string
+        
         'street_address' => 'string', // Dirección como string
         'reference' => 'string',      // Referencia como string
         'neighborhood' => 'string',   // Barrio como string
@@ -43,21 +43,13 @@ class SfhDwelling extends Model
     /**
      * Relación con el modelo SfhPerson (Muchos a Uno).
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function sfhPerson()
+    public function sfhperson()
     {
-        return $this->belongsTo(SfhPerson::class, 'sfh_person_id');
-    }
-
-    /**
-     * Relación con el modelo SfhDwelling (Muchos a Uno).
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function sfhDwelling()
-    {
-        return $this->belongsTo(SfhDwelling::class, 'sfh_dwelling_id');
+        return $this->belongsToMany(SfhPerson::class, 'sfh_dwellings_sfh_person')
+                    ->withPivot('status', 'update_date')
+                    ->withTimestamps();
     }
 
     /**

@@ -28,7 +28,7 @@ class Visit extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'string',              // ID como string
+        
         'visit_date' => 'date',        // Convierte la fecha a un objeto Carbon
         'status' => 'string',          // Convierte el estado de la visita a string (enum)
         'observations' => 'string',    // Convierte las observaciones a string

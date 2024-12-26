@@ -9,13 +9,8 @@ class Enumerator extends Model
 {
     use HasFactory;
 
-    /**
-     * Campos asignables masivamente.
-     *
-     * @var array
-     */
     protected $fillable = [
-        'id',                      // Identificador único (ID)
+        'id',
         'identity_document',       // Tipo de documento (DNI, Pasaporte, etc.)
         'given_name',              // Nombre completo del encuestador
         'paternal_last_name',      // Apellido paterno del encuestador
@@ -24,7 +19,7 @@ class Enumerator extends Model
     ];
 
     protected $casts = [
-        'id' => 'string',                     // ID se almacena como string
+        'id' => 'string',               // ID como entero
         'identity_document' => 'string',      // Tipo de documento como string
         'given_name' => 'string',             // Nombre completo como string
         'paternal_last_name' => 'string',     // Apellido paterno como string

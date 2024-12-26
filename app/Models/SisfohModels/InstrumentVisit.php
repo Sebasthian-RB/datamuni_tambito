@@ -28,7 +28,7 @@ class InstrumentVisit extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'string',               // ID como entero
+        
         'application_date' => 'date',    // Fecha de aplicación como objeto Carbon
         'descriptions' => 'string',      // Descripciones como string
         'instrument_id' => 'integer',    // ID del instrumento como entero
