@@ -21,7 +21,9 @@ class UpdateAmPersonRequest extends FormRequest
      */
     public function rules(): array
     {
-        $personId = $this->route('amPerson')->id;
+        $amPerson = $this->route()->parameter('am_people');
+
+        $personId = $amPerson ? $amPerson->id : null;
 
         $rules = [
             'identity_document' => 'required|string|in:DNI,Pasaporte,Carnet,Cedula',
@@ -36,16 +38,16 @@ class UpdateAmPersonRequest extends FormRequest
 
         switch ($this->input('identity_document')) {
             case 'DNI':
-                $rules['id'] = "required|string|size:8|unique:am_people,id,{$personId}";
+                $rules['id'] = "required|string|size:8|unique:am_people,id,{$personId},id";
                 break;
             case 'Pasaporte':
-                $rules['id'] = "required|string|max:20|unique:am_people,id,{$personId}";
+                $rules['id'] = "required|string|max:20|unique:am_people,id,{$personId},id";
                 break;
             case 'Cedula':
-                $rules['id'] = "required|string|max:20|unique:am_people,id,{$personId}";
+                $rules['id'] = "required|string|max:20|unique:am_people,id,{$personId},id";
                 break;
             default:
-                $rules['id'] = "required|string|max:50|unique:am_people,id,{$personId}";
+                $rules['id'] = "required|string|max:50|unique:am_people,id,{$personId},id";
                 break;
         }
 

@@ -9,21 +9,25 @@
 
 @section('content')
 <div class="container">
-    <a href="{{ route('am_people.create') }}" class="btn btn-primary mb-3">Agregar Persona</a>
+    <!-- Botones de acción -->
+    <a href="{{ route('am_people.create') }}" class="btn btn-info mb-3"><i class="fa fa-plus"></i> Agregar Persona</a>
+    <a href="{{ route('sectors.create') }}" class="btn btn-danger mb-3">Volver</a>
 
+    <!-- Mensaje de éxito -->
     @if(session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
         </div>
     @endif
 
+    <!-- Tabla de datos -->
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Personas Registradas</h3>
         </div>
         <div class="card-body">
             <table class="table table-bordered table-striped">
-                <thead>
+                <thead class="bg-dark text-white">
                     <tr>
                         <th>N° Documento</th>
                         <th>Documento de Identidad</th>
@@ -38,12 +42,14 @@
                             <td>{{ $person->identity_document }}</td>
                             <td>{{ $person->given_name }} {{ $person->paternal_last_name }} {{ $person->maternal_last_name }}</td>
                             <td>
-                                <a href="{{ route('am_people.show', $person->id) }}" class="btn btn-info btn-sm">Ver</a>
-                                <a href="{{ route('am_people.edit', $person->id) }}" class="btn btn-warning btn-sm">Editar</a>
+                                <a href="{{ route('am_people.show', $person->id) }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> Ver</a>
+                                <a href="{{ route('am_people.edit', $person->id) }}" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> Editar</a>
                                 <form action="{{ route('am_people.destroy', $person->id) }}" method="POST" style="display:inline-block;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar a esta persona?')">
+                                        <i class="fa fa-trash"></i> Eliminar
+                                    </button>
                                 </form>
                             </td>
                         </tr>

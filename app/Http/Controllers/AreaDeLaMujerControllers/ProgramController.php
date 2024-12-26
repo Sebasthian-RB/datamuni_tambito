@@ -4,6 +4,8 @@ namespace App\Http\Controllers\AreaDeLaMujerControllers;
 
 use App\Models\AreaDeLaMujerModels\Program;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AreaDeLaMujerRequests\Programs\StoreProgramRequest;
+use App\Http\Requests\AreaDeLaMujerRequests\Programs\UpdateProgramRequest;
 use Illuminate\Http\Request;
 
 class ProgramController extends Controller
@@ -28,18 +30,10 @@ class ProgramController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreProgramRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:50',
-            'description' => 'required|string',
-            'program_type' => 'required|string|max:50',
-            'start_date' => 'required|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
-            'status' => 'required|in:Pendiente,Finalizado,En proceso,Cancelado',
-        ]);
 
-        Program::create($request->all());
+        Program::create($request->validated());
         return redirect()->route('programs.index')->with('success', 'Programa creado con éxito.');
     }
 
@@ -62,18 +56,10 @@ class ProgramController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Program $program)
+    public function update(UpdateProgramRequest $request, Program $program)
     {
-        $request->validate([
-            'name' => 'required|string|max:50',
-            'description' => 'required|string',
-            'program_type' => 'required|string|max:50',
-            'start_date' => 'required|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
-            'status' => 'required|in:Pendiente,Finalizado,En proceso,Cancelado',
-        ]);
 
-        $program->update($request->all());
+        $program->update($request->validated());
         return redirect()->route('programs.index')->with('success', 'Programa actualizado con éxito.');
     }
 

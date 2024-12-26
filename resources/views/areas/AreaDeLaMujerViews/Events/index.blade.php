@@ -7,13 +7,28 @@
 @stop
 
 @section('content')
+<div class="container">
+    <!-- Botones de acción -->
+    <a href="{{ route('events.create') }}" class="btn btn-info mb-3">
+        <i class="fa fa-plus"></i> Add New Event
+    </a>
+    <a href="{{ route('sectors.create') }}" class="btn btn-danger mb-3">Back</a>
+
+    <!-- Mensaje de éxito -->
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <!-- Tabla de datos -->
     <div class="card">
         <div class="card-header">
-            <a href="{{ route('events.create') }}" class="btn btn-primary">Add New Event</a>
+            <h3 class="card-title">Registered Events</h3>
         </div>
         <div class="card-body">
             <table class="table table-bordered table-striped">
-                <thead>
+                <thead class="bg-dark text-white">
                     <tr>
                         <th>#</th>
                         <th>Name</th>
@@ -32,16 +47,26 @@
                             <td>{{ $event->name }}</td>
                             <td>{{ $event->place }}</td>
                             <td>{{ $event->program->name }}</td>
-                            <td>{{ $event->status }}</td>
+                            <td>
+                                <span class="badge {{ $event->status === 'Active' ? 'bg-success' : 'bg-warning' }}">
+                                    {{ $event->status }}
+                                </span>
+                            </td>
                             <td>{{ $event->start_date }}</td>
                             <td>{{ $event->end_date }}</td>
                             <td>
-                                <a href="{{ route('events.show', $event) }}" class="btn btn-info btn-sm">View</a>
-                                <a href="{{ route('events.edit', $event) }}" class="btn btn-warning btn-sm">Edit</a>
-                                <form action="{{ route('events.destroy', $event) }}" method="POST" class="d-inline">
+                                <a href="{{ route('events.show', $event) }}" class="btn btn-info btn-sm">
+                                    <i class="fa fa-eye"></i> View
+                                </a>
+                                <a href="{{ route('events.edit', $event) }}" class="btn btn-warning btn-sm">
+                                    <i class="fa fa-edit"></i> Edit
+                                </a>
+                                <form action="{{ route('events.destroy', $event) }}" method="POST" style="display:inline-block;">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
+                                    <button class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
+                                        <i class="fa fa-trash"></i> Delete
+                                    </button>
                                 </form>
                             </td>
                         </tr>
@@ -50,4 +75,5 @@
             </table>
         </div>
     </div>
+</div>
 @stop

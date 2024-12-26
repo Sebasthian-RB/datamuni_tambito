@@ -3,13 +3,13 @@
 @section('title', 'Editar Relación de Violencia')
 
 @section('content_header')
-    <h1>Editar Relación de Violencia</h1>
+    <h1>Editar Casos de Personas</h1>
 @endsection
 
 @section('content')
 <div class="card">
     <div class="card-header bg-warning">
-        <h3 class="card-title">Editar Relación</h3>
+        <h3 class="card-title">Editar Caso</h3>
     </div>
     <div class="card-body">
         <form action="{{ route('am_person_violences.update', $amPersonViolence->id) }}" method="POST">

@@ -4,7 +4,7 @@ namespace App\Http\Requests\AreaDeLaMujerRequests\AmPersonViolences;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreViolenceRequest extends FormRequest
+class StoreAmPersonViolenceRequest extends FormRequest
 {
     /**
      * Determina si el usuario está autorizado a realizar esta solicitud.

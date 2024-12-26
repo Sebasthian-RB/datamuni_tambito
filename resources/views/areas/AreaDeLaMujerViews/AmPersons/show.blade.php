@@ -1,4 +1,3 @@
-<!-- resources/views/areas/AreaDeLaMujerViews/AmPersons/show.blade.php -->
 @extends('adminlte::page')
 
 @section('title', 'Detalle de Persona')
@@ -10,42 +9,69 @@
 @section('content')
 <div class="container">
     <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Detalles de {{ $amPerson->given_name }} {{ $amPerson->paternal_last_name }} {{ $amPerson->maternal_last_name }}</h3>
+        <!-- Header con la imagen -->
+        <div class="card-header bg-success p-0 d-flex justify-content-center align-items-center" style="height: 60px;">
+            <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="img-fluid" style="height: 80%; width: auto;">
         </div>
+
+        <!-- Cuerpo de la tarjeta con los detalles -->
         <div class="card-body">
-            <dl class="row">
-                <dt class="col-sm-4">N° Documento</dt>
-                <dd class="col-sm-8">{{ $amPerson->id }}</dd>
+            <h3 class="mb-4">{{ $amPerson->given_name }} {{ $amPerson->paternal_last_name }} {{ $amPerson->maternal_last_name }}</h3>
 
-                <dt class="col-sm-4">Documento de Identidad</dt>
-                <dd class="col-sm-8">{{ $amPerson->identity_document }}</dd>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <h5><strong>N° Documento:</strong></h5>
+                    <p>{{ $amPerson->id }}</p>
+                </div>
 
-                <dt class="col-sm-4">Nombre</dt>
-                <dd class="col-sm-8">{{ $amPerson->given_name }} {{ $amPerson->paternal_last_name }} {{ $amPerson->maternal_last_name }}</dd>
+                <div class="col-md-6 mb-3">
+                    <h5><strong>Documento de Identidad:</strong></h5>
+                    <p>{{ $amPerson->identity_document }}</p>
+                </div>
+            </div>
 
-                <dt class="col-sm-4">Dirección</dt>
-                <dd class="col-sm-8">{{ $amPerson->address ?? 'No disponible' }}</dd>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <h5><strong>Sexo:</strong></h5>
+                    <p>{{ $amPerson->sex_type ? 'Masculino' : 'Femenino' }}</p>
+                </div>
 
-                <dt class="col-sm-4">Sexo</dt>
-                <dd class="col-sm-8">{{ $amPerson->sex_type ? 'Masculino' : 'Femenino' }}</dd>
+                <div class="col-md-6 mb-3">
+                    <h5><strong>Dirección:</strong></h5>
+                    <p>{{ $amPerson->address ?? 'No disponible' }}</p>
+                </div>
+            </div>
 
-                <dt class="col-sm-4">Número de Teléfono</dt>
-                <dd class="col-sm-8">{{ $amPerson->phone_number ?? 'No disponible' }}</dd>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <h5><strong>Número de Teléfono:</strong></h5>
+                    <p>{{ $amPerson->phone_number ?? 'No disponible' }}</p>
+                </div>
 
-                <dt class="col-sm-4">Fecha de Asistencia</dt>
-                <dd class="col-sm-8">{{ $amPerson->attendance_date->format('d/m/Y H:i') }}</dd>
+                <div class="col-md-6 mb-3">
+                    <h5><strong>Fecha de Asistencia:</strong></h5>
+                    <p>{{ $amPerson->attendance_date->format('d/m/Y H:i') }}</p>
+                </div>
+            </div>
 
-                <dt class="col-sm-4">Fecha de Creación</dt>
-                <dd class="col-sm-8">{{ $amPerson->created_at->format('d/m/Y H:i') }}</dd>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <h5><strong>Fecha de Creación:</strong></h5>
+                    <p>{{ $amPerson->created_at->format('d/m/Y H:i') }}</p>
+                </div>
 
-                <dt class="col-sm-4">Fecha de Actualización</dt>
-                <dd class="col-sm-8">{{ $amPerson->updated_at->format('d/m/Y H:i') }}</dd>
-            </dl>
+                <div class="col-md-6 mb-3">
+                    <h5><strong>Fecha de Actualización:</strong></h5>
+                    <p>{{ $amPerson->updated_at->format('d/m/Y H:i') }}</p>
+                </div>
+            </div>
         </div>
-        <div class="card-footer">
-            <a href="{{ route('am_people.edit', $amPerson->id) }}" class="btn btn-warning">Editar</a>
-            <a href="{{ route('am_people.index') }}" class="btn btn-secondary">Volver al listado</a>
+
+        <!-- Footer con botones de acción -->
+        <div class="card-footer text-center">
+            <a href="{{ route('am_people.index') }}" class="btn btn-secondary">
+                <i class="fa fa-arrow-left"></i> Volver al listado
+            </a>
         </div>
     </div>
 </div>

@@ -4,6 +4,9 @@ namespace App\Http\Controllers\AreaDeLaMujerControllers;
 
 use App\Models\AreaDeLaMujerModels\Intervention;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AreaDeLaMujerRequests\AmPersonInterventions\StoreAmPersonInterventionsRequest;
+use App\Http\Requests\AreaDeLaMujerRequests\Interventions\StoreInterventionRequest;
+use App\Http\Requests\AreaDeLaMujerRequests\Interventions\UpdateInterventionRequest;
 use Illuminate\Http\Request;
 
 class InterventionController extends Controller
@@ -28,16 +31,10 @@ class InterventionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreInterventionRequest $request)
     {
-        $validated = $request->validate([
-            'appointment' => 'required|string',
-            'derivation' => 'nullable|string',
-            'appointment_date' => 'required|date',
-        ]);
 
-        Intervention::create($validated);
-
+        Intervention::create($request->validated());
         return redirect()->route('interventions.index')->with('success', 'Intervención creada correctamente.');
     }
 
@@ -60,15 +57,9 @@ class InterventionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Intervention $intervention)
+    public function update(UpdateInterventionRequest $request, Intervention $intervention)
     {
-        $validated = $request->validate([
-            'appointment' => 'required|string',
-            'derivation' => 'nullable|string',
-            'appointment_date' => 'required|date',
-        ]);
-
-        $intervention->update($validated);
+        $intervention->update($request->validated());
 
         return redirect()->route('interventions.index')->with('success', 'Intervención actualizada correctamente.');
     }

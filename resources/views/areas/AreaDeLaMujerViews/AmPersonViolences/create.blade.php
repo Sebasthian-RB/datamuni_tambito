@@ -3,13 +3,13 @@
 @section('title', 'Registrar Relación de Violencia')
 
 @section('content_header')
-    <h1>Registrar Relación de Violencia</h1>
+    <h1>Registrar Casos de Personas</h1>
 @endsection
 
 @section('content')
 <div class="card">
     <div class="card-header bg-primary">
-        <h3 class="card-title">Nueva Relación</h3>
+        <h3 class="card-title">Nuevo Caso</h3>
     </div>
     <div class="card-body">
         <form action="{{ route('am_person_violences.store') }}" method="POST">

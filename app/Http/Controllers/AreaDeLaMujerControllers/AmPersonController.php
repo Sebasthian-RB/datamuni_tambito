@@ -60,9 +60,9 @@ class AmPersonController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateAmPersonRequest $request, AmPerson $amPerson)
+    public function update(UpdateAmPersonRequest $request, AmPerson $am_people)
     {
-        $amPerson->update($request->validated());
+        $am_people->update($request->validated());
         return redirect()->route('am_people.index')->with('success', 'Persona actualizada correctamente.');
     }
 

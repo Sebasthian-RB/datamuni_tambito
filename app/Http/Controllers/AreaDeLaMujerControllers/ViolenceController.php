@@ -4,6 +4,8 @@ namespace App\Http\Controllers\AreaDeLaMujerControllers;
 
 use App\Models\AreaDeLaMujerModels\Violence;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AreaDeLaMujerRequests\AmPersonViolences\StoreViolenceRequest as AmPersonViolencesStoreViolenceRequest;
+use App\Http\Requests\AreaDeLaMujerRequests\Violences\StoreViolenceRequest;
 use Illuminate\Http\Request;
 
 class ViolenceController extends Controller
@@ -28,14 +30,9 @@ class ViolenceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreViolenceRequest $request)
     {
-        $request->validate([
-            'kind_violence' => 'required|string|max:70',
-            'description' => 'required|string',
-        ]);
-
-        Violence::create($request->all());
+        Violence::create($request->validated());
 
         return redirect()->route('violences.index')->with('success', 'Violencia creada exitosamente.');
     }
@@ -59,14 +56,10 @@ class ViolenceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Violence $violence)
+    public function update(StoreViolenceRequest $request, Violence $violence)
     {
-        $request->validate([
-            'kind_violence' => 'required|string|max:70',
-            'description' => 'required|string',
-        ]);
 
-        $violence->update($request->all());
+        $violence->update($request->validated());
 
         return redirect()->route('violences.index')->with('success', 'Violencia actualizada exitosamente.');
     }

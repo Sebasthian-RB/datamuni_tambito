@@ -11,18 +11,35 @@ class StoreInterventionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Reglas de validación para actualizar un evento existente.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array
      */
     public function rules(): array
     {
         return [
-            //
+            'appointment' => 'required|string',
+            'derivation' => 'nullable|string',
+            'appointment_date' => 'required|date',
+        ];
+    }
+    /**
+     * Mensajes personalizados para las reglas de validación.
+     *
+     * @return array
+     */
+    public function messages(): array
+    {
+        return [
+            'appointment.required' => 'El campo "Cita" es obligatorio.',
+            'appointment.string' => 'El campo "Cita" debe ser una cadena de texto.',
+            'derivation.string' => 'El campo "Derivación" debe ser una cadena de texto.',
+            'appointment_date.required' => 'La fecha de la cita es obligatoria.',
+            'appointment_date.date' => 'La fecha de la cita debe ser válida.',
         ];
     }
 }

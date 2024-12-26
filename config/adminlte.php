@@ -379,47 +379,85 @@ return [
                 ],
             ],
         ],
-        ['header' => 'Area de la Mujer'],
-        [
-            'text' => 'Personas',
-            'url' => 'am_people',
-            'icon_color' => 'red',
-        ],
-        [
-            'text' => 'Intervenciones',
-            'url' => 'interventions',
-            'icon_color' => 'yellow',
-        ],
-        [
-            'text' => 'Violencias',
-            'url' => 'violences',
-            'icon_color' => 'cyan',
-        ],
-        [
-            'text' => 'Programas',
-            'url' => 'programs',
-            'icon_color' => 'green',
-        ],
-        [
-            'text' => 'Eventos',
-            'url' => 'events',
-            'icon_color' => 'blue',
-        ],
-        [
-            'text' => 'Intervenciones por Persona',
-            'url' => 'am_person_interventions',
-            'icon_color' => 'purple',
-        ],
-        [
-            'text' => 'Violencias por Persona',
-            'url' => 'am_person_violences',
-            'icon_color' => 'orange',
-        ],
-        [
-            'text' => 'Eventos por Persona',
-            'url' => 'am_person_events',
-            'icon_color' => 'pink',
-        ],
+        ['header' => 'Gestión de Areas'],
+        [  
+            'text' => 'Area de la Mujer',
+            'icon' => 'fas fa-female',
+            'submenu' => [
+                
+                [
+                    'text' => 'Gestión de Casos',
+                    'url' => '#',
+                    'icon' => 'fas fa-user-shield',
+                    'submenu' => [
+                        [
+                            'text' => 'Personas',
+                            'url' => 'am_people',
+                            'icon' => 'fas fa-users',
+                            'icon_color' => 'red',
+                        ],
+                        [
+                            'text' => 'Violencias',
+                            'url' => 'violences',
+                            'icon' => 'fas fa-exclamation-triangle', 
+                            'icon_color' => 'cyan',
+                        ],
+                        [
+                            'text' => 'Casos de Persona',
+                            'url' => 'am_person_violences',
+                            'icon' => 'fas fa-user-injured',
+                            'icon_color' => 'orange',
+                        ],
+                    ],
+                ],
+                [
+                    'text' => 'Gestión para Intervenciones',
+                    'url' => '#',
+                    'icon' => 'fas fa-hand-holding-heart',
+                    'submenu' => [
+                        [
+                            'text' => 'Intervenciones',
+                            'url' => 'interventions',
+                            'icon' => 'fas fa-hands-helping', 
+                            'icon_color' => 'yellow',
+                        ],
+                        [
+                            'text' => 'Intervenciones por Persona',
+                            'url' => 'am_person_interventions',
+                            'icon' => 'fas fa-user-cog',
+                            'icon_color' => 'purple',
+                        ],
+                    ],
+                ],
+                [
+                    'text' => 'Gestión de Programas y Eventos',
+                    'url' => '#',
+                    'icon' => 'fas fa-calendar-alt',
+                    'submenu' => [
+                        [
+                            'text' => 'Programas',
+                            'url' => 'programs',
+                            'icon' => 'fas fa-project-diagram',
+                            'icon_color' => 'green',
+                        ],
+                        [
+                            'text' => 'Eventos',
+                            'url' => 'events',
+                            'icon' => 'fas fa-calendar-check',
+                            'icon_color' => 'blue',
+                        ],
+                        
+                        
+                        [
+                            'text' => 'Eventos por Persona',
+                            'url' => 'am_person_events',
+                            'icon' => 'fas fa-user-clock',
+                            'icon_color' => 'pink',
+                        ],
+                    ],
+                ],
+            ]
+        ]
     ],
 
     /*
