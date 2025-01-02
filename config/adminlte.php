@@ -384,6 +384,12 @@ return [
             'text' => 'Area de la Mujer',
             'icon' => 'fas fa-female',
             'submenu' => [
+                [
+                    'text' => 'Área de la Mujer',
+                    'url' => 'am_dashboard',
+                    'icon' => 'fas fa-female',
+                    'icon_color' => 'pink',
+                ],
                 
                 [
                     'text' => 'Gestión de Casos',

@@ -83,11 +83,20 @@
 
                 <div class="form-group">
                     <label for="phone_number">Número de Teléfono</label>
-                    <input type="text" class="form-control @error('phone_number') is-invalid @enderror" id="phone_number" name="phone_number" value="{{ old('phone_number') }}">
+                    <input 
+                        type="number" 
+                        class="form-control @error('phone_number') is-invalid @enderror" 
+                        id="phone_number" 
+                        name="phone_number" 
+                        value="{{ old('phone_number') }}" 
+                        placeholder="Ingresa solo números"
+                        min="0"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '');">
                     @error('phone_number')
                         <span class="invalid-feedback">{{ $message }}</span>
                     @enderror
                 </div>
+                
 
                 <div class="form-group">
                     <label for="attendance_date">Fecha de Asistencia</label>

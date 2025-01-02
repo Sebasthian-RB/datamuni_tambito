@@ -10,7 +10,7 @@
 <div class="container">
     <!-- Botones de acción -->
     <a href="{{ route('am_person_interventions.create') }}" class="btn btn-info mb-3"><i class="fa fa-plus"></i> Crear Relación</a>
-    <a href="{{ route('sectors.create') }}" class="btn btn-danger mb-3">Volver</a>
+    <a href="{{ route('sectors.create') }}" class="btn btn-danger mb-3"><i class="fa fa-arrow-left"></i> Volver</a>
 
     <!-- Mensaje de éxito -->
     @if(session('success'))
@@ -41,7 +41,16 @@
                         <td>{{ $relation->id }}</td>
                         <td>{{ $relation->amPerson->given_name }} {{ $relation->amPerson->paternal_last_name }}</td>
                         <td>{{ Str::limit($relation->intervention->appointment, 50) }}</td>
-                        <td>{{ $relation->status }}</td>
+                        <td>
+                            <span class="badge 
+                                @if($relation->status == 'En progreso') badge-warning
+                                @elseif($relation->status == 'Completado') badge-success
+                                @elseif($relation->status == 'Cancelado') badge-danger
+                                @else badge-secondary
+                                @endif">
+                                {{ $relation->status }}
+                            </span>
+                        </td>
                         <td>
                             <a href="{{ route('am_person_interventions.show', $relation->id) }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> Ver</a>
                             <a href="{{ route('am_person_interventions.edit', $relation->id) }}" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> Editar</a>
