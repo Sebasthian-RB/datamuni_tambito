@@ -12,8 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('private_insurances', function (Blueprint $table) {
-            $table->id();
+
+            $table->string('id', 12)->primary(); // Identificador de los seguros privados, como hay muchas posibilidades es de 12
+            $table->string('private_insurances_name'); // String porque pueden ser una variedad de nombres
             $table->timestamps();
+            
         });
     }
 

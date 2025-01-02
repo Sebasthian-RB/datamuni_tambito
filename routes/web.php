@@ -20,6 +20,18 @@ use App\Http\Controllers\AreaDeLaMujerControllers\EventController;
 use App\Http\Controllers\AreaDeLaMujerControllers\InterventionController;
 use App\Http\Controllers\AreaDeLaMujerControllers\ProgramController;
 use App\Http\Controllers\AreaDeLaMujerControllers\ViolenceController;
+//Controladores deL Área: CIAM
+use App\Http\Controllers\CiamControllers\ElderlyAdultController;
+use App\Http\Controllers\CiamControllers\ElderlyAdultGuardianController;
+use App\Http\Controllers\CiamControllers\ElderlyAdultPrivateInsuranceController;
+use App\Http\Controllers\CiamControllers\ElderlyAdultSocialProgramController;
+use App\Http\Controllers\CiamControllers\GuardianController;
+use App\Http\Controllers\CiamControllers\LocationController;
+use App\Http\Controllers\CiamControllers\PrivateInsuranceController;
+use App\Http\Controllers\CiamControllers\PublicInsuranceController;
+use App\Http\Controllers\CiamControllers\SocialProgramController;
+
+
 
 Route::get('/', function () {
     return view('welcome');

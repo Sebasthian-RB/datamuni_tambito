@@ -12,8 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('social_programs', function (Blueprint $table) {
+
             $table->id();
+            $table->string('social_programs_name'); // String porque pueden ser una variedad de nombres
             $table->timestamps();
+
         });
     }
 
