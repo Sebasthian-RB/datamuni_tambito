@@ -50,8 +50,6 @@ class AmPerson extends Model
         'sex_type' => 'boolean',              // Tipo de sexo como booleano (0: femenino, 1: masculino)
         'phone_number' => 'string',           // Número de teléfono como string
         'attendance_date' => 'datetime',      // Fecha y hora de asistencia como objeto Carbon
-        'created_at' => 'datetime',           // Fecha de creación como objeto Carbon
-        'updated_at' => 'datetime',           // Fecha de actualización como objeto Carbon
     ];
 
     /**
