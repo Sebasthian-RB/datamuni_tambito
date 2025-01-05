@@ -10,6 +10,9 @@ use Illuminate\Foundation\Http\FormRequest;
  */
 class StoreVlFamilyMemberRequest extends FormRequest
 {
+    // Propiedad temporal para almacenar el maxIdLength
+    private $maxIdLength;
+
     /**
      * Determina si el usuario está autorizado para esta acción.
      */
@@ -25,18 +28,29 @@ class StoreVlFamilyMemberRequest extends FormRequest
      */
     public function rules(): array
     {
+        // Se obtiene el tipo de documento de identidad.
+        $identityDocument = $this->input('identity_document'); 
+
+        // Definir el tamaño máximo de id utilizando el operador match
+        $this->maxIdLength = match ($identityDocument) {
+            'DNI' => 8,
+            'Carnet de Extranjería' => 20,
+            'Otro' => 30,
+            default => 8, 
+        };
+
         return [
             'id' => [
                 'required',
                 'string',
-                'max:20',
-                'unique:vl_family_members,id', // Debe ser único en la tabla
+                'max:' . $this->maxIdLength, // Aplica la longitud dinámica para el id
+                'unique:vl_family_members,id', //El id debe ser único
+                'regex:/^\d+$/', // El id debe ser un número entero
             ],
             'identity_document' => [
                 'required',
                 'string',
                 'max:80',
-                'unique:vl_family_members,identity_document', // Debe ser único en la tabla
             ],
             'given_name' => [
                 'required',
@@ -66,9 +80,8 @@ class StoreVlFamilyMemberRequest extends FormRequest
         return [
             'id.required' => 'El número de documento de identidad es obligatorio.',
             'id.unique' => 'El número de documento de identidad ya está registrado.',
-            'id.max' => 'El número de documento de identidad no debe exceder los 20 caracteres.',
+            'id.max' => "El número de documento de identidad no debe exceder los {$this->maxIdLength} caracteres.",
             'identity_document.required' => 'El tipo de documento de identidad es obligatorio.',
-            'identity_document.unique' => 'El tipo de documento de identidad ya está registrado.',
             'identity_document.max' => 'El tipo de documento de identidad no debe exceder los 80 caracteres.',
             'given_name.required' => 'El nombre es obligatorio.',
             'given_name.max' => 'El nombre no debe exceder los 80 caracteres.',

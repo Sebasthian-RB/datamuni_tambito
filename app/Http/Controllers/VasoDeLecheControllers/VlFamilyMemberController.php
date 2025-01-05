@@ -22,8 +22,9 @@ class VlFamilyMemberController extends Controller
      */
     public function index(IndexVlFamilyMemberRequest $request)
     {
-        $familyMembers = VlFamilyMember::all();
-        return view('areas.VasoDeLecheViews.FamilyMembers.index', compact('familyMembers'));
+        $vlFamilyMembers = VlFamilyMember::all();
+
+        return view('areas.VasoDeLecheViews.VlFamilyMembers.index', compact('vlFamilyMembers'));
     }
 
     /**
@@ -34,7 +35,13 @@ class VlFamilyMemberController extends Controller
      */
     public function create(CreateVlFamilyMemberRequest $request)
     {
-        return view('areas.VasoDeLecheViews.FamilyMembers.create');
+        $identityDocumentTypes = [
+            'DNI' => 'DNI',
+            'Carnet de Extranjería' => 'Carnet de Extranjería',
+            'Otro' => 'Otro',
+        ];
+
+        return view('areas.VasoDeLecheViews.VlFamilyMembers.create', compact('identityDocumentTypes'));
     }
 
     /**
@@ -46,56 +53,71 @@ class VlFamilyMemberController extends Controller
     public function store(StoreVlFamilyMemberRequest $request)
     {
         VlFamilyMember::create($request->validated());
-        return redirect()->route('family_members.index')->with('success', 'Miembro familiar creado correctamente.');
+
+        return redirect()
+            ->route('vl_family_members.index')
+            ->with('success', 'Miembro familiar creado correctamente.');
     }
 
     /**
      * Muestra los detalles de un miembro familiar específico.
      *
      * @param ShowVlFamilyMemberRequest $request
-     * @param VlFamilyMember $familyMember
+     * @param VlFamilyMember $vlFamilyMember
      * @return \Illuminate\View\View
      */
-    public function show(ShowVlFamilyMemberRequest $request, VlFamilyMember $familyMember)
+    public function show(ShowVlFamilyMemberRequest $request, VlFamilyMember $vlFamilyMember)
     {
-        return view('areas.VasoDeLecheViews.FamilyMembers.show', compact('familyMember'));
+        return view('areas.VasoDeLecheViews.VlFamilyMembers.show', compact('vlFamilyMember'));
     }
 
     /**
      * Muestra el formulario para editar un miembro familiar existente.
      *
      * @param EditVlFamilyMemberRequest $request
-     * @param VlFamilyMember $familyMember
+     * @param VlFamilyMember $vlFamilyMember
      * @return \Illuminate\View\View
      */
-    public function edit(EditVlFamilyMemberRequest $request, VlFamilyMember $familyMember)
+    public function edit(EditVlFamilyMemberRequest $request, VlFamilyMember $vlFamilyMember)
     {
-        return view('areas.VasoDeLecheViews.FamilyMembers.edit', compact('familyMember'));
+        $identityDocumentTypes = [
+            'DNI' => 'DNI',
+            'Carnet de Extranjería' => 'Carnet de Extranjería',
+            'Otro' => 'Otro',
+        ];
+
+        return view('areas.VasoDeLecheViews.VlFamilyMembers.edit', compact('vlFamilyMember', 'identityDocumentTypes'));
     }
 
     /**
      * Actualiza un miembro familiar existente en la base de datos.
      *
      * @param UpdateVlFamilyMemberRequest $request
-     * @param VlFamilyMember $familyMember
+     * @param VlFamilyMember $vlFamilyMember
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateVlFamilyMemberRequest $request, VlFamilyMember $familyMember)
+    public function update(UpdateVlFamilyMemberRequest $request, VlFamilyMember $vlFamilyMember)
     {
-        $familyMember->update($request->validated());
-        return redirect()->route('family_members.index')->with('success', 'Miembro familiar actualizado correctamente.');
+        $vlFamilyMember->update($request->validated());
+
+        return redirect()
+            ->route('vl_family_members.index')
+            ->with('success', 'Miembro familiar actualizado correctamente.');
     }
 
     /**
      * Elimina un miembro familiar de la base de datos.
      *
      * @param DestroyVlFamilyMemberRequest $request
-     * @param VlFamilyMember $familyMember
+     * @param VlFamilyMember $vlFamilyMember
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(DestroyVlFamilyMemberRequest $request, VlFamilyMember $familyMember)
+    public function destroy(DestroyVlFamilyMemberRequest $request, VlFamilyMember $vlFamilyMember)
     {
-        $familyMember->delete();
-        return redirect()->route('family_members.index')->with('success', 'Miembro familiar eliminado correctamente.');
+        $vlFamilyMember->delete();
+
+        return redirect()
+            ->route('vl_family_members.index')
+            ->with('success', 'Miembro familiar eliminado correctamente.');
     }
 }

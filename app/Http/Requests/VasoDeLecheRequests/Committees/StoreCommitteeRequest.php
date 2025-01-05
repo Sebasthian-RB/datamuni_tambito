@@ -29,8 +29,8 @@ class StoreCommitteeRequest extends FormRequest
             'id' => [
                 'required',
                 'string',
-                'unique:committees,id,' . $this->route('committee'), // Se permite actualizar el mismo ID
-                'regex:/^\d+$/', // El id_custom debe ser un número entero
+                'unique:committees,id', //El id debe ser unico 
+                'regex:/^\d+$/', // El id debe ser un número entero
             ],
 
             'name' => [
