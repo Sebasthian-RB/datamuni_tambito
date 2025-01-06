@@ -18,7 +18,13 @@
                 <h3 class="card-title">Formulario para editar persona</h3>
             </div>
             <div class="card-body">
-                
+                <div class="form-group">
+                    <label for="id">N° Documento</label>
+                    <input type="text" class="form-control @error('id') is-invalid @enderror" id="id" name="id" value="{{ old('id', $amPerson->id) }}" required>
+                    @error('id')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+                </div>
 
                 <div class="form-group">
                     <label for="identity_document">Documento de Identidad</label>
@@ -108,3 +114,19 @@
 </div>
 @stop
 
+@push('js')
+<script>
+    document.getElementById('identity_document').addEventListener('change', function () {
+        let idField = document.getElementById('id');
+        let identityDocument = this.value;
+
+        if (identityDocument === 'DNI') {
+            idField.setAttribute('maxlength', 8);
+        } else if (identityDocument === 'Pasaporte') {
+            idField.setAttribute('maxlength', 20);
+        } else {
+            idField.removeAttribute('maxlength');
+        }
+    });
+</script>
+@endpush

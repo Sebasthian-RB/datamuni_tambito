@@ -3,6 +3,7 @@
 namespace App\Http\Requests\AreaDeLaMujerRequests\AmPeople;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateAmPersonRequest extends FormRequest
 {
@@ -16,14 +17,16 @@ class UpdateAmPersonRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
-
-        $rules = [
-            
+        return [
+            'id' => [
+                'required',
+                'string',
+                'max:20',
+                Rule::unique('am_people', 'id')->ignore($this->route('am_person')), // Ignorar el ID actual
+            ],
             'identity_document' => 'required|string|in:DNI,Pasaporte,Carnet,Cedula',
             'given_name' => 'required|string|max:50',
             'paternal_last_name' => 'required|string|max:50',
@@ -33,9 +36,6 @@ class UpdateAmPersonRequest extends FormRequest
             'phone_number' => 'nullable|regex:/^\d{9}$/',
             'attendance_date' => 'required|date',
         ];
-
-
-        return $rules;
     }
 
     public function messages()
