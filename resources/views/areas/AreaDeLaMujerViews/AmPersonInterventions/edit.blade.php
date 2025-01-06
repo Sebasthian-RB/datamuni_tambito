@@ -43,7 +43,7 @@
                 </select>
             </div>
             <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Actualizar</button>
-            <a href="{{ route('am_person_interventions.index') }}" class="btn btn-secondary"><i class="fa fa-arrow-left"></i> Volver</a>
+            <a href="{{ route('am_person_interventions.index') }}" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>
 </div>

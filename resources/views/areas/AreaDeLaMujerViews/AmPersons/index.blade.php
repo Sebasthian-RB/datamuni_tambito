@@ -11,8 +11,9 @@
 <div class="container">
     <!-- Botones de acción -->
     <a href="{{ route('am_people.create') }}" class="btn btn-info mb-3"><i class="fa fa-plus"></i> Agregar Persona</a>
-    <a href="{{ route('sectors.create') }}" class="btn btn-danger mb-3">Volver</a>
-
+    <a href="{{ route('amdashboard') }}" class="btn btn-danger mb-3">
+        <i class="fa fa-arrow-left"></i> Volver
+    </a>
     <!-- Mensaje de éxito -->
     @if(session('success'))
         <div class="alert alert-success">

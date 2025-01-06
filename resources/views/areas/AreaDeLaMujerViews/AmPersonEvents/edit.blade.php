@@ -50,7 +50,7 @@
                         <option value="Justificado" {{ $amPersonEvent->status == 'Justificado' ? 'selected' : '' }}>Justificado</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Actualizar</button>
+                <button type="submit" class="btn btn-success">Actualizar</button>
                 <a href="{{ route('am_person_events.index') }}" class="btn btn-secondary">Cancelar</a>
             </form>
         </div>

@@ -3,15 +3,16 @@
 @section('title', 'Relaciones Persona-Intervención')
 
 @section('content_header')
-    <h1>Relaciones Persona-Intervención</h1>
+    <h1>Intervención por Persona</h1>
 @stop
 
 @section('content')
 <div class="container">
     <!-- Botones de acción -->
     <a href="{{ route('am_person_interventions.create') }}" class="btn btn-info mb-3"><i class="fa fa-plus"></i> Crear Relación</a>
-    <a href="{{ route('sectors.create') }}" class="btn btn-danger mb-3"><i class="fa fa-arrow-left"></i> Volver</a>
-
+    <a href="{{ route('amdashboard') }}" class="btn btn-danger mb-3">
+        <i class="fa fa-arrow-left"></i> Volver
+    </a>
     <!-- Mensaje de éxito -->
     @if(session('success'))
         <div class="alert alert-success">

@@ -24,6 +24,7 @@
                 <textarea name="description" id="description" class="form-control" rows="4" required>{{ $violence->description }}</textarea>
             </div>
             <button type="submit" class="btn btn-warning">Actualizar</button>
+            <a href="{{ route('violences.index') }}" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>
 </div>

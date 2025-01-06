@@ -48,7 +48,7 @@
                         <option value="Justificado">Justificado</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Guardar</button>
+                <button type="submit" class="btn btn-success">Guardar</button>
                 <a href="{{ route('am_person_events.index') }}" class="btn btn-secondary">Cancelar</a>
             </form>
         </div>

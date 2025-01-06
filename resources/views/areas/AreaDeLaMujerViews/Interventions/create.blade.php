@@ -23,8 +23,9 @@
                 <label for="appointment_date">Fecha de la Cita</label>
                 <input type="datetime-local" name="appointment_date" id="appointment_date" class="form-control" required value="{{ old('appointment_date') }}">
             </div>
-            <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
-            <a href="{{ route('interventions.index') }}" class="btn btn-secondary"><i class="fa fa-arrow-left"></i> Volver</a>
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <a href="{{ route('interventions.index') }}" class="btn btn-secondary">Cancelar</a>
+            
         </form>
     </div>
 </div>

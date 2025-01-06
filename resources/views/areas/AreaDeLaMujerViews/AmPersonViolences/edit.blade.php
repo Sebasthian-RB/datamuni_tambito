@@ -42,6 +42,7 @@
                        class="form-control" required>
             </div>
             <button type="submit" class="btn btn-warning">Actualizar</button>
+            <a href="{{ route('am_person_violences.index') }}" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>
 </div>

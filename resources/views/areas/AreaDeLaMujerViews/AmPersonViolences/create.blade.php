@@ -37,6 +37,7 @@
                 <input type="datetime-local" name="registration_date" id="registration_date" class="form-control" required>
             </div>
             <button type="submit" class="btn btn-success">Guardar</button>
+            <a href="{{ route('am_person_violences.index') }}" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>
 </div>

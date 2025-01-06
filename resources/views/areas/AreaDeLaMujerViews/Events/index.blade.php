@@ -12,8 +12,9 @@
     <a href="{{ route('events.create') }}" class="btn btn-info mb-3">
         <i class="fa fa-plus"></i> Agregar Nuevo Evento
     </a>
-    <a href="{{ route('sectors.create') }}" class="btn btn-danger mb-3"><i class="fa fa-arrow-left"></i> Volver</a>
-
+    <a href="{{ route('amdashboard') }}" class="btn btn-danger mb-3">
+        <i class="fa fa-arrow-left"></i> Volver
+    </a>
     <!-- Mensaje de éxito -->
     @if(session('success'))
         <div class="alert alert-success">

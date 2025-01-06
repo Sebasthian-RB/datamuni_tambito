@@ -107,7 +107,8 @@
                 </div>
             </div>
             <div class="card-footer">
-                <button type="submit" class="btn btn-success">Actualizar Persona</button>
+                <button type="submit" class="btn btn-success">Actualizar</button>
+                <a href="{{ route('am_people.index') }}" class="btn btn-secondary">Cancelar</a>
             </div>
         </div>
     </form>

@@ -52,6 +52,7 @@
                     </select>
                 </div>
                 <button type="submit" class="btn btn-success">Actualizar</button>
+                <a href="{{ route('events.index') }}" class="btn btn-secondary">Cancelar</a>
             </form>
         </div>
     </div>
