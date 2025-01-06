@@ -63,7 +63,7 @@ Route::middleware([
     Route::resource('am_person_interventions', AmPersonInterventionController::class);
     Route::resource('am_person_violences', AmPersonViolenceController::class);
     Route::resource('am_person_events', AmPersonEventController::class);
-    Route::get('/am_dashboard', [AmDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/am_dashboard', [AmDashboardController::class, 'index'])->name('amdashboard');
 
     // Rutas de los controladores de Vaso de Leche dentro del grupo de autenticación    
     Route::resource('committees', CommitteeController::class);
