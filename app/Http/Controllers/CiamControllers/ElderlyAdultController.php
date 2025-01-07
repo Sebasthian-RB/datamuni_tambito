@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\CiamControllers;
 
-use App\Models\ElderlyAdult;
+use App\Http\Controllers\Controller;
+use App\Models\CiamModels\ElderlyAdult;
 use Illuminate\Http\Request;
 
 class ElderlyAdultController extends Controller
