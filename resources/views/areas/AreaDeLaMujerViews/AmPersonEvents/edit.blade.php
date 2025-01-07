@@ -50,6 +50,17 @@
                         <option value="Justificado" {{ $amPersonEvent->status == 'Justificado' ? 'selected' : '' }}>Justificado</option>
                     </select>
                 </div>
+                <div class="form-group">
+                    <label for="attendance_datetime">Fecha y Hora de Asistencia</label>
+                    <input 
+                        type="datetime-local" 
+                        name="attendance_datetime" 
+                        id="attendance_datetime" 
+                        class="form-control" 
+                        value="{{ old('attendance_datetime', $amPersonEvent->attendance_datetime ? $amPersonEvent->attendance_datetime->format('Y-m-d\TH:i') : '') }}" 
+                        required
+                    >
+                </div>
                 <button type="submit" class="btn btn-success">Actualizar</button>
                 <a href="{{ route('am_person_events.index') }}" class="btn btn-secondary">Cancelar</a>
             </form>

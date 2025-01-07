@@ -38,6 +38,12 @@
                         {{ $amPersonEvent->status }}
                     </p>
                 </div>
+
+                <!-- Columna de la fecha y hora -->
+                <div class="col-md-6 mb-3">
+                    <h5><strong>Fecha y Hora de Asistencia:</strong></h5>
+                    <p>{{ $amPersonEvent->attendance_datetime ? $amPersonEvent->attendance_datetime->format('d/m/Y h:i A') : 'No especificada' }}</p>
+                </div>
             </div>
         </div>
 

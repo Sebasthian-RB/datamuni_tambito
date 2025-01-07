@@ -7,7 +7,6 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * Request para validar la actualización de un AmPersonEvent.
  */
-
 class UpdateAmPersonEventRequest extends FormRequest
 {
     /**
@@ -31,8 +30,10 @@ class UpdateAmPersonEventRequest extends FormRequest
             'am_person_id' => 'required|exists:am_people,id', // Validar que la persona exista en la tabla am_people.
             'event_id' => 'required|exists:events,id',       // Validar que el evento exista en la tabla events.
             'status' => 'required|in:Asistió,No Asistió,Justificado', // Validar que el estado sea uno de los permitidos.
+            'attendance_datetime' => 'nullable|date',       // Validar que sea una fecha válida, opcional.
         ];
     }
+
     /**
      * Mensajes personalizados para las reglas de validación.
      *
@@ -47,6 +48,7 @@ class UpdateAmPersonEventRequest extends FormRequest
             'event_id.exists' => 'El evento seleccionado no existe.',
             'status.required' => 'El campo "Estado" es obligatorio.',
             'status.in' => 'El estado debe ser uno de los siguientes: Asistió, No Asistió o Justificado.',
+            'attendance_datetime.date' => 'El campo "Fecha y Hora de Asistencia" debe ser una fecha válida.',
         ];
     }
 }
