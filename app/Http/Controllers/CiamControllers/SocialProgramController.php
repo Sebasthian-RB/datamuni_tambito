@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\CiamControllers;
 
 use App\Models\SocialProgram;
 use Illuminate\Http\Request;

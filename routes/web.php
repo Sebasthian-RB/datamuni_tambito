@@ -85,7 +85,7 @@ Route::middleware([
     Route::resource('public_insurances', PublicInsuranceController::class);
     Route::resource('social_programs', SocialProgramController::class);
 
-    Route::get('/ciam_dashboard', [AmDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/ciam_dashboard', [CiamDashboardController::class, 'index'])->name('ciamdashboard');
 
 });
 
