@@ -16,7 +16,7 @@ class ElderlyAdultController extends Controller
     public function index()
     {
         $elderlyAdults = ElderlyAdult::with('guardians', 'socialPrograms', 'privateInsurances')->get();
-        return view('elderly_adults.index', compact('elderlyAdults'));
+        return view('areas.CiamViews.ElderlyAdults.elderly_adults.index', compact('elderlyAdults'));
     }
 
     /**
