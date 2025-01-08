@@ -3,8 +3,16 @@
 @section('title', 'Dashboard - Área de la Mujer')
 
 @section('content_header')
-    <h1>Panel de Control</h1>
-    <p class="text-muted">Sigue los pasos recomendados para gestionar eficientemente los datos del Área de la Mujer.</p>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">Panel de Control del Área de la Mujer</h1>
+            <p class="text-muted">Sigue los pasos recomendados para gestionar eficientemente los datos del Área de la Mujer.</p>
+        </div>
+
+    </div>
+    <div class="alert alert-info" role="alert">
+        <i class="fas fa-info-circle"></i> Recuerda revisar las actualizaciones recientes y mantener los datos al día.
+    </div>
 @stop
 
 @section('content')
@@ -123,6 +131,91 @@
                 </div>
             </div>
         </div>
+        <div class="card mb-4">
+            <div class="card-header bg-warning text-white">
+                <h3>
+                    Estadísticas de Intervenciones
+                    <button class="btn btn-light btn-sm float-right" data-toggle="collapse" data-target="#dashboardStatsIn" aria-expanded="false" aria-controls="dashboardStatsIn">
+                        <i class="fas fa-chart-bar"></i> Ver Estadísticas
+                    </button>
+                </h3>
+            </div>
+            <div class="collapse" id="dashboardStatsIn">
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Card: Total de Intervenciones -->
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-header bg-warning text-white">
+                                    <h5>Total de Intervenciones Registradas</h5>
+                                </div>
+                                <div class="card-body text-center">
+                                    <h4>{{ $totalInterventions }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <!-- Card: Personas Únicas en Intervenciones -->
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-header bg-warning text-white">
+                                    <h5>Personas Únicas Participando</h5>
+                                </div>
+                                <div class="card-body text-center">
+                                    <h4>{{ $totalUniquePersonsInInterventions }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <!-- Card: Intervenciones por Estado -->
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-header bg-warning text-white">
+                                    <h5>Intervenciones por Estado</h5>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group">
+                                        @foreach($interventionStatusStats as $status)
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                {{ $status->status }}
+                                                <span class="badge badge-primary badge-pill">{{ $status->count }}</span>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="row mt-4">
+                        <!-- Card: Últimas Relaciones entre Intervenciones y Personas -->
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header bg-warning text-white">
+                                    <h5>Últimas Intervenciones - Personas</h5>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group">
+                                        @foreach($recentPersonInterventions as $relation)
+                                            <li class="list-group-item">
+                                                <strong>Persona:</strong> 
+                                                {{ $relation->given_name }} {{ $relation->paternal_last_name }} {{ $relation->maternal_last_name }}<br>
+                                                <strong>Cita:</strong> {{ $relation->appointment }}<br>
+                                                <strong>Fecha:</strong> {{ \Carbon\Carbon::parse($relation->appointment_date)->format('d/m/Y H:i') }}<br>
+                                                <strong>Estado:</strong> 
+                                                <span class="badge badge-{{ $relation->status == 'Completado' ? 'success' : ($relation->status == 'En progreso' ? 'warning' : 'danger') }}">
+                                                    {{ $relation->status }}
+                                                </span>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Gestión de Programas y Eventos -->
@@ -148,6 +241,103 @@
                         <i class="fas fa-user-clock"></i> Personas y Eventos
                     </a>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mb-4">
+        <div class="card-header bg-success text-white">
+            <h3>
+                Estadísticas de Eventos
+                <button class="btn btn-light btn-sm float-right" data-toggle="collapse" data-target="#dashboardStatsEv" aria-expanded="false" aria-controls="dashboardStatsEv">
+                    <i class="fas fa-chart-bar"></i> Ver Estadísticas
+                </button>
+            </h3>
+        </div>
+        <div class="collapse" id="dashboardStatsEv">
+            <div class="card-body">
+                <div class="row">
+                    <!-- Total de Eventos -->
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card bg-success text-white mb-4">
+                            <div class="card-body">
+                                <h4>Total de Eventos</h4>
+                                <p class="h3">{{ $totalEvents }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <!-- Eventos Recientes -->
+                        <div class="col-lg-12">
+                            <div class="card shadow mb-4">
+                                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0"><i class="fas fa-calendar-alt"></i> Eventos Recientes</h5>
+                                    <button class="btn btn-sm btn-light" data-toggle="collapse" data-target="#recentEventsTable" aria-expanded="true" aria-controls="recentEventsTable">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                </div>
+                                <div class="collapse show" id="recentEventsTable">
+                                    <div class="card-body">
+                                        @if ($recentEvents->isEmpty())
+                                            <p class="text-center text-muted">No hay eventos recientes registrados.</p>
+                                        @else
+                                            <div class="table-responsive">
+                                                <table class="table table-hover table-bordered align-middle text-center">
+                                                    <thead class="thead-dark">
+                                                        <tr>
+                                                            <th>Nombre del Evento</th>
+                                                            <th>Lugar</th>
+                                                            <th>Fecha de Inicio</th>
+                                                            <th>Estado</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($recentEvents as $event)
+                                                            <tr>
+                                                                <td class="font-weight-bold text-primary">{{ $event->name }}</td>
+                                                                <td>{{ $event->place }}</td>
+                                                                <td>{{ \Carbon\Carbon::parse($event->start_date)->format('d/m/Y H:i') }}</td>
+                                                                <td>
+                                                                    @switch($event->status)
+                                                                        @case('Pendiente')
+                                                                            <span class="badge badge-warning px-3 py-2">{{ $event->status }}</span>
+                                                                            @break
+                                                                        @case('Finalizado')
+                                                                            <span class="badge badge-success px-3 py-2">{{ $event->status }}</span>
+                                                                            @break
+                                                                        @case('En proceso')
+                                                                            <span class="badge badge-info px-3 py-2">{{ $event->status }}</span>
+                                                                            @break
+                                                                        @case('Cancelado')
+                                                                            <span class="badge badge-danger px-3 py-2">{{ $event->status }}</span>
+                                                                            @break
+                                                                    @endswitch
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                
+                    <!-- Gráfico de Estados de Eventos -->
+                    <div class="col-lg-9">
+                        <div class="card mb-4">
+                            <div class="card-header bg-success text-white">
+                                <h5>Distribución de Estados por Evento</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="eventStatusChart" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>            
             </div>
         </div>
     </div>
@@ -183,6 +373,45 @@
                         legend: {
                             position: 'top',
                         },
+                    }
+                }
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Datos del gráfico
+            const labels = @json($eventStatusStats->pluck('status'));
+            const data = @json($eventStatusStats->pluck('count'));
+    
+            // Configuración del gráfico
+            const ctx = document.getElementById('eventStatusChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar', // Cambiar a 'pie' si prefieres un gráfico de pastel
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Cantidad de Eventos',
+                        data: data,
+                        backgroundColor: [
+                            '#36A2EB', // Azul para Pendiente
+                            '#4BC0C0', // Verde para En proceso
+                            '#FF6384', // Rojo para Cancelado
+                            '#FFCE56'  // Amarillo para Finalizado
+                        ],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false, // Ocultar leyenda
+                        },
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
                     }
                 }
             });
