@@ -10,6 +10,14 @@ class CommitteeVLFamilyMember extends Model
     use HasFactory;
 
     /**
+     * Nombre de la tabla en la base de datos.
+     * Si el nombre de la tabla no sigue la convención, puedes especificarlo explícitamente.
+     *
+     * @var string
+     */
+    protected $table = 'committee_vl_family_members'; // Asegúrate de que coincida con el nombre correcto de la tabla en la base de datos
+
+    /**
      * Los atributos que son asignables masivamente.
      *
      * @var array

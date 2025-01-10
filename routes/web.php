@@ -11,6 +11,8 @@ use App\Http\Controllers\VasoDeLecheControllers\VlFamilyMemberController;
 use App\Http\Controllers\VasoDeLecheControllers\VlFamilyMemberProductController;
 use App\Http\Controllers\VasoDeLecheControllers\VlMinorController;
 
+use App\Http\Controllers\VasoDeLecheControllers\VasoDeLecheController;
+
 
 //Controladores deL Área: ÁREA DE LA MUJER
 use App\Http\Controllers\AreaDeLaMujerControllers\AmPersonController;
@@ -73,6 +75,7 @@ Route::middleware([
     Route::resource('vl_family_members', VlFamilyMemberController::class);
     Route::resource('vl_family_members_products', VlFamilyMemberProductController::class);
     Route::resource('vl_minors', VlMinorController::class);
+    Route::get('/vaso-de-leche', [VasoDeLecheController::class, 'index'])->name('vaso-de-leche.index');
 
     // Rutas de los controladores de Ciam dentro del grupo de autenticación    
     Route::resource('elderly_adults', ElderlyAdultController::class);

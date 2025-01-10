@@ -29,12 +29,14 @@ class Committee extends Model
      * @var array
      */
     protected $fillable = [
-        'id',                   // ID personalizado de comité 
-        'name',                 // Nombre del comité
-        'president',            // Nombre del presidente
-        'urban_core',           // Núcleo urbano
-        'beneficiaries_count',  // Número de beneficiarios
-        'sector_id',            // Clave foránea del sector
+        'id',                           // ID personalizado de comité 
+        'name',                         // Nombre del comité
+        'president_paternal_surname',   // Apellido paterno del presidente
+        'president_maternal_surname',   // Apellido materno del presidente
+        'president_given_name',         // Nombres del presidente
+        'urban_core',                   // Núcleo urbano
+        'beneficiaries_count',          // Número de beneficiarios
+        'sector_id',                    // Clave foránea del sector
     ];
 
     /**
@@ -45,7 +47,9 @@ class Committee extends Model
     protected $casts = [
         'id' => 'string',
         'name' => 'string',
-        'president' => 'string',
+        'president_paternal_surname' => 'string',
+        'president_maternal_surname' => 'string',
+        'president_given_name' => 'string',
         'urban_core' => 'string',
         'beneficiaries_count' => 'integer',
         'sector_id' => 'integer',
@@ -62,24 +66,68 @@ class Committee extends Model
     }
 
     /**
-     * Mutador: Formatear y almacenar el nombre del presidente(a).
-     *
-     * @param string $value
+     * Mutador para el apellido paterno del presidente.
      */
-    public function setPresidentAttribute($value)
+    public function setPresidentPaternalSurnameAttribute($value)
     {
-        // Capitalizar la primera letra de cada palabra y eliminar espacios en exceso
-        $this->attributes['president'] = ucwords(strtolower(trim($value)));
+        $this->attributes['president_paternal_surname'] = strtoupper(trim($value));
     }
 
     /**
-     * Accesor: Obtener el nombre del presidente(a) en mayúsculas completas.
+     * Mutador para el apellido materno del presidente.
+     */
+    public function setPresidentMaternalSurnameAttribute($value)
+    {
+        $this->attributes['president_maternal_surname'] = strtoupper(trim($value));
+    }
+
+    /**
+     * Mutador para el nombre del presidente.
+     */
+    public function setPresidentGivenNameAttribute($value)
+    {
+        $this->attributes['president_given_name'] = strtoupper(trim($value));
+    }
+
+    /**
+     * Accesor: Obtener el apellido paterno del presidente con la primera letra mayúscula.
+     *
+     * @return string
+     */
+    public function getPresidentPaternalSurnameAttribute()
+    {
+        return ucwords(strtolower($this->attributes['president_paternal_surname']));
+    }
+
+    /**
+     * Accesor: Obtener el apellido materno del presidente con la primera letra mayúscula.
+     *
+     * @return string
+     */
+    public function getPresidentMaternalSurnameAttribute()
+    {
+        return ucwords(strtolower($this->attributes['president_maternal_surname']));
+    }
+
+    /**
+     * Accesor: Obtener el nombre del presidente con la primera letra mayúscula.
+     *
+     * @return string
+     */
+    public function getPresidentGivenNameAttribute()
+    {
+        return ucwords(strtolower($this->attributes['president_given_name']));
+    }
+
+    /**
+     * Accesor: Obtener el nombre completo del presidente con la primera letra en mayúscula para cada parte.
      *
      * @return string
      */
     public function getPresidentAttribute()
     {
-        return strtoupper($this->attributes['president']);
+        // Concatenamos y formateamos los tres atributos
+        return $this->president_paternal_surname . ' ' . $this->president_maternal_surname . ' ' . $this->president_given_name;
     }
 
     /**

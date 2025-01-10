@@ -159,7 +159,7 @@
                 </div>                                              
 
                 <div class="form-group">
-                    <label for="vl_family_member_id">Miembro Familiar</label>
+                    <label for="vl_family_member_id">Familiar</label>
                     @if($vlFamilyMembers->isEmpty())
                         <p>No hay miembros familiares disponibles.</p>
                     @else

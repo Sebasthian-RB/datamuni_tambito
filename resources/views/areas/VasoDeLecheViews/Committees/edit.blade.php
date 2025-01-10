@@ -34,9 +34,25 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="president">Presidente(a)</label>
-                    <input type="text" class="form-control @error('president') is-invalid @enderror" id="president" name="president" value="{{ old('president', $committee->president) }}" required>
-                    @error('president')
+                    <label for="president_paternal_surname">Apellido Paterno del Presidente(a)</label>
+                    <input type="text" class="form-control @error('president_paternal_surname') is-invalid @enderror" id="president_paternal_surname" name="president_paternal_surname" value="{{ old('president_paternal_surname', $committee->president_paternal_surname) }}" required>
+                    @error('president_paternal_surname')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="president_maternal_surname">Apellido Materno del Presidente(a)</label>
+                    <input type="text" class="form-control @error('president_maternal_surname') is-invalid @enderror" id="president_maternal_surname" name="president_maternal_surname" value="{{ old('president_maternal_surname', $committee->president_maternal_surname) }}">
+                    @error('president_maternal_surname')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="president_given_name">Nombres del Presidente(a)</label>
+                    <input type="text" class="form-control @error('president_given_name') is-invalid @enderror" id="president_given_name" name="president_given_name" value="{{ old('president_given_name', $committee->president_given_name) }}" required>
+                    @error('president_given_name')
                         <span class="invalid-feedback">{{ $message }}</span>
                     @enderror
                 </div>
