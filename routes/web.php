@@ -89,7 +89,4 @@ Route::middleware([
     Route::resource('social_programs', SocialProgramController::class);
 
     Route::get('/ciam_dashboard', [CiamDashboardController::class, 'index'])->name('ciamdashboard');
-
 });
-
-

@@ -16,13 +16,14 @@
             @csrf
             <div class="form-group">
                 <label for="am_person_id">Persona</label>
-                <select name="am_person_id" id="am_person_id" class="form-control" required>
+                <select name="am_person_id" id="am_person_id" class="form-control select2" required>
                     <option value="">Seleccione una persona</option>
                     @foreach($amPersons as $person)
                         <option value="{{ $person->id }}">{{ $person->given_name }} {{ $person->paternal_last_name }}</option>
                     @endforeach
                 </select>
             </div>
+            
             <div class="form-group">
                 <label for="violence_id">Tipo de Violencia</label>
                 <select name="violence_id" id="violence_id" class="form-control" required>
@@ -42,3 +43,34 @@
     </div>
 </div>
 @endsection
+@section('css')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .select2-container .select2-selection--single {
+            height:36px; /* Ajusta la altura según tus necesidades */
+            padding: 10px; /* Ajusta el espaciado interno */
+            font-size: 16px; /* Ajusta el tamaño de texto si es necesario */
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 20px; /* Alinea el texto verticalmente */
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 20px; /* Alinea la flecha del desplegable */
+        }
+    </style>
+
+@stop
+
+@section('js')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Inicializar Select2
+            $('#am_person_id').select2({
+                placeholder: "Seleccione una persona",
+                allowClear: true,
+                width: '100%' // Ajustar al ancho del contenedor
+            });
+        });
+    </script>
+@stop
