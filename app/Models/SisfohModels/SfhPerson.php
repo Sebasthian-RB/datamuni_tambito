@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\SisfohModels;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -73,7 +73,7 @@ class SfhPerson extends Model
      */
     public function requests()
     {
-        return $this->hasMany(Request::class, 'sfh_person_id');
+        return $this->hasMany(SfhRequest::class, 'sfh_person_id');
     }
 
     /**

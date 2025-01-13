@@ -11,16 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sfc_dwelling_sfc_people', function (Blueprint $table) {
-            $table->id();            
+        Schema::create('sfh_requests', function (Blueprint $table) {
+            $table->id();
+            $table->date('request_date'); // Fecha de la solicitud
+            $table->text('description')->nullable(); // Descripción de la solicitud
             $table->string('sfh_person_id', 36); // Relación con sfh_people
-            $table->enum('status', ['Activo', 'Inactivo']); // Estado de la visita
-            $table->date('update_date'); // Fecha de actualización
 
-            // Relaciones de claves foráneas
+            // Relacion de las tablas foraneas
             $table->foreign('sfh_person_id')->references('id')->on('sfh_people')->cascadeOnDelete(); // Relación con sfh_people
-            $table->foreignId('sfh_dwelling_id')->constrained('sfh_dwellings')->cascadeOnDelete(); // Elimina el registro si se elimina la vivienda
-
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sfc_dwelling_sfc_people');
+        Schema::dropIfExists('sfh_requests');
     }
 };

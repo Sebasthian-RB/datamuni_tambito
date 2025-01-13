@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\SisfohModels;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -44,7 +44,7 @@ class Visit extends Model
      */
     public function request()
     {
-        return $this->belongsTo(Request::class);
+        return $this->belongsTo(SfhRequest::class);
     }
 
     /**

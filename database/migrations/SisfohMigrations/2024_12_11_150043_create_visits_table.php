@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('enumerator_id', 36);
 
             // Relaciones de claves foráneas
-            $table->foreignId('request_id')->constrained('requests')->onDelete('cascade'); // Elimina las visitas si se elimina la solicitud
+            $table->foreignId('sfh_requests_id')->constrained('sfh_requests')->onDelete('cascade'); // Elimina las visitas si se elimina la solicitud
             $table->foreign('enumerator_id')->references('id')->on('enumerators')->onDelete('cascade');
             $table->timestamps();
         });

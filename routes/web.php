@@ -24,6 +24,16 @@ use App\Http\Controllers\AreaDeLaMujerControllers\ViolenceController;
 
 use App\Http\Controllers\AreaDeLaMujerControllers\AmDashboardController; //dashboard de AM
 
+// Controladores del Área: Sisfoh
+
+use App\Http\Controllers\SisfohControllers\EnumeratorController;
+use App\Http\Controllers\SisfohControllers\InstrumentController;
+use App\Http\Controllers\SisfohControllers\InstrumentVisitController;
+use App\Http\Controllers\SisfohControllers\SfhRequestController;
+use App\Http\Controllers\SisfohControllers\SfhDwellingSfhPersonController;
+use App\Http\Controllers\SisfohControllers\SfhDwellingController;
+use App\Http\Controllers\SisfohControllers\SfhPersonController;
+use App\Http\Controllers\SisfohControllers\VisitController;
 
 //Controladores deL Área: CIAM
 use App\Http\Controllers\CiamControllers\ElderlyAdultController;
@@ -73,6 +83,17 @@ Route::middleware([
     Route::resource('vl_family_members', VlFamilyMemberController::class);
     Route::resource('vl_family_members_products', VlFamilyMemberProductController::class);
     Route::resource('vl_minors', VlMinorController::class);
+
+    // Rutas de los controladores de Sisfoh dentro del grupo de autenticación
+    Route::resource('enumerators', EnumeratorController::class);
+    Route::resource('instruments', InstrumentController::class);
+    Route::resource('instrument_visits', InstrumentVisitController::class);
+    Route::resource('sfh_dwelling_sfh_people', SfhDwellingSfhPersonController::class);
+    Route::resource('sfh_dwelling', SfhDwellingController::class);
+    Route::resource('sfh_people', SfhPersonController::class);
+    Route::resource('sfh_requests', SfhRequestController::class);
+    Route::resource('visits', VisitController::class);
+
 
     // Rutas de los controladores de Ciam dentro del grupo de autenticación    
     Route::resource('elderly_adults', ElderlyAdultController::class);

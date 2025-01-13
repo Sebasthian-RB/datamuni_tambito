@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\SisfohModels;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-class Request extends Model
+
+class SfhRequest extends Model
 {
     use HasFactory;
 

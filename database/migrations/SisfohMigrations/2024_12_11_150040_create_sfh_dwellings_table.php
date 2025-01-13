@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('street_address'); // Dirección de la vivienda
             $table->string('reference', 255)->nullable(); // Referencia opcional
             $table->string('neighborhood', 100)->nullable(); // Barrio opcional
-            $table->string('district', 100); // Distrito obligatorio
-            $table->string('provincia', 100); // Provincia obligatoria
-            $table->string('region', 100); // Región obligatoria
+            $table->string('district', 50); // Distrito obligatorio
+            $table->string('provincia', 30); // Provincia obligatoria
+            $table->string('region', 15); // Región obligatoria
             $table->timestamps();
         });
     }
