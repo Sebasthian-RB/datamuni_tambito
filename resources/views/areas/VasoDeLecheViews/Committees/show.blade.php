@@ -14,8 +14,10 @@
         </div>
         <div class="card-body">
             <p><strong>ID:</strong> {{ $committee->id }}</p>
-            <p><strong>Nombre:</strong> {{ $committee->name }}</p>
-            <p><strong>Presidente:</strong> {{ $committee->president }}</p>
+            <p><strong>Nombre del Comité:</strong> {{ $committee->name }}</p>
+            <p><strong>Apellido Paterno del Presidente(a):</strong> {{ $committee->president_paternal_surname }}</p>
+            <p><strong>Apellido Materno del Presidente(a):</strong> {{ $committee->president_maternal_surname }}</p>
+            <p><strong>Nombres del Presidente(a):</strong> {{ $committee->president_given_name }}</p>
             <p><strong>Núcleo Urbano:</strong> {{ $committee->urban_core }}</p>
             <p><strong>Beneficiarios:</strong> {{ $committee->beneficiaries_count }}</p>
             <p><strong>Sector:</strong> {{ $committee->sector->name }}</p>

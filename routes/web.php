@@ -11,6 +11,8 @@ use App\Http\Controllers\VasoDeLecheControllers\VlFamilyMemberController;
 use App\Http\Controllers\VasoDeLecheControllers\VlFamilyMemberProductController;
 use App\Http\Controllers\VasoDeLecheControllers\VlMinorController;
 
+use App\Http\Controllers\VasoDeLecheControllers\VasoDeLecheController;
+
 
 //Controladores deL Área: ÁREA DE LA MUJER
 use App\Http\Controllers\AreaDeLaMujerControllers\AmPersonController;
@@ -73,7 +75,7 @@ Route::middleware([
     Route::resource('am_person_interventions', AmPersonInterventionController::class);
     Route::resource('am_person_violences', AmPersonViolenceController::class);
     Route::resource('am_person_events', AmPersonEventController::class);
-    Route::get('/am_dashboard', [AmDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/am_dashboard', [AmDashboardController::class, 'index'])->name('amdashboard');
 
     // Rutas de los controladores de Vaso de Leche dentro del grupo de autenticación    
     Route::resource('committees', CommitteeController::class);
@@ -83,6 +85,7 @@ Route::middleware([
     Route::resource('vl_family_members', VlFamilyMemberController::class);
     Route::resource('vl_family_members_products', VlFamilyMemberProductController::class);
     Route::resource('vl_minors', VlMinorController::class);
+    Route::get('/vaso-de-leche', [VasoDeLecheController::class, 'index'])->name('vaso-de-leche.index');
 
     // Rutas de los controladores de Sisfoh dentro del grupo de autenticación
     Route::resource('enumerators', EnumeratorController::class);
@@ -106,8 +109,5 @@ Route::middleware([
     Route::resource('public_insurances', PublicInsuranceController::class);
     Route::resource('social_programs', SocialProgramController::class);
 
-    Route::get('/ciam_dashboard', [AmDashboardController::class, 'index'])->name('dashboard');
-
+    Route::get('/ciam_dashboard', [CiamDashboardController::class, 'index'])->name('ciamdashboard');
 });
-
-

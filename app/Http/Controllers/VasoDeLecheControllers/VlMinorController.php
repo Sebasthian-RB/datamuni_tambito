@@ -12,6 +12,8 @@ use App\Http\Requests\VasoDeLecheRequests\VlMinors\EditVlMinorRequest;
 use App\Http\Requests\VasoDeLecheRequests\VlMinors\UpdateVlMinorRequest;
 use App\Http\Requests\VasoDeLecheRequests\VlMinors\DestroyVlMinorRequest;
 
+use App\Models\VasoDeLecheModels\VlFamilyMember;
+
 class VlMinorController extends Controller
 {
     /**
@@ -23,7 +25,7 @@ class VlMinorController extends Controller
     public function index(IndexVlMinorRequest $request)
     {
         $vlMinors = VlMinor::all();
-        return view('areas.VasoDeLecheViews.Minors.index', compact('vlMinors'));
+        return view('areas.VasoDeLecheViews.VlMinors.index', compact('vlMinors'));
     }
 
     /**
@@ -34,7 +36,33 @@ class VlMinorController extends Controller
      */
     public function create(CreateVlMinorRequest $request)
     {
-        return view('areas.VasoDeLecheViews.Minors.create');
+        // Aquí defines las opciones disponibles para los selects
+        $documentTypes = ['DNI', 'Pasaporte', 'Cédula de Extranjería'];  // Puedes agregar más tipos de documentos
+        $sexTypes = [
+            0 => 'Femenino',
+            1 => 'Masculino',
+        ];
+        $educationLevels = ['Ninguno', 'Inicial', 'Primaria', 'Secundaria', 'Técnico', 'Superior'];
+        $conditions = ['Gest.', 'Lact.', 'Anc.'];
+        $disabilities = [
+            0 => 'No',
+            1 => 'Sí',
+        ];
+        $dwellingTypes = ['Propio', 'Alquilado'];
+
+        // Obtener los miembros familiares
+        $vlFamilyMembers = VlFamilyMember::all();
+
+        // Pasar todas las variables a la vista
+        return view('areas.VasoDeLecheViews.VlMinors.create', compact(
+            'documentTypes',
+            'sexTypes',
+            'educationLevels',
+            'conditions',
+            'disabilities',
+            'dwellingTypes',
+            'vlFamilyMembers'
+        ));
     }
 
     /**
@@ -49,7 +77,7 @@ class VlMinorController extends Controller
         VlMinor::create($request->validated());
 
         // Redirección con mensaje de éxito
-        return redirect()->route('vl-minors.index')->with('success', 'Menor registrado correctamente.');
+        return redirect()->route('vl_minors.index')->with('success', 'Menor registrado correctamente.');
     }
 
     /**
@@ -61,7 +89,7 @@ class VlMinorController extends Controller
      */
     public function show(ShowVlMinorRequest $request, VlMinor $vlMinor)
     {
-        return view('areas.VasoDeLecheViews.Minors.show', compact('vlMinor'));
+        return view('areas.VasoDeLecheViews.VlMinors.show', compact('vlMinor'));
     }
 
     /**
@@ -73,7 +101,39 @@ class VlMinorController extends Controller
      */
     public function edit(EditVlMinorRequest $request, VlMinor $vlMinor)
     {
-        return view('areas.VasoDeLecheViews.Minors.edit', compact('vlMinor'));
+        // Aquí defines las opciones disponibles para los selects
+        $documentTypes = ['DNI', 'Pasaporte', 'Cédula de Extranjería'];  // Puedes agregar más tipos de documentos
+        $sexTypes = [
+            0 => 'Femenino',
+            1 => 'Masculino',
+        ];
+        $educationLevels = ['Ninguno', 'Inicial', 'Primaria', 'Secundaria', 'Técnico', 'Superior'];
+        $conditions = ['Gest.', 'Lact.', 'Anc.'];
+        $disabilities = [
+            0 => 'No',
+            1 => 'Sí',
+        ];
+        $dwellingTypes = ['Propio', 'Alquilado'];
+
+        // Obtener los miembros familiares
+        $vlFamilyMembers = VlFamilyMember::all();
+
+        // Formatear las fechas en el formato adecuado 'Y-m-d'
+        $vlMinor->birth_date = $vlMinor->birth_date ? $vlMinor->birth_date->format('Y-m-d') : null;
+        $vlMinor->registration_date = $vlMinor->registration_date ? $vlMinor->registration_date->format('Y-m-d') : null;
+        $vlMinor->withdrawal_date = $vlMinor->withdrawal_date ? $vlMinor->withdrawal_date->format('Y-m-d') : null;
+
+        // Pasar todas las variables a la vista
+        return view('areas.VasoDeLecheViews.VlMinors.edit', compact(
+            'vlMinor',
+            'documentTypes',
+            'sexTypes',
+            'educationLevels',
+            'conditions',
+            'disabilities',
+            'dwellingTypes',
+            'vlFamilyMembers'
+        ));
     }
 
     /**
@@ -89,7 +149,7 @@ class VlMinorController extends Controller
         $vlMinor->update($request->validated());
 
         // Redirección con mensaje de éxito
-        return redirect()->route('vl-minors.index')->with('success', 'Datos del menor actualizados correctamente.');
+        return redirect()->route('vl_minors.index')->with('success', 'Datos del menor actualizados correctamente.');
     }
 
     /**
@@ -102,6 +162,6 @@ class VlMinorController extends Controller
     public function destroy(DestroyVlMinorRequest $request, VlMinor $vlMinor)
     {
         $vlMinor->delete();
-        return redirect()->route('vl-minors.index')->with('success', 'Menor eliminado correctamente.');
+        return redirect()->route('vl_minors.index')->with('success', 'Menor eliminado correctamente.');
     }
 }

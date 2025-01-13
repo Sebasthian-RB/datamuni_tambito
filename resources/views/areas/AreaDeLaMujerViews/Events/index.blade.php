@@ -49,7 +49,13 @@
                             <td>{{ $event->place }}</td>
                             <td>{{ $event->program->name }}</td>
                             <td>
-                                <span class="badge {{ $event->status === 'Activo' ? 'bg-success' : 'bg-warning' }}">
+                                <span @class([
+                                    'badge',
+                                    'bg-success' => $event->status === 'En proceso',
+                                    'bg-primary' => $event->status === 'Finalizado',
+                                    'bg-danger' => $event->status === 'Cancelado',
+                                    'bg-warning' => $event->status === 'Pendiente',
+                                ])>
                                     {{ $event->status }}
                                 </span>
                             </td>

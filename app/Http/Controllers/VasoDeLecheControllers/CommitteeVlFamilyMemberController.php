@@ -12,6 +12,9 @@ use App\Http\Requests\VasoDeLecheRequests\CommitteeVlFamilyMembers\EditCommittee
 use App\Http\Requests\VasoDeLecheRequests\CommitteeVlFamilyMembers\UpdateCommitteeVlFamilyMemberRequest;
 use App\Http\Requests\VasoDeLecheRequests\CommitteeVlFamilyMembers\DestroyCommitteeVlFamilyMemberRequest;
 
+use App\Models\VasoDeLecheModels\Committee;
+use App\Models\VasoDeLecheModels\VlFamilyMember;
+
 class CommitteeVlFamilyMemberController extends Controller
 {
     /**
@@ -23,6 +26,7 @@ class CommitteeVlFamilyMemberController extends Controller
     public function index(IndexCommitteeVlFamilyMemberRequest $request)
     {
         $committeeVlFamilyMembers = CommitteeVlFamilyMember::all();
+
         return view('areas.VasoDeLecheViews.CommitteeVlFamilyMembers.index', compact('committeeVlFamilyMembers'));
     }
 
@@ -34,7 +38,19 @@ class CommitteeVlFamilyMemberController extends Controller
      */
     public function create(CreateCommitteeVlFamilyMemberRequest $request)
     {
-        return view('areas.VasoDeLecheViews.CommitteeVlFamilyMembers.create');
+        // Obtener los comités desde el modelo Committee
+        $committees = Committee::all();
+
+        // Obtener los miembros de la familia desde el modelo VlFamilyMember
+        $vlFamilyMembers = VlFamilyMember::all();
+
+        // Definir las opciones para el campo 'status' en el controlador
+        $statusOptions = [
+            1 => 'Activo',
+            0 => 'Inactivo',
+        ];
+
+        return view('areas.VasoDeLecheViews.CommitteeVlFamilyMembers.create', compact('committees', 'vlFamilyMembers', 'statusOptions'));
     }
 
     /**
@@ -45,9 +61,22 @@ class CommitteeVlFamilyMemberController extends Controller
      */
     public function store(StoreCommitteeVlFamilyMemberRequest $request)
     {
-        CommitteeVlFamilyMember::create($request->validated());
-        return redirect()->route('committee-vl-family-members.index')->with('success', 'Miembro familiar del comité creado correctamente.');
+        // Convertir el valor de 'status' a booleano
+        $status = $request->status == '1' ? true : false;
+
+        // Crear el nuevo registro con los valores validados y el valor de 'status' convertido
+        CommitteeVlFamilyMember::create([
+            'committee_id' => $request->committee_id,
+            'vl_family_member_id' => $request->vl_family_member_id,
+            'change_date' => $request->change_date,
+            'description' => $request->description,
+            'status' => $status, // Guardamos el valor booleano
+        ]);
+
+        // Redirigir con mensaje de éxito
+        return redirect()->route('committee_vl_family_members.index')->with('success', 'Miembro familiar del comité creado correctamente.');
     }
+
 
     /**
      * Muestra los detalles de un miembro familiar específico asignado a un comité.
@@ -83,7 +112,7 @@ class CommitteeVlFamilyMemberController extends Controller
     public function update(UpdateCommitteeVlFamilyMemberRequest $request, CommitteeVlFamilyMember $committeeVlFamilyMember)
     {
         $committeeVlFamilyMember->update($request->validated());
-        return redirect()->route('committee-vl-family-members.index')->with('success', 'Miembro familiar del comité actualizado correctamente.');
+        return redirect()->route('committee_vl_family_members.index')->with('success', 'Miembro familiar del comité actualizado correctamente.');
     }
 
     /**

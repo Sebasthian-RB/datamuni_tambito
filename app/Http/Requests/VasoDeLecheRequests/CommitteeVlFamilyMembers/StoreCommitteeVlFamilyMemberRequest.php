@@ -64,6 +64,12 @@ class StoreCommitteeVlFamilyMemberRequest extends FormRequest
             'vl_family_member_id.required' => 'El ID del miembro familiar es obligatorio.',
             'vl_family_member_id.exists' => 'El miembro familiar seleccionado no existe.',
             'change_date.required' => 'La fecha de cambio es obligatoria.',
+            'change_date.date' => 'La fecha de cambio debe ser una fecha válida.',
+            'description.nullable' => 'La descripción es opcional.',
+            'description.string' => 'La descripción debe ser un texto.',
+            'description.max' => 'La descripción no puede tener más de 255 caracteres.',
+            'status.required' => 'El estado es obligatorio.',
+            'status.boolean' => 'El estado debe ser verdadero o falso.',
         ];
     }
 

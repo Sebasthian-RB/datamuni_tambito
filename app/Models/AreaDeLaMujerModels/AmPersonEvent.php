@@ -13,12 +13,14 @@ class AmPersonEvent extends Model
         'am_person_id', // ID de la persona (foráneo de am_persons)
         'event_id',     // ID del evento (foráneo de events)
         'status',   // Asistencia (status enum)
+        'attendance_datetime', // Fecha y hora de asistencia
     ];
 
     protected $casts = [
         'am_person_id' => 'string',
         'event_id' => 'integer',
         'status' => 'string',
+        'attendance_datetime' => 'datetime', // Cast a un objeto Carbon
     ];
 
     public function amPerson()

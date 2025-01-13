@@ -1,15 +1,19 @@
 <?php
 
-namespace App\Http\Requests\VasoDeLecheRequests\Minors;
+namespace App\Http\Requests\VasoDeLecheRequests\VlMinors;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 /**
- * Form Request para crear un menor.
- * Aquí se definen las reglas de validación para la creación de menores.
+ * Form Request para almacenar un nuevo menor.
+ * Aquí se definen las reglas de validación para crear un nuevo menor.
  */
 class StoreVlMinorRequest extends FormRequest
 {
+    // Propiedad temporal para almacenar el maxIdLength
+    private $maxIdLength;
+
     /**
      * Determina si el usuario está autorizado para esta acción.
      */
@@ -25,12 +29,23 @@ class StoreVlMinorRequest extends FormRequest
      */
     public function rules(): array
     {
+        // Se obtiene el tipo de documento de identidad.
+        $identityDocument = $this->input('identity_document'); 
+
+        // Definir el tamaño máximo de id utilizando el operador match
+        $this->maxIdLength = match ($identityDocument) {
+            'DNI' => 8,
+            'CNV' => 12,
+            default => 8, 
+        };
+
         return [
             'id' => [
                 'required',
                 'string',
-                'max:255',
-                'unique:vl_minors,id',
+                'max:' . $this->maxIdLength, // Aplica la longitud dinámica para el id
+                'unique:vl_minors,id', //El id debe ser único
+                'regex:/^\d+$/', // El id debe ser un número entero
             ],
             'identity_document' => [
                 'required',
@@ -55,6 +70,8 @@ class StoreVlMinorRequest extends FormRequest
             'birth_date' => [
                 'required',
                 'date',
+                'before_or_equal:today', // La fecha de nacimiento debe ser antes o igual al día de hoy.
+                'after_or_equal:' . now()->subYears(120)->toDateString(), // Asegura que la fecha no sea mayor a 120 años atrás.
             ],
             'sex_type' => [
                 'required',
@@ -67,6 +84,13 @@ class StoreVlMinorRequest extends FormRequest
             'withdrawal_date' => [
                 'nullable',
                 'date',
+                // Validación de que la fecha de retiro es posterior a la fecha de registro, si es proporcionada
+                function ($attribute, $value, $fail) {
+                    // Si la fecha de retiro está presente, se valida que sea posterior a la fecha de registro
+                    if ($value && $this->input('registration_date') && $value < $this->input('registration_date')) {
+                        $fail('La fecha de retiro debe ser posterior a la fecha de registro.');
+                    }
+                },
             ],
             'address' => [
                 'required',
@@ -106,10 +130,60 @@ class StoreVlMinorRequest extends FormRequest
     {
         return [
             'id.required' => 'El campo ID es obligatorio.',
+            'id.string' => 'El ID debe ser una cadena de texto.',
+            'id.max' => "El ID no debe exceder los {$this->maxIdLength} caracteres.",
             'id.unique' => 'El ID ya está registrado en el sistema.',
+            'id.regex' => 'El ID debe ser un número entero.',
+
             'identity_document.required' => 'El documento de identidad es obligatorio.',
-            'vl_family_member_id.exists' => 'El miembro de familia seleccionado no existe.',
-            // Otros mensajes personalizados según sea necesario...
+            'identity_document.string' => 'El documento de identidad debe ser una cadena de texto.',
+            'identity_document.max' => 'El documento de identidad no debe exceder los 80 caracteres.',
+
+            'given_name.required' => 'El nombre del menor es obligatorio.',
+            'given_name.string' => 'El nombre del menor debe ser una cadena de texto.',
+            'given_name.max' => 'El nombre del menor no debe exceder los 80 caracteres.',
+
+            'paternal_last_name.required' => 'El apellido paterno es obligatorio.',
+            'paternal_last_name.string' => 'El apellido paterno debe ser una cadena de texto.',
+            'paternal_last_name.max' => 'El apellido paterno no debe exceder los 50 caracteres.',
+
+            'maternal_last_name.required' => 'El apellido materno es obligatorio.',
+            'maternal_last_name.string' => 'El apellido materno debe ser una cadena de texto.',
+            'maternal_last_name.max' => 'El apellido materno no debe exceder los 50 caracteres.',
+
+            'birth_date.required' => 'La fecha de nacimiento es obligatoria.',
+            'birth_date.date' => 'La fecha de nacimiento debe ser una fecha válida.',
+            'birth_date.before_or_equal' => 'La fecha de nacimiento no puede ser una fecha futura.',
+            'birth_date.after_or_equal' => 'La fecha de nacimiento debe ser al menos 120 años atrás.',
+
+            'sex_type.required' => 'El sexo es obligatorio.',
+            'sex_type.boolean' => 'El sexo debe ser un valor booleano (verdadero o falso).',
+
+            'registration_date.required' => 'La fecha de registro es obligatoria.',
+            'registration_date.date' => 'La fecha de registro debe ser una fecha válida.',
+
+            'withdrawal_date.date' => 'La fecha de retiro debe ser una fecha válida.',
+            'withdrawal_date.after_or_equal' => 'La fecha de retiro debe ser posterior a la fecha de registro.',
+
+            'address.required' => 'La dirección es obligatoria.',
+            'address.string' => 'La dirección debe ser una cadena de texto.',
+            'address.max' => 'La dirección no debe exceder los 255 caracteres.',
+
+            'dwelling_type.required' => 'El tipo de vivienda es obligatorio.',
+            'dwelling_type.in' => 'El tipo de vivienda debe ser "Propio" o "Alquilado".',
+
+            'education_level.required' => 'El nivel educativo es obligatorio.',
+            'education_level.in' => 'El nivel educativo debe ser uno de los siguientes: Ninguno, Inicial, Primaria, Secundaria, Técnico, Superior.',
+
+            'condition.required' => 'La condición es obligatoria.',
+            'condition.in' => 'La condición debe ser una de las siguientes: Gest., Lact., Anc.',
+
+            'disability.required' => 'El campo discapacidad es obligatorio.',
+            'disability.boolean' => 'El campo discapacidad debe ser un valor booleano (verdadero o falso).',
+
+            'vl_family_member_id.required' => 'El miembro de familia relacionado es obligatorio.',
+            'vl_family_member_id.string' => 'El ID del miembro de familia debe ser una cadena de texto.',
+            'vl_family_member_id.exists' => 'El miembro de familia seleccionado no existe en el sistema.',
         ];
     }
 
@@ -121,7 +195,6 @@ class StoreVlMinorRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'id' => 'ID del menor',
             'identity_document' => 'documento de identidad',
             'given_name' => 'nombre del menor',
             'paternal_last_name' => 'apellido paterno',
