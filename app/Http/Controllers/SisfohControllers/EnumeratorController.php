@@ -46,7 +46,7 @@ class EnumeratorController extends Controller
         Enumerator::create($data);  // Crea un nuevo encuestador
 
         // Redirige a la lista de encuestadores con un mensaje de éxito
-        return redirect()->route('areas.SisfohViews.Enumerators.index')->with('success', 'Encuestador creado con éxito.');
+        return redirect()->route('enumerators.index')->with('success', 'Encuestador creado con éxito.');
     }
 
     /**
@@ -55,7 +55,7 @@ class EnumeratorController extends Controller
     public function show(Enumerator $enumerator, ShowEnumeratorRequest $request)
     {
         // Muestra los detalles de un encuestador específico
-        return view('sisfoh.enumerators.show', compact('enumerator'));
+        return view('areas.SisfohViews.Enumerators.show', compact('enumerator'));
     }
 
     /**
@@ -64,7 +64,7 @@ class EnumeratorController extends Controller
     public function edit(Enumerator $enumerator, EditEnumeratorRequest $request)
     {
         // Muestra el formulario de edición de un encuestador
-        return view('sisfoh.enumerators.edit', compact('enumerator'));
+        return view('areas.SisfohViews.Enumerators.edit', compact('enumerator'));
     }
 
     /**

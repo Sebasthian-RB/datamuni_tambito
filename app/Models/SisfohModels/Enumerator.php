@@ -9,6 +9,9 @@ class Enumerator extends Model
 {
     use HasFactory;
 
+    public $incrementing = false; // Desactivar auto-incremento
+    protected $keyType = 'string'; // Especificar clave primaria como string
+
     protected $fillable = [
         'id',
         'identity_document',       // Tipo de documento (DNI, Pasaporte, etc.)
@@ -92,9 +95,14 @@ class Enumerator extends Model
     /**
      * Validación simple: Asegurarse de que el número de teléfono tenga 9 dígitos.
      */
-    public function isValidPhoneNumber()
+    /*public function isValidPhoneNumber()
     {
         return strlen($this->phone_number) === 9;
+    } */
+
+    public function isValidPhoneNumber(): bool
+    {
+        return $this->phone_number && preg_match('/^\d{9}$/', $this->phone_number);
     }
 
     /**

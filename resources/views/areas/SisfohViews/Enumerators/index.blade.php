@@ -1,5 +1,5 @@
 <!-- resources/views/sisfoh/enumerators/index.blade.php -->
-@extends('adminlte::page')  // Cambiar el nombre 
+@extends('adminlte::page')
 
 @section('content')
 <div class="container">
@@ -11,12 +11,16 @@
             {{ session('success') }}
         </div>
     @endif
-    
+
     <table class="table mt-3 table-bordered">
         <thead>
             <tr>
                 <th>ID</th>
+                <th>Tipo de Documento</th>
                 <th>Nombre</th>
+                <th>Apellido Paterno</th>
+                <th>Apellido Materno</th>
+                <th>Número de Teléfono</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -24,7 +28,11 @@
             @foreach($enumerators as $enumerator)
                 <tr>
                     <td>{{ $enumerator->id }}</td>
-                    <td>{{ $enumerator->name }}</td>
+                    <td>{{ $enumerator->identity_document }}</td>
+                    <td>{{ $enumerator->given_name }}</td>
+                    <td>{{ $enumerator->paternal_last_name }}</td>
+                    <td>{{ $enumerator->maternal_last_name }}</td>
+                    <td>{{ $enumerator->phone_number }}</td>
                     <td>
                         <a href="{{ route('enumerators.show', $enumerator) }}" class="btn btn-info">Ver</a>
                         <a href="{{ route('enumerators.edit', $enumerator) }}" class="btn btn-warning">Editar</a>

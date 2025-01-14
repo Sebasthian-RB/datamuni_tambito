@@ -7,8 +7,11 @@
     
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">{{ $enumerator->name }}</h5>
-            <p class="card-text"><strong>Correo Electrónico:</strong> {{ $enumerator->email }}</p>
+            <h5 class="card-title"><strong>Nombre Completo:</strong> {{ $enumerator->given_name }} {{ $enumerator->paternal_last_name }} {{ $enumerator->maternal_last_name }}</h5>
+            
+            <p class="card-text"><strong>Tipo de Documento:</strong> {{ $enumerator->identity_document }}</p>
+            <p class="card-text"><strong>Número de Documento:</strong> {{ $enumerator->identity_number }}</p>
+            <p class="card-text"><strong>Número de Teléfono:</strong> {{ $enumerator->phone_number }}</p>
         </div>
     </div>
     
