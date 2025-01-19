@@ -8,8 +8,8 @@
 
 @section('content')
 <div class="container">
-    <a href="{{ route('products.create') }}" class="btn btn-info mb-3">Agregar Producto</a>
-    <a href="{{ route('sectors.create') }}" class="btn btn-danger mb-3">Volver</a>
+    <a href="{{ route('products.create') }}" class="btn mb-3" style="background-color: #9B7EBD; color: white;">Agregar Producto</a>
+    <a href="{{ route('vaso-de-leche.index') }}" class="btn btn-secondary mb-3">Volver</a>
 
     @if(session('success'))
         <div class="alert alert-success">
@@ -43,8 +43,8 @@
                                     <span class="text-secondary"> (Sin descripción)</span>
                                 @endif
                             </td>                            <td>
-                                <a href="{{ route('products.show', $product->id) }}" class="btn btn-info btn-sm">Ver</a>
-                                <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning btn-sm">Editar</a>
+                                <a href="{{ route('products.show', $product->id) }}" class="btn btn-sm" style="background-color: #9B7EBD; color: white;">Ver</a>
+                                <a href="{{ route('products.edit', $product->id) }}" class="btn btn-sm" style="background-color: #D4BEE4; color: white;">Editar</a>
                                 <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline-block;">
                                     @csrf
                                     @method('DELETE')

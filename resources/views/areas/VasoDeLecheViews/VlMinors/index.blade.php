@@ -8,8 +8,8 @@
 
 @section('content')
 <div class="container">
-    <a href="{{ route('vl_minors.create') }}" class="btn btn-info mb-3">Agregar Menor</a>
-    <a href="{{ route('sectors.create') }}" class="btn btn-danger mb-3">Volver</a>
+    <a href="{{ route('vl_minors.create') }}" class="btn mb-3" style="background-color: #9B7EBD; color: white;">Agregar Menor</a>
+    <a href="{{ route('vaso-de-leche.index') }}" class="btn btn-secondary mb-3">Volver</a>
 
     @if(session('success'))
         <div class="alert alert-success">
@@ -44,8 +44,8 @@
                             <td>{{ $minor->birth_date->format('d/m/Y') }}</td>
                             <td>{{ $minor->sex_type == 0 ? 'Femenino' : 'Masculino' }}</td>
                             <td>
-                                <a href="{{ route('vl_minors.show', $minor->id) }}" class="btn btn-info btn-sm">Ver</a>
-                                <a href="{{ route('vl_minors.edit', $minor->id) }}" class="btn btn-warning btn-sm">Editar</a>
+                                <a href="{{ route('vl_minors.show', $minor->id) }}" class="btn btn-sm" style="background-color: #9B7EBD; color: white;">Ver</a>
+                                <a href="{{ route('vl_minors.edit', $minor->id) }}" class="btn btn-sm" style="background-color: #D4BEE4; color: white;">Editar</a>
                                 <form action="{{ route('vl_minors.destroy', $minor->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')

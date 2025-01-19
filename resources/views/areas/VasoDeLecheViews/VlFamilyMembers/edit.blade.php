@@ -13,7 +13,7 @@
         @method('PUT')
 
         <div class="card">
-            <div class="card-header">
+            <div class="card-header" style="background-color: #3B1E54; color: #FFFFFF;">
                 <h3 class="card-title">Formulario para editar miembro de familia</h3>
             </div>
             <div class="card-body">
@@ -61,7 +61,7 @@
                 </div>
             </div>
             <div class="card-footer">
-                <button type="submit" class="btn btn-success">Actualizar Miembro</button>
+                <button type="submit" class="btn btn-success" style="background-color: #9B7EBD; color: white; border: #9B7EBD;">Actualizar Miembro</button>
                 <a href="{{ route('vl_family_members.index') }}" class="btn btn-secondary">Cancelar</a>
             </div>
         </div>

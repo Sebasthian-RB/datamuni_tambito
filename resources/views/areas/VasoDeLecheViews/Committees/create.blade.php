@@ -12,7 +12,7 @@
         @csrf
         <div class="card">
             <!-- Card Header con título más grande -->
-            <div class="card-header bg-dark p-0 d-flex align-items-center" style="height: 60px;">
+            <div class="card-header p-0 d-flex align-items-center" style="background-color: #3B1E54; color: #FFFFFF; height: 60px;">
                 <h3 class="card-title mb-0" style="margin-left: 20px; font-size: 1.30rem;">Formulario para agregar nuevo Comité</h3>
                 <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="img-fluid" style="height: 50px; width: auto; margin-left: auto; margin-right: 20px;">
             </div>
@@ -22,7 +22,7 @@
                     <!-- Sección del Comité (Columna izquierda) -->
                     <div class="col-md-6">
                         <div class="card">
-                            <div class="card-header bg-indigo">
+                            <div class="card-header" style="background-color: #9B7EBD; color: #FFFFFF;">
                                 <h4 style="font-size: 1.20rem;">Datos del Comité</h4>
                             </div>
                             <div class="card-body">
@@ -86,7 +86,7 @@
                     <!-- Sección del Presidente (Columna derecha) -->
                     <div class="col-md-6">
                         <div class="card">
-                            <div class="card-header bg-indigo">
+                            <div class="card-header" style="background-color: #9B7EBD; color: #FFFFFF;">
                                 <h4 style="font-size: 1.20rem;">Datos del Presidente(a)</h4>
                             </div>
                             <div class="card-body">
@@ -120,7 +120,7 @@
             </div>
 
             <div class="card-footer">
-                <button type="submit" class="btn btn-success">Guardar Comité</button>
+                <button type="submit" class="btn btn-success" style="background-color: #9B7EBD; color: white; border: #9B7EBD;">Guardar Comité</button>
                 <a href="{{ route('committees.index') }}" class="btn btn-danger">Cancelar</a>
             </div>
         </div>

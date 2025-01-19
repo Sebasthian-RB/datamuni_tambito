@@ -9,7 +9,7 @@
 @section('content')
 <div class="container">
     <div class="card">
-        <div class="card-header bg-success p-0 d-flex justify-content-center align-items-center" style="height: 60px;">
+        <div class="card-header p-0 d-flex justify-content-center align-items-center" style="background-color: #3B1E54; height: 60px;">
             <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="img-fluid" style="height: 80%; width: auto;">
         </div>
         <div class="card-body">
@@ -21,6 +21,7 @@
 
         </div>
         <div class="card-footer">
+            <a href="{{ route('vl_family_members.edit', $vlFamilyMember->id) }}" class="btn btn-secondary" style="background-color: #9B7EBD; color: white; border: #9B7EBD;">Editar</a>
             <a href="{{ route('vl_family_members.index') }}" class="btn btn-secondary">Volver</a>
         </div>
     </div>
