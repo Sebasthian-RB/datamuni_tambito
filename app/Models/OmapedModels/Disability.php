@@ -11,19 +11,9 @@ class Disability extends Model
 
     // Atributos asignables en masa
     protected $fillable = [
-        'certificate_number',
-        'organization_name',
-        'diagnosis',
-        'disability_type',
-        'severity_level',
-        'support_needed',
-        'support_used',
-        'health_insurance',
-        'sisfoh',
-        'labor_inclusion',
-        'pension',
-        'certificate_issue_date',
-        'certificate_expiry_date',
+        'certificate_number', 'certificate_issue_date', 'certificate_expiry_date', 
+        'organization_name', 'diagnosis', 'disability_type', 'severity_level', 
+        'required_support_devices', 'used_support_devices', 'om_person_id'
     ];
 
     // Casts para convertir tipos de datos automáticamente
@@ -38,6 +28,6 @@ class Disability extends Model
      */
     public function person()
     {
-        return $this->belongsTo(OmPerson::class);
+        return $this->belongsTo(OmPerson::class, 'om_person_id');
     }
 }

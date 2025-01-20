@@ -11,61 +11,44 @@ class OmPerson extends Model
 
     // Atributos asignables en masa
     protected $fillable = [
-       'registration_date',
-        'paternal_last_name',
-        'maternal_last_name',
-        'given_name',
-        'civil_status',
-        'dni',
-        'birth_date',
-        'age',
-        'gender',
-        'phone',
-        'education_level',
-        'occupation',
-        'email',
-        'observation',
-        'autonomy_record',
-        'social_program',
-        'dwelling_id',
-        'disability_id',
-        'caregiver_id', 
-    ];
-
-    // Casts para convertir tipos de datos automáticamente
-    protected $casts = [
-        'registration_date' => 'datetime', // Fecha y hora de registro
-        'birth_date' => 'date', // Fecha de nacimiento
-        'age' => 'integer', // Edad de la persona
-        'dwelling_id' => 'integer', // Relación con vivienda
-        'disability_id' => 'integer', // Relación con discapacidad
-        'caregiver_id' => 'integer', // Relación con cuidador
+        'registration_date', 'paternal_last_name', 'maternal_last_name', 'given_name', 
+        'marital_status', 'dni', 'birth_date', 'age', 'gender', 'phone', 'email', 
+        'education_level', 'occupation', 'health_insurance', 'sisfoh', 'employment_status', 
+        'pension_status', 'om_dwelling_id', 'disability_id', 'personal_assistance_need', 
+        'autonomy_notes', 'caregiver_id', 'observations'
     ];
 
     /**
-     * Relación con la vivienda.
-     * Una persona pertenece a una vivienda.
+     * Casts de algunos atributos
+     */
+    protected $casts = [
+        'registration_date' => 'date', // Convertir a tipo fecha
+        'birth_date' => 'date', // Convertir a tipo fecha
+        'age' => 'integer', // Convertir a entero
+        'sisfoh' => 'boolean', // Convertir a booleano
+    ];
+
+    /**
+     * Relación de muchos a uno con OmDwelling
      */
     public function dwelling()
     {
-        return $this->belongsTo(OmDwelling::class);
+        return $this->belongsTo(OmDwelling::class, 'om_dwelling_id');
     }
 
     /**
-     * Relación con la discapacidad.
-     * Una persona tiene una sola discapacidad registrada.
+     * Relación de uno a uno con Disability
      */
     public function disability()
     {
-        return $this->hasOne(Disability::class);
+        return $this->hasOne(Disability::class, 'id', 'disability_id');
     }
 
     /**
-     * Relación con el cuidador.
-     * Una persona tiene un único cuidador.
+     * Relación de muchos a uno con Caregiver
      */
     public function caregiver()
     {
-        return $this->belongsTo(Caregiver::class);
+        return $this->belongsTo(Caregiver::class, 'caregiver_id');
     }
 }

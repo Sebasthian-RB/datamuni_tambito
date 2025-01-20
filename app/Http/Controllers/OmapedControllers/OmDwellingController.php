@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\OmapedControllers;
 
-use App\Models\OmDwelling;
+use App\Http\Controllers\Controller;
+use App\Models\OmapedModels\OmDwelling;
 use Illuminate\Http\Request;
 
 class OmDwellingController extends Controller
@@ -12,7 +13,9 @@ class OmDwellingController extends Controller
      */
     public function index()
     {
-        //
+        // Obtener todas las viviendas
+        $dwellings = OmDwelling::all();
+        return view('om_dwellings.index', compact('dwellings'));
     }
 
     /**
@@ -20,7 +23,8 @@ class OmDwellingController extends Controller
      */
     public function create()
     {
-        //
+        // Mostrar formulario para registrar una nueva vivienda
+        return view('om_dwellings.create');
     }
 
     /**
@@ -28,7 +32,21 @@ class OmDwellingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validar datos de entrada
+        $data = $request->validate([
+            'exact_location' => 'required|string|max:255',
+            'reference' => 'nullable|string|max:255',
+            'annex_sector' => 'nullable|string|max:255',
+            'water_electric_supply' => 'required|string|in:Agua,Luz,Agua y Luz',
+            'housing_type' => 'required|string|max:255',
+            'housing_condition' => 'required|string|max:255',
+            'num_residents' => 'required|integer|min:1',
+        ]);
+
+        // Crear nueva vivienda
+        OmDwelling::create($data);
+
+        return redirect()->route('om_dwellings.index')->with('success', 'Vivienda registrada con éxito.');
     }
 
     /**
@@ -36,7 +54,8 @@ class OmDwellingController extends Controller
      */
     public function show(OmDwelling $omDwelling)
     {
-        //
+        // Mostrar detalles de una vivienda
+        return view('om_dwellings.show', compact('omDwelling'));
     }
 
     /**
@@ -44,7 +63,8 @@ class OmDwellingController extends Controller
      */
     public function edit(OmDwelling $omDwelling)
     {
-        //
+        // Mostrar formulario para editar una vivienda
+        return view('om_dwellings.edit', compact('omDwelling'));
     }
 
     /**
@@ -52,7 +72,21 @@ class OmDwellingController extends Controller
      */
     public function update(Request $request, OmDwelling $omDwelling)
     {
-        //
+        // Validar datos de entrada
+        $data = $request->validate([
+            'exact_location' => 'required|string|max:255',
+            'reference' => 'nullable|string|max:255',
+            'annex_sector' => 'nullable|string|max:255',
+            'water_electric_supply' => 'required|string|in:Agua,Luz,Agua y Luz',
+            'housing_type' => 'required|string|max:255',
+            'housing_condition' => 'required|string|max:255',
+            'num_residents' => 'required|integer|min:1',
+        ]);
+
+        // Actualizar vivienda
+        $omDwelling->update($data);
+
+        return redirect()->route('om_dwellings.index')->with('success', 'Vivienda actualizada con éxito.');
     }
 
     /**
@@ -60,6 +94,8 @@ class OmDwellingController extends Controller
      */
     public function destroy(OmDwelling $omDwelling)
     {
-        //
+        // Eliminar vivienda
+        $omDwelling->delete();
+        return redirect()->route('om_dwellings.index')->with('success', 'Vivienda eliminada con éxito.');
     }
 }

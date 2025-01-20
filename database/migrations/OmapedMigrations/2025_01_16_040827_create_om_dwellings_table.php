@@ -13,13 +13,14 @@ return new class extends Migration
     {
         Schema::create('om_dwellings', function (Blueprint $table) {
             $table->id();
-            $table->string('location', 255); // Localización exacta de la vivienda
+            $table->string('exact_location', 255); // Localización exacta de la vivienda
             $table->text('reference')->nullable(); // Referencia de la vivienda
-            $table->enum('water_electric_supply', ['Agua', 'Luz', 'Agua y Luz', 'Ninguno']); // Suministro de agua y/o luz
+            $table->string('annex_sector', 255)->nullable(); // Anexo/Sector de la vivienda
+            $table->enum('water_electricity', ['Agua', 'Luz', 'Agua y Luz', 'Ninguno']); // Suministro de agua y/o luz
             $table->string('dwelling_type', 50); // Tipo de vivienda
-            $table->enum('dwelling_status', ['Propia', 'Alquilada', 'Prestada']); // Situación de la vivienda
-            $table->integer('number_of_residents'); // Número de personas viviendo permanentemente
-            $table->timestamps();
+            $table->enum('ownership_status', ['Propia', 'Alquilada', 'Prestada']); // Situación de la vivienda (propia, alquilada, prestada)
+            $table->integer('permanent_occupants'); // Número de personas viviendo permanentemente
+            $table->timestamps(); // Tiempos de creación y actualización
         });
     }
 

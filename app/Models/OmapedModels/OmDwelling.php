@@ -11,17 +11,13 @@ class OmDwelling extends Model
 
     // Atributos asignables en masa
     protected $fillable = [
-        'location',
-        'reference',
-        'water_electric_supply',
-        'dwelling_type',
-        'dwelling_status',
-        'number_of_residents',
+        'exact_location', 'reference', 'annex_sector', 'water_electricity', 
+        'type', 'ownership_status', 'permanent_occupants'
     ];
 
     // Casts para convertir tipos de datos automáticamente
     protected $casts = [
-        'number_of_residents' => 'integer', // Número de residentes
+        'permanent_occupants' => 'integer', // Convertir a entero
     ];
 
     /**
@@ -30,6 +26,6 @@ class OmDwelling extends Model
      */
     public function people()
     {
-        return $this->hasMany(OmPerson::class, 'dwelling_id');
+        return $this->hasMany(OmPerson::class, 'om_dwelling_id');
     }
 }

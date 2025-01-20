@@ -13,20 +13,30 @@ return new class extends Migration
     {
         Schema::create('om_people', function (Blueprint $table) {
             $table->id();
-            $table->string('paternal_last_name', 100);
-            $table->string('maternal_last_name', 100);
-            $table->string('given_name', 100);
-            $table->enum('civil_status', ['Soltero', 'Casado', 'Divorciado', 'Viudo', 'Unión libre']);
-            $table->string('dni', 8)->unique();
-            $table->date('birth_date');
-            $table->integer('age');
-            $table->enum('gender', ['Masculino', 'Femenino', 'Otro']);
-            $table->string('phone', 15)->nullable();
-            $table->string('email', 150)->nullable();
-            $table->text('observation')->nullable(); // Nuevo campo agregado
+            $table->date('registration_date'); // Fecha de inscripción
+            $table->string('paternal_last_name', 100); // Apellido paterno
+            $table->string('maternal_last_name', 100); // Apellido materno
+            $table->string('given_name', 100); // Nombres
+            $table->enum('marital_status', ['Soltero', 'Casado', 'Divorciado', 'Viudo', 'Unión libre']); // Estado civil
+            $table->string('dni', 8)->unique(); // DNI
+            $table->date('birth_date'); // Fecha de nacimiento
+            $table->integer('age'); // Edad
+            $table->enum('gender', ['Masculino', 'Femenino', 'Otro']); // Sexo
+            $table->string('phone', 15)->nullable(); // Teléfono
+            $table->string('email', 150)->nullable(); // Correo electrónico
+            $table->string('education_level', 150)->nullable(); // Grado de instrucción
+            $table->string('occupation', 150)->nullable(); // Ocupación
+            $table->enum('health_insurance', ['SIS', 'EsSalud', 'Seguro Privado', 'Ninguno'])->nullable(); // Seguro de salud
+            $table->boolean('sisfoh')->nullable(); // SISFOH (SISFOH o no)
+            $table->enum('employment_status', ['Activo', 'Inactivo', 'Pensionista'])->nullable(); // Inserción laboral (Estado de inserción laboral)
+            $table->enum('pension_status', ['Pensionado', 'No Pensionado'])->nullable(); // Pensión del estado o privado
             $table->foreignId('om_dwelling_id')->constrained('om_dwellings')->cascadeOnDelete(); // Relación con viviendas
-            $table->foreignId('caregiver_id')->nullable()->constrained('caregivers')->cascadeOnDelete(); // Relación con cuidadores
-            $table->timestamps();
+            $table->foreignId('disability_id')->nullable()->constrained('disabilities')->cascadeOnDelete(); // Relación con discapacidad (1 a 1)
+            $table->text('personal_assistance_need')->nullable(); // Necesidad de asistencia personal
+            $table->text('autonomy_notes')->nullable(); // Notas sobre autonomía
+            $table->foreignId('caregiver_id')->nullable()->constrained('caregivers')->cascadeOnDelete(); // Relación con cuidadores (1 cuidador - muchas personas)
+            $table->text('observations')->nullable(); // Observaciones
+            $table->timestamps(); // Tiempos de creación y actualización
         });
     }
 
