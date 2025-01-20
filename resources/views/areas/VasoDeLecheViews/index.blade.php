@@ -109,91 +109,125 @@
     </div>
 
     <!-- Filtros -->
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div class="col-12">
-                <div class="card shadow-lg rounded-lg border-0" style="background-color: white;">
-                    <div class="card-header text-white text-center" style="background-color: #3B1E54;">
-                        <h3 class="card-title">Filtrar Comités</h3>
-                    </div>
-                    <div class="card-body bg-light p-4">
-                        <form action="{{ route('committees.index') }}" method="GET">
+    <form action="{{ route('vaso-de-leche.index') }}" method="GET" id="filterForm">
+        <div class="container-fluid" style="margin-top: 20px; margin-bottom: 20px;">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="card shadow-lg rounded-lg border-0" style="background-color: white;">
+                        <div class="card-header text-white d-flex align-items-center" style="background-color: #3B1E54;">
+                            <!-- Título alineado a la izquierda -->
+                            <h3 class="card-title m-0">Filtrar Comités</h3>
+                        
+                            <!-- Contenedor para los botones "Filtrar" y "Limpiar" alineados a la derecha -->
+                            <div class="ml-auto d-flex">
+                                <!-- Botón de Aplicar Filtro -->
+                                <button type="submit" class="btn rounded-3 py-1 shadow-sm" style="background-color: #FFFFFF; color: #9B7EBD; font-size: 1.2rem;">
+                                    <i class="fas fa-filter"></i>
+                                </button>
+                        
+                                <!-- Botón de Limpiar Filtros -->
+                                <button type="button" id="clearFilters" class="btn rounded-3 py-1 shadow-sm" style="background-color: #FFFFFF; color: #d9534f; font-size: 1.2rem; margin-left: 10px;">
+                                    <i class="fas fa-eraser"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="card-body bg-light p-4">
                             <div class="row g-3 justify-content-between">
                                 <!-- Filtro de Nombre del Comité -->
                                 <div class="col-12 col-md-2">
                                     <div class="input-group">
-                                        <input type="text" name="name" id="name" class="form-control shadow-sm border-0 rounded-3" placeholder="Nombre del Comité" value="{{ request('name') }}" style="height: 40px; font-size: 0.875rem;">
+                                        <p class="w-100 mb-1" style="font-size: 0.875rem; font-weight: 500; color: #3B1E54; margin-bottom: 5px;">Comité (ID o Nombre)</p>
+                                        <input type="text" name="name" id="name" class="form-control shadow-sm border-0 rounded-3" placeholder="ID o Nombre" value="{{ request('name') }}" style="height: 40px; font-size: 0.875rem;">
                                         <span class="input-group-text" style="background-color: #9B7EBD; color: white; border-radius: 0 30px 30px 0;">
                                             <i class="fas fa-search"></i>
                                         </span>
                                     </div>
                                 </div>
-    
+        
                                 <!-- Filtro de Presidente -->
                                 <div class="col-12 col-md-2">
                                     <div class="input-group">
-                                        <input type="text" name="president" id="president" class="form-control shadow-sm border-0 rounded-3" placeholder="Presidente" value="{{ request('president') }}" style="height: 40px; font-size: 0.875rem;">
+                                        <p class="w-100 mb-1" style="font-size: 0.875rem; font-weight: 500; color: #3B1E54; margin-bottom: 5px;">Presidente(a)</p>
+                                        <input type="text" name="president" id="president" class="form-control shadow-sm border-0 rounded-3" placeholder="Solo letras y espacios" value="{{ request('president') }}" style="height: 40px; font-size: 0.86rem;">
                                         <span class="input-group-text" style="background-color: #9B7EBD; color: white; border-radius: 0 30px 30px 0;">
                                             <i class="fas fa-user-tie"></i>
                                         </span>
                                     </div>
                                 </div>
-    
+        
                                 <!-- Filtro de Núcleo Urbano -->
                                 <div class="col-12 col-md-2">
                                     <div class="input-group">
-                                        <select name="urban_core" id="urban_core" class="form-control shadow-sm border-0 rounded-3" style="height: 40px; font-size: 0.875rem; background-color: #f0f0f0;">
-                                            <option value="">Seleccionar núcleo urbano</option>
-                                            <!-- Aquí podrías agregar las opciones del núcleo urbano dinámicamente -->
-                                            <option value="1" {{ request('urban_core') == '1' ? 'selected' : '' }}>Núcleo 1</option>
-                                            <option value="2" {{ request('urban_core') == '2' ? 'selected' : '' }}>Núcleo 2</option>
-                                            <option value="3" {{ request('urban_core') == '3' ? 'selected' : '' }}>Núcleo 3</option>
+                                        <p class="w-100 mb-1" style="font-size: 0.875rem; font-weight: 500; color: #3B1E54; margin-bottom: 5px;">Núcleo Urbano</p>
+                                        <select name="urban_core" id="urban_core" class="form-control shadow-sm border-0 rounded-3 @error('urban_core') is-invalid @enderror" style="height: 40px; font-size: 0.875rem; background-color: #f0f0f0;">
+                                            <option value="" disabled selected>Seleccione Núcleo Urbano</option>
+                                            @foreach ($urbanCores as $core)
+                                                <option value="{{ $core }}" {{ request('urban_core') == $core ? 'selected' : '' }}>{{ $core }}</option>
+                                            @endforeach
                                         </select>
+                                        @error('urban_core')
+                                            <span class="invalid-feedback">{{ $message }}</span>
+                                        @enderror
                                         <span class="input-group-text" style="background-color: #9B7EBD; color: white; border-radius: 0 30px 30px 0;">
                                             <i class="fas fa-city"></i>
                                         </span>
                                     </div>
                                 </div>
-    
-                                <!-- Filtro de Número de Beneficiarios -->
+        
+                                <!-- Filtro de Rango de Número de Beneficiarios -->
                                 <div class="col-12 col-md-2">
                                     <div class="input-group">
-                                        <input type="number" name="beneficiaries_count" id="beneficiaries_count" class="form-control shadow-sm border-0 rounded-3" placeholder="Beneficiarios" value="{{ request('beneficiaries_count') }}" style="height: 40px; font-size: 0.875rem;">
+                                        <p class="w-100 mb-1" style="font-size: 0.875rem; font-weight: 500; color: #3B1E54; margin-bottom: 5px;">Número de Beneficiarios</p>
+                                        <!-- Input de Beneficiarios (Mínimo) -->
+                                        <input type="number" name="min_beneficiaries_count" id="min_beneficiaries_count" class="form-control shadow-sm border-0 rounded-3" placeholder="Min." value="{{ request('min_beneficiaries_count') }}" style="height: 40px; font-size: 0.875rem;">
+
+                                        <!-- Guion separador sin borde -->
+                                        <span class="input-group-text" style="background-color: #ffffff; color: #4c4c4c; font-size: 1.1rem; padding: 0 5px; border: none;">
+                                            -
+                                        </span>
+
+                                        <!-- Input de Beneficiarios (Máximo) -->
+                                        <input type="number" name="max_beneficiaries_count" id="max_beneficiaries_count" class="form-control shadow-sm border-0 rounded-3" placeholder="Max." value="{{ request('max_beneficiaries_count') }}" style="height: 40px; font-size: 0.875rem;">
+                                        
+                                        <!-- Icono -->
                                         <span class="input-group-text" style="background-color: #9B7EBD; color: white; border-radius: 0 30px 30px 0;">
                                             <i class="fas fa-users"></i>
                                         </span>
                                     </div>
                                 </div>
-    
+
+
+        
                                 <!-- Filtro de Sector -->
                                 <div class="col-12 col-md-2">
                                     <div class="input-group">
-                                        <select name="sector_id" id="sector_id" class="form-control shadow-sm border-0 rounded-3" style="height: 40px; font-size: 0.875rem; background-color: #f0f0f0;">
-                                            <option value="">Seleccione un sector</option>
-                                            @foreach($sectors as $sector)
-                                                <option value="{{ $sector->id }}" {{ request('sector_id') == $sector->id ? 'selected' : '' }}>{{ $sector->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        <span class="input-group-text" style="background-color: #9B7EBD; color: white; border-radius: 0 30px 30px 0;">
-                                            <i class="fas fa-briefcase"></i>
-                                        </span>
+                                        <p class="w-100 mb-1" style="font-size: 0.875rem; font-weight: 500; color: #3B1E54; margin-bottom: 5px;">Sector(es)</p>
+                                        @if($sectors->isEmpty())
+                                            <p>No hay sectores disponibles.</p>
+                                        @else
+                                            <select name="sector_id" id="sector_id" class="form-control shadow-sm border-0 rounded-3 @error('sector_id') is-invalid @enderror" style="height: 40px; font-size: 0.875rem; background-color: #f0f0f0;">
+                                                <option value="" disabled selected>Seleccione un Sector</option>
+                                                @foreach($sectors as $sector)
+                                                    <option value="{{ $sector->id }}" {{ request('sector_id') == $sector->id ? 'selected' : '' }}>{{ $sector->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('sector_id')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                            <span class="input-group-text" style="background-color: #9B7EBD; color: white; border-radius: 0 30px 30px 0;">
+                                                <i class="fas fa-briefcase"></i>
+                                            </span>
+                                        @endif
                                     </div>
                                 </div>
-    
-                                <!-- Botón de Aplicar Filtro más pequeño (menos ancho) -->
-                                <div class="col-12 col-md-1 d-flex justify-content-center align-items-center">
-                                    <button type="submit" class="btn w-75 rounded-3 py-1 shadow-sm" style="background-color: #3B1E54; color: white; font-size: 0.9rem;">
-                                        <i class="fas fa-filter me-2"></i> Filtrar
-                                    </button>
-                                </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    
+    </form>  
 
     <!-- Tarjetas de Comités -->
     <div class="row">
@@ -334,57 +368,13 @@
             </ul>
         @endif
     </div>
-    
-
-
-
-    <!-- Gráfico de estadísticas -->
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Gráfico de Distribución Mensual</h3>
-                </div>
-                <div class="card-body">
-                    <canvas id="distributionChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
 @stop
 
 
 @section('js')
     <!-- Script del gráfico -->
     <script src="{{ asset('vendor/adminlte/plugins/chart.js/Chart.min.js') }}"></script>
-    <script>
-        $(function () {
-            // Gráfico de distribución mensual
-            var ctx = $('#distributionChart').get(0).getContext('2d');
-            var distributionChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'],
-                    datasets: [{
-                        label: 'Litros Distribuidos',
-                        data: [120, 180, 150, 200, 170, 250],
-                        backgroundColor: 'rgba(60,141,188,0.9)',
-                        borderColor: 'rgba(60,141,188,0.8)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        x: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        });
-    </script>
-
+    
     <!-- Script para agrandar los botones al pasar el cursor -->
     <script>
         $(document).ready(function () {
@@ -399,6 +389,13 @@
                     $(this).css('transform', 'scale(1)');
                 });
             });
+        });
+    </script>
+
+    <script>
+        document.getElementById('clearFilters').addEventListener('click', function() {
+            // Redirigir a la URL sin parámetros
+            window.location.href = "{{ route('vaso-de-leche.index') }}";
         });
     </script>
 @stop

@@ -20,28 +20,67 @@ class VasoDeLecheController extends Controller
      */
     public function index(IndexVasoDeLecheRequest $request)
     {
+        // Recuperar los parámetros de filtrado desde la solicitud
+        $name = $request->input('name'); // Puede ser nombre o ID de comité
+        $president = $request->input('president');
+        $urbanCore = $request->input('urban_core');
+        $minBeneficiariesCount = $request->input('min_beneficiaries_count'); // Rango mínimo
+        $maxBeneficiariesCount = $request->input('max_beneficiaries_count'); // Rango máximo
+        $sectorId = $request->input('sector_id');
+
         // Inicializa la consulta de los comités con su relación de sector
         $committees = Committee::with('sector');
 
-        // Filtrar por sector si el parámetro está presente
-        if ($request->has('sector') && $request->sector != '') {
-            $committees->where('sector_id', $request->sector);
+        // Aplicar filtro por nombre o ID de comité
+        if ($name) {
+            // Filtrar por nombre o ID de comité
+            $committees->where(function ($query) use ($name) {
+                $query->where('name', 'like', "%$name%")
+                      ->orWhere('id', $name); // Permitir filtrar por ID
+            });
         }
 
-        // Filtrar por nombre del comité si el parámetro está presente
-        if ($request->has('committee_name') && $request->committee_name != '') {
-            $committees->where('name', 'like', '%' . $request->committee_name . '%');
+        // Realizar la búsqueda parcial del presidente en los tres campos concatenados
+        $committees->where(function($query) use ($president) {
+            $query->whereRaw("CONCAT(
+                    IFNULL(president_paternal_surname, ''), ' ', 
+                    IFNULL(president_maternal_surname, ''), ' ', 
+                    IFNULL(president_given_name, '')
+                ) LIKE ?", ["%$president%"]);
+        });
+
+
+        // Aplicar filtro por núcleo urbano
+        if ($urbanCore) {
+            $committees->where('urban_core', $urbanCore);
+        }
+
+        // Aplicar filtro por rango de beneficiarios
+        if ($minBeneficiariesCount && $maxBeneficiariesCount) {
+            $committees->whereBetween('beneficiaries_count', [$minBeneficiariesCount, $maxBeneficiariesCount]);
+        } elseif ($minBeneficiariesCount) {
+            $committees->where('beneficiaries_count', '>=', $minBeneficiariesCount);
+        } elseif ($maxBeneficiariesCount) {
+            $committees->where('beneficiaries_count', '<=', $maxBeneficiariesCount);
+        }
+
+        // Aplicar filtro por sector
+        if ($sectorId) {
+            $committees->where('sector_id', $sectorId);
         }
 
         // Paginamos los resultados
-        $committees = $committees->paginate(16);
+        $committees = $committees->paginate(12);
 
-        // Obtener todos los sectores disponibles para el filtro (si lo necesitas)
+        // Obtener todos los sectores disponibles para el filtro
         $sectors = Sector::all();
+
+        // Definir los núcleos urbanos
+        $urbanCores = ['Urbano', 'Rural'];
 
         // Pasar los datos a la vista
         return view('areas.VasoDeLecheViews.index', compact(
-            'committees', 'sectors'
+            'committees', 'sectors', 'urbanCores'
         ));
     }
 }
