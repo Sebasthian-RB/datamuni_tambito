@@ -17,7 +17,7 @@ return new class extends Migration
             $table->enum('status', ['Visitado', 'No visitado', 'No encontrado']); // Estado de la visita
             $table->text('observations')->nullable(); // Observaciones, puede ser nulo
 
-            $table->string('enumerator_id', 36);
+            $table->string('enumerator_id');
 
             // Relaciones de claves foráneas
             $table->foreignId('sfh_requests_id')->constrained('sfh_requests')->onDelete('cascade'); // Elimina las visitas si se elimina la solicitud

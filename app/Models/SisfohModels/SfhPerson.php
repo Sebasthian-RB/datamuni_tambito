@@ -3,10 +3,14 @@
 namespace App\Models\SisfohModels;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon; // Asegúrate de importar Carbon
 
 class SfhPerson extends Model
 {
     use HasFactory;
+
+    public $incrementing = false; // Desactivar auto-incremento
+    protected $keyType = 'string'; // Especificar clave primaria como string
 
     /**
      * Campos asignables masivamente.
@@ -51,6 +55,17 @@ class SfhPerson extends Model
         'created_at' => 'datetime',     // Fecha de creación como objeto Carbon
         'updated_at' => 'datetime',     // Fecha de actualización como objeto Carbon
     ];
+
+    /**
+     * Accesor para formatear la fecha de nacimiento.
+     *
+     * @param  mixed  $value
+     * @return string
+     */
+    public function getBirthDateAttribute($value)
+    {
+        return Carbon::parse($value)->format('Y-m-d'); // Formato: YYYY-MM-DD
+    }
 
     /**
      * Relación con la entidad DwellingPerson (Muchos a Muchos).

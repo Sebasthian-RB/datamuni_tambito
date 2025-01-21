@@ -1,18 +1,16 @@
-<!-- resources/views/areas/SisfohViews/SfhDwelling/show.blade.php -->
+!-- resources/views/areas/SisfohViews/SfhDwellings/show.blade.php -->
 @extends('adminlte::page')
 
 @section('content')
-    <div class="container">
-        <h1>Detalles de Vivienda</h1>
-
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">ID: {{ $sfhDwelling->id }}</h5>
-                <p><strong>Dirección:</strong> {{ $sfhDwelling->address }}</p>
-                <p><strong>Tipo:</strong> {{ $sfhDwelling->type }}</p>
-            </div>
-        </div>
-
-        <a href="{{ route('sfh_dwelling.index') }}" class="mt-3 btn btn-primary">Volver al listado</a>
-    </div>
+<div class="container">
+    <h1>Detalles de la Vivienda</h1>
+    <p><strong>Dirección:</strong> {{ $sfhDwelling->street_address }}</p>
+    <p><strong>Referencia:</strong> {{ $sfhDwelling->reference }}</p>
+    <p><strong>Barrio:</strong> {{ $sfhDwelling->neighborhood }}</p>
+    <p><strong>Distrito:</strong> {{ $sfhDwelling->district }}</p>
+    <p><strong>Provincia:</strong> {{ $sfhDwelling->provincia }}</p>
+    <p><strong>Región:</strong> {{ $sfhDwelling->region }}</p>
+    <a href="{{ route('sfh_dwelling.index') }}" class="btn btn-secondary">Volver</a>
+    <a href="{{ route('sfh_dwelling.edit', $sfhDwelling) }}" class="btn btn-warning">Editar</a>
+</div>
 @endsection

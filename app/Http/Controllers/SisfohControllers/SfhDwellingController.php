@@ -46,7 +46,7 @@ class SfhDwellingController extends Controller
         SfhDwelling::create($validated);
 
         // Redirigir o devolver la respuesta
-        return redirect()->route('areas.SisfohViews.SfhDwellings.index')->with('success', 'Vivienda creada con éxito');
+        return redirect()->route('sfh_dwelling.index')->with('success', 'Vivienda creada con éxito');
     }
 
     /**
@@ -79,7 +79,7 @@ class SfhDwellingController extends Controller
         $sfhDwelling->update($validated);
 
         // Redirigir o devolver la respuesta
-        return redirect()->route('areas.SisfohViews.SfhDwellings.index')->with('success', 'Vivienda actualizada con éxito');
+        return redirect()->route('sfh_dwelling.index')->with('success', 'Vivienda actualizada con éxito');
     }
 
     /**
@@ -91,6 +91,6 @@ class SfhDwellingController extends Controller
         $sfhDwelling->delete();
 
         // Redirigir o devolver la respuesta
-        return redirect()->route('areas.SisfohViews.SfhDwellings.index')->with('success', 'Vivienda eliminada con éxito');
+        return redirect()->route('sfh_dwelling.index')->with('success', 'Vivienda eliminada con éxito');
     }
 }

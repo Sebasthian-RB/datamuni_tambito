@@ -10,7 +10,7 @@
             <h5 class="card-title"><strong>Nombre Completo:</strong> {{ $enumerator->given_name }} {{ $enumerator->paternal_last_name }} {{ $enumerator->maternal_last_name }}</h5>
             
             <p class="card-text"><strong>Tipo de Documento:</strong> {{ $enumerator->identity_document }}</p>
-            <p class="card-text"><strong>Número de Documento:</strong> {{ $enumerator->identity_number }}</p>
+            <p class="card-text"><strong>Número de Documento:</strong> {{ $enumerator->id }}</p>
             <p class="card-text"><strong>Número de Teléfono:</strong> {{ $enumerator->phone_number }}</p>
         </div>
     </div>

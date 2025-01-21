@@ -41,7 +41,7 @@ class StoreRequestRequest extends FormRequest
                 'required',
                 'string',
                 'exists:sfh_people,id', // El ID de la persona debe existir en la tabla sfh_people
-                'size:36', // El ID debe tener un tamaño de 36 caracteres
+                
             ],
         ];
     }

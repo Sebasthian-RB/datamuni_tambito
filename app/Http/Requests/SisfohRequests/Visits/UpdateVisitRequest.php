@@ -46,9 +46,9 @@ class UpdateVisitRequest extends FormRequest
                 'uuid',       // Asegura que el ID del enumerador sea un UUID válido
                 'exists:enumerators,id', // Asegura que el ID del enumerador exista en la tabla enumerators
             ],
-            'request_id' => [
+            'sfh_requests_id' => [
                 'required',   // El ID de la solicitud es obligatorio
-                'exists:requests,id', // Asegura que el ID de la solicitud exista en la tabla requests
+                'exists:sfh_requests,id', // Asegura que el ID de la solicitud exista en la tabla requests
             ],
         ];
     }
@@ -75,8 +75,8 @@ class UpdateVisitRequest extends FormRequest
             'enumerator_id.uuid' => 'El ID del enumerador debe ser un UUID válido.',
             'enumerator_id.exists' => 'El enumerador especificado no existe.',
 
-            'request_id.required' => 'El ID de la solicitud es obligatorio.',
-            'request_id.exists' => 'La solicitud especificada no existe.',
+            'sfh_requests_id.required' => 'El ID de la solicitud es obligatorio.',
+            'sfh_requests_id.exists' => 'La solicitud especificada no existe.',
         ];
     }
 
@@ -92,7 +92,7 @@ class UpdateVisitRequest extends FormRequest
             'status' => 'estado de la visita',
             'observations' => 'observaciones',
             'enumerator_id' => 'ID del enumerador',
-            'request_id' => 'ID de la solicitud',
+            'sfh_requests_id' => 'ID de la solicitud',
         ];
     }
 }

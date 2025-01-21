@@ -44,13 +44,12 @@ class StoreVisitRequest extends FormRequest
             'enumerator_id' => [
                 'required',
                 'string',
-                'size:36', // El ID debe tener exactamente 36 caracteres
                 'exists:enumerators,id', // Debe existir en la tabla enumerators
             ],
-            'request_id' => [
+            'sfh_requests_id' => [
                 'required',
                 'integer',
-                'exists:requests,id', // Debe existir en la tabla requests
+                'exists:sfh_requests,id', // Debe existir en la tabla requests
             ],
         ];
     }
@@ -74,9 +73,9 @@ class StoreVisitRequest extends FormRequest
             'enumerator_id.string' => 'El ID del enumerador debe ser una cadena de texto.',
             'enumerator_id.size' => 'El ID del enumerador debe tener exactamente 36 caracteres.',
             'enumerator_id.exists' => 'El ID del enumerador no existe en la base de datos.',
-            'request_id.required' => 'El ID de la solicitud es obligatorio.',
-            'request_id.integer' => 'El ID de la solicitud debe ser un número entero.',
-            'request_id.exists' => 'El ID de la solicitud no existe en la base de datos.',
+            'sfh_requests_id.required' => 'El ID de la solicitud es obligatorio.',
+            'sfh_requests_id.integer' => 'El ID de la solicitud debe ser un número entero.',
+            'sfh_requests_id.exists' => 'El ID de la solicitud no existe en la base de datos.',
         ];
     }
 
@@ -92,7 +91,7 @@ class StoreVisitRequest extends FormRequest
             'status' => 'estado de la visita',
             'observations' => 'observaciones',
             'enumerator_id' => 'ID del enumerador',
-            'request_id' => 'ID de la solicitud',
+            'sfh_requests_id' => 'ID de la solicitud',
         ];
     }
 }

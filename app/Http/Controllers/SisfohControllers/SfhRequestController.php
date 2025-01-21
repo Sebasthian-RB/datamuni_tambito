@@ -12,6 +12,8 @@ use App\Http\Requests\SisfohRequests\Requests\EditRequestRequest;
 use App\Http\Requests\SisfohRequests\Requests\UpdateRequestRequest;
 use App\Http\Requests\SisfohRequests\Requests\DestroyRequestRequest;
 
+use App\Models\SisfohModels\SfhPerson; // Asumiendo que tienes un modelo relacionado para las personas
+
 class SfhRequestController extends Controller
 {
     /**
@@ -19,8 +21,8 @@ class SfhRequestController extends Controller
      */
     public function index(IndexRequestRequest $request)
     {
-        $requests = SfhRequest::all();  // Obtener todas las solicitudes
-        return view('areas.SisfohViews.Requests.index', compact('requests'));  // Devolver vista con las solicitudes
+        $requests = SfhRequest::with('sfhPerson')->get(); // Cargar las solicitudes con la persona relacionada
+        return view('areas.SisfohViews.Requests.index', compact('requests'));
     }
 
     /**
@@ -28,7 +30,10 @@ class SfhRequestController extends Controller
      */
     public function create(CreateRequestRequest $request)
     {
-        return view('areas.SisfohViews.Requests.create');  // Devolver vista para crear solicitud
+        // Obtener las personas relacionadas con las solicitudes (si es necesario)
+        $people = SfhPerson::all();
+
+        return view('areas.SisfohViews.Requests.create', compact('people'));  // Devolver vista para crear solicitud
     }
 
     /**
@@ -39,7 +44,7 @@ class SfhRequestController extends Controller
         $validated = $request->validated();  // Validar los datos
         SfhRequest::create($validated);  // Crear una nueva solicitud
 
-        return redirect()->route('areas.SisfohViews.Requests.index')->with('success', 'Solicitud creada exitosamente.');
+        return redirect()->route('sfh_requests.index')->with('success', 'Solicitud creada exitosamente.');
     }
 
     /**
@@ -47,6 +52,9 @@ class SfhRequestController extends Controller
      */
     public function show(SfhRequest $sfhRequest, ShowRequestRequest $request)
     {
+        // Formatear las fechas para que estén en formato 'Y-m-d' antes de mostrar la solicitud
+        $sfhRequest->date = $sfhRequest->date ? $sfhRequest->date->format('Y-m-d') : null;
+
         return view('areas.SisfohViews.Requests.show', compact('sfhRequest'));  // Devolver vista con los detalles de la solicitud
     }
 
@@ -55,7 +63,13 @@ class SfhRequestController extends Controller
      */
     public function edit(SfhRequest $sfhRequest, EditRequestRequest $request)
     {
-        return view('areas.SisfohViews.Requests.edit', compact('sfhRequest'));  // Devolver vista para editar la solicitud
+        // Formatear las fechas antes de pasarlas a la vista
+        $sfhRequest->date = $sfhRequest->date ? $sfhRequest->date->format('Y-m-d') : null;
+
+        // Obtener las personas relacionadas
+        $people = SfhPerson::all();
+
+        return view('areas.SisfohViews.Requests.edit', compact('sfhRequest', 'people'));  // Devolver vista para editar la solicitud
     }
 
     /**
@@ -66,7 +80,10 @@ class SfhRequestController extends Controller
         $validated = $request->validated();  // Validar los datos
         $sfhRequest->update($validated);  // Actualizar la solicitud existente
 
-        return redirect()->route('areas.SisfohViews.Requests.index')->with('success', 'Solicitud actualizada exitosamente.');
+        // Formatear las fechas después de la actualización, si es necesario
+        $sfhRequest->date = $sfhRequest->date ? \Carbon\Carbon::parse($sfhRequest->date)->format('Y-m-d') : null;
+
+        return redirect()->route('sfh_requests.index')->with('success', 'Solicitud actualizada exitosamente.');
     }
 
     /**
@@ -76,6 +93,6 @@ class SfhRequestController extends Controller
     {
         $sfhRequest->delete();  // Eliminar la solicitud
 
-        return redirect()->route('areas.SisfohViews.Requests.index')->with('success', 'Solicitud eliminada exitosamente.');
+        return redirect()->route('sfh_requests.index')->with('success', 'Solicitud eliminada exitosamente.');
     }
 }

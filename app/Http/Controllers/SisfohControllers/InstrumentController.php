@@ -39,8 +39,8 @@ class InstrumentController extends Controller
         $validated = $request->validated();
         $instrument = Instrument::create($validated);
 
-        return redirect()->route('areas.SisfohViews.Instruments.index')
-            ->with('success', 'Instrument created successfully.');
+        return redirect()->route('instruments.index')
+            ->with('success', 'Instrumento creado satisfactoriamente.');
     }
 
     /**
@@ -67,8 +67,8 @@ class InstrumentController extends Controller
         $validated = $request->validated();
         $instrument->update($validated);
 
-        return redirect()->route('areas.SisfohViews.Instruments.index')
-            ->with('success', 'Instrument updated successfully.');
+        return redirect()->route('instruments.index')
+            ->with('success', 'Instrumento actualizado con éxito.');
     }
 
     /**
@@ -78,7 +78,7 @@ class InstrumentController extends Controller
     {
         $instrument->delete();
 
-        return redirect()->route('areas.SisfohViews.Instruments.index')
-            ->with('success', 'Instrument deleted successfully.');
+        return redirect()->route('instruments.index')
+            ->with('success', 'Instrumento eliminado con éxito.');
     }
 }

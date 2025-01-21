@@ -9,7 +9,6 @@ use Illuminate\Validation\Rule;
  * Form Request para actualizar una persona.
  * Aquí se definen las reglas de validación para la actualización de la persona.
  */
-
 class UpdateSfhPersonRequest extends FormRequest
 {
     /**
@@ -31,7 +30,7 @@ class UpdateSfhPersonRequest extends FormRequest
             'id' => [
                 'required',
                 'string',
-                'size:36', // Debe tener exactamente 36 caracteres
+                'max:36', // Debe tener exactamente 36 caracteres
                 'exists:sfh_people,id', // Verifica que exista en la tabla sfh_people
             ],
             'identity_document' => [
@@ -80,7 +79,7 @@ class UpdateSfhPersonRequest extends FormRequest
             'degree' => [
                 'required',
                 'string',
-                Rule::in([
+                Rule::in([ // Solo estas opciones
                     'INICIAL', 'NINGUNO_NIVEL_LETRADO', 'PRIMARIA COMPLETA', 'PRIMARIA-1ER GRADO', 'PRIMARIA-2DO GRADO',
                     'PRIMARIA-3ER GRADO', 'PRIMARIA-4TO GRADO', 'PRIMARIA-5TO GRADO', 'PRIMARIA-6TO GRADO', 'PRIMARIA INCOMPLETA',
                     'SECUNDARIA COMPLETA', 'SECUNDARIA-1ER AÑO', 'SECUNDARIA-2DO AÑO', 'SECUNDARIA-3ER AÑO', 'SECUNDARIA-4TO AÑO',
@@ -88,7 +87,7 @@ class UpdateSfhPersonRequest extends FormRequest
                     'SUPERIOR-3ER AÑO', 'SUPERIOR-4TO AÑO', 'SUPERIOR-5TO AÑO', 'SUPERIOR-6TO AÑO', 'SUPERIOR-7MO AÑO',
                     'SUPERIOR-8VO AÑO', 'SUPERIOR INCOMPLETA', 'ILETRADO/SIN INSTRUCCION', 'TECNICA COMPLETA', 'TECNICA-1ER AÑO',
                     'TECNICA-2DO AÑO', 'TECNICA-3ER AÑO', 'TECNICA-4TO AÑO', 'TECNICA-5TO AÑO', 'TECNICA IMCOMPLETA', 'EDUCACION ESPECIAL'
-                ]), // Solo estas opciones
+                ]),
             ],
             'occupation' => [
                 'nullable',
@@ -103,7 +102,7 @@ class UpdateSfhPersonRequest extends FormRequest
         ];
     }
 
-        /**
+    /**
      * Obtiene los mensajes de validación personalizados.
      *
      * @return array
