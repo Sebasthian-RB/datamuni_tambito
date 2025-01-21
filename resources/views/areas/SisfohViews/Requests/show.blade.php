@@ -1,15 +1,21 @@
-<!-- resources/views/sisfoh/requests/show.blade.php -->
-
 @extends('adminlte::page')
 
 @section('content')
-    <div class="container">
-        <h1>Detalles de la Solicitud #{{ $sfhRequest->id }}</h1>
-        <ul>
-            <li><strong>Nombre:</strong> {{ $sfhRequest->name }}</li>
-            <li><strong>Descripción:</strong> {{ $sfhRequest->description }}</li>
-            <li><strong>Fecha de Creación:</strong> {{ $sfhRequest->created_at->format('d-m-Y') }}</li>
-        </ul>
-        <a href="{{ route('sfh_requests.index') }}" class="btn btn-primary">Volver al listado</a>
+<div class="container">
+    <h1>Detalles de la Solicitud</h1>
+
+    {{-- Detalles de la solicitud --}}
+    <div class="card">
+        <div class="card-body">
+            <p><strong>ID:</strong> {{ $sfhRequest->id }}</p>
+            <p><strong>Fecha de Solicitud:</strong> {{ $sfhRequest->formatted_request_date }}</p>
+            <p><strong>Descripción:</strong> {{ $sfhRequest->description }}</p>
+            <p><strong>Persona Relacionada:</strong> {{ $sfhRequest->sfhPerson->given_name ?? 'N/A' }} {{ $sfhRequest->sfhPerson->paternal_last_name ?? '' }} {{ $sfhRequest->sfhPerson->maternal_last_name ?? '' }}</p>
+        </div>
     </div>
+
+    {{-- Botones de acción --}}
+    <a href="{{ route('sfh_requests.index') }}" class="btn btn-secondary">Volver</a>
+    <a href="{{ route('sfh_requests.edit', $sfhRequest->id) }}" class="btn btn-warning">Editar</a>
+</div>
 @endsection

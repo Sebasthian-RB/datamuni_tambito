@@ -46,7 +46,7 @@ class InstrumentVisitController extends Controller
         InstrumentVisit::create($validated);
 
         // Redirigir o devolver la respuesta
-        return redirect()->route('areas.SisfohViews.InstrumentVisit.index')->with('success', 'Instrumento/Visita creado con éxito');
+        return redirect()->route('instrument_visits.index')->with('success', 'Instrumento/Visita creado con éxito');
     }
 
     /**
@@ -79,7 +79,7 @@ class InstrumentVisitController extends Controller
         $instrumentVisit->update($validated);
 
         // Redirigir o devolver la respuesta
-        return redirect()->route('areas.SisfohViews.InstrumentVisit.index')->with('success', 'Instrumento/Visita actualizado con éxito');
+        return redirect()->route('instrument_visits.index')->with('success', 'Instrumento/Visita actualizado con éxito');
     }
 
     /**
@@ -91,6 +91,6 @@ class InstrumentVisitController extends Controller
         $instrumentVisit->delete();
 
         // Redirigir o devolver la respuesta
-        return redirect()->route('areas.SisfohViews.InstrumentVisit.index')->with('success', 'Instrumento/Visita eliminado con éxito');
+        return redirect()->route('instrument_visits.index')->with('success', 'Instrumento/Visita eliminado con éxito');
     }
 }

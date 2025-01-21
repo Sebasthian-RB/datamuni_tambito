@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->date('request_date'); // Fecha de la solicitud
             $table->text('description')->nullable(); // Descripción de la solicitud
-            $table->string('sfh_person_id', 36); // Relación con sfh_people
+            $table->string('sfh_person_id'); // Relación con sfh_people
+            //$table->unsignedBigInteger('sfh_person_id');
 
             // Relacion de las tablas foraneas
             $table->foreign('sfh_person_id')->references('id')->on('sfh_people')->cascadeOnDelete(); // Relación con sfh_people

@@ -1,20 +1,17 @@
-<!-- resources/views/instruments/show.blade.php -->
 @extends('adminlte::page')
 
 @section('content')
-<div class="container">
-    <h1>Detalles del Instrumento</h1>
-    <div class="card">
-        <div class="card-header">
-            <h2>{{ $instrument->name }}</h2>
-        </div>
-        <div class="card-body">
-            <p><strong>Descripción:</strong> {{ $instrument->description }}</p>
-        </div>
-        <div class="card-footer">
-            <a href="{{ route('instruments.index') }}" class="btn btn-secondary">Volver a la lista</a>
-            <a href="{{ route('instruments.edit', $instrument->id) }}" class="btn btn-warning">Editar</a>
+    <div class="container">
+        <h1>Detalles del Instrumento</h1>
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Nombre: {{ $instrument->name_instruments }}</h5>
+                <p><strong>Tipo:</strong> {{ $instrument->type_instruments }}</p>
+                <p><strong>Descripción:</strong> {{ $instrument->description }}</p>
+
+                <a href="{{ route('instruments.index') }}" class="btn btn-primary">Volver a la lista</a>
+            </div>
         </div>
     </div>
-</div>
 @endsection

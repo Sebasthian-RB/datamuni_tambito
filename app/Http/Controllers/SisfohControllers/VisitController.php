@@ -12,6 +12,9 @@ use App\Http\Requests\SisfohRequests\Visits\EditVisitRequest;
 use App\Http\Requests\SisfohRequests\Visits\UpdateVisitRequest;
 use App\Http\Requests\SisfohRequests\Visits\DestroyVisitRequest;
 
+use App\Models\SisfohModels\Enumerator;
+use App\Models\SisfohModels\SfhRequest;
+
 class VisitController extends Controller
 {
     /**
@@ -28,7 +31,9 @@ class VisitController extends Controller
      */
     public function create(CreateVisitRequest $request)
     {
-        return view('areas.SisfohViews.Visits.create'); // Devolver vista para crear visita
+        $enumerators = Enumerator::all(); // Obtener todos los encuestadores
+        $requests = SfhRequest::all(); // Obtener todas las solicitudes relacionadas
+        return view('areas.SisfohViews.Visits.create', compact('enumerators', 'requests')); // Devolver vista para crear visita
     }
 
     /**
@@ -37,9 +42,16 @@ class VisitController extends Controller
     public function store(StoreVisitRequest $request)
     {
         $validated = $request->validated(); // Validar los datos
-        Visit::create($validated); // Crear una nueva visita
+        // Crear una nueva visita
+        Visit::create([
+            'enumerator_id' => $validated['enumerator_id'],
+            'sfh_requests_id' => $validated['sfh_requests_id'],
+            'visit_date' => $validated['visit_date'],  // Asegúrate de incluir otros campos
+            'status' => $validated['status'],          // Agrega otros campos si es necesario
+            'observations' => $validated['observations'], // Si tienes este campo
+        ]);
 
-        return redirect()->route('areas.SisfohViews.Visits.index')->with('success', 'Visita creada exitosamente.');
+        return redirect()->route('visits.index')->with('success', 'Visita creada exitosamente.');
     }
 
     /**
@@ -55,7 +67,10 @@ class VisitController extends Controller
      */
     public function edit(Visit $visit, EditVisitRequest $request)
     {
-        return view('areas.SisfohViews.Visits.edit', compact('visit')); // Devolver vista para editar la visita
+        $enumerators = Enumerator::all(); // Obtener todos los encuestadores
+        $requests = SfhRequest::all(); // Obtener todas las solicitudes relacionadas
+
+        return view('areas.SisfohViews.Visits.edit', compact('visit', 'enumerators', 'requests')); // Devolver vista para editar la visita
     }
 
     /**
@@ -64,9 +79,16 @@ class VisitController extends Controller
     public function update(UpdateVisitRequest $request, Visit $visit)
     {
         $validated = $request->validated(); // Validar los datos
-        $visit->update($validated); // Actualizar la visita existente
+        // Actualizar la visita existente
+        $visit->update([
+            'enumerator_id' => $validated['enumerator_id'],
+            'sfh_requests_id' => $validated['sfh_requests_id'],
+            'visit_date' => $validated['visit_date'],  // Asegúrate de incluir otros campos
+            'status' => $validated['status'],          // Agrega otros campos si es necesario
+            'observations' => $validated['observations'], // Si tienes este campo
+        ]);
 
-        return redirect()->route('areas.SisfohViews.Visits.index')->with('success', 'Visita actualizada exitosamente.');
+        return redirect()->route('visits.index')->with('success', 'Visita actualizada exitosamente.');
     }
 
     /**
@@ -76,6 +98,6 @@ class VisitController extends Controller
     {
         $visit->delete(); // Eliminar la visita
 
-        return redirect()->route('areas.SisfohViews.Visits.index')->with('success', 'Visita eliminada exitosamente.');
+        return redirect()->route('visits.index')->with('success', 'Visita eliminada exitosamente.');
     }
 }

@@ -19,7 +19,7 @@ class Visit extends Model
         'status',
         'observations',
         'enumerator_id',
-        'request_id',
+        'sfh_requests_id',
     ];
 
     /**
@@ -33,7 +33,7 @@ class Visit extends Model
         'status' => 'string',          // Convierte el estado de la visita a string (enum)
         'observations' => 'string',    // Convierte las observaciones a string
         'enumerator_id' => 'string',   // Asegura que enumerator_id sea tratado como string (UUID)
-        'request_id' => 'integer',     // Convierte el request_id a entero
+        'sfh_requests_id' => 'integer',     // Convierte el request_id a entero
     ];
 
     /**
@@ -44,7 +44,7 @@ class Visit extends Model
      */
     public function request()
     {
-        return $this->belongsTo(SfhRequest::class);
+        return $this->belongsTo(SfhRequest::class, 'sfh_requests_id'); // Si la clave foránea no es 'request_id', cámbiala
     }
 
     /**

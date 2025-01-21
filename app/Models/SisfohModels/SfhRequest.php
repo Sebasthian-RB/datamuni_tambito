@@ -10,6 +10,13 @@ class SfhRequest extends Model
     use HasFactory;
 
     /**
+     * Nombre de la tabla asociada.
+     *
+     * @var string
+     */
+    protected $table = 'sfh_requests'; // Nombre explícito de la tabla
+
+    /**
      * Campos asignables masivamente.
      *
      * @var array
@@ -52,7 +59,7 @@ class SfhRequest extends Model
      */
     public function Visit()
     {
-        return $this->hasMany(Visit::class, 'request_id');
+        return $this->hasMany(Visit::class, 'sfh_request_id');
     }
 
     /**
@@ -65,6 +72,8 @@ class SfhRequest extends Model
         return $this->request_date->format('d-m-Y');
     }
 
+
+    
     /**
      * Validación simple: Verificar si la descripción no está vacía.
      *
