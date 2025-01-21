@@ -11,11 +11,29 @@ class OmPerson extends Model
 
     // Atributos asignables en masa
     protected $fillable = [
-        'registration_date', 'paternal_last_name', 'maternal_last_name', 'given_name', 
-        'marital_status', 'dni', 'birth_date', 'age', 'gender', 'phone', 'email', 
-        'education_level', 'occupation', 'health_insurance', 'sisfoh', 'employment_status', 
-        'pension_status', 'om_dwelling_id', 'disability_id', 'personal_assistance_need', 
-        'autonomy_notes', 'caregiver_id', 'observations'
+        'registration_date',
+        'paternal_last_name',
+        'maternal_last_name',
+        'given_name',
+        'marital_status',
+        'dni',
+        'birth_date',
+        'age',
+        'gender',
+        'phone',
+        'email',
+        'education_level',
+        'occupation',
+        'health_insurance',
+        'sisfoh',
+        'employment_status',
+        'pension_status',
+        'om_dwelling_id',
+        'disability_id',
+        'caregiver_id',
+        'personal_assistance_need',
+        'autonomy_notes',
+        'observations',
     ];
 
     /**
@@ -28,27 +46,21 @@ class OmPerson extends Model
         'sisfoh' => 'boolean', // Convertir a booleano
     ];
 
-    /**
-     * Relación de muchos a uno con OmDwelling
-     */
-    public function dwelling()
-    {
-        return $this->belongsTo(OmDwelling::class, 'om_dwelling_id');
-    }
-
-    /**
-     * Relación de uno a uno con Disability
-     */
-    public function disability()
-    {
-        return $this->hasOne(Disability::class, 'id', 'disability_id');
-    }
-
-    /**
-     * Relación de muchos a uno con Caregiver
-     */
-    public function caregiver()
-    {
-        return $this->belongsTo(Caregiver::class, 'caregiver_id');
-    }
+     // Relación con OmDwelling (Muchas personas en una vivienda)
+     public function dwelling()
+     {
+         return $this->belongsTo(OmDwelling::class, 'om_dwelling_id');
+     }
+ 
+     // Relación con Disability (1 a 1)
+     public function disability()
+     {
+         return $this->belongsTo(Disability::class, 'disability_id');
+     }
+ 
+     // Relación con Caregiver (1 cuidador, muchas personas)
+     public function caregiver()
+     {
+         return $this->belongsTo(Caregiver::class, 'caregiver_id');
+     }
 }

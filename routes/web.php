@@ -51,7 +51,7 @@ use App\Http\Controllers\CiamControllers\SocialProgramController;
 use App\Http\Controllers\CiamControllers\CiamDashboardController; //dashboard de CIAM
 
 //Controladores deL Área: OMAPED
-use App\Http\Controllers\OmapedControllars\CaregiverController;
+use App\Http\Controllers\OmapedControllers\CaregiverController;
 use App\Http\Controllers\OmapedControllers\DisabilityController;
 use App\Http\Controllers\OmapedControllers\OmDwellingController;
 use App\Http\Controllers\OmapedControllers\OmPersonController;
