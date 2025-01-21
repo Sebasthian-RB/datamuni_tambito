@@ -52,13 +52,23 @@ class VlFamilyMemberController extends Controller
      */
     public function store(StoreVlFamilyMemberRequest $request)
     {
-        VlFamilyMember::create($request->validated());
+        // Creamos el miembro de la familia
+        $newFamilyMember = VlFamilyMember::create($request->validated());
+        // Si la solicitud es AJAX, devolvemos una respuesta JSON
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Miembro familiar creado correctamente.',
+                'id' => $newFamilyMember->id
+            ]);
+        }
 
+        // Si no es AJAX, redirigimos como siempre
         return redirect()
             ->route('vl_family_members.index')
             ->with('success', 'Miembro familiar creado correctamente.');
     }
-
+    
     /**
      * Muestra los detalles de un miembro familiar específico.
      *

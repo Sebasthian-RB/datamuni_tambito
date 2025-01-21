@@ -1,15 +1,15 @@
 @extends('adminlte::page')
 
-@section('title', 'Miembros de Familia del Comité')
+@section('title', 'Padrón de Beneficiarios')
 
 @section('content_header')
-    <h1>Lista de Miembros de Familia del Comité</h1>
+    <h1>Padrón de Beneficiarios</h1>
 @stop
 
 @section('content')
 <div class="container">
-    <a href="{{ route('committee_vl_family_members.create') }}" class="btn btn-info mb-3">Agregar Miembro</a>
-    <a href="{{ route('committees.index') }}" class="btn btn-danger mb-3">Volver</a>
+    <a href="{{ route('committee_vl_family_members.create') }}" class="btn mb-3" style="background-color: #9B7EBD; color: white;">Agregar Beneficiario</a>
+    <a href="{{ route('vaso-de-leche.index') }}" class="btn btn-secondary mb-3">Volver</a>
 
     @if(session('success'))
         <div class="alert alert-success">
@@ -25,26 +25,45 @@
             <table class="table table-bordered table-striped">
                 <thead class="bg-dark text-white">
                     <tr>
-                        <th>Comité</th>
-                        <th>Miembro de Familia</th>
-                        <th>Fecha de Cambio</th>
-                        <th>Descripción</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
+                        <th>N°</th>
+                        <th>APELLIDOS Y NOMBRES DE LA MADRE Y/O APODERADO</th>
+                        <th>APELLIDOS Y NOMBRES DEL BENEFICIARIO</th>
+                        <th>TIPO DE DOCUMENTO DE IDENTIDAD</th>
+                        <th>PARENTESCO</th>
+                        <th>SEXO</th>
+                        <th>FECHA DE NACIMIENTO</th>
+                        <th>EDAD</th>
+                        <th>CONDICIÓN</th>
+                        <th>FECHA DE EMPADRONAMIENTO</th>
+                        <th>FECHA DE RETIRO</th>
+                        <th>GRADO DE INSTRUCCIÓN</th>
+                        <th>VIVIENDA</th>
+                        <th>DOMICILIO</th>
+                        <th>OBSERVACIONES</th>
+                        <th>ACCIONES</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($committeeVlFamilyMembers as $member)
+                    @foreach($committeeVlFamilyMembers as $register)
                         <tr>
-                            <td>{{ $member->committee->id }} - {{ $member->committee->name }}</td>
-                            <td>{{ $member->vlFamilyMember->name }}</td>
-                            <td>{{ $member->change_date }}</td>
-                            <td>{{ $member->description }}</td>
-                            <td>{{ $member->status ? 'Activo' : 'Inactivo' }}</td>
+                            <td>{{ $register->id }}</td>
                             <td>
-                                <a href="{{ route('committee_vl_family_members.show', $member->id) }}" class="btn btn-info btn-sm">Ver</a>
-                                <a href="{{ route('committee_vl_family_members.edit', $member->id) }}" class="btn btn-warning btn-sm">Editar</a>
-                                <form action="{{ route('committee_vl_family_members.destroy', $member->id) }}" method="POST" style="display:inline-block;">
+                                <div>
+                                    {{ $register->vlFamilyMember->paternal_last_name }} {{ $register->vlFamilyMember->maternal_last_name }}
+                                </div>
+                                <div>
+                                    {{ $register->vlFamilyMember->given_name }}
+                                </div>
+                            </td>                            
+                            <td>{{ $register->committee->id }} - {{ $register->committee->name }}</td>
+                            
+                            <td>{{ $register->change_date }}</td>
+                            <td>{{ $register->description }}</td>
+                            <td>{{ $register->status ? 'Activo' : 'Inactivo' }}</td>
+                            <td>
+                                <a href="{{ route('committee_vl_family_members.show', $register->id) }}" class="btn btn-info btn-sm">Ver</a>
+                                <a href="{{ route('committee_vl_family_members.edit', $register->id) }}" class="btn btn-warning btn-sm">Editar</a>
+                                <form action="{{ route('committee_vl_family_members.destroy', $register->id) }}" method="POST" style="display:inline-block;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Está seguro de eliminar este miembro?')">Eliminar</button>

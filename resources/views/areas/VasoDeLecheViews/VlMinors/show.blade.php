@@ -19,6 +19,7 @@
             <p><strong>Apellido Paterno:</strong> {{ $vlMinor->paternal_last_name }}</p>
             <p><strong>Apellido Materno:</strong> {{ $vlMinor->maternal_last_name }}</p>
             <p><strong>Fecha de Nacimiento:</strong> {{ $vlMinor->birth_date->format('d/m/Y') }}</p>
+            <p><strong>Edad:</strong> {{ $vlMinor->birth_date->age }} años</p>
             <p><strong>Sexo:</strong> {{ $vlMinor->sex_type == 0 ? 'Femenino' : 'Masculino' }}</p>
             <p><strong>Fecha de Empadronamiento:</strong> {{ $vlMinor->registration_date->format('d/m/Y') }}</p>
             <p><strong>Fecha de Retiro:</strong> {{ $vlMinor->withdrawal_date->format('d/m/Y') }}</p>
@@ -27,7 +28,8 @@
             <p><strong>Nivel Educativo:</strong> {{ $vlMinor->education_level }}</p>
             <p><strong>Condición:</strong> {{ $vlMinor->condition }}</p>
             <p><strong>Discapacidad:</strong> {{ $vlMinor->disability ? 'Sí' : 'No' }}</p>
-            <p><strong>Familiar:</strong> {{ $vlMinor->vl_family_member_id }}</p>
+            <p><strong>Familiar:</strong> {{ $vlMinor->vlFamilyMember->given_name }} {{ $vlMinor->vlFamilyMember->paternal_last_name }} {{ $vlMinor->vlFamilyMember->maternal_last_name }}</p>
+            <p><strong>Parentesco:</strong> {{ $vlMinor->kinship }}</p>
         </div>
         <div class="card-footer">
             <a href="{{ route('vl_minors.edit', $vlMinor->id) }}" class="btn btn-secondary" style="background-color: #9B7EBD; color: white; border: #9B7EBD;">Editar</a>
