@@ -24,8 +24,10 @@ class Disability extends Model
 
     // Casts para convertir tipos de datos automáticamente
     protected $casts = [
-        'certificate_issue_date' => 'date', // Fecha de emisión del certificado
-        'certificate_expiry_date' => 'date', // Fecha de caducidad del certificado
+        'certificate_issue_date' => 'date',
+        'certificate_expiry_date' => 'date',
+        'required_support_devices' => 'array', // Guarda en formato JSON en la base de datos
+        'used_support_devices' => 'array',
     ];
 
     // Relación con OmPerson (1 a 1)

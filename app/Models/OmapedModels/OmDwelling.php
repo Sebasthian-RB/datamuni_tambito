@@ -22,7 +22,8 @@ class OmDwelling extends Model
 
     // Casts para convertir tipos de datos automáticamente
     protected $casts = [
-        'permanent_occupants' => 'integer', // Convertir a entero
+        'permanent_occupants' => 'integer', // Número de ocupantes como entero
+        'water_electricity' => 'string', // Enum tratado como string
     ];
 
     // Relación con OmPerson (1 vivienda, muchas personas)

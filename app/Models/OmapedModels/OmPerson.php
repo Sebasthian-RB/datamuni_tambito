@@ -40,10 +40,13 @@ class OmPerson extends Model
      * Casts de algunos atributos
      */
     protected $casts = [
-        'registration_date' => 'date', // Convertir a tipo fecha
-        'birth_date' => 'date', // Convertir a tipo fecha
-        'age' => 'integer', // Convertir a entero
-        'sisfoh' => 'boolean', // Convertir a booleano
+        'registration_date' => 'date', // Asegura formato de fecha
+        'birth_date' => 'date', // Trata correctamente las fechas
+        'age' => 'integer', // Edad como entero
+        'sisfoh' => 'boolean', // Representa como verdadero/falso
+        'om_dwelling_id' => 'integer',
+        'disability_id' => 'integer',
+        'caregiver_id' => 'integer',
     ];
 
      // Relación con OmDwelling (Muchas personas en una vivienda)
