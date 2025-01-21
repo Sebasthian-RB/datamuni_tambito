@@ -25,7 +25,7 @@ use App\Http\Controllers\AreaDeLaMujerControllers\ProgramController;
 use App\Http\Controllers\AreaDeLaMujerControllers\ViolenceController;
 
 use App\Http\Controllers\AreaDeLaMujerControllers\AmDashboardController; //dashboard de AM
-
+use App\Http\Controllers\AreaDeLaMujerControllers\OmDashboardController;
 // Controladores del Área: Sisfoh
 
 use App\Http\Controllers\SisfohControllers\EnumeratorController;
@@ -50,8 +50,11 @@ use App\Http\Controllers\CiamControllers\SocialProgramController;
 
 use App\Http\Controllers\CiamControllers\CiamDashboardController; //dashboard de CIAM
 
-
-
+//Controladores deL Área: OMAPED
+use App\Http\Controllers\OmapedControllars\CaregiverController;
+use App\Http\Controllers\OmapedControllers\DisabilityController;
+use App\Http\Controllers\OmapedControllers\OmDwellingController;
+use App\Http\Controllers\OmapedControllers\OmPersonController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -110,4 +113,12 @@ Route::middleware([
     Route::resource('social_programs', SocialProgramController::class);
 
     Route::get('/ciam_dashboard', [CiamDashboardController::class, 'index'])->name('ciamdashboard');
+
+    // Rutas de los controladores de Sisfoh dentro del grupo de autenticación
+    Route::resource('caregivers', CaregiverController::class);
+    Route::resource('om-dwellings', OmDwellingController::class);
+    Route::resource('disabilities', DisabilityController::class);
+    Route::resource('om-people', OmPersonController::class);
+    Route::get('/om_dashboard', [OmDashboardController::class, 'index'])->name('omdashboard');
+
 });
