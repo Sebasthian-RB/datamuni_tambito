@@ -82,13 +82,25 @@ Route::middleware([
 
     // Rutas de los controladores de Vaso de Leche dentro del grupo de autenticación    
     Route::resource('committees', CommitteeController::class);
-    Route::resource('committee_vl_family_members', CommitteeVlFamilyMemberController::class);
     Route::resource('products', ProductController::class);
     Route::resource('sectors', SectorController::class);
     Route::resource('vl_family_members', VlFamilyMemberController::class);
     Route::resource('vl_family_members_products', VlFamilyMemberProductController::class);
     Route::resource('vl_minors', VlMinorController::class);
     Route::get('/vaso-de-leche', [VasoDeLecheController::class, 'index'])->name('vaso-de-leche.index');
+
+        //Rutas de "committee_vl_family_members" (Padrón de Beneficiarios)
+        Route::get('padron-de-beneficiarios/{committee_id}', [CommitteeVlFamilyMemberController::class, 'index'])->name('committee_vl_family_members.index');
+
+    
+    Route::get('committee_vl_family_members/create', [CommitteeVlFamilyMemberController::class, 'create'])->name('committee_vl_family_members.create'); // Formulario de creación
+    Route::post('committee_vl_family_members', [CommitteeVlFamilyMemberController::class, 'store'])->name('committee_vl_family_members.store'); // Almacenar el nuevo miembro
+    Route::get('committee_vl_family_members/{committee_vl_family_member}', [CommitteeVlFamilyMemberController::class, 'show'])->name('committee_vl_family_members.show'); // Ver detalles de un miembro
+    Route::get('committee_vl_family_members/{committee_vl_family_member}/edit', [CommitteeVlFamilyMemberController::class, 'edit'])->name('committee_vl_family_members.edit'); // Formulario de edición
+    Route::put('committee_vl_family_members/{committee_vl_family_member}', [CommitteeVlFamilyMemberController::class, 'update'])->name('committee_vl_family_members.update'); // Actualizar un miembro
+    Route::delete('committee_vl_family_members/{committee_vl_family_member}', [CommitteeVlFamilyMemberController::class, 'destroy'])->name('committee_vl_family_members.destroy'); // Eliminar un miembro
+
+
 
     // Rutas de los controladores de Sisfoh dentro del grupo de autenticación
     Route::resource('enumerators', EnumeratorController::class);

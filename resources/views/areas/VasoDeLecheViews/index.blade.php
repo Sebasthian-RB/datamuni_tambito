@@ -308,7 +308,7 @@
                     <div class="card-footer" style="background-color: #9B7EBD; padding: 8px 10px;">
                         <div class="d-flex justify-content-between align-items-center w-100">
                             <!-- Botón Padrón de Beneficiarios -->
-                            <a href="{{ route('committee_vl_family_members.index') }}" class="btn btn-gradient-primary w-100 py-2 mb-0 rounded-lg font-weight-bold text-white text-center transition-all duration-300 hover:bg-primary hover:shadow-xl d-flex flex-column align-items-center justify-content-center" style="transition: transform 0.3s ease; padding: 6px;">
+                            <a href="{{ route('committee_vl_family_members.index', ['committee_id' => $committee->id]) }}" class="btn btn-gradient-primary w-100 py-2 mb-0 rounded-lg font-weight-bold text-white text-center transition-all duration-300 hover:bg-primary hover:shadow-xl d-flex flex-column align-items-center justify-content-center" style="transition: transform 0.3s ease; padding: 6px;">
                                 <i class="fas fa-users mb-2" style="font-size: 1rem;"></i>
                                 <span style="font-size: 0.8rem;">Padrón de Beneficiarios</span>
                             </a>

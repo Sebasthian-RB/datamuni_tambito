@@ -23,9 +23,12 @@ class CommitteeVlFamilyMemberController extends Controller
      * @param IndexCommitteeVlFamilyMemberRequest $request
      * @return \Illuminate\View\View
      */
-    public function index(IndexCommitteeVlFamilyMemberRequest $request)
+    public function index(IndexCommitteeVlFamilyMemberRequest $request, $committee_id)
     {
-        $committeeVlFamilyMembers = CommitteeVlFamilyMember::all();
+        // Obtener todos los miembros de la familia asociados al comité específico
+        $committeeVlFamilyMembers = CommitteeVlFamilyMember::where('committee_id', $committee_id)
+            ->with(['vlFamilyMember.vlMinors']) // Cargar los menores de edad relacionados
+            ->get();
 
         return view('areas.VasoDeLecheViews.CommitteeVlFamilyMembers.index', compact('committeeVlFamilyMembers'));
     }

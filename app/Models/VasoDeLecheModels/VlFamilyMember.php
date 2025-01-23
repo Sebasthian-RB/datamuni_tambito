@@ -49,6 +49,15 @@ class VlFamilyMember extends Model
         'maternal_last_name' => 'string',
     ];
 
+
+    /**
+     * Relación con el modelo 'VlMinor' (tiene muchos menores de edad asociados).
+     */
+    public function vlMinors()
+    {
+        return $this->hasMany(VlMinor::class, 'vl_family_member_id');
+    }
+
     /**
      * Activar el manejo automático de timestamps.
      *

@@ -110,8 +110,13 @@ class VlMinorController extends Controller
      */
     public function edit(EditVlMinorRequest $request, VlMinor $vlMinor)
     {
-        // Aquí defines las opciones disponibles para los selects
-        $documentTypes = ['DNI', 'Pasaporte', 'Cédula de Extranjería'];  // Puedes agregar más tipos de documentos
+        // Aquí se definen las opciones disponibles para los selects
+        $documentTypes = ['DNI', 'Pasaporte', 'Cédula de Extranjería'];  
+        $identityDocumentTypes = [
+            'DNI' => 'DNI',
+            'Carnet de Extranjería' => 'Carnet de Extranjería',
+            'Otro' => 'Otro',
+        ];
         $sexTypes = [
             0 => 'Femenino',
             1 => 'Masculino',
@@ -136,7 +141,6 @@ class VlMinorController extends Controller
 
         // Pasar todas las variables a la vista
         return view('areas.VasoDeLecheViews.VlMinors.edit', compact(
-            'vlMinor',
             'documentTypes',
             'sexTypes',
             'educationLevels',
@@ -144,7 +148,9 @@ class VlMinorController extends Controller
             'disabilities',
             'dwellingTypes',
             'vlFamilyMembers',
-            'kinships'
+            'kinships',
+            'identityDocumentTypes',
+            'vlMinor'
         ));
     }
 
