@@ -35,12 +35,8 @@ class CaregiverController extends Controller
     public function store(StoreCaregiverRequest $request)
     {
         // Validar datos de entrada
-        $data = $request->validated();
-
-        // Crear nuevo cuidador
-        Caregiver::create($data);
-
-        return redirect()->route('caregivers.index')->with('success', 'Cuidador registrado con éxito.');
+        Caregiver::create($request->validated());
+        return redirect()->route('caregivers.index')->with('success', '¡Cuidador creado exitosamente!');
     }
 
     /**
@@ -58,6 +54,7 @@ class CaregiverController extends Controller
     public function edit(Caregiver $caregiver)
     {
         // Mostrar formulario para editar un cuidador
+        
         return view('areas.OmapedViews.Caregivers.edit', compact('caregiver'));
     }
 
@@ -67,12 +64,8 @@ class CaregiverController extends Controller
     public function update(UpdateCaregiverRequest $request, Caregiver $caregiver)
     {
         // Validar datos de entrada
-        $data = $request->validated();
-
-        // Actualizar cuidador
-        $caregiver->update($data);
-
-        return redirect()->route('caregivers.index')->with('success', 'Cuidador actualizado con éxito.');
+        $caregiver->update($request->validated());
+        return redirect()->route('caregivers.index')->with('success', '¡Cuidador actualizado exitosamente!');
     }
 
     /**

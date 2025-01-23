@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\OmapedControllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\OmapedRequests\Disability\StoreDisabilityRequest;
+use App\Http\Requests\OmapedRequests\Disability\UpdateDisabilityRequest;
 use App\Models\OmapedModels\Disability;
 use Illuminate\Http\Request;
 
@@ -15,7 +17,7 @@ class DisabilityController extends Controller
     {
         // Obtener todas las discapacidades
         $disabilities = Disability::all();
-        return view('disabilities.index', compact('disabilities'));
+        return view('areas.OmapedViews.Disabilities.index', compact('disabilities'));
     }
 
     /**
@@ -24,33 +26,16 @@ class DisabilityController extends Controller
     public function create()
     {
         // Mostrar formulario para registrar una nueva discapacidad
-        return view('disabilities.create');
+        return view('areas.OmapedViews.Disabilities.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreDisabilityRequest $request)
     {
-        // Validar datos de entrada
-        $data = $request->validate([
-            'certificate_number' => 'required|string|max:255|unique:disabilities',
-            'organization' => 'nullable|string|max:255',
-            'diagnosis' => 'nullable|string|max:255',
-            'disability_type' => 'required|string|max:255',
-            'severity_level' => 'required|string|max:255',
-            'required_support' => 'nullable|string|max:255',
-            'used_support' => 'nullable|string|max:255',
-            'health_insurance' => 'nullable|string|max:255',
-            'sisfoh' => 'nullable|boolean',
-            'issuance_date' => 'required|date',
-            'expiration_date' => 'nullable|date|after_or_equal:issuance_date',
-        ]);
-
-        // Crear nueva discapacidad
-        Disability::create($data);
-
-        return redirect()->route('disabilities.index')->with('success', 'Discapacidad registrada con éxito.');
+        Disability::create($request->validated());
+        return redirect()->route('disabilities.index')->with('success', '¡Discapacidad creada exitosamente!');
     }
 
     /**
@@ -59,7 +44,7 @@ class DisabilityController extends Controller
     public function show(Disability $disability)
     {
         // Mostrar detalles de una discapacidad
-        return view('disabilities.show', compact('disability'));
+        return view('areas.OmapedViews.Disabilities.show', compact('disability'));
     }
 
     /**
@@ -68,33 +53,16 @@ class DisabilityController extends Controller
     public function edit(Disability $disability)
     {
         // Mostrar formulario para editar una discapacidad
-        return view('disabilities.edit', compact('disability'));
+        return view('areas.OmapedViews.Disabilities.edit', compact('disability'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Disability $disability)
+    public function update(UpdateDisabilityRequest $request, Disability $disability)
     {
-        // Validar datos de entrada
-        $data = $request->validate([
-            'certificate_number' => 'required|string|max:255|unique:disabilities,certificate_number,' . $disability->id,
-            'organization' => 'nullable|string|max:255',
-            'diagnosis' => 'nullable|string|max:255',
-            'disability_type' => 'required|string|max:255',
-            'severity_level' => 'required|string|max:255',
-            'required_support' => 'nullable|string|max:255',
-            'used_support' => 'nullable|string|max:255',
-            'health_insurance' => 'nullable|string|max:255',
-            'sisfoh' => 'nullable|boolean',
-            'issuance_date' => 'required|date',
-            'expiration_date' => 'nullable|date|after_or_equal:issuance_date',
-        ]);
-
-        // Actualizar discapacidad
-        $disability->update($data);
-
-        return redirect()->route('disabilities.index')->with('success', 'Discapacidad actualizada con éxito.');
+        $disability->update($request->validated());
+        return redirect()->route('disabilities.index')->with('success', '¡Discapacidad actualizada exitosamente!');
     }
 
     /**

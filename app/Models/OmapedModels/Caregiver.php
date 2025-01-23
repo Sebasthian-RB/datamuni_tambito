@@ -9,6 +9,12 @@ class Caregiver extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'full_name',
+        'relationship',
+        'dni',
+        'phone',
+    ];
     // Atributos asignables en masa
     protected $casts = [
         'dni' => 'string', // Asegura que el DNI siempre sea tratado como texto

@@ -1,59 +1,53 @@
 @extends('adminlte::page')
 
-@section('title', 'Lista de Asistencias')
+@section('title', 'Listado de Viviendas')
 
 @section('content_header')
-    <h1>Lista de Asistencias</h1>
+    <h1>Listado de Viviendas</h1>
 @stop
 
 @section('content')
-<div class="container">
-    <!-- Botones de acción -->
-    <a href="{{ route('am_person_events.create') }}" class="btn btn-info mb-3"><i class="fa fa-plus"></i> Nueva Asistencia</a>
-    <a href="{{ route('amdashboard') }}" class="btn btn-danger mb-3">
-        <i class="fa fa-arrow-left"></i> Volver
-    </a>
-    <!-- Mensaje de éxito -->
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    <!-- Tabla de datos -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Asistencias Registradas</h3>
+            <a href="{{ route('om-dwellings.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Nueva Vivienda
+            </a>
         </div>
         <div class="card-body">
             <table class="table table-bordered table-striped">
-                <thead class="bg-dark text-white">
+                <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Persona</th>
-                        <th>Evento</th>
-                        <th>Estado</th>
+                        <th>ID</th>
+                        <th>Localización</th>
+                        <th>Referencia</th>
+                        <th>Agua/Luz</th>
+                        <th>Tipo</th>
+                        <th>Ocupantes</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($personEvents as $record)
+                    @foreach($dwellings as $dwelling)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $record->amPerson->given_name }} {{ $record->amPerson->paternal_last_name }}</td>
-                            <td>{{ $record->event->name }}</td>
+                            <td>{{ $dwelling->id }}</td>
+                            <td>{{ $dwelling->exact_location }}</td>
+                            <td>{{ $dwelling->reference ?? 'N/A' }}</td>
+                            <td>{{ $dwelling->water_electricity }}</td>
+                            <td>{{ $dwelling->type }}</td>
+                            <td>{{ $dwelling->permanent_occupants }}</td>
                             <td>
-                                <span class="badge {{ $record->status === 'Asistió' ? 'bg-success' : 'bg-warning' }}">
-                                    {{ $record->status }}
-                                </span>
-                            </td>
-                            <td>
-                                <a href="{{ route('am_person_events.show', $record->id) }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> Ver</a>
-                                <a href="{{ route('am_person_events.edit', $record->id) }}" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> Editar</a>
-                                <form action="{{ route('am_person_events.destroy', $record->id) }}" method="POST" style="display:inline-block;">
+                                <a href="{{ route('om-dwellings.show', $dwelling->id) }}" class="btn btn-info btn-sm">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{{ route('om-dwellings.edit', $dwelling->id) }}" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form action="{{ route('om-dwellings.destroy', $dwelling->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar esta asistencia?')"><i class="fa fa-trash"></i> Eliminar</button>
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar esta vivienda?')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
                                 </form>
                             </td>
                         </tr>
@@ -62,5 +56,4 @@
             </table>
         </div>
     </div>
-</div>
 @stop

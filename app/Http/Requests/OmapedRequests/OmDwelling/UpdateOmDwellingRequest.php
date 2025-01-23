@@ -26,7 +26,7 @@ class UpdateOmDwellingRequest extends FormRequest
             'reference' => 'nullable|string|max:500', // Referencia de la vivienda (opcional)
             'annex_sector' => 'nullable|string|max:255', // Anexo/Sector (opcional)
             'water_electricity' => 'required|string|in:Agua,Luz,Agua y Luz,Ninguno', // Suministro de agua y/o luz
-            'dwelling_type' => 'required|string|max:50', // Tipo de vivienda
+            'type' => 'required|string|max:50', // Tipo de vivienda
             'ownership_status' => 'required|string|in:Propia,Alquilada,Prestada', // Situación de la vivienda
             'permanent_occupants' => 'required|integer|min:1', // Número de personas viviendo permanentemente
         ];

@@ -1,99 +1,88 @@
 @extends('adminlte::page')
 
-@section('title', 'Editar Asistencia')
+@section('title', 'Editar Vivienda')
 
 @section('content_header')
-    <h1>Editar Asistencia</h1>
+    <h1>Editar Vivienda</h1>
 @stop
 
 @section('content')
-    @if($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('am_person_events.update', $amPersonEvent->id) }}" method="POST">
+            <form action="{{ route('om-dwellings.update', $omDwelling->id) }}" method="POST">
                 @csrf
                 @method('PUT')
+
                 <div class="form-group">
-                    <label for="am_person_id">Persona</label>
-                    <select name="am_person_id" id="am_person_id" class="form-control select2" required>
-                        @foreach($people as $person)
-                            <option value="{{ $person->id }}" {{ $person->id == $amPersonEvent->am_person_id ? 'selected' : '' }}>
-                                {{ $person->given_name }} {{ $person->paternal_last_name }}
-                            </option>
-                        @endforeach
+                    <label for="exact_location">Localización Exacta</label>
+                    <input type="text" name="exact_location" id="exact_location" class="form-control @error('exact_location') is-invalid @enderror" value="{{ old('exact_location', $omDwelling->exact_location) }}">
+                    @error('exact_location')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="reference">Referencia</label>
+                    <textarea name="reference" id="reference" class="form-control @error('reference') is-invalid @enderror">{{ old('reference', $omDwelling->reference) }}</textarea>
+                    @error('reference')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="annex_sector">Anexo/Sector</label>
+                    <input type="text" name="annex_sector" id="annex_sector" class="form-control @error('annex_sector') is-invalid @enderror" value="{{ old('annex_sector', $omDwelling->annex_sector) }}">
+                    @error('annex_sector')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="water_electricity">Agua y/o Luz</label>
+                    <select name="water_electricity" id="water_electricity" class="form-control @error('water_electricity') is-invalid @enderror">
+                        <option value="">Seleccione</option>
+                        <option value="Agua" {{ old('water_electricity', $omDwelling->water_electricity) == 'Agua' ? 'selected' : '' }}>Agua</option>
+                        <option value="Luz" {{ old('water_electricity', $omDwelling->water_electricity) == 'Luz' ? 'selected' : '' }}>Luz</option>
+                        <option value="Agua y Luz" {{ old('water_electricity', $omDwelling->water_electricity) == 'Agua y Luz' ? 'selected' : '' }}>Agua y Luz</option>
+                        <option value="Ninguno" {{ old('water_electricity', $omDwelling->water_electricity) == 'Ninguno' ? 'selected' : '' }}>Ninguno</option>
                     </select>
+                    @error('water_electricity')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
                 </div>
+
                 <div class="form-group">
-                    <label for="event_id">Evento</label>
-                    <select name="event_id" id="event_id" class="form-control select2" required>
-                        @foreach($events as $event)
-                            <option value="{{ $event->id }}" {{ $event->id == $amPersonEvent->event_id ? 'selected' : '' }}>
-                                {{ $event->name }}
-                            </option>
-                        @endforeach
+                    <label for="type">Tipo de Vivienda</label>
+                    <input type="text" name="type" id="type" class="form-control @error('type') is-invalid @enderror" value="{{ old('type', $omDwelling->type) }}">
+                    @error('type')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="ownership_status">Situación de Vivienda</label>
+                    <select name="ownership_status" id="ownership_status" class="form-control @error('ownership_status') is-invalid @enderror">
+                        <option value="">Seleccione</option>
+                        <option value="Propia" {{ old('ownership_status', $omDwelling->ownership_status) == 'Propia' ? 'selected' : '' }}>Propia</option>
+                        <option value="Alquilada" {{ old('ownership_status', $omDwelling->ownership_status) == 'Alquilada' ? 'selected' : '' }}>Alquilada</option>
+                        <option value="Prestada" {{ old('ownership_status', $omDwelling->ownership_status) == 'Prestada' ? 'selected' : '' }}>Prestada</option>
                     </select>
+                    @error('ownership_status')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
                 </div>
+
                 <div class="form-group">
-                    <label for="status">Estado</label>
-                    <select name="status" id="status" class="form-control" required>
-                        <option value="Asistió" {{ $amPersonEvent->status == 'Asistió' ? 'selected' : '' }}>Asistió</option>
-                        <option value="No Asistió" {{ $amPersonEvent->status == 'No Asistió' ? 'selected' : '' }}>No Asistió</option>
-                        <option value="Justificado" {{ $amPersonEvent->status == 'Justificado' ? 'selected' : '' }}>Justificado</option>
-                    </select>
+                    <label for="permanent_occupants">Ocupantes Permanentes</label>
+                    <input type="number" name="permanent_occupants" id="permanent_occupants" class="form-control @error('permanent_occupants') is-invalid @enderror" value="{{ old('permanent_occupants', $omDwelling->permanent_occupants) }}">
+                    @error('permanent_occupants')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
                 </div>
-                <div class="form-group">
-                    <label for="attendance_datetime">Fecha y Hora de Asistencia</label>
-                    <input 
-                        type="datetime-local" 
-                        name="attendance_datetime" 
-                        id="attendance_datetime" 
-                        class="form-control" 
-                        value="{{ old('attendance_datetime', $amPersonEvent->attendance_datetime ? $amPersonEvent->attendance_datetime->format('Y-m-d\TH:i') : '') }}" 
-                        required
-                    >
-                </div>
+
                 <button type="submit" class="btn btn-success">Actualizar</button>
-                <a href="{{ route('am_person_events.index') }}" class="btn btn-secondary">Cancelar</a>
+                <a href="{{ route('om-dwellings.index') }}" class="btn btn-secondary">Cancelar</a>
             </form>
         </div>
     </div>
-@stop
-@section('css')
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-    <style>
-        .select2-container .select2-selection--single {
-            height: 36px; /* Ajusta la altura según tus necesidades */
-            padding: 10px;
-            font-size: 16px;
-        }
-        .select2-container--default .select2-selection--single .select2-selection__rendered {
-            line-height: 20px;
-        }
-        .select2-container--default .select2-selection--single .select2-selection__arrow {
-            height: 20px;
-        }
-    </style>
-@stop
-
-@section('js')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Inicializar Select2 en el campo Persona
-            $('.select2').select2({
-                width: '100%', // Ocupa el 100% del ancho del contenedor
-                placeholder: 'Seleccione una persona', // Placeholder para campos vacíos
-                allowClear: true // Permitir limpiar la selección
-            });
-        });
-    </script>
 @stop

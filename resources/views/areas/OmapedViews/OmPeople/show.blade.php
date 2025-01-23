@@ -1,58 +1,98 @@
 @extends('adminlte::page')
 
-@section('title', 'Detalles de Asistencia')
+@section('title', 'Detalles de Persona')
 
 @section('content_header')
-    <h1>Detalles de Asistencia</h1>
+    <h1>Detalles de Persona</h1>
 @stop
 
 @section('content')
-<div class="container">
-    <div class="card">
-        <!-- Header con la imagen -->
-        <div class="card-header bg-success p-0 d-flex justify-content-center align-items-center" style="height: 60px;">
-            <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="img-fluid" style="height: 80%; width: auto;">
-        </div>
+    <table class="table table-bordered">
+        <tr>
+            <th>Fecha de Registro</th>
+            <td>{{ $omPerson->registration_date }}</td>
+        </tr>
+        <tr>
+            <th>Nombre Completo</th>
+            <td>{{ $omPerson->paternal_last_name }} {{ $omPerson->maternal_last_name }} {{ $omPerson->given_name }}</td>
+        </tr>
+        <tr>
+            <th>Estado Civil</th>
+            <td>{{ $omPerson->marital_status }}</td>
+        </tr>
+        <tr>
+            <th>DNI</th>
+            <td>{{ $omPerson->dni }}</td>
+        </tr>
+        <tr>
+            <th>Fecha de Nacimiento</th>
+            <td>{{ \Carbon\Carbon::parse($omPerson->birth_date)->format('d/m/Y') }}</td>
+        </tr>
+        <tr>
+            <th>Edad</th>
+            <td>{{ $omPerson->age }}</td>
+        </tr>
+        <tr>
+            <th>Género</th>
+            <td>{{ $omPerson->gender }}</td>
+        </tr>
+        <tr>
+            <th>Teléfono</th>
+            <td>{{ $omPerson->phone }}</td>
+        </tr>
+        <tr>
+            <th>Correo Electrónico</th>
+            <td>{{ $omPerson->email }}</td>
+        </tr>
+        <tr>
+            <th>Nivel Educativo</th>
+            <td>{{ $omPerson->education_level }}</td>
+        </tr>
+        <tr>
+            <th>Ocupación</th>
+            <td>{{ $omPerson->occupation }}</td>
+        </tr>
+        <tr>
+            <th>Seguro de Salud</th>
+            <td>{{ $omPerson->health_insurance }}</td>
+        </tr>
+        <tr>
+            <th>Estado de Pensión</th>
+            <td>{{ $omPerson->pension_status }}</td>
+        </tr>
+        <tr>
+            <th>Estado Laboral</th>
+            <td>{{ $omPerson->employment_status }}</td>
+        </tr>
+        <tr>
+            <th>SISFOH</th>
+            <td>{{ $omPerson->sisfoh ? 'Sí' : 'No' }}</td>
+        </tr>
+        <tr>
+            <th>Vivienda</th>
+            <td>{{ $omPerson->dwelling ? $omPerson->dwelling->exact_location : 'No asignada' }}</td>
+        </tr>
+        <tr>
+            <th>Discapacidad</th>
+            <td>{{ $omPerson->disability ? $omPerson->disability->certificate_number : 'No' }}</td>
+        </tr>
+        <tr>
+            <th>Cuidador</th>
+            <td>{{ $omPerson->caregiver ? $omPerson->caregiver->full_name : 'No asignado' }}</td>
+        </tr>
+        <tr>
+            <th>Necesidad de Asistencia Personal</th>
+            <td>{{ $omPerson->personal_assistance_need }}</td>
+        </tr>
+        <tr>
+            <th>Notas sobre Autonomía</th>
+            <td>{{ $omPerson->autonomy_notes }}</td>
+        </tr>
+        <tr>
+            <th>Observaciones</th>
+            <td>{{ $omPerson->observations }}</td>
+        </tr>
+    </table>
 
-        <!-- Cuerpo de la tarjeta con los detalles -->
-        <div class="card-body">
-            <div class="row">
-                <!-- Columna de la persona -->
-                <div class="col-md-6 mb-3">
-                    <h5><strong>Persona:</strong></h5>
-                    <p>{{ $amPersonEvent->amPerson->given_name }} {{ $amPersonEvent->amPerson->paternal_last_name }}</p>
-                </div>
-
-                <!-- Columna del evento -->
-                <div class="col-md-6 mb-3">
-                    <h5><strong>Evento:</strong></h5>
-                    <p>{{ $amPersonEvent->event->name }}</p>
-                </div>
-            </div>
-
-            <div class="row">
-                <!-- Columna del estado -->
-                <div class="col-md-6 mb-3">
-                    <h5><strong>Estado:</strong></h5>
-                    <p class="badge {{ $amPersonEvent->status == 'Asistió' ? 'bg-success' : ($amPersonEvent->status == 'No Asistió' ? 'bg-danger' : 'bg-warning') }}">
-                        {{ $amPersonEvent->status }}
-                    </p>
-                </div>
-
-                <!-- Columna de la fecha y hora -->
-                <div class="col-md-6 mb-3">
-                    <h5><strong>Fecha y Hora de Asistencia:</strong></h5>
-                    <p>{{ $amPersonEvent->attendance_datetime ? $amPersonEvent->attendance_datetime->format('d/m/Y h:i A') : 'No especificada' }}</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Pie de página con el botón de volver -->
-        <div class="card-footer text-center">
-            <a href="{{ route('am_person_events.index') }}" class="btn btn-secondary">
-                <i class="fa fa-arrow-left"></i> Volver
-            </a>
-        </div>
-    </div>
-</div>
+    <a href="{{ route('om-people.index') }}" class="btn btn-secondary">Volver al listado</a>
 @stop

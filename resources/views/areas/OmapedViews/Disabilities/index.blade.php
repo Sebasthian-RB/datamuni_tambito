@@ -1,66 +1,55 @@
 @extends('adminlte::page')
 
-@section('title', 'Lista de Asistencias')
+@section('title', 'Discapacidades')
 
 @section('content_header')
-    <h1>Lista de Asistencias</h1>
+    <h1>Lista de Discapacidades</h1>
 @stop
 
 @section('content')
-<div class="container">
-    <!-- Botones de acción -->
-    <a href="{{ route('am_person_events.create') }}" class="btn btn-info mb-3"><i class="fa fa-plus"></i> Nueva Asistencia</a>
-    <a href="{{ route('amdashboard') }}" class="btn btn-danger mb-3">
-        <i class="fa fa-arrow-left"></i> Volver
-    </a>
-    <!-- Mensaje de éxito -->
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    <!-- Tabla de datos -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Asistencias Registradas</h3>
+            <a href="{{ route('disabilities.create') }}" class="btn btn-success">Nueva Discapacidad</a>
         </div>
         <div class="card-body">
-            <table class="table table-bordered table-striped">
-                <thead class="bg-dark text-white">
+            <table class="table table-bordered table-hover">
+                <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Persona</th>
-                        <th>Evento</th>
-                        <th>Estado</th>
+                        <th>ID</th>
+                        <th>N° Certificado</th>
+                        <th>Diagnóstico</th>
+                        <th>Tipo</th>
+                        <th>Gravedad</th>
+                        <th>Fecha de Emisión</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($personEvents as $record)
+                    @forelse ($disabilities as $disability)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $record->amPerson->given_name }} {{ $record->amPerson->paternal_last_name }}</td>
-                            <td>{{ $record->event->name }}</td>
+                            <td>{{ $disability->id }}</td>
+                            <td>{{ $disability->certificate_number }}</td>
+                            <td>{{ $disability->diagnosis }}</td>
+                            <td>{{ $disability->disability_type }}</td>
+                            <td>{{ $disability->severity_level }}</td>
+                            <td>{{ $disability->certificate_issue_date->format('d/m/Y') }}</td>
                             <td>
-                                <span class="badge {{ $record->status === 'Asistió' ? 'bg-success' : 'bg-warning' }}">
-                                    {{ $record->status }}
-                                </span>
-                            </td>
-                            <td>
-                                <a href="{{ route('am_person_events.show', $record->id) }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> Ver</a>
-                                <a href="{{ route('am_person_events.edit', $record->id) }}" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> Editar</a>
-                                <form action="{{ route('am_person_events.destroy', $record->id) }}" method="POST" style="display:inline-block;">
+                                <a href="{{ route('disabilities.show', $disability) }}" class="btn btn-info btn-sm">Ver</a>
+                                <a href="{{ route('disabilities.edit', $disability) }}" class="btn btn-warning btn-sm">Editar</a>
+                                <form action="{{ route('disabilities.destroy', $disability) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar esta asistencia?')"><i class="fa fa-trash"></i> Eliminar</button>
+                                    <button class="btn btn-danger btn-sm" onclick="return confirm('¿Está seguro de eliminar?')">Eliminar</button>
                                 </form>
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="7" class="text-center">No hay discapacidades registradas.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
     </div>
-</div>
 @stop

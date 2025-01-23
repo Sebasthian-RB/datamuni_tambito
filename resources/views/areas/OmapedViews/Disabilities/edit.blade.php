@@ -1,99 +1,60 @@
 @extends('adminlte::page')
 
-@section('title', 'Editar Asistencia')
+@section('title', 'Editar Discapacidad')
 
 @section('content_header')
-    <h1>Editar Asistencia</h1>
+    <h1>Editar Discapacidad</h1>
 @stop
 
 @section('content')
-    @if($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('am_person_events.update', $amPersonEvent->id) }}" method="POST">
+            <form action="{{ route('disabilities.update', $disability) }}" method="POST">
                 @csrf
                 @method('PUT')
+                <!-- Similar al formulario de creación, pero con los valores del modelo -->
                 <div class="form-group">
-                    <label for="am_person_id">Persona</label>
-                    <select name="am_person_id" id="am_person_id" class="form-control select2" required>
-                        @foreach($people as $person)
-                            <option value="{{ $person->id }}" {{ $person->id == $amPersonEvent->am_person_id ? 'selected' : '' }}>
-                                {{ $person->given_name }} {{ $person->paternal_last_name }}
-                            </option>
-                        @endforeach
+                    <label>N° Certificado</label>
+                    <input type="text" name="certificate_number" class="form-control" value="{{ old('certificate_number', $disability->certificate_number) }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Fecha de Emisión</label>
+                    <input type="date" name="certificate_issue_date" class="form-control" value="{{ old('certificate_issue_date', $disability->certificate_issue_date) }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Fecha de Caducidad</label>
+                    <input type="date" name="certificate_expiry_date" class="form-control" value="{{ old('certificate_expiry_date', $disability->certificate_expiry_date) }}">
+                </div>
+                <div class="form-group">
+                    <label>Organización</label>
+                    <input type="text" name="organization_name" class="form-control" value="{{ old('organization_name', $disability->organization_name) }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Diagnóstico</label>
+                    <input type="text" name="diagnosis" class="form-control" value="{{ old('diagnosis', $disability->diagnosis) }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Tipo de Discapacidad</label>
+                    <input type="text" name="disability_type" class="form-control" value="{{ old('disability_type', $disability->disability_type) }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Nivel de Gravedad</label>
+                    <select name="severity_level" class="form-control">
+                        <option value="Leve" {{ $disability->severity_level == 'Leve' ? 'selected' : '' }}>Leve</option>
+                        <option value="Moderado" {{ $disability->severity_level == 'Moderado' ? 'selected' : '' }}>Moderado</option>
+                        <option value="Severo" {{ $disability->severity_level == 'Severo' ? 'selected' : '' }}>Severo</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="event_id">Evento</label>
-                    <select name="event_id" id="event_id" class="form-control select2" required>
-                        @foreach($events as $event)
-                            <option value="{{ $event->id }}" {{ $event->id == $amPersonEvent->event_id ? 'selected' : '' }}>
-                                {{ $event->name }}
-                            </option>
-                        @endforeach
-                    </select>
+                    <label>Dispositivos Necesarios</label>
+                    <textarea name="required_support_devices" class="form-control">{{ old('required_support_devices', $disability->required_support_devices) }}</textarea>
                 </div>
                 <div class="form-group">
-                    <label for="status">Estado</label>
-                    <select name="status" id="status" class="form-control" required>
-                        <option value="Asistió" {{ $amPersonEvent->status == 'Asistió' ? 'selected' : '' }}>Asistió</option>
-                        <option value="No Asistió" {{ $amPersonEvent->status == 'No Asistió' ? 'selected' : '' }}>No Asistió</option>
-                        <option value="Justificado" {{ $amPersonEvent->status == 'Justificado' ? 'selected' : '' }}>Justificado</option>
-                    </select>
+                    <label>Dispositivos Usados</label>
+                    <textarea name="used_support_devices" class="form-control">{{ old('used_support_devices', $disability->used_support_devices) }}</textarea>
                 </div>
-                <div class="form-group">
-                    <label for="attendance_datetime">Fecha y Hora de Asistencia</label>
-                    <input 
-                        type="datetime-local" 
-                        name="attendance_datetime" 
-                        id="attendance_datetime" 
-                        class="form-control" 
-                        value="{{ old('attendance_datetime', $amPersonEvent->attendance_datetime ? $amPersonEvent->attendance_datetime->format('Y-m-d\TH:i') : '') }}" 
-                        required
-                    >
-                </div>
-                <button type="submit" class="btn btn-success">Actualizar</button>
-                <a href="{{ route('am_person_events.index') }}" class="btn btn-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Actualizar</button>
             </form>
         </div>
     </div>
-@stop
-@section('css')
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-    <style>
-        .select2-container .select2-selection--single {
-            height: 36px; /* Ajusta la altura según tus necesidades */
-            padding: 10px;
-            font-size: 16px;
-        }
-        .select2-container--default .select2-selection--single .select2-selection__rendered {
-            line-height: 20px;
-        }
-        .select2-container--default .select2-selection--single .select2-selection__arrow {
-            height: 20px;
-        }
-    </style>
-@stop
-
-@section('js')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Inicializar Select2 en el campo Persona
-            $('.select2').select2({
-                width: '100%', // Ocupa el 100% del ancho del contenedor
-                placeholder: 'Seleccione una persona', // Placeholder para campos vacíos
-                allowClear: true // Permitir limpiar la selección
-            });
-        });
-    </script>
 @stop

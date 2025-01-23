@@ -1,66 +1,48 @@
 @extends('adminlte::page')
 
-@section('title', 'Lista de Asistencias')
+@section('title', 'Listado de Personas')
 
 @section('content_header')
-    <h1>Lista de Asistencias</h1>
+    <h1>Listado de Personas</h1>
 @stop
 
 @section('content')
-<div class="container">
-    <!-- Botones de acción -->
-    <a href="{{ route('am_person_events.create') }}" class="btn btn-info mb-3"><i class="fa fa-plus"></i> Nueva Asistencia</a>
-    <a href="{{ route('amdashboard') }}" class="btn btn-danger mb-3">
-        <i class="fa fa-arrow-left"></i> Volver
-    </a>
-    <!-- Mensaje de éxito -->
     @if(session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
         </div>
     @endif
 
-    <!-- Tabla de datos -->
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Asistencias Registradas</h3>
-        </div>
-        <div class="card-body">
-            <table class="table table-bordered table-striped">
-                <thead class="bg-dark text-white">
-                    <tr>
-                        <th>#</th>
-                        <th>Persona</th>
-                        <th>Evento</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($personEvents as $record)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $record->amPerson->given_name }} {{ $record->amPerson->paternal_last_name }}</td>
-                            <td>{{ $record->event->name }}</td>
-                            <td>
-                                <span class="badge {{ $record->status === 'Asistió' ? 'bg-success' : 'bg-warning' }}">
-                                    {{ $record->status }}
-                                </span>
-                            </td>
-                            <td>
-                                <a href="{{ route('am_person_events.show', $record->id) }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> Ver</a>
-                                <a href="{{ route('am_person_events.edit', $record->id) }}" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> Editar</a>
-                                <form action="{{ route('am_person_events.destroy', $record->id) }}" method="POST" style="display:inline-block;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar esta asistencia?')"><i class="fa fa-trash"></i> Eliminar</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+    <a href="{{ route('om-people.create') }}" class="btn btn-success mb-3">Registrar Nueva Persona</a>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Nombre Completo</th>
+                <th>Estado Civil</th>
+                <th>DNI</th>
+                <th>Edad</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($people as $person)
+                <tr>
+                    <td>{{ $person->paternal_last_name }} {{ $person->maternal_last_name }} {{ $person->given_name }}</td>
+                    <td>{{ $person->marital_status }}</td>
+                    <td>{{ $person->dni }}</td>
+                    <td>{{ $person->age }}</td>
+                    <td>
+                        <a href="{{ route('om-people.show', $person->id) }}" class="btn btn-info">Ver</a>
+                        <a href="{{ route('om-people.edit', $person->id) }}" class="btn btn-warning">Editar</a>
+                        <form action="{{ route('om-people.destroy', $person->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 @stop
