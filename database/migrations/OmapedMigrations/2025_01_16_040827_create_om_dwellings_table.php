@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('reference')->nullable(); // Referencia de la vivienda
             $table->string('annex_sector', 255)->nullable(); // Anexo/Sector de la vivienda
             $table->enum('water_electricity', ['Agua', 'Luz', 'Agua y Luz', 'Ninguno']); // Suministro de agua y/o luz
-            $table->string('dwelling_type', 50); // Tipo de vivienda
+            $table->string('type', 50); // Tipo de vivienda
             $table->enum('ownership_status', ['Propia', 'Alquilada', 'Prestada']); // Situación de la vivienda (propia, alquilada, prestada)
             $table->integer('permanent_occupants'); // Número de personas viviendo permanentemente
             $table->timestamps(); // Tiempos de creación y actualización

@@ -31,7 +31,6 @@ class StoreDisabilityRequest extends FormRequest
             'severity_level' => 'required|in:Leve,Moderado,Severo', // Nivel de gravedad
             'required_support_devices' => 'nullable|string|max:500', // Dispositivos de apoyo que requiere
             'used_support_devices' => 'nullable|string|max:500', // Dispositivos de apoyo que utiliza
-            'om_person_id' => 'required|exists:om_people,id', // Relación con la persona (OmPerson)
         ];
     }
 
@@ -60,8 +59,6 @@ class StoreDisabilityRequest extends FormRequest
             'severity_level.in' => 'El nivel de gravedad debe ser: Leve, Moderado o Severo.',
             'required_support_devices.string' => 'Los dispositivos de apoyo requeridos deben ser una cadena de texto.',
             'used_support_devices.string' => 'Los dispositivos de apoyo utilizados deben ser una cadena de texto.',
-            'om_person_id.required' => 'La persona a la que se le asigna la discapacidad es obligatoria.',
-            'om_person_id.exists' => 'La persona seleccionada no existe en el sistema.',
         ];
     }
 }

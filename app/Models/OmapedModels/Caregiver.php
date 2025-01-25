@@ -9,17 +9,22 @@ class Caregiver extends Model
 {
     use HasFactory;
 
-    // Atributos asignables en masa
     protected $fillable = [
-        'full_name', 'relationship', 'dni', 'phone'
+        'full_name',
+        'relationship',
+        'dni',
+        'phone',
+    ];
+    // Atributos asignables en masa
+    protected $casts = [
+        'dni' => 'string', // Asegura que el DNI siempre sea tratado como texto
+        'phone' => 'string',
     ];
 
-    /**
-     * Relación con las personas.
-     * Un cuidador puede estar asignado a varias personas.
-     */
+    // Relación con OmPerson (1 cuidador, muchas personas)
     public function people()
     {
         return $this->hasMany(OmPerson::class, 'caregiver_id');
     }
+    
 }

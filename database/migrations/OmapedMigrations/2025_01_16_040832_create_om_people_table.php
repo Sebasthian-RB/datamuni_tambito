@@ -28,16 +28,17 @@ return new class extends Migration
             $table->string('occupation', 150)->nullable(); // Ocupación
             $table->enum('health_insurance', ['SIS', 'EsSalud', 'Seguro Privado', 'Ninguno'])->nullable(); // Seguro de salud
             $table->boolean('sisfoh')->nullable(); // SISFOH (SISFOH o no)
-            $table->enum('employment_status', ['Activo', 'Inactivo', 'Pensionista'])->nullable(); // Inserción laboral (Estado de inserción laboral)
+            $table->enum('employment_status', ['Activo', 'Inactivo', 'Pensionista'])->nullable(); // Inserción laboral
             $table->enum('pension_status', ['Pensionado', 'No Pensionado'])->nullable(); // Pensión del estado o privado
-            $table->foreignId('om_dwelling_id')->constrained('om_dwellings')->cascadeOnDelete(); // Relación con viviendas
-            $table->foreignId('disability_id')->nullable()->constrained('disabilities')->cascadeOnDelete(); // Relación con discapacidad (1 a 1)
+            $table->foreignId('om_dwelling_id')->nullable()->constrained('om_dwellings')->nullOnDelete(); // Vivienda seleccionada
+            $table->foreignId('disability_id')->nullable()->constrained('disabilities')->nullOnDelete(); // Discapacidad opcional
             $table->text('personal_assistance_need')->nullable(); // Necesidad de asistencia personal
             $table->text('autonomy_notes')->nullable(); // Notas sobre autonomía
-            $table->foreignId('caregiver_id')->nullable()->constrained('caregivers')->cascadeOnDelete(); // Relación con cuidadores (1 cuidador - muchas personas)
+            $table->foreignId('caregiver_id')->nullable()->constrained('caregivers')->nullOnDelete(); // Cuidador opcional
             $table->text('observations')->nullable(); // Observaciones
-            $table->timestamps(); // Tiempos de creación y actualización
+            $table->timestamps();
         });
+        
     }
 
     /**

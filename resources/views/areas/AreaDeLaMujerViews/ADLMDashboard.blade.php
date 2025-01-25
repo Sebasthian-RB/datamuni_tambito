@@ -3,20 +3,37 @@
 @section('title', 'Dashboard - Área de la Mujer')
 
 @section('content_header')
-    <!-- Header con la imagen -->
-    <div class="card-header bg-success p-0 d-flex justify-content-center align-items-center" style="height: 60px;">
-        <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="img-fluid" style="height: 80%; width: auto;">
-    </div>
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="h3 mb-0 text-gray-800">Panel de Control del Área de la Mujer</h1>
-            <p class="text-muted">Sigue los pasos recomendados para gestionar eficientemente los datos del Área de la Mujer.</p>
+    <!-- Header con la imagen grande -->
+    <div class="card mb-4">
+        <div class="card-header bg-success p-0 d-flex justify-content-center align-items-center" style="height: 60px;">
+            <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="img-fluid" style="height: 100%; width: auto;">
         </div>
     </div>
-    <div class="alert alert-info" role="alert">
-        <i class="fas fa-info-circle"></i> Recuerda revisar las actualizaciones recientes y mantener los datos al día.
+    
+    <!-- Panel de Control del Área de la Mujer -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1 class="h3 mb-0 text-gray-800">Panel de Control del Área de la Mujer</h1>
+                    <p class="text-muted">Sigue los pasos recomendados para gestionar eficientemente los datos del Área de la Mujer.</p>
+                </div>
+                <div class="col-md-6 d-flex justify-content-center align-items-center">
+                    <img src="{{ asset('Images/AreaDeLaMujerLogo.png') }}" alt="Logo Mujer" class="img-fluid" style="height: 150px; width: auto;">
+                </div>
+            </div>
+        </div>
     </div>
-@stop
+    
+    <!-- Alerta de información -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="alert alert-info" role="alert">
+                <i class="fas fa-info-circle"></i> Recuerda revisar las actualizaciones recientes y mantener los datos al día.
+            </div>
+        </div>
+    </div>
+@endsection
 
 @section('content')
 <div class="container">

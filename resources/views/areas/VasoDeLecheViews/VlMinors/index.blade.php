@@ -29,8 +29,9 @@
                         <th>Nombre</th>
                         <th>Apellido Paterno</th>
                         <th>Apellido Materno</th>
-                        <th>Fecha de Nacimiento</th>
                         <th>Sexo</th>
+                        <th>Fecha de Nacimiento</th>
+                        <th>Edad</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -41,8 +42,9 @@
                             <td>{{ $minor->given_name }}</td>
                             <td>{{ $minor->paternal_last_name }}</td>
                             <td>{{ $minor->maternal_last_name }}</td>
-                            <td>{{ $minor->birth_date->format('d/m/Y') }}</td>
                             <td>{{ $minor->sex_type == 0 ? 'Femenino' : 'Masculino' }}</td>
+                            <td>{{ $minor->birth_date->format('d/m/Y') }}</td>
+                            <td>{{ $minor->birth_date->age }} años</td>
                             <td>
                                 <a href="{{ route('vl_minors.show', $minor->id) }}" class="btn btn-sm" style="background-color: #9B7EBD; color: white;">Ver</a>
                                 <a href="{{ route('vl_minors.edit', $minor->id) }}" class="btn btn-sm" style="background-color: #D4BEE4; color: white;">Editar</a>

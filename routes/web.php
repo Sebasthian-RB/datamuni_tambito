@@ -25,7 +25,7 @@ use App\Http\Controllers\AreaDeLaMujerControllers\ProgramController;
 use App\Http\Controllers\AreaDeLaMujerControllers\ViolenceController;
 
 use App\Http\Controllers\AreaDeLaMujerControllers\AmDashboardController; //dashboard de AM
-
+use App\Http\Controllers\AreaDeLaMujerControllers\OmDashboardController;
 // Controladores del Área: Sisfoh
 
 use App\Http\Controllers\SisfohControllers\EnumeratorController;
@@ -52,8 +52,11 @@ use App\Http\Controllers\CiamControllers\SocialProgramController;
 
 use App\Http\Controllers\CiamControllers\CiamDashboardController; //dashboard de CIAM
 
-
-
+//Controladores deL Área: OMAPED
+use App\Http\Controllers\OmapedControllers\CaregiverController;
+use App\Http\Controllers\OmapedControllers\DisabilityController;
+use App\Http\Controllers\OmapedControllers\OmDwellingController;
+use App\Http\Controllers\OmapedControllers\OmPersonController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -81,13 +84,25 @@ Route::middleware([
 
     // Rutas de los controladores de Vaso de Leche dentro del grupo de autenticación    
     Route::resource('committees', CommitteeController::class);
-    Route::resource('committee_vl_family_members', CommitteeVlFamilyMemberController::class);
     Route::resource('products', ProductController::class);
     Route::resource('sectors', SectorController::class);
     Route::resource('vl_family_members', VlFamilyMemberController::class);
     Route::resource('vl_family_members_products', VlFamilyMemberProductController::class);
     Route::resource('vl_minors', VlMinorController::class);
     Route::get('/vaso-de-leche', [VasoDeLecheController::class, 'index'])->name('vaso-de-leche.index');
+
+        //Rutas de "committee_vl_family_members" (Padrón de Beneficiarios)
+        Route::get('padron-de-beneficiarios/{committee_id}', [CommitteeVlFamilyMemberController::class, 'index'])->name('committee_vl_family_members.index');
+
+    
+    Route::get('committee_vl_family_members/create', [CommitteeVlFamilyMemberController::class, 'create'])->name('committee_vl_family_members.create'); // Formulario de creación
+    Route::post('committee_vl_family_members', [CommitteeVlFamilyMemberController::class, 'store'])->name('committee_vl_family_members.store'); // Almacenar el nuevo miembro
+    Route::get('committee_vl_family_members/{committee_vl_family_member}', [CommitteeVlFamilyMemberController::class, 'show'])->name('committee_vl_family_members.show'); // Ver detalles de un miembro
+    Route::get('committee_vl_family_members/{committee_vl_family_member}/edit', [CommitteeVlFamilyMemberController::class, 'edit'])->name('committee_vl_family_members.edit'); // Formulario de edición
+    Route::put('committee_vl_family_members/{committee_vl_family_member}', [CommitteeVlFamilyMemberController::class, 'update'])->name('committee_vl_family_members.update'); // Actualizar un miembro
+    Route::delete('committee_vl_family_members/{committee_vl_family_member}', [CommitteeVlFamilyMemberController::class, 'destroy'])->name('committee_vl_family_members.destroy'); // Eliminar un miembro
+
+
 
     // Rutas de los controladores de Sisfoh dentro del grupo de autenticación
     Route::resource('enumerators', EnumeratorController::class);
@@ -113,4 +128,12 @@ Route::middleware([
     Route::resource('social_programs', SocialProgramController::class);
 
     Route::get('/ciam_dashboard', [CiamDashboardController::class, 'index'])->name('ciamdashboard');
+
+    // Rutas de los controladores de Sisfoh dentro del grupo de autenticación
+    Route::resource('caregivers', CaregiverController::class);
+    Route::resource('om-dwellings', OmDwellingController::class);
+    Route::resource('disabilities', DisabilityController::class);
+    Route::resource('om-people', OmPersonController::class);
+    Route::get('/om_dashboard', [OmDashboardController::class, 'index'])->name('omdashboard');
+
 });

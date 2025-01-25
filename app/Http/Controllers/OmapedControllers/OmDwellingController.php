@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\OmapedControllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\OmapedRequests\OmDwelling\StoreOmDwellingRequest;
+use App\Http\Requests\OmapedRequests\OmDwelling\UpdateOmDwellingRequest;
 use App\Models\OmapedModels\OmDwelling;
 use Illuminate\Http\Request;
 
@@ -15,7 +17,7 @@ class OmDwellingController extends Controller
     {
         // Obtener todas las viviendas
         $dwellings = OmDwelling::all();
-        return view('om_dwellings.index', compact('dwellings'));
+        return view('areas.OmapedViews.OmDwellings.index', compact('dwellings'));
     }
 
     /**
@@ -24,29 +26,17 @@ class OmDwellingController extends Controller
     public function create()
     {
         // Mostrar formulario para registrar una nueva vivienda
-        return view('om_dwellings.create');
+        return view('areas.OmapedViews.OmDwellings.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreOmDwellingRequest $request)
     {
-        // Validar datos de entrada
-        $data = $request->validate([
-            'exact_location' => 'required|string|max:255',
-            'reference' => 'nullable|string|max:255',
-            'annex_sector' => 'nullable|string|max:255',
-            'water_electric_supply' => 'required|string|in:Agua,Luz,Agua y Luz',
-            'housing_type' => 'required|string|max:255',
-            'housing_condition' => 'required|string|max:255',
-            'num_residents' => 'required|integer|min:1',
-        ]);
-
         // Crear nueva vivienda
-        OmDwelling::create($data);
-
-        return redirect()->route('om_dwellings.index')->with('success', 'Vivienda registrada con éxito.');
+        OmDwelling::create($request->validated());
+        return redirect()->route('om-dwellings.index')->with('success', '¡Vivienda creada exitosamente!');
     }
 
     /**
@@ -55,7 +45,7 @@ class OmDwellingController extends Controller
     public function show(OmDwelling $omDwelling)
     {
         // Mostrar detalles de una vivienda
-        return view('om_dwellings.show', compact('omDwelling'));
+        return view('areas.OmapedViews.OmDwellings.show', compact('omDwelling'));
     }
 
     /**
@@ -64,29 +54,16 @@ class OmDwellingController extends Controller
     public function edit(OmDwelling $omDwelling)
     {
         // Mostrar formulario para editar una vivienda
-        return view('om_dwellings.edit', compact('omDwelling'));
+        return view('areas.OmapedViews.OmDwellings.edit', compact('omDwelling'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, OmDwelling $omDwelling)
+    public function update(UpdateOmDwellingRequest $request, OmDwelling $omDwelling)
     {
-        // Validar datos de entrada
-        $data = $request->validate([
-            'exact_location' => 'required|string|max:255',
-            'reference' => 'nullable|string|max:255',
-            'annex_sector' => 'nullable|string|max:255',
-            'water_electric_supply' => 'required|string|in:Agua,Luz,Agua y Luz',
-            'housing_type' => 'required|string|max:255',
-            'housing_condition' => 'required|string|max:255',
-            'num_residents' => 'required|integer|min:1',
-        ]);
-
-        // Actualizar vivienda
-        $omDwelling->update($data);
-
-        return redirect()->route('om_dwellings.index')->with('success', 'Vivienda actualizada con éxito.');
+        $omDwelling->update($request->validated());
+        return redirect()->route('om-dwellings.index')->with('success', '¡Vivienda actualizada exitosamente!');
     }
 
     /**
@@ -96,6 +73,6 @@ class OmDwellingController extends Controller
     {
         // Eliminar vivienda
         $omDwelling->delete();
-        return redirect()->route('om_dwellings.index')->with('success', 'Vivienda eliminada con éxito.');
+        return redirect()->route('om-dwellings.index')->with('success', 'Vivienda eliminada con éxito.');
     }
 }

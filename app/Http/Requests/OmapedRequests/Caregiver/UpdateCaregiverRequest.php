@@ -3,6 +3,7 @@
 namespace App\Http\Requests\OmapedRequests\Caregiver;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateCaregiverRequest extends FormRequest
 {
@@ -22,10 +23,15 @@ class UpdateCaregiverRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'full_name' => 'required|string|max:200', // Nombre completo
-            'relationship' => 'required|string|max:100', // Parentesco
-            'dni' => 'required|string|max:8|unique:caregivers,dni,' . $this->route('caregiver'), // Validación para que el DNI no se repita, excepto para el registro actual
-            'phone' => 'nullable|string|max:15', // Teléfono (opcional)
+            'full_name' => 'required|string|max:200',
+            'relationship' => 'required|string|max:100',
+            'dni' => [
+                'required',
+                'string',
+                'size:8',
+                Rule::unique('caregivers', 'dni')->ignore($this->route('caregiver')->id),
+            ],
+            'phone' => 'nullable|string|max:15',
         ];
     }
     

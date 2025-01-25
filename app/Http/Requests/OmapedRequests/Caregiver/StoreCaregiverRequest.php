@@ -24,7 +24,7 @@ class StoreCaregiverRequest extends FormRequest
         return [
             'full_name' => 'required|string|max:200',
             'relationship' => 'required|string|max:100',
-            'dni' => 'required|string|max:8|unique:caregivers,dni',
+            'dni' => 'required|string|max:8|unique:caregivers',
             'phone' => 'nullable|string|max:15',
         ];
     }

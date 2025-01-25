@@ -27,6 +27,7 @@ return new class extends Migration
             $table->enum('condition',  ['Gest.', 'Lact.', 'Anc.']);                                                     // Condición del menor (GEST. | LACT. | ANC.)
             $table->boolean('disability');                                                                              // Discapacidad del menor
             $table->string('vl_family_member_id');                                                                      // Clave foránea hacia el Miembro de Familia
+        $table->enum('kinship', ['Hijo(a)', 'Socio(a)']);                                                               // Parentesco con familiar
             $table->timestamps();                                                                                       // Timestamps para created_at y updated_at
 
             $table->foreign('vl_family_member_id')

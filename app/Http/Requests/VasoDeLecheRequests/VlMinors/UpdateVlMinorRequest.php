@@ -117,6 +117,12 @@ class UpdateVlMinorRequest extends FormRequest
                 'string',
                 'exists:vl_family_members,id',
             ],
+            'kinship' => [
+                'required',
+                'string',
+                'max:100',
+                'in:Hijo(a),Socio(a)',
+            ],
         ];
     }
 
@@ -183,6 +189,11 @@ class UpdateVlMinorRequest extends FormRequest
             'vl_family_member_id.required' => 'El miembro de familia relacionado es obligatorio.',
             'vl_family_member_id.string' => 'El ID del miembro de familia debe ser una cadena de texto.',
             'vl_family_member_id.exists' => 'El miembro de familia seleccionado no existe en el sistema.',
+
+            'kinship.required' => 'El parentesco con el familiar es obligatorio.',
+            'kinship.string' => 'El parentesco con el familiar debe ser una cadena de texto.',
+            'kinship.max' => 'El parentesco con el familiar no debe exceder los 100 caracteres.',
+            'kinship.in' => 'La condición debe ser una de las siguientes: Gest., Lact., Anc.',
         ];
     }
 
@@ -208,6 +219,7 @@ class UpdateVlMinorRequest extends FormRequest
             'condition' => 'condición',
             'disability' => 'discapacidad',
             'vl_family_member_id' => 'miembro de familia relacionado',
+            'kinship' => 'parentesco',
         ];
     }
 }

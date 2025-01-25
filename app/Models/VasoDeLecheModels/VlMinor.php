@@ -44,6 +44,7 @@ class VlMinor extends Model
         'condition', // Condición del menor (GEST. | LACT. | ANC.)
         'disability',// Discapacidad del menor
         'vl_family_member_id', // Id del familiar
+        'kinship', //Parentesco con familiar
     ];
 
     /**
@@ -67,6 +68,7 @@ class VlMinor extends Model
         'condition' => 'string',
         'disability' => 'boolean',
         'vl_family_member_id' => 'string',
+        'kinship' => 'string',
     ];
 
     /**

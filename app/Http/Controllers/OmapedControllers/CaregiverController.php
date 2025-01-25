@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\OmapedControllars;
+namespace App\Http\Controllers\OmapedControllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OmapedRequests\Caregiver\StoreCaregiverRequest;
@@ -16,8 +16,8 @@ class CaregiverController extends Controller
     public function index()
     {
         // Obtener todos los cuidadores
-        $caregivers = Caregiver::with('omPeople')->get(); // Incluye personas asociadas
-        return view('caregivers.index', compact('caregivers'));
+        $caregivers = Caregiver::all(); // Aquí puedes optimizar según lo necesites
+        return view('areas.OmapedViews.Caregivers.index', compact('caregivers'));
     }
 
     /**
@@ -26,7 +26,7 @@ class CaregiverController extends Controller
     public function create()
     {
         // Mostrar formulario para registrar un nuevo cuidador
-        return view('caregivers.create');
+        return view('areas.OmapedViews.Caregivers.create');
     }
 
     /**
@@ -35,12 +35,8 @@ class CaregiverController extends Controller
     public function store(StoreCaregiverRequest $request)
     {
         // Validar datos de entrada
-        $data = $request->validate();
-
-        // Crear nuevo cuidador
-        Caregiver::create($data);
-
-        return redirect()->route('caregivers.index')->with('success', 'Cuidador registrado con éxito.');
+        Caregiver::create($request->validated());
+        return redirect()->route('caregivers.index')->with('success', '¡Cuidador creado exitosamente!');
     }
 
     /**
@@ -49,8 +45,7 @@ class CaregiverController extends Controller
     public function show(Caregiver $caregiver)
     {
         // Mostrar detalles de un cuidador
-        $caregiver->load('omPeople'); // Cargar personas asociadas
-        return view('caregivers.show', compact('caregiver'));
+        return view('areas.OmapedViews.Caregivers.show', compact('caregiver'));
     }
 
     /**
@@ -59,7 +54,8 @@ class CaregiverController extends Controller
     public function edit(Caregiver $caregiver)
     {
         // Mostrar formulario para editar un cuidador
-        return view('caregivers.edit', compact('caregiver'));
+        
+        return view('areas.OmapedViews.Caregivers.edit', compact('caregiver'));
     }
 
     /**
@@ -68,12 +64,8 @@ class CaregiverController extends Controller
     public function update(UpdateCaregiverRequest $request, Caregiver $caregiver)
     {
         // Validar datos de entrada
-        $data = $request->validate();
-
-        // Actualizar cuidador
-        $caregiver->update($data);
-
-        return redirect()->route('caregivers.index')->with('success', 'Cuidador actualizado con éxito.');
+        $caregiver->update($request->validated());
+        return redirect()->route('caregivers.index')->with('success', '¡Cuidador actualizado exitosamente!');
     }
 
     /**
@@ -83,6 +75,7 @@ class CaregiverController extends Controller
     {
         // Eliminar cuidador
         $caregiver->delete();
+
         return redirect()->route('caregivers.index')->with('success', 'Cuidador eliminado con éxito.');
     }
 }
