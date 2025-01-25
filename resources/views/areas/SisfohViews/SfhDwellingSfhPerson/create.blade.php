@@ -1,29 +1,37 @@
-<!-- resources/views/areas/SisfohViews/SfhDwellingSfhPeople/create.blade.php -->
+<!-- resources/views/areas/SisfohViews/SfhDwellingSfhPerson/create.blade.php -->
 @extends('adminlte::page')
 
 @section('content')
     <div class="container">
-        <h1>Agregar Persona a Vivienda</h1>
-
-        <form action="{{ route('areas.SisfohViews.SfhDwellingSfhPerson.store') }}" method="POST">
+        <h1>Añadir Persona a la Vivienda</h1>
+        <form action="{{ route('sfh_dwelling_sfh_people.store') }}" method="POST">
             @csrf
-            <div class="form-group">
-                <label for="name">Nombre</label>
-                <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}">
-                @error('name')
-                    <div class="alert alert-danger">{{ $message }}</div>
-                @enderror
+
+            <div class="mb-3">
+                <label for="sfh_person_id" class="form-label">ID de Persona</label>
+                <input type="text" name="sfh_person_id" id="sfh_person_id" class="form-control" required>
             </div>
 
-            <div class="form-group">
-                <label for="age">Edad</label>
-                <input type="number" name="age" id="age" class="form-control" value="{{ old('age') }}">
-                @error('age')
-                    <div class="alert alert-danger">{{ $message }}</div>
-                @enderror
+            <div class="mb-3">
+                <label for="status" class="form-label">Estado</label>
+                <select name="status" id="status" class="form-control" required>
+                    <option value="Activo">Activo</option>
+                    <option value="Inactivo">Inactivo</option>
+                </select>
             </div>
 
-            <button type="submit" class="mt-4 btn btn-success">Guardar Persona</button>
+            <div class="mb-3">
+                <label for="update_date" class="form-label">Fecha de Actualización</label>
+                <input type="date" name="update_date" id="update_date" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="sfh_dwelling_id" class="form-label">ID de Vivienda</label>
+                <input type="text" name="sfh_dwelling_id" id="sfh_dwelling_id" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <a href="{{ route('sfh_dwelling_sfh_people.index') }}" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>
 @endsection

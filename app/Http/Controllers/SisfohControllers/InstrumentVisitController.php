@@ -12,6 +12,9 @@ use App\Http\Requests\SisfohRequests\InstrumentVisits\EditInstrumentVisitRequest
 use App\Http\Requests\SisfohRequests\InstrumentVisits\UpdateInstrumentVisitRequest;
 use App\Http\Requests\SisfohRequests\InstrumentVisits\DestroyInstrumentVisitRequest;
 
+use App\Models\SisfohModels\Instrument;
+use App\Models\SisfohModels\Visit;
+
 class InstrumentVisitController extends Controller
 {
     /**
@@ -30,8 +33,12 @@ class InstrumentVisitController extends Controller
      */
     public function create(CreateInstrumentVisitRequest $request)
     {
+        // Obtener todos los instrumentos y visitas para mostrarlos en el formulario
+        $instruments = Instrument::all();  // Obtener todos los instrumentos
+        $visits = Visit::all();            // Obtener todas las visitas
+        
         // Lógica para mostrar el formulario de creación
-        return view('areas.SisfohViews.InstrumentVisit.create');
+        return view('areas.SisfohViews.InstrumentVisit.create', compact('instruments', 'visits'));
     }
 
     /**

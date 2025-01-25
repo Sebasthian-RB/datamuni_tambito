@@ -1,20 +1,27 @@
-<!-- resources/views/areas/SisfohViews/SfhDwellingSfhPeople/show.blade.php -->
+<!-- resources/views/areas/SisfohViews/SfhDwellingSfhPerson/show.blade.php -->
 @extends('adminlte::page')
 
 @section('content')
     <div class="container">
-        <h1>Detalle de Persona</h1>
+        <h1>Detalles de la Persona en la Vivienda</h1>
 
-        <div class="card">
-            <div class="card-header">
-                Persona #{{ $sfhDwellingSfhPerson->id }}
-            </div>
-            <div class="card-body">
-                <h5 class="card-title">Nombre: {{ $sfhDwellingSfhPerson->name }}</h5>
-                <p class="card-text">Edad: {{ $sfhDwellingSfhPerson->age }}</p>
-            </div>
+        <div class="mb-3">
+            <strong>ID de Persona:</strong> {{ $sfhDwellingSfhPerson->sfh_person_id }}
         </div>
 
-        <a href="{{ route('areas.SisfohViews.SfhDwellingSfhPerson.index') }}" class="mt-4 btn btn-primary">Volver</a>
+        <div class="mb-3">
+            <strong>Estado:</strong> {{ $sfhDwellingSfhPerson->status }}
+        </div>
+
+        <div class="mb-3">
+            <strong>Fecha de Actualización:</strong> {{ $sfhDwellingSfhPerson->update_date }}
+        </div>
+
+        <div class="mb-3">
+            <strong>ID de Vivienda:</strong> {{ $sfhDwellingSfhPerson->sfh_dwelling_id }}
+        </div>
+
+        <a href="{{ route('sfh_dwelling_sfh_people.index') }}" class="btn btn-secondary">Volver a la Lista</a>
     </div>
 @endsection
+

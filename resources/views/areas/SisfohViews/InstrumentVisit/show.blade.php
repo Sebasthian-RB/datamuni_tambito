@@ -1,14 +1,18 @@
-<!-- resources/views/instrument_visits/show.blade.php -->
 @extends('adminlte::page')
 
 @section('content')
-    <div class="container">
-        <h1>Detalles de la Visita</h1>
-        <ul>
-            <li><strong>ID:</strong> {{ $instrumentVisit->id }}</li>
-            <li><strong>Instrumento:</strong> {{ $instrumentVisit->instrument_name }}</li>
-            <li><strong>Fecha de la Visita:</strong> {{ $instrumentVisit->visit_date }}</li>
-        </ul>
-        <a href="{{ route('instrument_visits.index') }}" class="btn btn-secondary">Volver</a>
+<div class="container">
+    <h1>Detalles del Instrumento/Visita</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Instrumento: {{ $instrumentVisit->instrument->name ?? 'N/A' }}</h5>
+            <p class="card-text">Visita: {{ $instrumentVisit->visit->name ?? 'N/A' }}</p>
+            <p class="card-text">Fecha de Aplicación: {{ $instrumentVisit->application_date }}</p>
+            <p class="card-text">Descripciones: {{ $instrumentVisit->descriptions }}</p>
+        </div>
     </div>
+
+    <a href="{{ route('instrument_visits.index') }}" class="mt-3 btn btn-primary">Volver</a>
+</div>
 @endsection

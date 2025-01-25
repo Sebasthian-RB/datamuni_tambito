@@ -19,11 +19,11 @@
             <tbody>
                 @foreach ($visits as $visit)
                     <tr>
-                        <td>{{ $visit->visit_date }}</td>
+                        <td>{{ $visit->formatted_visit_date }}</td>
                         <td>{{ $visit->status }}</td>
-                        <td>{{ $visit->observations }}</td>
-                        <td>{{ $visit->enumerator->given_name }} {{ $visit->enumerator->paternal_last_name }}</td>
+                        <td>{{ $visit->enumerator->given_name }} {{ $visit->enumerator->paternal_last_name }} {{ $visit->enumerator->maternal_last_name }}</td>
                         <td>{{ $visit->request->id }}</td>
+                        <td>{{ $visit->observations }}</td>
                         <td>
                             <a href="{{ route('visits.show', $visit->id) }}" class="btn btn-info">Ver</a>
                             <a href="{{ route('visits.edit', $visit->id) }}" class="btn btn-warning">Editar</a>

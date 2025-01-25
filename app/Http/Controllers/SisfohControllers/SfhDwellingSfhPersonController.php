@@ -46,7 +46,7 @@ class SfhDwellingSfhPersonController extends Controller
         SfhDwellingSfhPerson::create($validated);
 
         // Redirigir o devolver la respuesta
-        return redirect()->route('areas.SisfohViews.SfhDwellingSfhPerson.index')->with('success', 'Persona añadida a la vivienda con éxito');
+        return redirect()->route('sfh_dwelling_sfh_people.index')->with('success', 'Persona añadida a la vivienda con éxito');
     }
 
     /**
@@ -79,7 +79,7 @@ class SfhDwellingSfhPersonController extends Controller
         $sfhDwellingSfhPerson->update($validated);
 
         // Redirigir o devolver la respuesta
-        return redirect()->route('areas.SisfohViews.SfhDwellingSfhPerson.index')->with('success', 'Persona de vivienda actualizada con éxito');
+        return redirect()->route('sfh_dwelling_sfh_people.index')->with('success', 'Persona de vivienda actualizada con éxito');
     }
 
     /**
@@ -91,6 +91,6 @@ class SfhDwellingSfhPersonController extends Controller
         $sfhDwellingSfhPerson->delete();
 
         // Redirigir o devolver la respuesta
-        return redirect()->route('areas.SisfohViews.SfhDwellingSfhPerson.index')->with('success', 'Persona eliminada de la vivienda con éxito');
+        return redirect()->route('sfh_dwelling_sfh_people.index')->with('success', 'Persona eliminada de la vivienda con éxito');
     }
 }

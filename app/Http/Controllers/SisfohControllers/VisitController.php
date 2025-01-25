@@ -14,7 +14,7 @@ use App\Http\Requests\SisfohRequests\Visits\DestroyVisitRequest;
 
 use App\Models\SisfohModels\Enumerator;
 use App\Models\SisfohModels\SfhRequest;
-
+use Carbon\Carbon;
 class VisitController extends Controller
 {
     /**
@@ -22,7 +22,10 @@ class VisitController extends Controller
      */
     public function index(IndexVisitRequest $request)
     {
-        $visits = Visit::all(); // Obtener todas las visitas
+        $visits = Visit::all()->map(function ($visit) {
+            $visit->visit_date = Carbon::parse($visit->visit_date)->format('Y-m-d'); // Formatear la fecha
+            return $visit;
+        });
         return view('areas.SisfohViews.Visits.index', compact('visits')); // Devolver vista con las visitas
     }
 

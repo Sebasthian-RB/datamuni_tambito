@@ -1,33 +1,43 @@
-<!-- resources/views/areas/SisfohViews/SfhDwellingSfhPeople/index.blade.php -->
+<!-- resources/views/areas/SisfohViews/SfhDwellingSfhPerson/index.blade.php -->
 @extends('adminlte::page')
 
 @section('content')
     <div class="container">
-        <h1>Lista de Personas en Vivienda</h1>
-        <a href="{{ route('sfh_dwelling_sfh_people.create') }}" class="btn btn-primary">Agregar Persona</a>
+        <h1>Lista de Personas en la Vivienda</h1>
+        <a href="{{ route('sfh_dwelling_sfh_people.create') }}" class="mb-3 btn btn-primary">Añadir Persona</a>
+        
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
 
-        <table class="table mt-4">
+        <table class="table">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Edad</th>
+                    <th>Persona ID</th>
+                    <th>Estado</th>
+                    <th>Fecha de Actualización</th>
+                    <th>Vivienda ID</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($sfhPersons as $person)
+                @foreach($sfhPersons as $person)
                     <tr>
                         <td>{{ $person->id }}</td>
-                        <td>{{ $person->name }}</td>
-                        <td>{{ $person->age }}</td>
+                        <td>{{ $person->sfh_person_id }}</td>
+                        <td>{{ $person->status }}</td>
+                        <td>{{ $person->update_date }}</td>
+                        <td>{{ $person->sfh_dwelling_id }}</td>
                         <td>
                             <a href="{{ route('sfh_dwelling_sfh_people.show', $person->id) }}" class="btn btn-info">Ver</a>
                             <a href="{{ route('sfh_dwelling_sfh_people.edit', $person->id) }}" class="btn btn-warning">Editar</a>
-                            <form action="{{ route('sfh_dwelling_sfh_people.destroy', $person->id) }}" method="POST" class="d-inline">
+                            <form action="{{ route('sfh_dwelling_sfh_people.destroy', $person->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Eliminar</button>
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('¿Seguro que deseas eliminar esta persona?')">Eliminar</button>
                             </form>
                         </td>
                     </tr>

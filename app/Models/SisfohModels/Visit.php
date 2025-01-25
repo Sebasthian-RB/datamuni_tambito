@@ -68,4 +68,9 @@ class Visit extends Model
     {
         return $this->belongsToMany(Instrument::class, 'instrument_visit', 'visit_id', 'instrument_id');
     }
+
+    public function getFormattedVisitDateAttribute()
+    {
+        return \Carbon\Carbon::parse($this->visit_date)->format('Y-m-d');
+    }
 }

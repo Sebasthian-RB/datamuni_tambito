@@ -30,7 +30,7 @@ class UpdateVisitRequest extends FormRequest
             'visit_date' => [
                 'required',  // La fecha es obligatoria
                 'date',      // Asegura que la fecha sea válida
-                'after_or_equal:today', // La fecha no puede ser anterior a la fecha actual
+                // 'after_or_equal:today', // La fecha no puede ser anterior a la fecha actual
             ],
             'status' => [
                 'required',  // El estado es obligatorio
@@ -43,7 +43,7 @@ class UpdateVisitRequest extends FormRequest
             ],
             'enumerator_id' => [
                 'required',   // El ID del enumerador es obligatorio
-                'uuid',       // Asegura que el ID del enumerador sea un UUID válido
+                //'uuid',       // Asegura que el ID del enumerador sea un UUID válido
                 'exists:enumerators,id', // Asegura que el ID del enumerador exista en la tabla enumerators
             ],
             'sfh_requests_id' => [
