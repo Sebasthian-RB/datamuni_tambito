@@ -108,9 +108,9 @@
                             <h3 class="mb-0 d-flex justify-content-between align-items-center">
                                 Estadísticas de Casos
                                 <button class="btn btn-light btn-sm float-right custom-btn" data-toggle="collapse"
-        data-target="#dashboardStats" aria-expanded="false" aria-controls="dashboardStats">
-    <i class="fas fa-chart-bar"></i> Ver Estadísticas
-</button>
+                                    data-target="#dashboardStats" aria-expanded="false" aria-controls="dashboardStats">
+                                    <i class="fas fa-chart-bar"></i> Ver Estadísticas
+                                </button>
                             </h3>
                         </div>
                         <div class="collapse" id="dashboardStats">
@@ -190,37 +190,26 @@
                     style="background-color: #ffe5d9; padding: 20px; border-radius: 12px; font-family: 'Poppins', sans-serif; color: #6b4226;">
                     <h2 style="font-family: 'Playfair Display', serif; color: #b23a48; font-weight: bold;">Gestión de
                         Intervenciones</h2>
-                    <p style="color: #6b4226;">Aquí puedes gestionar las intervenciones.</p>
-
-                    <!-- Tarjeta: Gestión de Intervenciones -->
-                    <div class="card mb-4 shadow-sm">
-                        <div class="card-header"
-                            style="background: linear-gradient(to right, #b23a48, #8a2a37); color: white;">
-                            <h3>Gestión de Intervenciones</h3>
+                    <p style="color: #6b4226;">Administra intervenciones y la relación entre personas e
+                        intervenciones.</p>
+                    <!-- Botones de intervenciones -->
+                    <div class="row text-center">
+                        <!-- Botón: Gestión de Intervenciones -->
+                        <div class="col-lg-4 col-md-6 mb-3">
+                            <a href="{{ route('interventions.index') }}" class="btn btn-lg w-100 shadow-sm"
+                                style="background: linear-gradient(to right, #f76c5e, #d8474d); color: white; font-weight: bold; border-radius: 8px;">
+                                <i class="fas fa-handshake"></i> Gestión de Intervenciones
+                            </a>
                         </div>
-                        <div class="card-body">
-                            <p style="color: #6b4226;">Administra intervenciones y la relación entre personas e
-                                intervenciones.</p>
-                            <div class="row text-center">
-                                <!-- Botón: Gestión de Intervenciones -->
-                                <div class="col-lg-4 col-md-6 mb-3">
-                                    <a href="{{ route('interventions.index') }}" class="btn btn-lg w-100 shadow-sm"
-                                        style="background: linear-gradient(to right, #f76c5e, #d8474d); color: white; font-weight: bold; border-radius: 8px;">
-                                        <i class="fas fa-handshake"></i> Gestión de Intervenciones
-                                    </a>
-                                </div>
-                                <!-- Botón: Personas e Intervenciones -->
-                                <div class="col-lg-4 col-md-6 mb-3">
-                                    <a href="{{ route('am_person_interventions.index') }}"
-                                        class="btn btn-lg w-100 shadow-sm"
-                                        style="background: linear-gradient(to right, #f27a70, #d94c50); color: white; font-weight: bold; border-radius: 8px;">
-                                        <i class="fas fa-user-friends"></i> Personas e Intervenciones
-                                    </a>
-                                </div>
-                            </div>
+                        <!-- Botón: Personas e Intervenciones -->
+                        <div class="col-lg-4 col-md-6 mb-3">
+                            <a href="{{ route('am_person_interventions.index') }}"
+                                class="btn btn-lg w-100 shadow-sm"
+                                style="background: linear-gradient(to right, #f27a70, #d94c50); color: white; font-weight: bold; border-radius: 8px;">
+                                <i class="fas fa-user-friends"></i> Personas e Intervenciones
+                            </a>
                         </div>
                     </div>
-
                     <!-- Tarjeta: Estadísticas de Intervenciones -->
                     <div class="card mb-4 shadow-sm">
                         <div class="card-header"
@@ -228,9 +217,9 @@
                             <h3>
                                 Estadísticas de Intervenciones
                                 <button class="btn btn-light btn-sm float-right custom-btn" data-toggle="collapse"
-        data-target="#dashboardStats" aria-expanded="false" aria-controls="dashboardStats">
-    <i class="fas fa-chart-bar"></i> Ver Estadísticas
-</button>
+                                    data-target="#dashboardStatsIn" aria-expanded="false" aria-controls="dashboardStatsIn">
+                                    <i class="fas fa-chart-bar"></i> Ver Estadísticas
+                                </button>
                             </h3>
                         </div>
                         <div class="collapse" id="dashboardStatsIn">
@@ -329,55 +318,45 @@
                     <h2 style="font-family: 'Playfair Display', serif; color: #b23a48; font-weight: bold;">Gestión de
                         Programas y Eventos</h2>
                     <p style="color: #6b4226;">Gestiona programas, eventos y la relación entre personas y eventos.</p>
+                    
+                    <!-- Botones de Gestión de eventos -->
 
-                    <!-- Tarjeta: Gestión de Programas y Eventos -->
-                    <div class="card mb-4 shadow-sm">
-                        <div class="card-header"
-                            style="background: linear-gradient(to right, #de6262, #ff6f61); color: white;">
-                            <h3>Gestión de Programas y Eventos</h3>
+                    <div class="row text-center">
+                        <div class="col-lg-4 col-md-6 mb-3">
+                            <a href="{{ route('programs.index') }}"
+                                class="btn btn-lg btn-gradient w-100 shadow-sm"
+                                style="background: linear-gradient(to right, #ff6f61, #de6262); color: white; font-weight: bold; border-radius: 8px;">
+                                <i class="fas fa-project-diagram"></i> Gestión de Programas
+                            </a>
                         </div>
-                        <div class="card-body">
-                            <p style="color: #6b4226;">Gestiona programas, eventos y la relación entre personas y eventos.
-                            </p>
-                            <div class="row text-center">
-                                <div class="col-lg-4 col-md-6 mb-3">
-                                    <a href="{{ route('programs.index') }}"
-                                        class="btn btn-lg btn-gradient w-100 shadow-sm"
-                                        style="background: linear-gradient(to right, #ff6f61, #de6262); color: white; font-weight: bold; border-radius: 8px;">
-                                        <i class="fas fa-project-diagram"></i> Gestión de Programas
-                                    </a>
-                                </div>
-                                <div class="col-lg-4 col-md-6 mb-3">
-                                    <a href="{{ route('events.index') }}" class="btn btn-lg btn-gradient w-100 shadow-sm"
-                                        style="background: linear-gradient(to right, #f76c5e, #d8474d); color: white; font-weight: bold; border-radius: 8px;">
-                                        <i class="fas fa-calendar-alt"></i> Gestión de Eventos
-                                    </a>
-                                </div>
-                                <div class="col-lg-4 col-md-6 mb-3">
-                                    <a href="{{ route('am_person_events.index') }}"
-                                        class="btn btn-lg btn-gradient w-100 shadow-sm"
-                                        style="background: linear-gradient(to right, #f27a70, #d94c50); color: white; font-weight: bold; border-radius: 8px;">
-                                        <i class="fas fa-user-clock"></i> Personas y Eventos
-                                    </a>
-                                </div>
-                            </div>
+                        <div class="col-lg-4 col-md-6 mb-3">
+                            <a href="{{ route('events.index') }}" class="btn btn-lg btn-gradient w-100 shadow-sm"
+                                style="background: linear-gradient(to right, #f76c5e, #d8474d); color: white; font-weight: bold; border-radius: 8px;">
+                                <i class="fas fa-calendar-alt"></i> Gestión de Eventos
+                            </a>
+                        </div>
+                        <div class="col-lg-4 col-md-6 mb-3">
+                            <a href="{{ route('am_person_events.index') }}"
+                                class="btn btn-lg btn-gradient w-100 shadow-sm"
+                                style="background: linear-gradient(to right, #f27a70, #d94c50); color: white; font-weight: bold; border-radius: 8px;">
+                                <i class="fas fa-user-clock"></i> Personas y Eventos
+                            </a>
                         </div>
                     </div>
-
                     <!-- Tarjeta: Estadísticas de Eventos -->
                     <div class="card mb-4 shadow-sm">
                         <div class="card-header"
                             style="background: linear-gradient(to right, #b23a48, #8a2a37); color: white;">
                             <h3>Estadísticas de Eventos
                                 <button class="btn btn-light btn-sm float-right custom-btn" data-toggle="collapse"
-        data-target="#dashboardStats" aria-expanded="false" aria-controls="dashboardStats">
-    <i class="fas fa-chart-bar"></i> Ver Estadísticas
-</button>
+                                    data-target="#dashboardStatsEv" aria-expanded="false" aria-controls="dashboardStatsEv">
+                                    <i class="fas fa-chart-bar"></i> Ver Estadísticas
+                                </button>
                             </h3>
                         </div>
                         <div class="collapse" id="dashboardStatsEv">
                             <div class="card-body">
-                                <div class="row">
+                                <div class="row mb-4">
                                     <!-- Total de Eventos -->
                                     <div class="col-lg-3 col-md-6">
                                         <div class="card shadow">
@@ -391,9 +370,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="row mt-4">
+                                    <div class="row">
                                         <!-- Eventos Recientes -->
-                                        <div class="col-lg-12">
+                                        <div class="col-lg-12 ">
                                             <div class="card shadow mb-4">
                                                 <div class="card-header"
                                                     style="background: linear-gradient(to right, #f76c5e, #d8474d); color: white;">
