@@ -77,25 +77,6 @@ class UpdateCommitteeRequest extends FormRequest
             ],
         ];
     }
-    
-    /**
-     * Modifica los datos antes de ser validados.
-     *
-     * @return array
-     */
-    public function prepareForValidation()
-{
-    // Verificar si el parámetro de la ruta es un modelo
-    $committee = $this->route('committee');
-
-    // Si es un modelo válido y no existe 'beneficiaries_count' en el request
-    if ($committee instanceof \App\Models\VasoDeLecheModels\Committee && !$this->has('beneficiaries_count')) {
-        $this->merge([
-            'beneficiaries_count' => $committee->beneficiaries_count,
-        ]);
-    }
-}
-
 
     /**
      * Obtener los mensajes de validación personalizados.
@@ -147,7 +128,6 @@ class UpdateCommitteeRequest extends FormRequest
             'president_maternal_surname' => 'apellido materno del presidente(a)',
             'president_given_name' => 'nombres del presidente(a)',
             'urban_core' => 'núcleo urbano',
-            'beneficiaries_count' => 'número de beneficiarios',
             'sector_id' => 'sector',
         ];
     }

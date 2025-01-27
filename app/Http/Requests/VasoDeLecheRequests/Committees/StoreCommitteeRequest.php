@@ -77,19 +77,6 @@ class StoreCommitteeRequest extends FormRequest
     }
 
     /**
-     * Modifica los datos antes de ser validados.
-     *
-     * @return array
-     */
-    public function prepareForValidation()
-    {
-        // Establece el valor de beneficiaries_count a 0 antes de la validación
-        $this->merge([
-            'beneficiaries_count' => 0,  // Establece el valor de beneficiarios a 0
-        ]);
-    }
-
-    /**
      * Obtener los mensajes de validación personalizados.
      *
      * @return array
@@ -139,7 +126,6 @@ class StoreCommitteeRequest extends FormRequest
             'president_maternal_surname' => 'apellido materno del presidente(a)',
             'president_given_name' => 'nombres del presidente(a)',
             'urban_core' => 'núcleo urbano',
-            'beneficiaries_count' => 'número de beneficiarios',
             'sector_id' => 'sector',
         ];
     }

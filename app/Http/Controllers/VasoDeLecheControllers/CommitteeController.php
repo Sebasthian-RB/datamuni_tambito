@@ -56,10 +56,7 @@ class CommitteeController extends Controller
      */
     public function store(StoreCommitteeRequest $request)
     {
-        $data = $request->validated();
-        $data['beneficiaries_count'] = 0; // Establecer por defecto si no se maneja en otro lugar
-
-        Committee::create($data);
+        Committee::create($request->validated());
         return redirect()->route('committees.index')->with('success', 'Comité creado correctamente.');
     }
 
@@ -107,14 +104,8 @@ class CommitteeController extends Controller
      */
     public function update(UpdateCommitteeRequest $request, Committee $committee)
     {
-        // Obtener los datos validados del request
-        $data = $request->validated();
-
-        // Excluir beneficiaries_count de los datos a actualizar
-        unset($data['beneficiaries_count']);
-
         // Actualizar solo los campos permitidos
-        $committee->update($data);
+        $committee->update($request->validated());
         
         return redirect()->route('committees.index')->with('success', 'Comité actualizado correctamente.');
     }

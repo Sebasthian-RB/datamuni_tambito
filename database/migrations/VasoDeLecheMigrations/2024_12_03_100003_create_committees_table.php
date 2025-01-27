@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('president_maternal_surname', 50)->nullable();   // Columna para el apellido materno del presidente del comité
             $table->string('president_given_name', 80);                     // Columna para los nombres del presidente del comité
             $table->string('urban_core');                                   // Columna para el núcleo urbano
-            $table->unsignedBigInteger('beneficiaries_count');              // Columna para el número de beneficiarios
             $table->unsignedBigInteger('sector_id');                        // Columna para el FK del Sector
             $table->timestamps();                                           // Columnas created_at y updated_at
 

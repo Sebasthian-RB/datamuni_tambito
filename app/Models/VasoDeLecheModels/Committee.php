@@ -50,7 +50,6 @@ class Committee extends Model
         'president_maternal_surname' => 'string',
         'president_given_name' => 'string',
         'urban_core' => 'string',
-        'beneficiaries_count' => 'integer',
         'sector_id' => 'integer',
     ];
 
@@ -63,6 +62,17 @@ class Committee extends Model
     {
         return $this->belongsTo(Sector::class);
     }
+
+    /**
+     * Relación con el modelo CommitteeVlFamilyMember.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function vlFamilyMembers()
+    {
+        return $this->hasMany(CommitteeVLFamilyMember::class, 'committee_id');
+    }
+
 
     /**
      * Mutador para el apellido paterno del presidente.

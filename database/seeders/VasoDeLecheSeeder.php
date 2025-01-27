@@ -66,7 +66,6 @@ class VasoDeLecheSeeder extends Seeder
                 'president_maternal_surname' => $faker->lastName, // Generar apellido materno (puede ser nulo)
                 'president_given_name' => $faker->firstName, // Generar nombre del presidente
                 'urban_core' => $faker->word, // Generar un nombre de núcleo urbano
-                'beneficiaries_count' => $faker->numberBetween(50, 5000), // Generar un número aleatorio de beneficiarios
                 'sector_id' => $faker->numberBetween(1, 4), // Generar un ID de sector aleatorio (asumimos que hay sectores con ID entre 1 y 10)
                 'created_at' => now(),
                 'updated_at' => now(),

@@ -70,13 +70,13 @@ class CommitteeVlFamilyMemberController extends Controller
         // Convertir el valor de 'status' a booleano
         $status = $request->status == '1' ? true : false;
 
-        // Crear el nuevo registro con los valores validados y el valor de 'status' convertido
-        CommitteeVlFamilyMember::create([
+        // Crear el nuevo registro
+        $record = CommitteeVlFamilyMember::create([
             'committee_id' => $request->committee_id,
             'vl_family_member_id' => $request->vl_family_member_id,
             'change_date' => $request->change_date,
             'description' => $request->description,
-            'status' => $status, // Guardamos el valor booleano
+            'status' => $status,
         ]);
 
         // Redirigir con mensaje de éxito
@@ -129,7 +129,7 @@ class CommitteeVlFamilyMemberController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(DestroyCommitteeVlFamilyMemberRequest $request, CommitteeVlFamilyMember $committeeVlFamilyMember)
-    {
+    {    
         $committeeVlFamilyMember->delete();
         return redirect()->route('committee-vl-family-members.index')->with('success', 'Miembro familiar del comité eliminado correctamente.');
     }
