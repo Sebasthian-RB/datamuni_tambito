@@ -56,14 +56,6 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="beneficiaries_count">Número de Beneficiarios</label>
-                                    <input type="number" class="form-control @error('beneficiaries_count') is-invalid @enderror" id="beneficiaries_count" name="beneficiaries_count" value="{{ old('beneficiaries_count') }}" required>
-                                    @error('beneficiaries_count')
-                                        <span class="invalid-feedback">{{ $message }}</span>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group">
                                     <label for="sector_id">Sector</label> 
                                     @if($sectors->isEmpty())
                                         <p>No hay sectores disponibles.</p>

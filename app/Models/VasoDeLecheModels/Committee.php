@@ -35,7 +35,6 @@ class Committee extends Model
         'president_maternal_surname',   // Apellido materno del presidente
         'president_given_name',         // Nombres del presidente
         'urban_core',                   // Núcleo urbano
-        'beneficiaries_count',          // Número de beneficiarios
         'sector_id',                    // Clave foránea del sector
     ];
 

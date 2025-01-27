@@ -68,18 +68,25 @@ class StoreCommitteeRequest extends FormRequest
                 'max:100',
                 'regex:/^[a-zA-Z0-9\s]+$/', // Solo letras, números y espacios
             ],
-
-            'beneficiaries_count' => [
-                'required',
-                'integer',
-                'min:1', // Al menos 1 beneficiario
-            ],
             
             'sector_id' => [
                 'required',
                 'exists:sectors,id', // Debe existir en la tabla sectors
             ],
         ];
+    }
+
+    /**
+     * Modifica los datos antes de ser validados.
+     *
+     * @return array
+     */
+    public function prepareForValidation()
+    {
+        // Establece el valor de beneficiaries_count a 0 antes de la validación
+        $this->merge([
+            'beneficiaries_count' => 0,  // Establece el valor de beneficiarios a 0
+        ]);
     }
 
     /**
@@ -113,9 +120,6 @@ class StoreCommitteeRequest extends FormRequest
             'urban_core.required' => 'El núcleo urbano es obligatorio.',
             'urban_core.max' => 'El núcleo urbano no debe exceder los 100 caracteres.',
             'urban_core.regex' => 'El núcleo urbano solo puede contener letras, números y espacios.',
-            'beneficiaries_count.required' => 'El número de beneficiarios es obligatorio.',
-            'beneficiaries_count.integer' => 'El número de beneficiarios debe ser un número entero.',
-            'beneficiaries_count.min' => 'El número de beneficiarios debe ser al menos 1.',
             'sector_id.required' => 'El sector es obligatorio.',
             'sector_id.exists' => 'El sector seleccionado no es válido.',
         ];

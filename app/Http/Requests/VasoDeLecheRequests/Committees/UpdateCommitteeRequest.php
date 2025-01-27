@@ -4,6 +4,7 @@ namespace App\Http\Requests\VasoDeLecheRequests\Committees;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use App\Models\VasoDeLecheModels\Committee;
 
 /**
  * Form Request para actualizar un comité.
@@ -70,18 +71,31 @@ class UpdateCommitteeRequest extends FormRequest
                 'regex:/^[a-zA-Z0-9\s]+$/', // Solo letras, números y espacios
             ],
 
-            'beneficiaries_count' => [
-                'required',
-                'integer',
-                'min:1', // Al menos 1 beneficiario
-            ],
-
             'sector_id' => [
                 'required',
                 'exists:sectors,id', // Debe existir en la tabla sectors
             ],
         ];
     }
+    
+    /**
+     * Modifica los datos antes de ser validados.
+     *
+     * @return array
+     */
+    public function prepareForValidation()
+{
+    // Verificar si el parámetro de la ruta es un modelo
+    $committee = $this->route('committee');
+
+    // Si es un modelo válido y no existe 'beneficiaries_count' en el request
+    if ($committee instanceof \App\Models\VasoDeLecheModels\Committee && !$this->has('beneficiaries_count')) {
+        $this->merge([
+            'beneficiaries_count' => $committee->beneficiaries_count,
+        ]);
+    }
+}
+
 
     /**
      * Obtener los mensajes de validación personalizados.
@@ -114,9 +128,6 @@ class UpdateCommitteeRequest extends FormRequest
             'urban_core.required' => 'El núcleo urbano es obligatorio.',
             'urban_core.max' => 'El núcleo urbano no debe exceder los 100 caracteres.',
             'urban_core.regex' => 'El núcleo urbano solo puede contener letras, números y espacios.',
-            'beneficiaries_count.required' => 'El número de beneficiarios es obligatorio.',
-            'beneficiaries_count.integer' => 'El número de beneficiarios debe ser un número entero.',
-            'beneficiaries_count.min' => 'El número de beneficiarios debe ser al menos 1.',
             'sector_id.required' => 'El sector es obligatorio.',
             'sector_id.exists' => 'El sector seleccionado no es válido.',
         ];

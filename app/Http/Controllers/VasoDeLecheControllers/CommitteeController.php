@@ -56,7 +56,10 @@ class CommitteeController extends Controller
      */
     public function store(StoreCommitteeRequest $request)
     {
-        Committee::create($request->validated());
+        $data = $request->validated();
+        $data['beneficiaries_count'] = 0; // Establecer por defecto si no se maneja en otro lugar
+
+        Committee::create($data);
         return redirect()->route('committees.index')->with('success', 'Comité creado correctamente.');
     }
 
@@ -84,6 +87,11 @@ class CommitteeController extends Controller
         // Obtener todos los sectores para pasarlos a la vista
         $sectors = Sector::all();
 
+        // Verificar si hay sectores disponibles
+        if ($sectors->isEmpty()) {
+            return redirect()->route('committees.index')->withErrors('No hay sectores disponibles para asociar.');
+        }
+
         //Definir los Núcleos Urbanos
         $urbanCores = ['Urbano', 'Rural'];
 
@@ -99,7 +107,15 @@ class CommitteeController extends Controller
      */
     public function update(UpdateCommitteeRequest $request, Committee $committee)
     {
-        $committee->update($request->validated());
+        // Obtener los datos validados del request
+        $data = $request->validated();
+
+        // Excluir beneficiaries_count de los datos a actualizar
+        unset($data['beneficiaries_count']);
+
+        // Actualizar solo los campos permitidos
+        $committee->update($data);
+        
         return redirect()->route('committees.index')->with('success', 'Comité actualizado correctamente.');
     }
 
