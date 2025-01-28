@@ -196,8 +196,6 @@
                                         </span>
                                     </div>
                                 </div>
-
-
         
                                 <!-- Filtro de Sector -->
                                 <div class="col-12 col-md-2">
@@ -266,7 +264,7 @@
                                     <div>
                                         <p style="font-size: 0.8rem; font-weight: 400; color: #3B1E54; margin-bottom: 0;">Beneficiarios</p>
                                         <h5 style="font-size: 1rem; font-weight: 500; color: #3B1E54; margin-top: 2px;">
-                                            {{ $committee->beneficiaries_count }}
+                                            {{ $committee->minors_count }}
                                         </h5>
                                     </div>
                                 </div>

@@ -70,7 +70,7 @@ class Committee extends Model
      */
     public function vlFamilyMembers()
     {
-        return $this->hasMany(CommitteeVLFamilyMember::class, 'committee_id');
+        return $this->belongsToMany(VlFamilyMember::class, 'committee_vl_family_members', 'committee_id', 'vl_family_member_id');
     }
 
 

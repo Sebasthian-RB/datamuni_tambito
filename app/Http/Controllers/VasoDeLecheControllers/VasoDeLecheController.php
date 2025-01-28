@@ -28,8 +28,8 @@ class VasoDeLecheController extends Controller
         $maxBeneficiariesCount = $request->input('max_beneficiaries_count'); // Rango máximo
         $sectorId = $request->input('sector_id');
 
-        // Inicializa la consulta de los comités con su relación de sector
-        $committees = Committee::with('sector');
+        // Inicializa la consulta de los comités con las relaciones necesarias
+        $committees = Committee::with(['sector', 'vlFamilyMembers.vlMinors']);
 
         // Aplicar filtro por nombre o ID de comité
         if ($name) {
@@ -55,13 +55,18 @@ class VasoDeLecheController extends Controller
             $committees->where('urban_core', $urbanCore);
         }
 
-        // Aplicar filtro por rango de beneficiarios
-        if ($minBeneficiariesCount && $maxBeneficiariesCount) {
-            $committees->whereBetween('beneficiaries_count', [$minBeneficiariesCount, $maxBeneficiariesCount]);
-        } elseif ($minBeneficiariesCount) {
-            $committees->where('beneficiaries_count', '>=', $minBeneficiariesCount);
-        } elseif ($maxBeneficiariesCount) {
-            $committees->where('beneficiaries_count', '<=', $maxBeneficiariesCount);
+        // Aplicar filtro por rango de beneficiarios (menores de edad)
+        if ($minBeneficiariesCount || $maxBeneficiariesCount) {
+            $committees->whereHas('vlFamilyMembers.vlMinors', function ($query) use ($minBeneficiariesCount, $maxBeneficiariesCount) {
+                // Aplicar filtros directamente al conteo de menores de edad
+                if ($minBeneficiariesCount && $maxBeneficiariesCount) {
+                    $query->havingRaw('COUNT(*) BETWEEN ? AND ?', [$minBeneficiariesCount, $maxBeneficiariesCount]);
+                } elseif ($minBeneficiariesCount) {
+                    $query->havingRaw('COUNT(*) >= ?', [$minBeneficiariesCount]);
+                } elseif ($maxBeneficiariesCount) {
+                    $query->havingRaw('COUNT(*) <= ?', [$maxBeneficiariesCount]);
+                }
+            }, '>=', $minBeneficiariesCount ?? 0); // Validación inicial por si solo hay mínimo
         }
 
         // Aplicar filtro por sector
@@ -71,6 +76,13 @@ class VasoDeLecheController extends Controller
 
         // Paginamos los resultados
         $committees = $committees->paginate(12);
+
+        // Agregar la cantidad de menores de edad a cada comité
+        foreach ($committees as $committee) {
+            $committee->minors_count = $committee->vlFamilyMembers->sum(function ($familyMember) {
+                return $familyMember->vlMinors->count();
+            });
+        }
 
         // Obtener todos los sectores disponibles para el filtro
         $sectors = Sector::all();

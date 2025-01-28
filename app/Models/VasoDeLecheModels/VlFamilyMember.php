@@ -49,6 +49,13 @@ class VlFamilyMember extends Model
         'maternal_last_name' => 'string',
     ];
 
+    /**
+     * Relación M:M con el modelo 'Committee'.
+     */
+    public function committees()
+    {
+        return $this->belongsToMany(Committee::class, 'committee_vl_family_members', 'vl_family_member_id', 'committee_id');
+    }
 
     /**
      * Relación con el modelo 'VlMinor' (tiene muchos menores de edad asociados).
