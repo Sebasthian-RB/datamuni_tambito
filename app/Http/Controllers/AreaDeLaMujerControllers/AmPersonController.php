@@ -35,8 +35,18 @@ class AmPersonController extends Controller
      */
     public function store(StoreAmPersonRequest $request)
     {
-        AmPerson::create($request->validated());
-        return redirect()->route('am_people.index')->with('success', 'Persona creada correctamente.');
+        // Crear la nueva persona con los datos validados
+        $person = AmPerson::create($request->validated());
+
+        // Retornar la persona creada como JSON
+        return response()->json([
+            'id' => $person->id,
+            'given_name' => $person->given_name,
+            'paternal_last_name' => $person->paternal_last_name,
+            'maternal_last_name' => $person->maternal_last_name,
+            'success' => true,
+            'message' => 'Persona creada correctamente.',
+        ]);
     }
 
     /**
@@ -44,8 +54,8 @@ class AmPersonController extends Controller
      */
     public function show(AmPerson $amPerson)
     {
-         // Mostrar los detalles de una persona
-         return view('areas.AreaDeLaMujerViews.AmPersons.show', compact('amPerson'));
+        // Mostrar los detalles de una persona
+        return view('areas.AreaDeLaMujerViews.AmPersons.show', compact('amPerson'));
     }
 
     /**

@@ -25,7 +25,7 @@ use App\Http\Controllers\AreaDeLaMujerControllers\ProgramController;
 use App\Http\Controllers\AreaDeLaMujerControllers\ViolenceController;
 
 use App\Http\Controllers\AreaDeLaMujerControllers\AmDashboardController; //dashboard de AM
-use App\Http\Controllers\AreaDeLaMujerControllers\OmDashboardController;
+
 // Controladores del Área: Sisfoh
 
 use App\Http\Controllers\SisfohControllers\EnumeratorController;
@@ -55,13 +55,13 @@ use App\Http\Controllers\CiamControllers\CiamDashboardController; //dashboard de
 //Controladores deL Área: OMAPED
 use App\Http\Controllers\OmapedControllers\CaregiverController;
 use App\Http\Controllers\OmapedControllers\DisabilityController;
+use App\Http\Controllers\OmapedControllers\OmDashboardController; //Dashboard de OMAPED
 use App\Http\Controllers\OmapedControllers\OmDwellingController;
 use App\Http\Controllers\OmapedControllers\OmPersonController;
 
 Route::get('/', function () {
     return view('welcome');
 });
-
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
