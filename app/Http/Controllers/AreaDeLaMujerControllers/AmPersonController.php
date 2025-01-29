@@ -17,7 +17,7 @@ class AmPersonController extends Controller
     public function index()
     {
         // Recuperamos todas las personas
-        $people = AmPerson::all();
+        $people = AmPerson::paginate(15);
         return view('areas.AreaDeLaMujerViews.AmPersons.index', compact('people'));
     }
 

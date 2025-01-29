@@ -379,10 +379,13 @@ return [
                 ],
             ],
         ],
+
         ['header' => 'Gestión de Areas'],
+
+        /*Área de la Mujer*/
         [
             'text' => 'Area de la Mujer',
-            'icon' => 'fas fa-female',
+            'icon' => 'fas fa-fw fa-female',
             'submenu' => [
                 [
                     'text' => 'Área de la Mujer',
@@ -462,7 +465,67 @@ return [
                     ],
                 ],
             ]
+        ],
+
+        /*Vaso de Leche*/
+        [
+            'text' => 'Vaso de Leche',
+            'icon' => 'fas fa-fw fa-child', // Icono de vaso de leche, usando fa-child
+            'submenu' => [
+                [
+                    'text' => 'Menu Principal',
+                    'url' => 'vaso-de-leche', // Ruta hacia el menú principal
+                    'icon' => 'fas fa-fw fa-home', // Icono de inicio
+                ],
+                [
+                    'text' => 'Configurar',
+                    'url' => '#', // Ruta para configuración
+                    'icon' => 'fas fa-fw fa-cogs', // Icono de configuración
+                    'submenu' => [
+                        [
+                            'text' => 'Productos',
+                            'url' => 'products', // Ruta para productos
+                            'icon' => 'fas fa-fw fa-box', // Icono de productos
+                        ],
+                        [
+                            'text' => 'Sectores',
+                            'url' => 'sectors', // Ruta para sectores
+                            'icon' => 'fas fa-fw fa-bullseye', // Icono de sectores
+                        ],
+                        [
+                            'text' => 'Comités',
+                            'url' => 'committees', // Ruta para comités
+                            'icon' => 'fas fa-fw fa-flag', // Icono de comités
+                        ],
+                        [
+                            'text' => 'Familiares',
+                            'url' => 'vl_family_members', // Ruta para familiares
+                            'icon' => 'fas fa-fw fa-users', // Icono de familiares
+                        ],
+                        [
+                            'text' => 'Menores de Edad',
+                            'url' => 'vl_minors', // Ruta para menores de edad
+                            'icon' => 'fas fa-fw fa-child', // Icono de menores de edad
+                        ],
+                    ],
+                ],
+                [
+                    'text' => 'Estadísticas',
+                    'url' => 'statistics', // Ruta para estadísticas
+                    'icon' => 'fas fa-fw fa-chart-line', // Icono de estadísticas
+                ],
+                [
+                    'text' => 'Exportar',
+                    'url' => 'export', // Ruta para exportar
+                    'icon' => 'fas fa-fw fa-file-export', // Icono de exportar
+                ],
+            ],
         ]
+
+
+
+
+
     ],
 
     /*
