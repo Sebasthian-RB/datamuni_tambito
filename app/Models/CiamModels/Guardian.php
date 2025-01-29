@@ -2,40 +2,34 @@
 
 namespace App\Models\CiamModels;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Guardian extends Model
 {
     use HasFactory;
 
     /**
-     * Definición de la clave primaria.
-     *
-     * @var string
+     * Clave primaria y configuración del modelo.
      */
-    protected $primaryKey = 'id';   // Define que la clave primaria es 'id'
-    public $incrementing = false;   // Deshabilita el autoincremento para el ID
-    protected $keyType = 'string';  // El ID será un string
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     /**
      * Campos asignables masivamente.
-     *
-     * @var array
      */
     protected $fillable = [
-        'id',                  // ID único
-        'document_type',       // Tipo de documento (DNI, Pasaporte, etc.)
-        'given_name',          // Nombre
-        'paternal_last_name',  // Apellido paterno
-        'maternal_last_name',  // Apellido materno
-        'phone_number',        // Número de teléfono
+        'id',
+        'document_type',
+        'given_name',
+        'paternal_last_name',
+        'maternal_last_name',
+        'phone_number',
     ];
 
     /**
-     * Casts: Conversión de datos a tipos nativos de PHP.
-     *
-     * @var array
+     * Casts para conversión de datos.
      */
     protected $casts = [
         'id' => 'string',
@@ -47,9 +41,20 @@ class Guardian extends Model
     ];
 
     /**
-     * Accesor: Obtener el nombre completo.
-     *
-     * @return string
+     * Relación muchos a muchos con Elderly Adults (a través de la tabla pivote).
+     */
+    public function elderlyAdults()
+    {
+        return $this->belongsToMany(
+            ElderlyAdult::class,
+            'elderly_adults_guardians', // Nombre de la tabla pivote
+            'guardian_id',              // Clave foránea hacia Guardian
+            'elderly_adult_id'          // Clave foránea hacia ElderlyAdult
+        );
+    }
+
+    /**
+     * Accesor para obtener el nombre completo del guardián.
      */
     public function getFullNameAttribute()
     {
@@ -57,42 +62,38 @@ class Guardian extends Model
     }
 
     /**
-     * Mutador: Formatear y almacenar el nombre.
-     *
-     * @param string $value
+     * Mutadores para normalizar datos antes de guardarlos.
      */
     public function setGivenNameAttribute($value)
     {
         $this->attributes['given_name'] = ucwords(strtolower(trim($value)));
     }
 
-    /**
-     * Mutador: Formatear y almacenar el apellido paterno.
-     *
-     * @param string $value
-     */
     public function setPaternalLastNameAttribute($value)
     {
         $this->attributes['paternal_last_name'] = ucwords(strtolower(trim($value)));
     }
 
-    /**
-     * Mutador: Formatear y almacenar el apellido materno.
-     *
-     * @param string $value
-     */
     public function setMaternalLastNameAttribute($value)
     {
         $this->attributes['maternal_last_name'] = ucwords(strtolower(trim($value)));
     }
 
-    /**
-     * Relación con ElderlyAdult.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function elderlyAdults()
+    public function setDocumentTypeAttribute($value)
     {
-        return $this->hasMany(ElderlyAdult::class);
+        $this->attributes['document_type'] = strtoupper(trim($value));
+    }
+
+    /**
+     * Scopes para consultas comunes.
+     */
+    public function scopeWithPhone($query)
+    {
+        return $query->whereNotNull('phone_number');
+    }
+
+    public function scopeByDocumentType($query, $documentType)
+    {
+        return $query->where('document_type', $documentType);
     }
 }

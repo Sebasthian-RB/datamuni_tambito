@@ -4,147 +4,139 @@ namespace App\Http\Controllers\CiamControllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\CiamModels\ElderlyAdult;
-use Illuminate\Http\Request;
+use App\Models\CiamModels\Guardian;
+use App\Models\CiamModels\SocialProgram;
+use App\Models\CiamModels\PrivateInsurance;
+use App\Models\CiamModels\Location;
+use App\Models\CiamModels\PublicInsurance;
+use App\Http\Requests\CiamRequests\ElderlyAdults\IndexElderlyAdultRequest;
+use App\Http\Requests\CiamRequests\ElderlyAdults\CreateElderlyAdultRequest;
+use App\Http\Requests\CiamRequests\ElderlyAdults\StoreElderlyAdultRequest;
+use App\Http\Requests\CiamRequests\ElderlyAdults\ShowElderlyAdultRequest;
+use App\Http\Requests\CiamRequests\ElderlyAdults\EditElderlyAdultRequest;
+use App\Http\Requests\CiamRequests\ElderlyAdults\UpdateElderlyAdultRequest;
+use App\Http\Requests\CiamRequests\ElderlyAdults\DestroyElderlyAdultRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+use Illuminate\Support\Facades\DB;
 
 class ElderlyAdultController extends Controller
 {
     /**
-     * Mostrar una lista de adultos mayores.
-     *
-     * @return \Illuminate\View\View
+     * Muestra una lista de todos los adultos mayores con sus relaciones necesarias.
      */
-    public function index()
+    public function index(IndexElderlyAdultRequest $request): View
     {
-        $elderlyAdults = ElderlyAdult::all();
+        $elderlyAdults = ElderlyAdult::with(['guardians', 'socialPrograms', 'privateInsurances', 'publicInsurance', 'location'])->get();
         return view('areas.CiamViews.ElderlyAdults.index', compact('elderlyAdults'));
     }
 
     /**
-     * Mostrar el formulario para crear un nuevo adulto mayor.
-     *
-     * @return \Illuminate\View\View
+     * Muestra el formulario para crear un nuevo adulto mayor con las opciones de relaciones.
      */
-    public function create()
+    public function create(CreateElderlyAdultRequest $request): View
     {
-        return view('elderly_adults.create');
+        $locations = Location::all();
+        $publicInsurances = PublicInsurance::all();
+        $guardians = Guardian::all();
+        $socialPrograms = SocialProgram::all();
+        $privateInsurances = PrivateInsurance::all();
+
+        return view('areas.CiamViews.ElderlyAdults.create', compact('locations', 'publicInsurances', 'guardians', 'socialPrograms', 'privateInsurances'));
     }
 
     /**
-     * Almacenar un nuevo adulto mayor en la base de datos.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * Almacena un nuevo adulto mayor en la base de datos y sus relaciones.
      */
-    public function store(Request $request)
+    public function store(StoreElderlyAdultRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'id' => 'required|string|max:36|unique:elderly_adults',
-            'document_type' => 'required|in:DNI,Pasaporte,Carnet,Cedula',
-            'given_name' => 'required|string|max:50',
-            'paternal_last_name' => 'required|string|max:50',
-            'maternal_last_name' => 'required|string|max:50',
-            'birth_date' => 'required|date',
-            'address' => 'nullable|string|max:255',
-            'reference' => 'nullable|string|max:255',
-            'sex_type' => 'required|boolean',
-            'phone_number' => 'nullable|string|max:50',
-            'type_of_disability' => 'nullable|in:Visual,Motriz,Mental',
-            'household_members' => 'nullable|integer',
-            'permanent_attention' => 'nullable|boolean',
-            'observation' => 'nullable|string',
-        ]);
+        try {
+            DB::beginTransaction();
 
-        ElderlyAdult::create($validated);
+            // Crear el adulto mayor
+            $elderlyAdult = ElderlyAdult::create($request->validated());
 
-        return redirect()->route('elderly_adults.index')->with('success', 'Adulto mayor creado exitosamente');
-    }
+            // Relacionar las entidades (si existen en la solicitud)
+            $elderlyAdult->guardians()->sync($request->input('guardian_ids', []));
+            $elderlyAdult->socialPrograms()->sync($request->input('social_program_ids', []));
+            $elderlyAdult->privateInsurances()->sync($request->input('private_insurance_ids', []));
 
-    /**
-     * Mostrar un adulto mayor específico.
-     *
-     * @param  string  $id
-     * @return \Illuminate\View\View
-     */
-    public function show($id)
-    {
-        $elderlyAdult = ElderlyAdult::with('guardians', 'socialPrograms', 'privateInsurances')->find($id);
-
-        if (!$elderlyAdult) {
-            return redirect()->route('elderly_adults.index')->with('error', 'Adulto mayor no encontrado');
+            DB::commit();
+            return redirect()->route('elderly_adults.index')->with('success', 'Adulto mayor creado exitosamente.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Ocurrió un error al crear el adulto mayor.');
         }
-
-        return view('elderly_adults.show', compact('elderlyAdult'));
     }
 
     /**
-     * Mostrar el formulario para editar un adulto mayor.
-     *
-     * @param  string  $id
-     * @return \Illuminate\View\View
+     * Muestra los detalles de un adulto mayor con sus relaciones.
      */
-    public function edit($id)
+    public function show(ShowElderlyAdultRequest $request, ElderlyAdult $elderlyAdult): View
     {
-        $elderlyAdult = ElderlyAdult::find($id);
-
-        if (!$elderlyAdult) {
-            return redirect()->route('elderly_adults.index')->with('error', 'Adulto mayor no encontrado');
-        }
-
-        return view('elderly_adults.edit', compact('elderlyAdult'));
+        $elderlyAdult->load(['guardians', 'socialPrograms', 'privateInsurances', 'publicInsurance', 'location']);
+        return view('areas.CiamViews.ElderlyAdults.show', compact('elderlyAdult'));
     }
 
     /**
-     * Actualizar un adulto mayor específico.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $id
-     * @return \Illuminate\Http\RedirectResponse
+     * Muestra el formulario para editar un adulto mayor con datos pre-cargados.
      */
-    public function update(Request $request, $id)
+    public function edit(EditElderlyAdultRequest $request, ElderlyAdult $elderlyAdult): View
     {
-        $validated = $request->validate([
-            'document_type' => 'in:DNI,Pasaporte,Carnet,Cedula',
-            'given_name' => 'string|max:50',
-            'paternal_last_name' => 'string|max:50',
-            'maternal_last_name' => 'string|max:50',
-            'birth_date' => 'date',
-            'address' => 'nullable|string|max:255',
-            'reference' => 'nullable|string|max:255',
-            'sex_type' => 'boolean',
-            'phone_number' => 'nullable|string|max:50',
-            'type_of_disability' => 'nullable|in:Visual,Motriz,Mental',
-            'household_members' => 'nullable|integer',
-            'permanent_attention' => 'nullable|boolean',
-            'observation' => 'nullable|string',
-        ]);
+        $locations = Location::all();
+        $publicInsurances = PublicInsurance::all();
+        $guardians = Guardian::all();
+        $socialPrograms = SocialProgram::all();
+        $privateInsurances = PrivateInsurance::all();
 
-        $elderlyAdult = ElderlyAdult::find($id);
-
-        if (!$elderlyAdult) {
-            return redirect()->route('elderly_adults.index')->with('error', 'Adulto mayor no encontrado');
-        }
-
-        $elderlyAdult->update($validated);
-
-        return redirect()->route('elderly_adults.index')->with('success', 'Adulto mayor actualizado exitosamente');
+        return view('areas.CiamViews.ElderlyAdults.edit', compact('elderlyAdult', 'locations', 'publicInsurances', 'guardians', 'socialPrograms', 'privateInsurances'));
     }
 
     /**
-     * Eliminar un adulto mayor específico.
-     *
-     * @param  string  $id
-     * @return \Illuminate\Http\RedirectResponse
+     * Actualiza los datos de un adulto mayor y sus relaciones.
      */
-    public function destroy($id)
+    public function update(UpdateElderlyAdultRequest $request, ElderlyAdult $elderlyAdult): RedirectResponse
     {
-        $elderlyAdult = ElderlyAdult::find($id);
+        try {
+            DB::beginTransaction();
 
-        if (!$elderlyAdult) {
-            return redirect()->route('elderly_adults.index')->with('error', 'Adulto mayor no encontrado');
+            // Actualizar los datos del adulto mayor
+            $elderlyAdult->update($request->validated());
+
+            // Actualizar relaciones
+            $elderlyAdult->guardians()->sync($request->input('guardian_ids', []));
+            $elderlyAdult->socialPrograms()->sync($request->input('social_program_ids', []));
+            $elderlyAdult->privateInsurances()->sync($request->input('private_insurance_ids', []));
+
+            DB::commit();
+            return redirect()->route('elderly_adults.index')->with('success', 'Adulto mayor actualizado exitosamente.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Ocurrió un error al actualizar el adulto mayor.');
         }
+    }
 
-        $elderlyAdult->delete();
+    /**
+     * Elimina un adulto mayor de la base de datos y limpia sus relaciones.
+     */
+    public function destroy(DestroyElderlyAdultRequest $request, ElderlyAdult $elderlyAdult): RedirectResponse
+    {
+        try {
+            DB::beginTransaction();
 
-        return redirect()->route('elderly_adults.index')->with('success', 'Adulto mayor eliminado exitosamente');
+            // Eliminar relaciones antes de eliminar el adulto mayor
+            $elderlyAdult->guardians()->detach();
+            $elderlyAdult->socialPrograms()->detach();
+            $elderlyAdult->privateInsurances()->detach();
+
+            // Eliminar el registro del adulto mayor
+            $elderlyAdult->delete();
+
+            DB::commit();
+            return redirect()->route('elderly_adults.index')->with('success', 'Adulto mayor eliminado exitosamente.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Ocurrió un error al eliminar el adulto mayor.');
+        }
     }
 }

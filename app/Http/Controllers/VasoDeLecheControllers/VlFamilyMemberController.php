@@ -68,7 +68,7 @@ class VlFamilyMemberController extends Controller
             ->route('vl_family_members.index')
             ->with('success', 'Miembro familiar creado correctamente.');
     }
-    
+
     /**
      * Muestra los detalles de un miembro familiar específico.
      *

@@ -9,54 +9,99 @@ class Location extends Model
 {
     use HasFactory;
 
-    // Definir la clave primaria y su tipo
-    protected $primaryKey = 'id';  // La clave primaria es 'id'
-    public $incrementing = false;  // Desactivar el auto incremento, porque 'id' es un código
-    protected $keyType = 'string'; // El ID será un string (no un entero)
+    /**
+     * La clave primaria de la tabla.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'id';
 
-    // Campos asignables masivamente
+    /**
+     * Desactivar el autoincremento de la clave primaria.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
+     * El tipo de clave primaria.
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
+
+    /**
+     * Atributos asignables masivamente.
+     *
+     * @var array
+     */
     protected $fillable = [
-        'id',         // ID único de la ubicación (código ubigeo)
+        'id',         // Código único de ubicación
         'department', // Nombre del departamento
         'province',   // Nombre de la provincia
         'district',   // Nombre del distrito
     ];
 
-    // Cast para convertir los atributos en tipos nativos de PHP
+    /**
+     * Atributos que deben ser convertidos a tipos nativos.
+     *
+     * @var array
+     */
     protected $casts = [
-        'id' => 'string',        // El id es un string
-        'department' => 'string', // El departamento es un string
-        'province' => 'string',   // La provincia es un string
-        'district' => 'string',   // El distrito es un string
+        'id' => 'string',
+        'department' => 'string',
+        'province' => 'string',
+        'district' => 'string',
     ];
 
-    // Mutadores: Puedes usar mutadores si quieres transformar datos antes de guardarlos
+    /**
+     * Mutador: Capitaliza el nombre del departamento antes de guardarlo.
+     *
+     * @param string $value
+     */
     public function setDepartmentAttribute($value)
     {
-        // Puedes modificar el valor antes de guardarlo en la base de datos, por ejemplo, capitalizando el nombre
-        $this->attributes['department'] = ucwords(strtolower($value));
+        $this->attributes['department'] = ucwords(strtolower(trim($value)));
     }
 
+    /**
+     * Mutador: Capitaliza el nombre de la provincia antes de guardarlo.
+     *
+     * @param string $value
+     */
     public function setProvinceAttribute($value)
     {
-        // Capitalizar el nombre de la provincia
-        $this->attributes['province'] = ucwords(strtolower($value));
+        $this->attributes['province'] = ucwords(strtolower(trim($value)));
     }
 
+    /**
+     * Mutador: Capitaliza el nombre del distrito antes de guardarlo.
+     *
+     * @param string $value
+     */
     public function setDistrictAttribute($value)
     {
-        // Capitalizar el nombre del distrito
-        $this->attributes['district'] = ucwords(strtolower($value));
+        $this->attributes['district'] = ucwords(strtolower(trim($value)));
     }
 
-    // Accesor: Obtener la ubicación completa como una cadena
+    /**
+     * Accesor: Devuelve la ubicación completa como una cadena.
+     *
+     * @return string
+     */
     public function getFullLocationAttribute()
     {
         return "{$this->department}, {$this->province}, {$this->district}";
     }
 
-
-    // Puedes agregar más mutadores si es necesario para otros campos
+    /**
+     * Relación con ElderlyAdults.
+     * Una ubicación puede estar asociada con muchos ElderlyAdults.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function elderlyAdults()
+    {
+        return $this->hasMany(ElderlyAdult::class);
+    }
 }
-
-?>

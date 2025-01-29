@@ -4,96 +4,115 @@ namespace App\Http\Controllers\CiamControllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\CiamModels\Location;
-use Illuminate\Http\Request;
+use App\Http\Requests\CiamRequests\Locations\IndexLocationRequest;
+use App\Http\Requests\CiamRequests\Locations\ShowLocationRequest;
+use App\Http\Requests\CiamRequests\Locations\CreateLocationRequest;
+use App\Http\Requests\CiamRequests\Locations\StoreLocationRequest;
+use App\Http\Requests\CiamRequests\Locations\EditLocationRequest;
+use App\Http\Requests\CiamRequests\Locations\UpdateLocationRequest;
+use App\Http\Requests\CiamRequests\Locations\DestroyLocationRequest;
 
 class LocationController extends Controller
 {
     /**
-     * Mostrar una lista de todas las ubicaciones.
+     * Muestra una lista de todas las localidades.
+     *
+     * @param IndexLocationRequest $request
+     * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(IndexLocationRequest $request)
     {
-        // Obtenemos todas las ubicaciones
         $locations = Location::all();
-
-        // Retornamos la vista de índice con las ubicaciones
         return view('areas.CiamViews.Locations.index', compact('locations'));
     }
 
     /**
-     * Mostrar el formulario para crear una nueva ubicación.
+     * Muestra el formulario para crear una nueva localidad.
+     *
+     * @param CreateLocationRequest $request
+     * @return \Illuminate\View\View
      */
-    public function create()
+    public function create(CreateLocationRequest $request)
     {
-        // Retornamos la vista del formulario para crear una nueva ubicación
-        return view('locations.create');
+        return view('areas.CiamViews.Locations.create');
     }
 
     /**
-     * Almacenar una nueva ubicación en la base de datos.
+     * Almacena una nueva localidad en la base de datos.
+     *
+     * @param StoreLocationRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreLocationRequest $request)
     {
-        // Validamos los datos enviados desde el formulario
-        $request->validate([
-            'location_name' => 'required|string|max:255',
-            'region' => 'nullable|string|max:255',
-            'country' => 'nullable|string|max:255',
-        ]);
+        $newLocation = Location::create($request->validated());
 
-        // Creamos una nueva ubicación con los datos validados
-        Location::create($request->all());
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Localidad creada correctamente.',
+                'id' => $newLocation->id
+            ]);
+        }
 
-        // Redirigimos al índice con un mensaje de éxito
-        return redirect()->route('locations.index')->with('success', 'Ubicación creada exitosamente.');
+        return redirect()
+            ->route('locations.index')
+            ->with('success', 'Localidad creada correctamente.');
     }
 
     /**
-     * Mostrar los detalles de una ubicación específica.
+     * Muestra los detalles de una localidad específica.
+     *
+     * @param ShowLocationRequest $request
+     * @param Location $location
+     * @return \Illuminate\View\View
      */
-    public function show(Location $location)
+    public function show(ShowLocationRequest $request, Location $location)
     {
-        // Retornamos la vista de detalles de la ubicación
-        return view('locations.show', compact('location'));
+        return view('areas.CiamViews.Locations.show', compact('location'));
     }
 
     /**
-     * Mostrar el formulario para editar una ubicación existente.
+     * Muestra el formulario para editar una localidad existente.
+     *
+     * @param EditLocationRequest $request
+     * @param Location $location
+     * @return \Illuminate\View\View
      */
-    public function edit(Location $location)
+    public function edit(EditLocationRequest $request, Location $location)
     {
-        // Retornamos la vista del formulario para editar la ubicación
-        return view('locations.edit', compact('location'));
+        return view('areas.CiamViews.Locations.edit', compact('location'));
     }
 
     /**
-     * Actualizar una ubicación existente en la base de datos.
+     * Actualiza una localidad existente en la base de datos.
+     *
+     * @param UpdateLocationRequest $request
+     * @param Location $location
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Location $location)
+    public function update(UpdateLocationRequest $request, Location $location)
     {
-        // Validamos los datos enviados desde el formulario
-        $request->validate([
-            'location_name' => 'required|string|max:255',
-            'region' => 'nullable|string|max:255',
-            'country' => 'nullable|string|max:255',
-        ]);
+        $location->update($request->validated());
 
-        // Actualizamos la ubicación con los datos validados
-        $location->update($request->all());
-
-        // Redirigimos al índice con un mensaje de éxito
-        return redirect()->route('locations.index')->with('success', 'Ubicación actualizada exitosamente.');
+        return redirect()
+            ->route('locations.index')
+            ->with('success', 'Localidad actualizada correctamente.');
     }
 
     /**
-     * Eliminar una ubicación específica de la base de datos.
+     * Elimina una localidad de la base de datos.
+     *
+     * @param DestroyLocationRequest $request
+     * @param Location $location
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Location $location)
+    public function destroy(DestroyLocationRequest $request, Location $location)
     {
-        // Eliminamos la ubicación
         $location->delete();
 
-        // Redirigimos al índice con un mensaje de éxito
-        return redirect()->route('locations.index')->with('success', 'Ubicación eliminada exitosamente.');
+        return redirect()
+            ->route('locations.index')
+            ->with('success', 'Localidad eliminada correctamente.');
     }
 }

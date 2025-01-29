@@ -14,9 +14,9 @@ class PublicInsurance extends Model
      *
      * @var string
      */
-    protected $primaryKey = 'id';   // Define que la clave primaria es 'id'
-    public $incrementing = false;   // Deshabilita el autoincremento para el ID
-    protected $keyType = 'string';  // El ID será un string
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     /**
      * Campos asignables masivamente.
@@ -24,8 +24,8 @@ class PublicInsurance extends Model
      * @var array
      */
     protected $fillable = [
-        'id',                     // ID único del seguro público
-        'public_insurances_name', // Nombre del seguro público (SIS o ESSALUD)
+        'id',   // ID único del seguro público
+        'name', // Nombre del seguro público (SIS o ESSALUD)
     ];
 
     /**
@@ -35,7 +35,7 @@ class PublicInsurance extends Model
      */
     protected $casts = [
         'id' => 'string',
-        'public_insurances_name' => 'string',
+        'name' => 'string',
     ];
 
     /**
@@ -43,8 +43,8 @@ class PublicInsurance extends Model
      *
      * @param string $value
      */
-    public function setPublicInsurancesNameAttribute($value)
+    public function setNameAttribute($value)
     {
-        $this->attributes['public_insurances_name'] = strtoupper(trim($value));
+        $this->attributes['name'] = strtoupper(trim($value));
     }
 }

@@ -380,7 +380,7 @@ return [
             ],
         ],
         ['header' => 'Gestión de Areas'],
-        [  
+        [
             'text' => 'Area de la Mujer',
             'icon' => 'fas fa-female',
             'submenu' => [
@@ -390,7 +390,7 @@ return [
                     'icon' => 'fas fa-female',
                     'icon_color' => 'pink',
                 ],
-                
+
                 [
                     'text' => 'Gestión de Casos',
                     'url' => '#',
@@ -405,7 +405,7 @@ return [
                         [
                             'text' => 'Violencias',
                             'url' => 'violences',
-                            'icon' => 'fas fa-exclamation-triangle', 
+                            'icon' => 'fas fa-exclamation-triangle',
                             'icon_color' => 'cyan',
                         ],
                         [
@@ -424,7 +424,7 @@ return [
                         [
                             'text' => 'Intervenciones',
                             'url' => 'interventions',
-                            'icon' => 'fas fa-hands-helping', 
+                            'icon' => 'fas fa-hands-helping',
                             'icon_color' => 'yellow',
                         ],
                         [
@@ -452,8 +452,7 @@ return [
                             'icon' => 'fas fa-calendar-check',
                             'icon_color' => 'blue',
                         ],
-                        
-                        
+
                         [
                             'text' => 'Eventos por Persona',
                             'url' => 'am_person_events',

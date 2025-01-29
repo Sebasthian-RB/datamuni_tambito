@@ -4,109 +4,125 @@ namespace App\Http\Controllers\CiamControllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\CiamModels\Guardian;
-use Illuminate\Http\Request;
+use App\Http\Requests\CiamRequests\Guardians\IndexGuardianRequest;
+use App\Http\Requests\CiamRequests\Guardians\ShowGuardianRequest;
+use App\Http\Requests\CiamRequests\Guardians\CreateGuardianRequest;
+use App\Http\Requests\CiamRequests\Guardians\StoreGuardianRequest;
+use App\Http\Requests\CiamRequests\Guardians\EditGuardianRequest;
+use App\Http\Requests\CiamRequests\Guardians\UpdateGuardianRequest;
+use App\Http\Requests\CiamRequests\Guardians\DestroyGuardianRequest;
 
 class GuardianController extends Controller
 {
     /**
      * Muestra una lista de todos los guardianes.
+     *
+     * @param IndexGuardianRequest $request
+     * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(IndexGuardianRequest $request)
     {
-        // Obtiene todos los guardianes de la base de datos
         $guardians = Guardian::all();
 
-        // Retorna la vista 'index' con la lista de guardianes
         return view('areas.CiamViews.Guardians.index', compact('guardians'));
     }
 
     /**
      * Muestra el formulario para crear un nuevo guardián.
+     *
+     * @param CreateGuardianRequest $request
+     * @return \Illuminate\View\View
      */
-    public function create()
+    public function create(CreateGuardianRequest $request)
     {
-        // Retorna la vista 'create' para un nuevo guardián
-        return view('guardians.create');
+        $documentTypes = ['DNI', 'Pasaporte', 'Carnet', 'Cedula'];
+
+        return view('areas.CiamViews.Guardians.create', compact('documentTypes'));
     }
 
     /**
      * Almacena un nuevo guardián en la base de datos.
+     *
+     * @param StoreGuardianRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreGuardianRequest $request)
     {
-        // Valida los datos recibidos
-        $validatedData = $request->validate([
-            'id' => 'required|string|max:36|unique:guardians,id',
-            'document_type' => 'required|in:DNI,Pasaporte,Carnet,Cedula',
-            'given_name' => 'required|string|max:50',
-            'paternal_last_name' => 'required|string|max:50',
-            'maternal_last_name' => 'required|string|max:50',
-            'phone_number' => 'nullable|string|max:50',
-        ]);
+        Guardian::create($request->validated());
 
-        // Crea un nuevo guardián con los datos validados
-        Guardian::create($validatedData);
-
-        // Redirige al listado con un mensaje de éxito
         return redirect()->route('guardians.index')->with('success', 'Guardián creado con éxito.');
     }
 
     /**
      * Muestra los detalles de un guardián específico.
+     *
+     * @param ShowGuardianRequest $request
+     * @param Guardian $guardian
+     * @return \Illuminate\View\View
      */
-    public function show($id)
+    public function show(ShowGuardianRequest $request, Guardian $guardian)
     {
-        // Busca al guardián por su ID
-        $guardian = Guardian::findOrFail($id);
-
-        // Retorna la vista 'show' con los datos del guardián
-        return view('guardians.show', compact('guardian'));
+        return view('areas.CiamViews.Guardians.show', compact('guardian'));
     }
 
     /**
      * Muestra el formulario para editar un guardián existente.
+     *
+     * @param EditGuardianRequest $request
+     * @param Guardian $guardian
+     * @return \Illuminate\View\View
      */
-    public function edit($id)
+    public function edit(EditGuardianRequest $request, Guardian $guardian)
     {
-        // Busca al guardián por su ID
-        $guardian = Guardian::findOrFail($id);
+        $documentTypes = ['DNI', 'Pasaporte', 'Carnet', 'Cedula'];
 
-        // Retorna la vista 'edit' con los datos del guardián
-        return view('guardians.edit', compact('guardian'));
+        return view('areas.CiamViews.Guardians.edit', compact('guardian', 'documentTypes'));
     }
 
     /**
      * Actualiza un guardián existente en la base de datos.
+     *
+     * @param UpdateGuardianRequest $request
+     * @param Guardian $guardian
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(UpdateGuardianRequest $request, Guardian $guardian)
     {
-        // Valida los datos recibidos
-        $validatedData = $request->validate([
-            'document_type' => 'required|in:DNI,Pasaporte,Carnet,Cedula',
-            'given_name' => 'required|string|max:50',
-            'paternal_last_name' => 'required|string|max:50',
-            'maternal_last_name' => 'required|string|max:50',
-            'phone_number' => 'nullable|string|max:50',
-        ]);
+        try {
+            // Validar los datos incluyendo el ID
+            $validatedData = $request->validate([
+                'id' => 'required|string|max:36|unique:guardians,id,' . $guardian->id,
+                'document_type' => 'required|in:DNI,Pasaporte,Carnet,Cedula',
+                'given_name' => 'required|string|max:50',
+                'paternal_last_name' => 'required|string|max:50',
+                'maternal_last_name' => 'required|string|max:50',
+                'phone_number' => 'nullable|string|max:15',
+            ]);
 
-        // Busca al guardián por su ID y actualiza sus datos
-        $guardian = Guardian::findOrFail($id);
-        $guardian->update($validatedData);
+            // Actualizar los datos del guardián
+            $guardian->update($validatedData);
 
-        // Redirige al listado con un mensaje de éxito
-        return redirect()->route('guardians.index')->with('success', 'Guardián actualizado con éxito.');
+            // Redirigir con un mensaje de éxito
+            return redirect()->route('guardians.index')->with('success', 'Datos del guardián actualizados correctamente.');
+        } catch (\Exception $e) {
+            // Manejar errores inesperados
+            return redirect()->route('guardians.edit', $guardian->id)->with('error', 'Ocurrió un error al actualizar el guardián. Intente nuevamente.');
+        }
     }
+
+
 
     /**
      * Elimina un guardián de la base de datos.
+     *
+     * @param DestroyGuardianRequest $request
+     * @param Guardian $guardian
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(DestroyGuardianRequest $request, Guardian $guardian)
     {
-        // Busca al guardián por su ID y lo elimina
-        $guardian = Guardian::findOrFail($id);
         $guardian->delete();
 
-        // Redirige al listado con un mensaje de éxito
         return redirect()->route('guardians.index')->with('success', 'Guardián eliminado con éxito.');
     }
 }

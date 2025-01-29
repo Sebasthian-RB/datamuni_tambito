@@ -12,13 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('locations', function (Blueprint $table) {
-        
-            $table->string('id',6)->primary(); // Es el codigo de ubigeo, o tambien otro codigo de los tipos de documentos
-            $table->string('department', 15); // Departamento, maximo 15 caracteres
-            $table->string('province', 30); // Provincia, maximo 30 caracteres
-            $table->string('district', 50); // Distrito , maximo 50 caracteres
+            $table->string('id', 6)->primary(); // ID único para la localidad
+            $table->string('department', 15); // Departamento
+            $table->string('province', 30); // Provincia
+            $table->string('district', 50); // Distrito
             $table->timestamps();
-            
+
+            // Índice único compuesto para evitar duplicados en department, province, y district
+            $table->unique(['department', 'province', 'district'], 'unique_location_combination');
         });
     }
 

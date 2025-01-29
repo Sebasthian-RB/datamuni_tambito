@@ -12,9 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('public_insurances', function (Blueprint $table) {
-
-            $table->string('id', 8)->primary(); // Identificador de SIS o ESSALUD, suficiente con espacio de 8
-            $table->enum('public_insurances_name', ['SIS', 'ESSALUD']); // Solo estas opciones
+            $table->string('id', 8)->primary(); // ID fijo de SIS o ESSALUD (manteniéndolo como string)
+            $table->enum('name', ['SIS', 'ESSALUD']); // Nombre más claro para la columna
             $table->timestamps();
         });
     }
