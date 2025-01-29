@@ -17,7 +17,7 @@ class AmPersonViolenceController extends Controller
      */
     public function index()
     {
-        $amPersonViolences = AmPersonViolence::with(['amPerson', 'violence'])->get();
+        $amPersonViolences = AmPersonViolence::with(['amPerson', 'violence'])->paginate(10);
         return view('areas.AreaDeLaMujerViews.AmPersonViolences.index', compact('amPersonViolences'));
     }
 

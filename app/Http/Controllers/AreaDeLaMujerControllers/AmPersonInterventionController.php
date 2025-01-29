@@ -17,7 +17,7 @@ class AmPersonInterventionController extends Controller
      */
     public function index()
     {
-        $amPersonInterventions = AmPersonIntervention::with(['amPerson', 'intervention'])->get();
+        $amPersonInterventions = AmPersonIntervention::with(['amPerson', 'intervention'])->paginate(10);
         return view('areas.AreaDeLaMujerViews.AmPersonInterventions.index', compact('amPersonInterventions'));
     }
 

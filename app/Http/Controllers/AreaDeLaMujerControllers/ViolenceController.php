@@ -15,7 +15,7 @@ class ViolenceController extends Controller
      */
     public function index()
     {
-        $violences = Violence::all();
+        $violences = Violence::paginate(10);
         return view('areas.AreaDeLaMujerViews.Violences.index', compact('violences'));
     }
 
