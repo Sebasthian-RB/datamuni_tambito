@@ -26,14 +26,33 @@
             <i class="fa fa-arrow-left"></i> Volver
         </a>
     </div>
+<!-- Formulario de búsqueda con diseño compacto -->
+<div class="d-flex justify-content-start">
+    <form method="GET" action="{{ route('am_person_events.index') }}" class="d-flex" style="max-width: 600px;">
+        <input type="text" name="search" class="form-control me-2" placeholder="Buscar por nombre o DNI"
+            value="{{ request('search') }}" style="border-radius: 8px; max-width: 250px;">
+        
+        <select name="event" class="form-control me-2" style="border-radius: 8px; max-width: 250px;">
+            <option value="">Todos los eventos</option>
+            @foreach($events as $event)
+                <option value="{{ $event->id }}" {{ request('event') == $event->id ? 'selected' : '' }}>
+                    {{ $event->name }}
+                </option>
+            @endforeach
+        </select>
 
+        <button type="submit" class="btn text-white shadow-sm" style="background: #f67280; border-radius: 8px;">
+            <i class="fa fa-search"></i>
+        </button>
+    </form>
+</div>
     <!-- Mensaje de éxito -->
     @if(session('success'))
         <div class="alert alert-success shadow-sm" style="border-radius: 8px;">
             {{ session('success') }}
         </div>
     @endif
-
+<br>
     <!-- Tabla de datos -->
     <div class="card shadow-lg" style="border-radius: 15px;">
         <div class="card-header text-white" style="background: #6c5b7b; border-radius: 15px 15px 0 0;">
@@ -54,7 +73,7 @@
                     @foreach($personEvents as $record)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $record->amPerson->given_name }} {{ $record->amPerson->paternal_last_name }}</td>
+                            <td>{{ $record->amPerson->given_name }} {{ $record->amPerson->paternal_last_name }} {{ $record->amPerson->maternal_last_name }}</td>
                             <td>{{ $record->event->name }}</td>
                             <td>
                                 <span class="badge text-white"

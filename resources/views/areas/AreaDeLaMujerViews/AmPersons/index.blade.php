@@ -16,6 +16,7 @@
 
 @section('content')
     <div class="container">
+
         <!-- Botones de acción -->
         <div class="mb-3 d-flex">
             <button type="button" class="btn text-white shadow-sm me-2" data-toggle="modal" data-target="#addPersonModal"
@@ -25,15 +26,25 @@
             <a href="{{ route('amdashboard') }}" class="btn btn-secondary shadow-sm" style="border-radius: 8px;">
                 <i class="fa fa-arrow-left"></i> Volver
             </a>
-        </div>
 
+        </div>
+        <!-- Formulario de búsqueda con diseño compacto -->
+        <div class="d-flex justify-content-start">
+            <form method="GET" action="{{ route('am_people.index') }}" class="d-flex" style="max-width: 1000px;">
+                <input type="text" name="search" class="form-control ms-3" placeholder="Buscar por nombre o DNI"
+                    value="{{ request('search') }}" style="border-radius: 8px; max-width: 250px;">
+                <button type="submit" class="btn text-white shadow-sm" style="background: #f67280; border-radius: 8px;">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
         <!-- Mensaje de éxito -->
         @if (session('success'))
             <div class="alert alert-success shadow-sm" style="border-radius: 8px;">
                 {{ session('success') }}
             </div>
         @endif
-
+        <br>
         <!-- Tabla de datos -->
         <div class="card shadow-lg" style="border-radius: 15px;">
             <div class="card-header text-white" style="background: #6c5b7b; border-radius: 15px 15px 0 0;">
@@ -44,8 +55,8 @@
                     <thead class="text-white" style="background: #355c7d;">
                         <tr>
                             <th>N° Documento</th>
-                            <th>Documento de Identidad</th>
-                            <th>Nombre</th>
+                            <th>Nombres</th>
+                            <th>Teléfono</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -53,9 +64,9 @@
                         @foreach ($people as $person)
                             <tr>
                                 <td>{{ $person->id }}</td>
-                                <td>{{ $person->identity_document }}</td>
                                 <td>{{ $person->given_name }} {{ $person->paternal_last_name }}
                                     {{ $person->maternal_last_name }}</td>
+                                <td>{{ $person->phone_number }}</td>
                                 <td>
                                     <a href="{{ route('am_people.show', $person->id) }}"
                                         class="btn btn-info btn-sm shadow-sm">
@@ -228,6 +239,7 @@
             border-color: #9ebbff !important;
             box-shadow: 0 0 0 0.2rem rgba(188, 217, 243, 0.25) !important;
         }
+
         /* Botón de agregar persona */
         #savePerson {
             background: #f67280;
