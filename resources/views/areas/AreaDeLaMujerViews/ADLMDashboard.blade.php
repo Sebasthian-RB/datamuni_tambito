@@ -36,34 +36,28 @@
 
     <!-- Gestión de Pestañas -->
 
-    <div class="card">
-        <!-- Cabecera con nuevo color de fondo -->
-        <div class="card-header" style="background-color: #355c7d;">
-            <!-- Pestañas -->
-            <ul class="nav nav-tabs" id="tabMenu" role="tablist" style="border-bottom: 2px solid #f8b195;">
-                <li class="nav-item">
-                    <!-- Pestaña activa con texto claro -->
-                    <a class="nav-link active" id="casos-tab" data-toggle="tab" href="#casos" role="tab"
-                        aria-controls="casos" aria-selected="true" style="color: white; font-weight: bold;">
-                        Gestión de Casos
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <!-- Pestaña inactiva -->
-                    <a class="nav-link" id="intervenciones-tab" data-toggle="tab" href="#intervenciones" role="tab"
-                        aria-controls="intervenciones" aria-selected="false" style="color: white; font-weight: bold;">
-                        Gestión de Intervenciones
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <!-- Pestaña inactiva -->
-                    <a class="nav-link" id="eventos-tab" data-toggle="tab" href="#eventos" role="tab"
-                        aria-controls="eventos" aria-selected="false" style="color: white; font-weight: bold;">
-                        Gestión de Eventos
-                    </a>
-                </li>
-            </ul>
-        </div>
+    <div class="container-fluid">
+        <div class="card shadow-lg">
+            <div class="card-header pr-0 pl-4">
+                <ul class="nav nav-tabs card-header-tabs" id="tabMenu" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="casos-tab" data-toggle="tab" href="#casos">
+                            <i class="fas fa-folder-open mr-2"></i>Casos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="intervenciones-tab" data-toggle="tab" href="#intervenciones">
+                            <i class="fas fa-hands-helping mr-2"></i>Intervenciones
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="eventos-tab" data-toggle="tab" href="#eventos">
+                            <i class="fas fa-calendar-alt mr-2"></i>Eventos
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
         <!-- Contenido de las pestañas -->
         <div class="card-body" style="background-color: #ffffff; color: #000000; font-family: 'Playfair Display', serif;">
             <div class="tab-content" id="tabContent">
@@ -72,7 +66,7 @@
                     style="background-color: #ffe5d9; padding: 20px; border-radius: 12px; font-family: 'Poppins', sans-serif; color: #6b4226;">
                     <h2 style="font-family: 'Playfair Display', serif; color: #b23a48; font-weight: bold;">Gestión de Casos
                     </h2>
-                    <p style="color: #6b4226;">Gestiona información relacionada con personas, casos de violencia y su
+                    <p style="color: #6b4226;">Gestiona toda información relacionada con personas, los casos de violencia existentes y su
                         relación.</p>
 
                     <!-- Botones de Gestión -->
@@ -243,7 +237,7 @@
                                         <div class="card shadow-sm">
                                             <div class="card-header"
                                                 style="background: linear-gradient(to right, #f76c5e, #d8474d); color: white;">
-                                                <h5>Personas Únicas Participando</h5>
+                                                <h5>Total de Personas</h5>
                                             </div>
                                             <div class="card-body text-center" style="color: #6b4226;">
                                                 <h4>{{ $totalUniquePersonsInInterventions }}</h4>

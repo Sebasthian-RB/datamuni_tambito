@@ -388,12 +388,11 @@ return [
             'icon' => 'fas fa-fw fa-female',
             'submenu' => [
                 [
-                    'text' => 'Área de la Mujer',
-                    'url' => 'am_dashboard',
-                    'icon' => 'fas fa-female',
+                    'text' => 'Menu Principal',
+                    'url' => 'am_dashboard', // Ruta hacia el menú principal
+                    'icon' => 'fas fa-fw fa-home', // Icono de inicio
                     'icon_color' => 'pink',
                 ],
-
                 [
                     'text' => 'Gestión de Casos',
                     'url' => '#',
@@ -520,9 +519,53 @@ return [
                     'icon' => 'fas fa-fw fa-file-export', // Icono de exportar
                 ],
             ],
-        ]
+        ],
 
-
+        /*OMAPED*/
+        [
+            'text' => 'OMAPED',
+            'icon' => 'fas fa-fw fa-wheelchair',
+            'submenu' => [
+                [
+                    'text' => 'Panel OMAPED',
+                    'url' => 'om_dashboard',
+                    'icon' => 'fas fa-tachometer-alt',
+                    'icon_color' => 'blue',
+                ],
+                [
+                    'text' => 'Gestión Principal',
+                    'url' => '#',
+                    'icon' => 'fas fa-cogs',
+                    'submenu' => [
+                        [
+                            'text' => 'Cuidadores',
+                            'url' => 'caregivers',
+                            'icon' => 'fas fa-user-nurse',
+                            'icon_color' => 'green',
+                        ],
+                        [
+                            'text' => 'Viviendas',
+                            'url' => 'om-dwellings',
+                            'icon' => 'fas fa-home',
+                            'icon_color' => 'orange',
+                        ],
+                        [
+                            'text' => 'Discapacidades',
+                            'url' => 'disabilities',
+                            'icon' => 'fas fa-universal-access',
+                            'icon_color' => 'purple',
+                        ],
+                        [
+                            'text' => 'Personas',
+                            'url' => 'om-people',
+                            'icon' => 'fas fa-users',
+                            'icon_color' => 'pink',
+                        ]
+                    ],
+                ],
+            ],
+        ],
+            
 
 
 

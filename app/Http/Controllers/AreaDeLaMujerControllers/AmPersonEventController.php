@@ -18,7 +18,7 @@ class AmPersonEventController extends Controller
     public function index()
     {
         // Obtener todos los registros de la tabla intermedia con relaciones
-        $personEvents = AmPersonEvent::with(['amPerson', 'event'])->get();
+        $personEvents = AmPersonEvent::with(['amPerson', 'event'])->paginate(10);
 
         return view('areas.AreaDeLaMujerViews.AmPersonEvents.index', compact('personEvents'));
     }

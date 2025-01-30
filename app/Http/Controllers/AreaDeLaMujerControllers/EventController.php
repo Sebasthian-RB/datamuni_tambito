@@ -16,7 +16,7 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::with('program')->get();
+        $events = Event::with('program')->paginate(10);
         return view('areas.AreaDeLaMujerViews.Events.index', compact('events'));
     }
 

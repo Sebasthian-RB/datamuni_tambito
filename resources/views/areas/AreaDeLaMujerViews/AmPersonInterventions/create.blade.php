@@ -97,68 +97,121 @@
     </div>
 </div>
 
-    <!-- Modal personas -->
+    <!-- Modal para agregar persona -->
     <div class="modal fade" id="addPersonModal" tabindex="-1" aria-labelledby="addPersonModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-info">
+            <div class="modal-content shadow-lg" style="border-radius: 15px;">
+                <div class="modal-header" style="background: #355c7d; color: white; border-radius: 15px 15px 0 0;">
                     <h5 class="modal-title" id="addPersonModalLabel">Agregar Persona</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+
+                <div class="modal-body" style="background: linear-gradient(135deg, #f8b19550 0%, #f6728050 100%);">
                     <form id="addPersonForm">
                         @csrf
-                        <div class="form-group">
-                            <label for="id">N° Documento</label>
-                            <input type="text" class="form-control" id="id" name="id" required>
+                        <div class="row">
+                            <!-- Columna Izquierda -->
+                            <div class="col-md-6">
+
+                                <div class="form-group mb-4">
+                                    <label for="identity_document" class="font-weight-bold"
+                                        style="color: #355c7d;">Documento de Identidad</label>
+                                    <select class="form-control select2" id="identity_document" name="identity_document"
+                                        required>
+                                        <option value="DNI">DNI</option>
+                                        <option value="Pasaporte">Pasaporte</option>
+                                        <option value="Carnet">Carnet</option>
+                                        <option value="Cedula">Cedula</option>
+                                    </select>
+                                    <span class="text-danger error-text identity_document_error"></span>
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="given_name" class="font-weight-bold"
+                                        style="color: #355c7d;">Nombre</label>
+                                    <input type="text" class="form-control" id="given_name" name="given_name"
+                                        required>
+                                    <span class="text-danger error-text given_name_error"></span>
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="maternal_last_name" class="font-weight-bold"
+                                        style="color: #355c7d;">Apellido Materno</label>
+                                    <input type="text" class="form-control" id="maternal_last_name"
+                                        name="maternal_last_name" required>
+                                    <span class="text-danger error-text maternal_last_name_error"></span>
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="address" class="font-weight-bold"
+                                        style="color: #355c7d;">Dirección</label>
+                                    <input type="text" class="form-control" id="address" name="address">
+                                    <span class="text-danger error-text address_error"></span>
+                                </div>
+
+                            </div>
+
+                            <!-- Columna Derecha -->
+                            <div class="col-md-6">
+
+                                <div class="form-group mb-4">
+                                    <label for="id" class="font-weight-bold" style="color: #355c7d;">N°
+                                        Documento</label>
+                                    <input type="text" class="form-control" id="id" name="id" required>
+                                    <span class="text-danger error-text id_error"></span>
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="paternal_last_name" class="font-weight-bold"
+                                        style="color: #355c7d;">Apellido Paterno</label>
+                                    <input type="text" class="form-control" id="paternal_last_name"
+                                        name="paternal_last_name" required>
+                                    <span class="text-danger error-text paternal_last_name_error"></span>
+                                </div>
+
+
+
+                                <div class="form-group mb-4">
+                                    <label for="sex_type" class="font-weight-bold" style="color: #355c7d;">Sexo</label>
+                                    <select class="form-control" id="sex_type" name="sex_type" required>
+                                        <option value="1">Masculino</option>
+                                        <option value="0">Femenino</option>
+                                    </select>
+                                    <span class="text-danger error-text sex_type_error"></span>
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="phone_number" class="font-weight-bold" style="color: #355c7d;">Número de
+                                        Teléfono</label>
+                                    <input type="number" class="form-control" id="phone_number" name="phone_number"
+                                        min="0">
+                                    <span class="text-danger error-text phone_number_error"></span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="identity_document">Documento de Identidad</label>
-                            <select class="form-control" id="identity_document" name="identity_document" required>
-                                <option value="DNI">DNI</option>
-                                <option value="Pasaporte">Pasaporte</option>
-                                <option value="Carnet">Carnet</option>
-                                <option value="Cedula">Cedula</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="given_name">Nombre</label>
-                            <input type="text" class="form-control" id="given_name" name="given_name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="paternal_last_name">Apellido Paterno</label>
-                            <input type="text" class="form-control" id="paternal_last_name" name="paternal_last_name"
-                                required>
-                        </div>
-                        <div class="form-group">
-                            <label for="maternal_last_name">Apellido Materno</label>
-                            <input type="text" class="form-control" id="maternal_last_name" name="maternal_last_name"
-                                required>
-                        </div>
-                        <div class="form-group">
-                            <label for="address">Dirección</label>
-                            <input type="text" class="form-control" id="address" name="address">
-                        </div>
-                        <div class="form-group">
-                            <label for="sex_type">Sexo</label>
-                            <select class="form-control" id="sex_type" name="sex_type" required>
-                                <option value="1">Masculino</option>
-                                <option value="0">Femenino</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone_number">Número de Teléfono</label>
-                            <input type="number" class="form-control" id="phone_number" name="phone_number"
-                                min="0">
-                        </div>
-                        <div class="form-group">
-                            <label for="attendance_date">Fecha de Asistencia</label>
+
+                        <!-- Fecha de Asistencia -->
+                        <div class="form-group mb-4">
+                            <label for="attendance_date" class="font-weight-bold" style="color: #355c7d;">Fecha de
+                                Asistencia</label>
                             <input type="datetime-local" class="form-control" id="attendance_date"
                                 name="attendance_date" required>
+                            <span class="text-danger error-text attendance_date_error"></span>
                         </div>
-                        <button type="button" class="btn btn-success" id="savePerson">Guardar</button>
+
+                        <!-- Botones -->
+                        <div class="text-right mt-4">
+                            <button type="button" class="btn btn-lg shadow-sm" id="savePerson"
+                                style="background: #f67280; border-color: #f67280; color: white; border-radius: 8px;">
+                                <i class="fas fa-save"></i> Guardar
+                            </button>
+                            <button type="button" class="btn btn-lg btn-secondary shadow-sm" data-dismiss="modal"
+                                style="border-radius: 8px;">
+                                <i class="fas fa-times"></i> Cancelar
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -204,23 +257,50 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
   
     <style>
+        /* Ajustes visuales del modal */
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Colores del header */
+        .modal-header {
+            background: #355c7d;
+            color: white;
+            border-radius: 15px 15px 0 0;
+        }
+
+        /* Bordes redondeados y colores del input */
+        .form-control {
+            border: 2px solid #c06c84;
+            border-radius: 8px;
+        }
+
+        /* Estilo de los select */
         .select2-container--default .select2-selection--single {
             border-radius: 8px !important;
             border: 2px solid #c06c84 !important;
             height: calc(1.5em + 1rem + 2px) !important;
         }
-        
-        .card {
-            transition: transform 0.3s ease;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-        }
-        
+
+        /* Efecto en el input cuando se selecciona */
         .form-control:focus {
-            border-color: #f67280 !important;
-            box-shadow: 0 0 0 0.2rem rgba(246, 114, 128, 0.25) !important;
+            border-color: #9ebbff !important;
+            box-shadow: 0 0 0 0.2rem rgba(192, 221, 246, 0.25) !important;
+        }
+
+        /* Botón de agregar persona */
+        #savePerson {
+            background: #f67280;
+            border-color: #f67280;
+            color: white;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        #savePerson:hover {
+            filter: brightness(90%);
         }
     </style>
 @stop
@@ -230,45 +310,117 @@
     
     <script>
         $(document).ready(function() {
-            // Inicializar Select2 en todos los campos con la clase 'select2'
             $('.select2').select2({
-                width: '100%', // Asegurar que ocupa el 100% del ancho del contenedor
-                placeholder: 'Seleccione una opción', // Placeholder para campos vacíos
-                allowClear: true // Permitir limpiar la selección
-            });
-        });
-    </script>
-
-    <!-- Modal para persona -->
-    <script>
-        $(document).ready(function() {
-            $('#am_person_id').select2({
-                placeholder: "Seleccione una persona",
-                allowClear: true,
-                width: '100%'
+                width: '100%',
+                placeholder: 'Seleccione una opción',
+                allowClear: true
             });
 
-            // Guardar persona con AJAX
+            function validateField(field, errorMessage) {
+                let value = $('#' + field).val().trim();
+                if (value === '') {
+                    $('#' + field).addClass('is-invalid');
+                    $('.' + field + '_error').text(errorMessage);
+                    return false;
+                } else {
+                    $('#' + field).removeClass('is-invalid').addClass('is-valid');
+                    $('.' + field + '_error').text('');
+                    return true;
+                }
+            }
+
+            // Validación en tiempo real
+            $('#id, #given_name, #paternal_last_name, #maternal_last_name, #address, #phone_number').on('input',
+                function() {
+                    validateField($(this).attr('id'), 'Este campo es obligatorio');
+                });
+
+            $('#identity_document, #sex_type').on('change', function() {
+                validateField($(this).attr('id'), 'Debe seleccionar una opción');
+            });
+
+            // ✅ Si el usuario modifica el ID después de un error, habilitar el botón de guardar
+            $('#id').on('input', function() {
+                $('#savePerson').prop('disabled', false).html('<i class="fas fa-save"></i> Guardar');
+            });
+
             $('#savePerson').on('click', function() {
-                const formData = $('#addPersonForm').serialize();
+                let isValid = true;
 
+                // Validar todos los campos antes de enviar
+                isValid &= validateField('id', 'Número de documento es obligatorio');
+                isValid &= validateField('identity_document', 'Debe seleccionar un tipo de documento');
+                isValid &= validateField('given_name', 'Nombre es obligatorio');
+                isValid &= validateField('paternal_last_name', 'Apellido paterno es obligatorio');
+                isValid &= validateField('maternal_last_name', 'Apellido materno es obligatorio');
+                isValid &= validateField('address', 'Dirección es obligatoria');
+                isValid &= validateField('sex_type', 'Debe seleccionar un género');
+                isValid &= validateField('phone_number', 'Número de teléfono es obligatorio');
+                isValid &= validateField('attendance_date', 'Debe seleccionar una fecha');
+
+                if (!isValid) {
+                    Swal.fire('Error', 'Corrige los campos en rojo antes de continuar', 'error');
+                    return;
+                }
+
+                // Evitar múltiples envíos
+                $('#savePerson').prop('disabled', true).html(
+                    '<i class="fas fa-spinner fa-spin"></i> Guardando...');
+
+                // Enviar datos por AJAX
                 $.ajax({
                     url: "{{ route('am_people.store') }}",
                     method: "POST",
-                    data: formData,
+                    data: $('#addPersonForm').serialize(),
                     success: function(response) {
-                        // Actualizar el select con la nueva persona
-                        const newOption = new Option(response.given_name + ' ' + response.paternal_last_name, response.id, true, true);
-                        $('#am_person_id').append(newOption).trigger('change');
+                        if (response.success) {
+                            // Agregar opción al select2
+                            const newOption = new Option(
+                                response.given_name + ' ' + response.paternal_last_name,
+                                response.id,
+                                true,
+                                true
+                            );
+                            $('#am_person_id').append(newOption).trigger('change');
 
-                        // Cerrar el modal
-                        $('#addPersonModal').modal('hide');
+                            // Cerrar el modal y limpiar formulario
+                            $('#addPersonModal').modal('hide');
+                            $('#addPersonForm')[0].reset();
 
-                        // Resetear el formulario
-                        $('#addPersonForm')[0].reset();
+                            Swal.fire('Éxito', 'Persona agregada correctamente', 'success');
+                        }
                     },
                     error: function(xhr) {
-                        alert('Error al agregar persona. Por favor, verifica los datos.');
+                        if (xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
+
+                            // Mostrar errores en los campos correspondientes
+                            $.each(errors, function(field, messages) {
+                                $('#' + field).addClass(
+                                'is-invalid'); // Resaltar el campo en rojo
+                                $('.' + field + '_error').text(messages[
+                                0]); // Mostrar el mensaje de error
+                            });
+
+                            Swal.fire('Error', 'Corrige los errores antes de continuar',
+                                'error');
+
+                            // ✅ Habilitar el botón después de un error
+                            $('#savePerson').prop('disabled', false).html(
+                                '<i class="fas fa-save"></i> Guardar');
+                        } else {
+                            Swal.fire('Error',
+                                'Hubo un problema, verifica los datos ingresados', 'error');
+
+                            // ✅ También habilitar el botón si hay otro tipo de error
+                            $('#savePerson').prop('disabled', false).html(
+                                '<i class="fas fa-save"></i> Guardar');
+                        }
+                    },
+                    complete: function() {
+                        // Asegurar que el botón se habilita si hay errores
+                        $('#savePerson').prop('disabled', false).html(
+                            '<i class="fas fa-save"></i> Guardar');
                     }
                 });
             });
