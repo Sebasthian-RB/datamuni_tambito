@@ -4,9 +4,6 @@ namespace App\Http\Requests\VasoDeLecheRequests\CommitteeVlFamilyMembers;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-/**
- * Form Request para crear un registro de miembro familiar en un comité.
- */
 class StoreCommitteeVlFamilyMemberRequest extends FormRequest
 {
     /**
@@ -19,21 +16,29 @@ class StoreCommitteeVlFamilyMemberRequest extends FormRequest
 
     /**
      * Obtiene las reglas de validación que se aplican a la solicitud.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
             'committee_id' => [
                 'required',
-                'integer',
+                'string',
                 'exists:committees,id',
             ],
             'vl_family_member_id' => [
                 'required',
                 'string',
                 'exists:vl_family_members,id',
+                function ($attribute, $value, $fail) {
+                    $exists = \App\Models\VasoDeLecheModels\CommitteeVlFamilyMember::where('vl_family_member_id', $value)
+                        ->where('status', 1)
+                        ->exists();
+                    
+                    if ($exists) {
+                        session()->flash('confirmation_needed', true);
+                        $fail('El familiar ya pertenece a otro comité. ¿Desea actualizarlo?');
+                    }
+                }
             ],
             'change_date' => [
                 'required',
@@ -52,40 +57,33 @@ class StoreCommitteeVlFamilyMemberRequest extends FormRequest
     }
 
     /**
-     * Obtener los mensajes de validación personalizados.
-     *
-     * @return array
+     * Mensajes de validación personalizados.
      */
     public function messages(): array
     {
         return [
+            // Validaciones para 'committee_id'
             'committee_id.required' => 'El ID del comité es obligatorio.',
+            'committee_id.integer' => 'El ID del comité debe ser un número entero.',
             'committee_id.exists' => 'El comité seleccionado no existe.',
+
+            // Validaciones para 'vl_family_member_id'
             'vl_family_member_id.required' => 'El ID del miembro familiar es obligatorio.',
+            'vl_family_member_id.integer' => 'El ID del miembro familiar debe ser un número entero.',
             'vl_family_member_id.exists' => 'El miembro familiar seleccionado no existe.',
+
+            // Validaciones para 'change_date'
             'change_date.required' => 'La fecha de cambio es obligatoria.',
             'change_date.date' => 'La fecha de cambio debe ser una fecha válida.',
-            'description.nullable' => 'La descripción es opcional.',
-            'description.string' => 'La descripción debe ser un texto.',
-            'description.max' => 'La descripción no puede tener más de 255 caracteres.',
-            'status.required' => 'El estado es obligatorio.',
-            'status.boolean' => 'El estado debe ser verdadero o falso.',
-        ];
-    }
 
-    /**
-     * Personaliza los nombres de los campos de la solicitud.
-     *
-     * @return array
-     */
-    public function attributes(): array
-    {
-        return [
-            'committee_id' => 'ID del comité',
-            'vl_family_member_id' => 'ID del miembro familiar',
-            'change_date' => 'fecha de cambio',
-            'description' => 'descripción',
-            'status' => 'estado',
+            // Validaciones para 'description'
+            'description.nullable' => 'La descripción no es obligatoria.',
+            'description.string' => 'La descripción debe ser un texto válido.',
+            'description.max' => 'La descripción no puede tener más de 255 caracteres.',
+
+            // Validaciones para 'status'
+            'status.required' => 'El estado es obligatorio.',
+            'status.boolean' => 'El estado debe ser un valor booleano.',
         ];
     }
 }
