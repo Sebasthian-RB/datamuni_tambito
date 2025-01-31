@@ -16,7 +16,7 @@ class InterventionController extends Controller
      */
     public function index()
     {
-        $interventions = Intervention::all();
+        $interventions = Intervention::paginate(10);
         return view('areas.AreaDeLaMujerViews.Interventions.index', compact('interventions'));
     }
 

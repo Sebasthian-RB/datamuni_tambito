@@ -15,12 +15,33 @@ class AmPersonEventController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Obtener todos los registros de la tabla intermedia con relaciones
-        $personEvents = AmPersonEvent::with(['amPerson', 'event'])->get();
-
-        return view('areas.AreaDeLaMujerViews.AmPersonEvents.index', compact('personEvents'));
+        $query = AmPersonEvent::with(['amPerson', 'event']);
+    
+        // Filtro por nombre o DNI
+        if ($request->has('search') && !empty($request->input('search'))) {
+            $search = $request->input('search');
+            $query->whereHas('amPerson', function ($q) use ($search) {
+                $q->where('given_name', 'like', "%$search%")
+                  ->orWhere('paternal_last_name', 'like', "%$search%")
+                  ->orWhere('maternal_last_name', 'like', "%$search%")
+                  ->orWhere('identity_document', 'like', "%$search%");
+            });
+        }
+    
+        // Filtro por evento
+        if ($request->has('event') && !empty($request->input('event'))) {
+            $query->where('event_id', $request->input('event'));
+        }
+    
+        // Obtener los registros con paginación
+        $personEvents = $query->paginate(10);
+    
+        // Obtener todos los eventos para el filtro
+        $events = Event::all();
+    
+        return view('areas.AreaDeLaMujerViews.AmPersonEvents.index', compact('personEvents', 'events'));
     }
 
     /**

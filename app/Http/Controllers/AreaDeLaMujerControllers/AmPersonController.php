@@ -14,10 +14,25 @@ class AmPersonController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $query = AmPerson::query();
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+    
+            // Si el valor es un número, busca también por ID
+            if (is_numeric($search)) {
+                $query->where('id', $search);
+            } else {
+                $query->where('identity_document', 'like', "%$search%")
+                      ->orWhere('given_name', 'like', "%$search%")
+                      ->orWhere('paternal_last_name', 'like', "%$search%")
+                      ->orWhere('maternal_last_name', 'like', "%$search%");
+            }
+        }
         // Recuperamos todas las personas
-        $people = AmPerson::paginate(15);
+        $people = $query->paginate(15);
         return view('areas.AreaDeLaMujerViews.AmPersons.index', compact('people'));
     }
 

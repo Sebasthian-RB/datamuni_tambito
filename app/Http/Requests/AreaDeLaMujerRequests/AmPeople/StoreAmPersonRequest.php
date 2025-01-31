@@ -59,7 +59,8 @@ class StoreAmPersonRequest extends FormRequest
     public function messages()
     {
         return [
-            'id.required' => 'El campo ID es obligatorio.',
+            'id.required' => 'El campo es obligatorio.',
+            'given_name.required'=> 'El nombre es obligatorio',
             'id.unique' => 'El ID ya está en uso. Por favor, elija otro.',
             'identity_document.required' => 'Debe seleccionar un tipo de documento.',
             'identity_document.in' => 'El tipo de documento seleccionado no es válido.',
