@@ -33,17 +33,6 @@ return new class extends Migration
 
             // Timestamps
             $table->timestamps();
-
-            // Definir claves foráneas
-            $table->foreign('location_id')
-                ->references('id')
-                ->on('locations')
-                ->onDelete('cascade'); // Eliminación en cascada si se borra la ubicación
-
-            $table->foreign('public_insurance_id')
-                ->references('id')
-                ->on('public_insurances')
-                ->onDelete('set null'); // Si se borra el seguro público, el campo queda nulo
         });
     }
 

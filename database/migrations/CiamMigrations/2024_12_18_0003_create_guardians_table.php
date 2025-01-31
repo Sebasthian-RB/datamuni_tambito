@@ -12,13 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('guardians', function (Blueprint $table) {
-            $table->string('id', 36)->primary(); // ID único para identificar al guardián
-            $table->enum('document_type', ['DNI', 'Pasaporte', 'Carnet', 'Cedula']); // Tipo de documento permitido
-            $table->string('given_name', 50); // Nombres (máximo 50 caracteres)
-            $table->string('paternal_last_name', 50); // Apellido paterno (máximo 50 caracteres)
-            $table->string('maternal_last_name', 50); // Apellido materno (máximo 50 caracteres)
-            $table->string('phone_number', 50)->nullable(); // Número de teléfono (opcional, máximo 50 caracteres)
-            $table->timestamps(); // Columnas created_at y updated_at
+            $table->string('id')->primary();
+            $table->string('given_name', 50);
+            $table->string('paternal_last_name', 50);
+            $table->string('maternal_last_name', 50)->nullable();
+            $table->enum('document_type', ['DNI', 'Pasaporte', 'Carnet', 'Cédula']);
+            $table->string('phone_number', 20)->nullable();
+            $table->string('relationship', 50); // Relación con el adulto mayor (manejado en la vista)
+            $table->timestamps();
+        });
+
+        // Agregar la clave foránea en ElderlyAdults
+        Schema::table('elderly_adults', function (Blueprint $table) {
+            $table->uuid('guardian_id')->nullable()->after('id');
+            $table->foreign('guardian_id')->references('id')->on('guardians')->onDelete('set null');
         });
     }
 
@@ -27,6 +34,11 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('elderly_adults', function (Blueprint $table) {
+            $table->dropForeign(['guardian_id']);
+            $table->dropColumn('guardian_id');
+        });
+
         Schema::dropIfExists('guardians');
     }
 };

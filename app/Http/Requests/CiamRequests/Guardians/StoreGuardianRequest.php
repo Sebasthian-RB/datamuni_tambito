@@ -20,96 +20,90 @@ class StoreGuardianRequest extends FormRequest
 
     /**
      * Obtiene las reglas de validación que se aplican a la solicitud.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            'id' => [
-                'required',
-                'string',
-                'max:36', // UUID estándar
-                'unique:guardians,id', // Garantiza unicidad
-            ],
             'document_type' => [
                 'required',
                 'string',
                 Rule::in(['DNI', 'Pasaporte', 'Carnet', 'Cedula']), // Solo valores permitidos
             ],
-            'given_name' => [
+            'id' => [
                 'required',
                 'string',
-                'max:50',
+                Rule::unique('guardians', 'id'), // Garantiza unicidad
+                function ($attribute, $value, $fail) {
+                    $documentType = $this->input('document_type');
+
+                    if ($documentType === 'DNI' && !preg_match('/^\d{8}$/', $value)) {
+                        return $fail('El DNI debe tener exactamente 8 dígitos numéricos.');
+                    }
+
+                    if ($documentType === 'Pasaporte' && !preg_match('/^[a-zA-Z0-9]{1,20}$/', $value)) {
+                        return $fail('El Pasaporte debe tener máximo 20 caracteres alfanuméricos.');
+                    }
+
+                    if ($documentType === 'Carnet' && !preg_match('/^[a-zA-Z0-9]{1,20}$/', $value)) {
+                        return $fail('El Carnet debe tener máximo 20 caracteres alfanuméricos.');
+                    }
+
+                    if ($documentType === 'Cedula' && !preg_match('/^\d{10}$/', $value)) {
+                        return $fail('La Cédula debe tener exactamente 10 dígitos numéricos.');
+                    }
+                },
             ],
-            'paternal_last_name' => [
-                'required',
-                'string',
-                'max:50',
-            ],
-            'maternal_last_name' => [
-                'required',
-                'string',
-                'max:50',
-            ],
+            'given_name' => 'required|string|max:50',
+            'paternal_last_name' => 'required|string|max:50',
+            'maternal_last_name' => 'nullable|string|max:50',
             'phone_number' => [
-                'nullable', // Opcional
+                'nullable',
                 'string',
-                'max:15', // Máximo de 15 caracteres para número de teléfono
+                'max:15',
                 'regex:/^\+?[0-9]*$/', // Solo números y opcionalmente el prefijo "+"
             ],
+            'relationship' => 'required|string|max:50',
         ];
     }
 
     /**
      * Obtener los mensajes de validación personalizados.
-     *
-     * @return array
      */
     public function messages(): array
     {
         return [
-            'id.required' => 'El ID es obligatorio.',
-            'id.string' => 'El ID debe ser una cadena de texto.',
-            'id.max' => 'El ID no debe exceder los 36 caracteres.',
-            'id.unique' => 'El ID ya está registrado en el sistema.',
-
             'document_type.required' => 'El tipo de documento es obligatorio.',
-            'document_type.string' => 'El tipo de documento debe ser una cadena de texto.',
-            'document_type.in' => 'El tipo de documento debe ser uno de los siguientes: DNI, Pasaporte, Carnet o Cedula.',
+            'document_type.in' => 'El tipo de documento debe ser DNI, Pasaporte, Carnet o Cédula.',
+
+            'id.required' => 'El número de documento es obligatorio.',
+            'id.string' => 'El número de documento debe ser una cadena de texto.',
+            'id.unique' => 'El número de documento ya está registrado en el sistema.',
 
             'given_name.required' => 'El nombre es obligatorio.',
-            'given_name.string' => 'El nombre debe ser una cadena de texto.',
-            'given_name.max' => 'El nombre no debe exceder los 50 caracteres.',
-
             'paternal_last_name.required' => 'El apellido paterno es obligatorio.',
-            'paternal_last_name.string' => 'El apellido paterno debe ser una cadena de texto.',
-            'paternal_last_name.max' => 'El apellido paterno no debe exceder los 50 caracteres.',
-
-            'maternal_last_name.required' => 'El apellido materno es obligatorio.',
-            'maternal_last_name.string' => 'El apellido materno debe ser una cadena de texto.',
             'maternal_last_name.max' => 'El apellido materno no debe exceder los 50 caracteres.',
 
-            'phone_number.string' => 'El número de teléfono debe ser una cadena de texto.',
             'phone_number.max' => 'El número de teléfono no debe exceder los 15 caracteres.',
             'phone_number.regex' => 'El número de teléfono solo puede contener números y un signo "+" opcional.',
+
+            'relationship.required' => 'La relación con el adulto mayor es obligatoria.',
+            'relationship.max' => 'La relación no debe exceder los 50 caracteres.',
         ];
     }
 
     /**
      * Personaliza los nombres de los campos de la solicitud.
-     *
-     * @return array
      */
     public function attributes(): array
     {
         return [
-            'id' => 'identificador único',
             'document_type' => 'tipo de documento',
+            'id' => 'número de documento',
             'given_name' => 'nombre',
             'paternal_last_name' => 'apellido paterno',
             'maternal_last_name' => 'apellido materno',
             'phone_number' => 'número de teléfono',
+            'relationship' => 'relación con el adulto mayor',
         ];
     }
 }

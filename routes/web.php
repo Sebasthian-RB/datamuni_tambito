@@ -91,10 +91,10 @@ Route::middleware([
     Route::resource('vl_minors', VlMinorController::class);
     Route::get('/vaso-de-leche', [VasoDeLecheController::class, 'index'])->name('vaso-de-leche.index');
 
-        //Rutas de "committee_vl_family_members" (Padrón de Beneficiarios)
-        Route::get('padron-de-beneficiarios/{committee_id}', [CommitteeVlFamilyMemberController::class, 'index'])->name('committee_vl_family_members.index');
+    //Rutas de "committee_vl_family_members" (Padrón de Beneficiarios)
+    Route::get('padron-de-beneficiarios/{committee_id}', [CommitteeVlFamilyMemberController::class, 'index'])->name('committee_vl_family_members.index');
 
-    
+
     Route::get('committee_vl_family_members/create', [CommitteeVlFamilyMemberController::class, 'create'])->name('committee_vl_family_members.create'); // Formulario de creación
     Route::post('committee_vl_family_members', [CommitteeVlFamilyMemberController::class, 'store'])->name('committee_vl_family_members.store'); // Almacenar el nuevo miembro
     Route::get('committee_vl_family_members/{committee_vl_family_member}', [CommitteeVlFamilyMemberController::class, 'show'])->name('committee_vl_family_members.show'); // Ver detalles de un miembro
@@ -118,14 +118,7 @@ Route::middleware([
 
     // Rutas de los controladores de Ciam dentro del grupo de autenticación    
     Route::resource('elderly_adults', ElderlyAdultController::class);
-    Route::resource('elderly_adult_guardians', ElderlyAdultGuardianController::class);
-    Route::resource('elderly_adult_private_insurances', ElderlyAdultPrivateInsuranceController::class);
-    Route::resource('elderly_adult_social_programs', ElderlyAdultSocialProgramController::class);
     Route::resource('guardians', GuardianController::class);
-    Route::resource('locations', LocationController::class);
-    Route::resource('private_insurances', PrivateInsuranceController::class);
-    Route::resource('public_insurances', PublicInsuranceController::class);
-    Route::resource('social_programs', SocialProgramController::class);
 
     Route::get('/ciam_dashboard', [CiamDashboardController::class, 'index'])->name('ciamdashboard');
 
@@ -135,5 +128,4 @@ Route::middleware([
     Route::resource('disabilities', DisabilityController::class);
     Route::resource('om-people', OmPersonController::class);
     Route::get('/om_dashboard', [OmDashboardController::class, 'index'])->name('omdashboard');
-
 });
