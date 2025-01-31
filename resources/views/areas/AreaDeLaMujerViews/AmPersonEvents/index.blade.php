@@ -73,7 +73,7 @@
                     @foreach($personEvents as $record)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $record->amPerson->given_name }} {{ $record->amPerson->paternal_last_name }} {{ $record->amPerson->maternal_last_name }}</td>
+                            <td>{{ $record->amPerson->given_name }} {{ $record->amPerson->paternal_last_name }} {{ $record->amPerson->given_name }} </td>
                             <td>{{ $record->event->name }}</td>
                             <td>
                                 <span class="badge text-white"

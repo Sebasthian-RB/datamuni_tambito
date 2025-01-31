@@ -15,6 +15,8 @@ use App\Http\Requests\VasoDeLecheRequests\CommitteeVlFamilyMembers\DestroyCommit
 use App\Models\VasoDeLecheModels\Committee;
 use App\Models\VasoDeLecheModels\VlFamilyMember;
 
+use Illuminate\Support\Carbon;
+
 class CommitteeVlFamilyMemberController extends Controller
 {
     /**
@@ -25,16 +27,15 @@ class CommitteeVlFamilyMemberController extends Controller
      */
     public function index(IndexCommitteeVlFamilyMemberRequest $request, $committee_id)
     {
-        // Obtener el comité correspondiente con su ID
         $committee = Committee::findOrFail($committee_id);
-        
-        // Obtener todos los miembros de la familia asociados al comité específico
+
         $committeeVlFamilyMembers = CommitteeVlFamilyMember::where('committee_id', $committee_id)
-            ->with(['vlFamilyMember.vlMinors']) // Cargar los menores de edad relacionados
+            ->with(['vlFamilyMember.vlMinors'])
             ->get();
 
         return view('areas.VasoDeLecheViews.CommitteeVlFamilyMembers.index', compact('committee', 'committeeVlFamilyMembers'));
     }
+
 
     /**
      * Muestra el formulario para crear un nuevo miembro familiar en un comité.
@@ -42,8 +43,11 @@ class CommitteeVlFamilyMemberController extends Controller
      * @param CreateCommitteeVlFamilyMemberRequest $request
      * @return \Illuminate\View\View
      */
-    public function create(CreateCommitteeVlFamilyMemberRequest $request)
+    public function create(CreateCommitteeVlFamilyMemberRequest $request, $committee_id)
     {
+        // Obtener el comité específico
+        $committee = Committee::findOrFail($committee_id);
+
         // Obtener los comités desde el modelo Committee
         $committees = Committee::all();
 
@@ -56,7 +60,7 @@ class CommitteeVlFamilyMemberController extends Controller
             0 => 'Inactivo',
         ];
 
-        return view('areas.VasoDeLecheViews.CommitteeVlFamilyMembers.create', compact('committees', 'vlFamilyMembers', 'statusOptions'));
+        return view('areas.VasoDeLecheViews.CommitteeVlFamilyMembers.create', compact('committee', 'committees', 'vlFamilyMembers', 'statusOptions'));
     }
 
     /**
@@ -66,22 +70,52 @@ class CommitteeVlFamilyMemberController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreCommitteeVlFamilyMemberRequest $request)
-    {
-        // Convertir el valor de 'status' a booleano
-        $status = $request->status == '1' ? true : false;
+{
+    // Verificar que los datos obligatorios estén presentes
+    if (!$request->has('committee_id') || !$request->has('vl_family_member_id')) {
+        return redirect()->back()->with('error', 'Faltan datos necesarios para continuar.');
+    }
 
-        // Crear el nuevo registro
-        $record = CommitteeVlFamilyMember::create([
+    // Buscar si el familiar ya pertenece a otro comité activo
+    $existingMember = CommitteeVlFamilyMember::where('vl_family_member_id', $request->vl_family_member_id)
+        ->where('status', 1)
+        ->first();
+
+    // Si ya existe y el usuario no ha confirmado, guardar los datos en la sesión correctamente
+    if ($existingMember && !$request->has('confirm_update')) {
+        session([
+            'confirmation_needed' => true,
+            'existing_member_id' => $request->vl_family_member_id,
             'committee_id' => $request->committee_id,
-            'vl_family_member_id' => $request->vl_family_member_id,
-            'change_date' => $request->change_date,
-            'description' => $request->description,
-            'status' => $status,
+            'description' => $request->description ?? '',
+            'change_date' => $request->change_date ?? now()->toDateTimeString(), // Convertir a string
         ]);
 
-        // Redirigir con mensaje de éxito
-        return redirect()->route('committee_vl_family_members.index')->with('success', 'Miembro familiar del comité creado correctamente.');
+        return redirect()->back();
     }
+
+    // Si el usuario confirmó, cambiar los registros anteriores a estado inactivo (status = 0)
+    if ($existingMember && $request->has('confirm_update')) {
+        CommitteeVlFamilyMember::where('vl_family_member_id', $request->vl_family_member_id)
+            ->update(['status' => 0]);
+    }
+
+    // Crear el nuevo registro con status activo
+    $committeeMember = CommitteeVlFamilyMember::create([
+        'committee_id' => $request->committee_id,
+        'vl_family_member_id' => $request->vl_family_member_id,
+        'change_date' => $request->change_date ?? now(),
+        'description' => $request->description ?? '',
+        'status' => 1, // Activo por defecto
+    ]);
+
+    if (!$committeeMember) {
+        return redirect()->back()->with('error', 'No se pudo guardar el miembro en la base de datos.');
+    }
+
+    return redirect()->route('committee_vl_family_members.index', ['committee_id' => $request->committee_id])
+                     ->with('success', 'Miembro agregado correctamente.');
+}
 
 
     /**

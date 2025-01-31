@@ -27,13 +27,22 @@
             </a>
         </div>
 
+        <!-- Formulario de búsqueda -->
+        <div class="d-flex justify-content-start mb-3">
+            <form method="GET" action="{{ route('am_person_interventions.index') }}" class="d-flex" style="max-width: 1000px;">
+                <input type="text" name="search" class="form-control ms-3" placeholder="Buscar por nombre"
+                    value="{{ request('search') }}" style="border-radius: 8px; max-width: 250px;">
+                <button type="submit" class="btn text-white shadow-sm" style="background: #f67280; border-radius: 8px;">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
         <!-- Mensaje de éxito -->
         @if (session('success'))
             <div class="alert alert-success shadow-sm" style="border-radius: 8px;">
                 {{ session('success') }}
             </div>
         @endif
-
         <!-- Tabla de datos -->
         <div class="card shadow-lg" style="border-radius: 15px;">
             <div class="card-header text-white" style="background: #6c5b7b; border-radius: 15px 15px 0 0;">

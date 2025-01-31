@@ -8,7 +8,7 @@
 
 @section('content')
 <div class="container">
-    <a href="{{ route('committee_vl_family_members.create') }}" class="btn mb-3" style="background-color: #9B7EBD; color: white;">Agregar Beneficiario</a>
+    <a href="{{ route('committee_vl_family_members.create', ['committee_id' => $committee->id]) }}" class="btn mb-3" style="background-color: #9B7EBD; color: white;">Agregar Beneficiario</a>
     <a href="{{ route('vaso-de-leche.index') }}" class="btn btn-secondary mb-3">Volver</a>
 
     @if(session('success'))
@@ -86,26 +86,23 @@
 
     <!-- Tabla de Beneficiarios -->
     <div class="card">
-        <div class="card-header text-dark" style="background-color: #D4BEE4;">
-            <h3 class="card-title">Miembros Registrados</h3>
-        </div>
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered table-hover">
                     <thead class="bg-dark text-white text-center">
                         <tr>
                             <th>N°</th>
-                            <th>Apoderado/Madre</th>
-                            <th>Beneficiario</th>
-                            <th>Tipo Doc.</th>
+                            <th>Familiar/Apoderado(a)</th>
+                            <th>Beneficiario(a)</th>
+                            <th>Tipo de Documento</th>
                             <th>Parentesco</th>
                             <th>Sexo</th>
-                            <th>F. Nacimiento</th>
+                            <th>Fecha de Nacimiento</th>
                             <th>Edad</th>
                             <th>Condición</th>
-                            <th>F. Empadronamiento</th>
-                            <th>F. Retiro</th>
-                            <th>Grado Instrucción</th>
+                            <th>Fecha de Empadronamiento</th>
+                            <th>Fecha de Retiro</th>
+                            <th>Grado de Instrucción</th>
                             <th>Vivienda</th>
                             <th>Domicilio</th>
                             <th>Observaciones</th>

@@ -15,9 +15,19 @@ class AmPersonInterventionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $amPersonInterventions = AmPersonIntervention::with(['amPerson', 'intervention'])->paginate(10);
+        $search = $request->input('search');
+
+        $amPersonInterventions = AmPersonIntervention::with(['amPerson', 'intervention'])
+            ->whereHas('amPerson', function ($query) use ($search) {
+                if ($search) {
+                    $query->where('given_name', 'like', "%$search%")
+                        ->orWhere('paternal_last_name', 'like', "%$search%");
+                }
+            })
+            ->paginate(10);
+
         return view('areas.AreaDeLaMujerViews.AmPersonInterventions.index', compact('amPersonInterventions'));
     }
 
