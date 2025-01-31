@@ -4,8 +4,10 @@
 
 @section('content_header')
     <!-- Imagen superior -->
-    <div class="d-flex justify-content-center align-items-center py-3" style="background: #c06c84; border-radius: 0 0 15px 15px;">
-        <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="img-fluid" style="max-height: 80px;">
+    <div class="d-flex justify-content-center align-items-center py-3"
+        style="background: #c06c84; border-radius: 0 0 15px 15px;">
+        <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="img-fluid"
+            style="max-height: 80px;">
     </div>
     <br>
     <h1 class="text-white" style="background: #355c7d; padding: 10px; border-radius: 8px; text-align: center;">
@@ -17,7 +19,8 @@
     <div class="container">
         <!-- Botones de acción -->
         <div class="mb-3 d-flex">
-            <a href="{{ route('events.create') }}" class="btn text-white shadow-sm" style="background: #f67280; border-radius: 8px;">
+            <a href="{{ route('events.create') }}" class="btn text-white shadow-sm"
+                style="background: #f67280; border-radius: 8px;">
                 <i class="fa fa-plus"></i> Agregar Nuevo Evento
             </a>
             <a href="{{ route('amdashboard') }}" class="btn btn-secondary shadow-sm" style="border-radius: 8px;">
@@ -25,8 +28,19 @@
             </a>
         </div>
 
+        <!-- Formulario de búsqueda -->
+        <div class="d-flex justify-content-start mb-3">
+            <form method="GET" action="{{ route('events.index') }}" class="d-flex" style="max-width: 1000px;">
+                <input type="text" name="search" class="form-control ms-3" placeholder="Buscar por nombre o lugar"
+                    value="{{ request('search') }}" style="border-radius: 8px; max-width: 250px;">
+                <button type="submit" class="btn text-white shadow-sm" style="background: #f67280; border-radius: 8px;">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+
         <!-- Mensaje de éxito -->
-        @if(session('success'))
+        @if (session('success'))
             <div class="alert alert-success shadow-sm" style="border-radius: 8px;">
                 {{ session('success') }}
             </div>
@@ -60,10 +74,14 @@
                                 <td>{{ $event->program->name }}</td>
                                 <td>
                                     <span class="badge text-white"
-                                          style="font-size: 16px; padding: 8px; border-radius: 8px;
-                                                 background: {{ $event->status === 'En proceso' ? '#f39c12' : 
-                                                 ($event->status === 'Finalizado' ? '#28a745' : 
-                                                 ($event->status === 'Cancelado' ? '#dc3545' : '#f0ad4e')) }};">
+                                        style="font-size: 16px; padding: 8px; border-radius: 8px;
+                                                 background: {{ $event->status === 'En proceso'
+                                                     ? '#f39c12'
+                                                     : ($event->status === 'Finalizado'
+                                                         ? '#28a745'
+                                                         : ($event->status === 'Cancelado'
+                                                             ? '#dc3545'
+                                                             : '#f0ad4e')) }};">
                                         {{ $event->status }}
                                     </span>
                                 </td>
@@ -76,10 +94,12 @@
                                     <a href="{{ route('events.edit', $event) }}" class="btn btn-warning btn-sm shadow-sm">
                                         <i class="fa fa-edit"></i> Editar
                                     </a>
-                                    <form action="{{ route('events.destroy', $event) }}" method="POST" style="display:inline-block;">
+                                    <form action="{{ route('events.destroy', $event) }}" method="POST"
+                                        style="display:inline-block;">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-danger btn-sm shadow-sm" onclick="return confirm('¿Estás seguro?')">
+                                        <button class="btn btn-danger btn-sm shadow-sm"
+                                            onclick="return confirm('¿Estás seguro?')">
                                             <i class="fa fa-trash"></i> Eliminar
                                         </button>
                                     </form>

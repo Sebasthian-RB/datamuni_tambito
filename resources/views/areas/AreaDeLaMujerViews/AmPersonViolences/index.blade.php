@@ -27,6 +27,17 @@
             </a>
         </div>
 
+        <!-- Formulario de búsqueda -->
+        <div class="d-flex justify-content-start mb-3">
+            <form method="GET" action="{{ route('am_person_violences.index') }}" class="d-flex" style="max-width: 1000px;">
+                <input type="text" name="search" class="form-control ms-3" placeholder="Buscar por nombre"
+                    value="{{ request('search') }}" style="border-radius: 8px; max-width: 250px;">
+                <button type="submit" class="btn text-white shadow-sm" style="background: #f67280; border-radius: 8px;">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+
         <!-- Mensaje de éxito -->
         @if(session('success'))
             <div class="alert alert-success shadow-sm" style="border-radius: 8px;">
@@ -52,7 +63,7 @@
                     <tbody>
                         @foreach($amPersonViolences as $relation)
                             <tr>
-                                <td>{{ $relation->amPerson->given_name }} {{ $relation->amPerson->paternal_last_name }}</td>
+                                <td>{{ $relation->amPerson->given_name }} {{ $relation->amPerson->paternal_last_name }} {{ $relation->amPerson->maternal_last_name }}</td>
                                 <td>{{ $relation->violence->kind_violence }}</td>
                                 <td>{{ $relation->registration_date->format('d/m/Y H:i') }}</td>
                                 <td>

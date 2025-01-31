@@ -15,9 +15,19 @@ class AmPersonViolenceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $amPersonViolences = AmPersonViolence::with(['amPerson', 'violence'])->paginate(10);
+        $search = $request->input('search');
+
+        $amPersonViolences = AmPersonViolence::with(['amPerson', 'violence'])
+            ->whereHas('amPerson', function ($query) use ($search) {
+                if ($search) {
+                    $query->where('given_name', 'like', "%$search%")
+                        ->orWhere('paternal_last_name', 'like', "%$search%");
+                }
+            })
+            ->paginate(10);
+
         return view('areas.AreaDeLaMujerViews.AmPersonViolences.index', compact('amPersonViolences'));
     }
 

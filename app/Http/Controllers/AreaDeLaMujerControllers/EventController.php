@@ -14,12 +14,17 @@ class EventController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $events = Event::with('program')->paginate(10);
+        $search = $request->input('search');
+
+        $events = Event::with('program')
+            ->where('name', 'like', "%$search%")
+            ->orWhere('place', 'like', "%$search%")
+            ->paginate(10);
+
         return view('areas.AreaDeLaMujerViews.Events.index', compact('events'));
     }
-
     /**
      * Show the form for creating a new resource.
      */
