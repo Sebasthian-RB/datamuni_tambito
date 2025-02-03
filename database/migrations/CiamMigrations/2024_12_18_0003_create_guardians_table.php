@@ -21,12 +21,6 @@ return new class extends Migration
             $table->string('relationship', 50); // Relación con el adulto mayor (manejado en la vista)
             $table->timestamps();
         });
-
-        // Agregar la clave foránea en ElderlyAdults
-        Schema::table('elderly_adults', function (Blueprint $table) {
-            $table->uuid('guardian_id')->nullable()->after('id');
-            $table->foreign('guardian_id')->references('id')->on('guardians')->onDelete('set null');
-        });
     }
 
     /**
@@ -34,10 +28,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('elderly_adults', function (Blueprint $table) {
-            $table->dropForeign(['guardian_id']);
-            $table->dropColumn('guardian_id');
-        });
+
 
         Schema::dropIfExists('guardians');
     }

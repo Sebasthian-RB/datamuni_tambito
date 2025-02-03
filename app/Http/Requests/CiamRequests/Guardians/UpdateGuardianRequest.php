@@ -21,8 +21,6 @@ class UpdateGuardianRequest extends FormRequest
 
     /**
      * Obtiene las reglas de validación que se aplican a la solicitud.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -49,8 +47,8 @@ class UpdateGuardianRequest extends FormRequest
                         $fail('El Carnet debe contener hasta 20 caracteres alfanuméricos.');
                     }
 
-                    if ($documentType === 'Cedula' && !preg_match('/^[a-zA-Z0-9]{10}$/', $value)) {
-                        $fail('La Cédula debe contener exactamente 10 caracteres alfanuméricos.');
+                    if ($documentType === 'Cedula' && !preg_match('/^\d{10}$/', $value)) {
+                        $fail('La Cédula debe contener exactamente 10 caracteres numéricos.');
                     }
                 }
             ],
@@ -70,7 +68,7 @@ class UpdateGuardianRequest extends FormRequest
                 'max:50',
             ],
             'maternal_last_name' => [
-                'required',
+                'nullable',
                 'string',
                 'max:50',
             ],
@@ -80,13 +78,16 @@ class UpdateGuardianRequest extends FormRequest
                 'max:15',
                 'regex:/^\+?[0-9]*$/', // Solo números y opcionalmente el prefijo "+"
             ],
+            'relationship' => [
+                'required',
+                'string',
+                'max:50',
+            ],
         ];
     }
 
     /**
      * Obtener los mensajes de validación personalizados.
-     *
-     * @return array
      */
     public function messages(): array
     {
@@ -99,17 +100,16 @@ class UpdateGuardianRequest extends FormRequest
             'given_name.max' => 'El nombre no debe exceder los 50 caracteres.',
             'paternal_last_name.required' => 'El apellido paterno es obligatorio.',
             'paternal_last_name.max' => 'El apellido paterno no debe exceder los 50 caracteres.',
-            'maternal_last_name.required' => 'El apellido materno es obligatorio.',
             'maternal_last_name.max' => 'El apellido materno no debe exceder los 50 caracteres.',
             'phone_number.max' => 'El número de teléfono no debe exceder los 15 caracteres.',
             'phone_number.regex' => 'El número de teléfono solo puede contener números y un signo "+" opcional.',
+            'relationship.required' => 'La relación con el adulto mayor es obligatoria.',
+            'relationship.max' => 'La relación no debe exceder los 50 caracteres.',
         ];
     }
 
     /**
      * Personaliza los nombres de los campos de la solicitud.
-     *
-     * @return array
      */
     public function attributes(): array
     {
@@ -120,6 +120,7 @@ class UpdateGuardianRequest extends FormRequest
             'paternal_last_name' => 'apellido paterno',
             'maternal_last_name' => 'apellido materno',
             'phone_number' => 'número de teléfono',
+            'relationship' => 'relación con el adulto mayor',
         ];
     }
 }
