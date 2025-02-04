@@ -39,6 +39,7 @@ class CommitteeVLFamilyMember extends Model
         'committee_id' => 'integer',           // Convierte 'committee_id' a tipo entero
         'vl_family_member_id' => 'string',     // Convierte 'vl_family_member_id' a tipo string
         'change_date' => 'date',               // Convierte 'change_date' a tipo date
+        'description' => 'string', 
         'status' => 'boolean',                 // Convierte 'status' a tipo booleano (0 o 1)
     ];
 
