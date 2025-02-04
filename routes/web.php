@@ -128,7 +128,7 @@ Route::middleware([
 
     Route::get('/ciam_dashboard', [CiamDashboardController::class, 'index'])->name('ciamdashboard');
 
-    // Rutas de los controladores de Sisfoh dentro del grupo de autenticación
+    // Rutas de los controladores de OMAPED dentro del grupo de autenticación
     Route::resource('caregivers', CaregiverController::class);
     Route::resource('om-dwellings', OmDwellingController::class);
     Route::resource('disabilities', DisabilityController::class);
