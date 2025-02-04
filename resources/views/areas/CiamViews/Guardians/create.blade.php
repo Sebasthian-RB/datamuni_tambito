@@ -15,20 +15,11 @@
         <form action="{{ route('guardians.store') }}" method="POST">
             @csrf
 
-            <!-- Campo para el ID -->
-            <div class="form-group">
-                <label for="id" style="color: #6E8E59;">ID</label>
-                <input type="text" name="id" class="form-control @error('id') is-invalid @enderror" value="{{ old('id') }}" placeholder="Ingrese el ID único">
-                @error('id')
-                <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
-
             <!-- Campo para Tipo de Documento -->
             <div class="form-group">
                 <label for="document_type" style="color: #6E8E59;">Tipo de Documento</label>
-                <select name="document_type" class="form-control @error('document_type') is-invalid @enderror">
-                    <option value="" disabled {{ old('document_type') ? '' : 'selected' }}>Seleccione</option>
+                <select id="document_type" name="document_type" class="form-control @error('document_type') is-invalid @enderror" required>
+                    <option value="" disabled selected>Seleccione</option>
                     @foreach(['DNI', 'Pasaporte', 'Carnet', 'Cedula'] as $type)
                     <option value="{{ $type }}" {{ old('document_type') == $type ? 'selected' : '' }}>{{ $type }}</option>
                     @endforeach
@@ -38,10 +29,21 @@
                 @enderror
             </div>
 
+            <!-- Campo para el ID (Número de Documento) -->
+            <div class="form-group">
+                <label for="id" style="color: #6E8E59;">Número de Documento</label>
+                <input type="text" id="id" name="id" class="form-control @error('id') is-invalid @enderror"
+                    value="{{ old('id') }}" placeholder="Ingrese el número de documento" required>
+                @error('id')
+                <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+
             <!-- Campo para Nombres -->
             <div class="form-group">
                 <label for="given_name" style="color: #6E8E59;">Nombres</label>
-                <input type="text" name="given_name" class="form-control @error('given_name') is-invalid @enderror" value="{{ old('given_name') }}" placeholder="Ingrese el nombre">
+                <input type="text" name="given_name" class="form-control @error('given_name') is-invalid @enderror"
+                    value="{{ old('given_name') }}" placeholder="Ingrese el nombre" required>
                 @error('given_name')
                 <span class="text-danger">{{ $message }}</span>
                 @enderror
@@ -50,7 +52,8 @@
             <!-- Campo para Apellido Paterno -->
             <div class="form-group">
                 <label for="paternal_last_name" style="color: #6E8E59;">Apellido Paterno</label>
-                <input type="text" name="paternal_last_name" class="form-control @error('paternal_last_name') is-invalid @enderror" value="{{ old('paternal_last_name') }}" placeholder="Ingrese el apellido paterno">
+                <input type="text" name="paternal_last_name" class="form-control @error('paternal_last_name') is-invalid @enderror"
+                    value="{{ old('paternal_last_name') }}" placeholder="Ingrese el apellido paterno" required>
                 @error('paternal_last_name')
                 <span class="text-danger">{{ $message }}</span>
                 @enderror
@@ -59,7 +62,8 @@
             <!-- Campo para Apellido Materno -->
             <div class="form-group">
                 <label for="maternal_last_name" style="color: #6E8E59;">Apellido Materno</label>
-                <input type="text" name="maternal_last_name" class="form-control @error('maternal_last_name') is-invalid @enderror" value="{{ old('maternal_last_name') }}" placeholder="Ingrese el apellido materno">
+                <input type="text" name="maternal_last_name" class="form-control @error('maternal_last_name') is-invalid @enderror"
+                    value="{{ old('maternal_last_name') }}" placeholder="Ingrese el apellido materno">
                 @error('maternal_last_name')
                 <span class="text-danger">{{ $message }}</span>
                 @enderror
@@ -68,8 +72,25 @@
             <!-- Campo para Teléfono -->
             <div class="form-group">
                 <label for="phone_number" style="color: #6E8E59;">Teléfono</label>
-                <input type="text" name="phone_number" class="form-control @error('phone_number') is-invalid @enderror" value="{{ old('phone_number') }}" placeholder="Ingrese el número de teléfono">
+                <input type="text" name="phone_number" class="form-control @error('phone_number') is-invalid @enderror"
+                    value="{{ old('phone_number') }}" placeholder="Ingrese el número de teléfono">
                 @error('phone_number')
+                <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <!-- Campo para Relación con el Adulto Mayor -->
+            <div class="form-group">
+                <label for="relationship" style="color: #6E8E59;">Relación con el Adulto Mayor</label>
+                <select id="relationship" name="relationship" class="form-control @error('relationship') is-invalid @enderror" required>
+                    <option value="" disabled selected>Seleccione una relación</option>
+                    @foreach(['Hijo/a', 'Esposo/a', 'Nieto/a', 'Hermano/a', 'Cuidador externo', 'Otro'] as $relation)
+                    <option value="{{ $relation }}" {{ old('relationship') == $relation ? 'selected' : '' }}>{{ $relation }}</option>
+                    @endforeach
+                </select>
+                <input type="text" id="other_relationship" name="other_relationship" class="form-control mt-2 d-none"
+                    placeholder="Ingrese otra relación">
+                @error('relationship')
                 <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
@@ -82,4 +103,41 @@
         </form>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const documentType = document.getElementById('document_type');
+        const idField = document.getElementById('id');
+        const relationshipSelect = document.getElementById('relationship');
+        const otherRelationshipField = document.getElementById('other_relationship');
+
+        documentType.addEventListener('change', function() {
+            let selectedType = this.value;
+            if (selectedType === 'DNI') {
+                idField.setAttribute('maxlength', '8');
+                idField.setAttribute('pattern', '\\d{8}');
+                idField.setAttribute('placeholder', 'Ingrese 8 dígitos');
+            } else if (selectedType === 'Pasaporte' || selectedType === 'Carnet') {
+                idField.setAttribute('maxlength', '20');
+                idField.removeAttribute('pattern');
+                idField.setAttribute('placeholder', 'Ingrese hasta 20 caracteres');
+            } else if (selectedType === 'Cedula') {
+                idField.setAttribute('maxlength', '10');
+                idField.setAttribute('pattern', '\\d{10}');
+                idField.setAttribute('placeholder', 'Ingrese 10 dígitos');
+            }
+        });
+
+        relationshipSelect.addEventListener('change', function() {
+            if (this.value === 'Otro') {
+                otherRelationshipField.classList.remove('d-none');
+                otherRelationshipField.setAttribute('required', 'true');
+            } else {
+                otherRelationshipField.classList.add('d-none');
+                otherRelationshipField.removeAttribute('required');
+            }
+        });
+    });
+</script>
+
 @stop

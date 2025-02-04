@@ -26,6 +26,7 @@ class Guardian extends Model
         'paternal_last_name',
         'maternal_last_name',
         'phone_number',
+        'relationship', // Agregado porque antes faltaba
     ];
 
     /**
@@ -38,19 +39,16 @@ class Guardian extends Model
         'paternal_last_name' => 'string',
         'maternal_last_name' => 'string',
         'phone_number' => 'string',
+        'relationship' => 'string',
     ];
 
     /**
-     * Relación muchos a muchos con Elderly Adults (a través de la tabla pivote).
+     * Relación uno a muchos con ElderlyAdults.
+     * Un guardián puede estar a cargo de varios adultos mayores.
      */
     public function elderlyAdults()
     {
-        return $this->belongsToMany(
-            ElderlyAdult::class,
-            'elderly_adults_guardians', // Nombre de la tabla pivote
-            'guardian_id',              // Clave foránea hacia Guardian
-            'elderly_adult_id'          // Clave foránea hacia ElderlyAdult
-        );
+        return $this->hasMany(ElderlyAdult::class, 'guardian_id');
     }
 
     /**
