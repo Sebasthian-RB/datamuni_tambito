@@ -29,16 +29,6 @@ class StoreCommitteeVlFamilyMemberRequest extends FormRequest
                 'required',
                 'string',
                 'exists:vl_family_members,id',
-                function ($attribute, $value, $fail) {
-                    $exists = \App\Models\VasoDeLecheModels\CommitteeVlFamilyMember::where('vl_family_member_id', $value)
-                        ->where('status', 1)
-                        ->exists();
-                    
-                    if ($exists) {
-                        session()->flash('confirmation_needed', true);
-                        $fail('El familiar ya pertenece a otro comité. ¿Desea actualizarlo?');
-                    }
-                }
             ],
             'change_date' => [
                 'required',

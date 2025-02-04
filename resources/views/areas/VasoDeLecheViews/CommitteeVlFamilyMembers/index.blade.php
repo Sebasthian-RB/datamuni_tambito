@@ -127,7 +127,7 @@
                                                         DNI N° 
                                                     @elseif($register->vlFamilyMember->identity_document == 'Pasaporte')
                                                         Pas. N° 
-                                                    @elseif($register->vlFamilyMember->identity_document == 'Cédula de extranjería')
+                                                    @elseif($register->vlFamilyMember->identity_document == 'Cédula')
                                                         Ced. N° 
                                                     @else
                                                         Error: 
@@ -146,7 +146,7 @@
                                                     DNI N° 
                                                 @elseif($minor->identity_document == 'Pasaporte')
                                                     Pas. N° 
-                                                @elseif($minor->identity_document == 'Cédula de extranjería')
+                                                @elseif($minor->identity_document == 'Cédula')
                                                     Ced. N° 
                                                 @else
                                                     Error: 
