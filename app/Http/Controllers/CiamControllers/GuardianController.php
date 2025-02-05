@@ -37,7 +37,15 @@ class GuardianController extends Controller
      */
     public function store(StoreGuardianRequest $request)
     {
-        Guardian::create($request->validated());
+        $data = $request->validated();
+
+        // Si la relación es "Otro", asignar el valor de `other_relationship`
+        if ($data['relationship'] === 'Otro') {
+            $data['relationship'] = $request->input('other_relationship');
+        }
+
+        Guardian::create($data);
+
         return redirect()->route('guardians.index')->with('success', 'Guardián creado con éxito.');
     }
 
@@ -63,7 +71,15 @@ class GuardianController extends Controller
      */
     public function update(UpdateGuardianRequest $request, Guardian $guardian)
     {
-        $guardian->update($request->validated());
+        $data = $request->validated();
+
+        // Si la relación es "Otro", asignar el valor de `other_relationship`
+        if ($data['relationship'] === 'Otro') {
+            $data['relationship'] = $request->input('other_relationship');
+        }
+
+        $guardian->update($data);
+
         return redirect()->route('guardians.index')->with('success', 'Datos del guardián actualizados correctamente.');
     }
 
@@ -78,6 +94,7 @@ class GuardianController extends Controller
         }
 
         $guardian->delete();
+
         return redirect()->route('guardians.index')->with('success', 'Guardián eliminado con éxito.');
     }
 }

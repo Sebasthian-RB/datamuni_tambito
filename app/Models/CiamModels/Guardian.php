@@ -82,6 +82,15 @@ class Guardian extends Model
         $this->attributes['document_type'] = strtoupper(trim($value));
     }
 
+    public function getDisplayRelationshipAttribute()
+    {
+        // Si la relación es "Otro", devuelve el valor específico ingresado; de lo contrario, devuelve la relación normal.
+        return $this->relationship === 'Otro' && $this->custom_relationship
+            ? $this->custom_relationship
+            : $this->relationship;
+    }
+
+
     /**
      * Scopes para consultas comunes.
      */

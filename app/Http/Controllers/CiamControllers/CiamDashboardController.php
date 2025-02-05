@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\CiamControllers;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class CiamDashboardController extends Controller
 {

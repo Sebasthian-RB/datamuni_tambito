@@ -34,7 +34,7 @@
                     </tr>
                     <tr>
                         <th style="background-color: #CAE0BC;">Relación con el Adulto Mayor</th>
-                        <td>{{ $guardian->relationship }}</td>
+                        <td>{{ $guardian->display_relationship }}</td>
                     </tr>
                     <tr>
                         <th style="background-color: #CAE0BC;">Teléfono</th>

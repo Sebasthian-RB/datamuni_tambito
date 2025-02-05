@@ -12,24 +12,41 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('elderly_adults', function (Blueprint $table) {
-            $table->string('id', 36)->primary(); // ID único que se puede escribir manualmente
+            $table->uuid('id')->primary(); // ID único manual
             $table->enum('document_type', ['DNI', 'Pasaporte', 'Carnet', 'Cedula']); // Tipo de documento
             $table->string('given_name', 50); // Nombre
             $table->string('paternal_last_name', 50); // Apellido paterno
-            $table->string('maternal_last_name', 50); // Apellido materno
+            $table->string('maternal_last_name', 50)->nullable(); // Apellido materno
             $table->date('birth_date'); // Fecha de nacimiento
-            $table->string('address', 255)->nullable(); // Dirección (opcional)
-            $table->string('reference', 255)->nullable(); // Referencia (opcional)
+            $table->string('address', 255)->nullable(); // Dirección
+            $table->string('reference', 255)->nullable(); // Referencia
             $table->boolean('sex_type'); // Sexo (0: femenino, 1: masculino)
-            $table->string('phone_number', 50)->nullable(); // Teléfono (opcional)
+            $table->string('phone_number', 50)->nullable(); // Teléfono
             $table->enum('type_of_disability', ['Visual', 'Motriz', 'Mental'])->nullable(); // Tipo de discapacidad
-            $table->integer('household_members')->nullable(); // Número de miembros en el hogar
+            $table->integer('household_members')->nullable(); // Miembros del hogar
             $table->boolean('permanent_attention')->nullable(); // Atención permanente
             $table->text('observation')->nullable(); // Observaciones generales
 
-            // Relaciones con otras tablas
-            $table->unsignedBigInteger('location_id'); // Relación con locations
-            $table->unsignedBigInteger('public_insurance_id')->nullable(); // Relación con public_insurances (puede ser nula)
+            // Relación opcional con Guardian
+            $table->uuid('guardian_id')->nullable();
+            $table->foreign('guardian_id')->references('id')->on('guardians')->onDelete('set null');
+
+            // Ubicación (dependiente: departamento -> provincia -> distrito)
+            $table->string('department', 100); // Departamento
+            $table->string('province', 100); // Provincia
+            $table->string('district', 100); // Distrito
+
+            // Seguro público
+            $table->enum('public_insurance', ['SIS', 'ESSALUD'])->nullable(); // Seguro público (opcional)
+
+            // Seguro privado
+            $table->string('private_insurance', 255)->nullable(); // Seguro privado (opcional)
+
+            // Programas sociales
+            $table->string('social_program', 255)->nullable(); // Programa social al que pertenece (opcional)
+
+            // Estado del adulto mayor en el CIAM
+            $table->enum('state', ['Activo', 'Inactivo'])->default('Activo'); // Estado (activo/inactivo)
 
             // Timestamps
             $table->timestamps();
