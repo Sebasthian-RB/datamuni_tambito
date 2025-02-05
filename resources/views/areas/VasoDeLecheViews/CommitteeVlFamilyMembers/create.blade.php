@@ -4,6 +4,26 @@
 
 @section('css')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        /* Aplica un estilo personalizado para la caja de selección de Select2 */
+        .select2-container--default .select2-selection--single {
+            height: 45px !important; /* Ajusta la altura del select */
+            line-height: 45px !important; /* Alineación vertical del texto */
+            font-size: 16px !important; /* Tamaño de fuente */
+        }
+
+        /* Ajustar el padding para el texto */
+        .select2-container--default .select2-selection__rendered {
+            padding-top: 5px !important;
+            padding-bottom: 5px !important;
+        }
+
+        /* Ajuste del dropdown de opciones */
+        .select2-dropdown {
+            max-height: 300px !important; /* Define la altura máxima */
+            overflow-y: auto !important; /* Permite el scroll si es necesario */
+        }
+    </style>
 @stop
 
 @section('content_header')
@@ -59,14 +79,66 @@
                         <select class="form-control select2 @error('vl_family_member_id') is-invalid @enderror" id="vl_family_member_id" name="vl_family_member_id" required>
                             <option value="" disabled selected>Seleccione un miembro de familia</option>
                             @foreach($vlFamilyMembers as $member)
-                                <option value="{{ $member->id }}" {{ old('vl_family_member_id') == $member->id ? 'selected' : '' }}>
+                                <option value="{{ $member->id }}" 
+                                    data-id="{{ $member->id }}"
+                                    data-identity="{{ $member->identity_document }}"
+                                    data-given-name="{{ $member->given_name }}"
+                                    data-paternal="{{ $member->paternal_last_name }}"
+                                    data-maternal="{{ $member->maternal_last_name }}"
+                                    {{ old('vl_family_member_id') == $member->id ? 'selected' : '' }}>
                                     {{ $member->id }}
                                 </option>
                             @endforeach
+
                         </select>
                         @error('vl_family_member_id')
                             <span class="invalid-feedback">{{ $message }}</span>
                         @enderror
+                    </div>
+
+                    <div id="family-member-details" class="card p-3" style="display: none; background-color: #FFFFFF; border-radius: 10px; box-shadow: 0px 4px 12px rgba(0,0,0,0.1);">
+                        <h5 class="text-center" style="background-color: #3B1E54; color: #FFFFFF; padding: 10px 15px; border-radius: 6px; margin-bottom: 25px; font-size: 16px;">Detalles del Familiar</h5>
+                    
+                        <div class="row">
+                            <!-- Columna izquierda: ID, Documento y Nombres -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="member_id" style="color: #3B1E54; font-weight: 600;">ID</label>
+                                    <input type="text" class="form-control" id="member_id" disabled style="background-color: #EEEEEE; border: 1px solid #9B7EBD; border-radius: 5px; padding: 10px; font-size: 14px;">
+                                </div>
+                            </div>
+                    
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="identity_document" style="color: #3B1E54; font-weight: 600;">Documento</label>
+                                    <input type="text" class="form-control" id="identity_document" disabled style="background-color: #EEEEEE; border: 1px solid #9B7EBD; border-radius: 5px; padding: 10px; font-size: 14px;">
+                                </div>
+                            </div>
+                    
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="given_name" style="color: #3B1E54; font-weight: 600;">Nombres</label>
+                                    <input type="text" class="form-control" id="given_name" disabled style="background-color: #EEEEEE; border: 1px solid #9B7EBD; border-radius: 5px; padding: 10px; font-size: 14px;">
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="row mt-3">
+                            <!-- Columna derecha: Apellidos -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="paternal_last_name" style="color: #3B1E54; font-weight: 600;">Apellido Paterno</label>
+                                    <input type="text" class="form-control" id="paternal_last_name" disabled style="background-color: #EEEEEE; border: 1px solid #9B7EBD; border-radius: 5px; padding: 10px; font-size: 14px;">
+                                </div>
+                            </div>
+                    
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="maternal_last_name" style="color: #3B1E54; font-weight: 600;">Apellido Materno</label>
+                                    <input type="text" class="form-control" id="maternal_last_name" disabled style="background-color: #EEEEEE; border: 1px solid #9B7EBD; border-radius: 5px; padding: 10px; font-size: 14px;">
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Descripción -->
@@ -140,18 +212,19 @@
     <!-- Inicialización de Select2 -->
     <script>
         $(document).ready(function() {
-            // Inicializa Select2 en el select con id selectOpciones
+            // Inicializa Select2 en el select con id vl_family_member_id
             $('#vl_family_member_id').select2({
                 placeholder: "Selecciona un miembro de familia",
                 allowClear: true // Permite borrar la selección
             });
-        });
 
-        // Depura el valor seleccionado en la consola
-        $('#vl_family_member_id').on('change', function() {
-            console.log("Valor seleccionado:", $(this).val());
+            // Depura el valor seleccionado en la consola
+            $('#vl_family_member_id').on('change', function() {
+                console.log("Valor seleccionado:", $(this).val());
+            });
         });
     </script>
+
 
     <!-- Script para el modal -->
     @if(session()->has('confirmation_needed'))
@@ -166,4 +239,20 @@
             });
         </script>
     @endif
+
+    <!-- Script para mostrar datos del familiar -->
+    <script>
+        $(document).ready(function() {
+            $('#vl_family_member_id').select2();
+            $('#vl_family_member_id').on('change', function() {
+                const selected = $(this).find(':selected');
+                $('#member_id').val(selected.data('id'));
+                $('#identity_document').val(selected.data('identity'));
+                $('#given_name').val(selected.data('given-name'));
+                $('#paternal_last_name').val(selected.data('paternal'));
+                $('#maternal_last_name').val(selected.data('maternal'));
+                $('#family-member-details').show();
+            });
+        });
+    </script>
 @stop

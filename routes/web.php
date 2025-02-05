@@ -93,9 +93,8 @@ Route::middleware([
 
     //Rutas de "committee_vl_family_members" (Padrón de Beneficiarios)
     Route::get('padron-de-beneficiarios/{committee_id}', [CommitteeVlFamilyMemberController::class, 'index'])->name('committee_vl_family_members.index');
+    Route::get('committee_vl_family_members/create/{committee_id}', [CommitteeVlFamilyMemberController::class, 'create'])->name('committee_vl_family_members.create'); // Formulario de creación
 
-
-    Route::get('committee_vl_family_members/create', [CommitteeVlFamilyMemberController::class, 'create'])->name('committee_vl_family_members.create'); // Formulario de creación
     Route::post('committee_vl_family_members', [CommitteeVlFamilyMemberController::class, 'store'])->name('committee_vl_family_members.store'); // Almacenar el nuevo miembro
     Route::get('committee_vl_family_members/{committee_vl_family_member}', [CommitteeVlFamilyMemberController::class, 'show'])->name('committee_vl_family_members.show'); // Ver detalles de un miembro
     Route::get('committee_vl_family_members/{committee_vl_family_member}/edit', [CommitteeVlFamilyMemberController::class, 'edit'])->name('committee_vl_family_members.edit'); // Formulario de edición
