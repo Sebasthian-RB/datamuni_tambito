@@ -60,7 +60,13 @@ class CommitteeVlFamilyMemberController extends Controller
             0 => 'Inactivo',
         ];
 
-        return view('areas.VasoDeLecheViews.CommitteeVlFamilyMembers.create', compact('committee', 'committees', 'vlFamilyMembers', 'statusOptions'));
+        $identityDocumentTypes = [
+            'DNI' => 'DNI',
+            'Carnet de Extranjería' => 'Carnet de Extranjería',
+            'Otro' => 'Otro',
+        ];
+
+        return view('areas.VasoDeLecheViews.CommitteeVlFamilyMembers.create', compact('committee', 'committees', 'vlFamilyMembers', 'statusOptions', 'identityDocumentTypes'));
     }
 
     /**
