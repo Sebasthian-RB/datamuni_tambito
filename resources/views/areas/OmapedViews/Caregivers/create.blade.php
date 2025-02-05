@@ -28,7 +28,16 @@
 
             <div class="form-group">
                 <label for="relationship">Relación</label>
-                <input type="text" class="form-control" id="relationship" name="relationship" value="{{ old('relationship') }}" required>
+                <select class="form-control" id="relationship" name="relationship" required>
+                    <option value="">Seleccione...</option>
+                    <option value="Padre">Padre</option>
+                    <option value="Madre">Madre</option>
+                    <option value="Hermano/a">Hermano/a</option>
+                    <option value="Tío/a">Tío/a</option>
+                    <option value="Abuelo/a">Abuelo/a</option>
+                    <option value="Tutor/a">Tutor/a</option>
+                    <option value="Otro">Otro</option>
+                </select>
             </div>
 
             <div class="form-group">
@@ -52,12 +61,30 @@
 </div>
 @stop
 
-@section('css')
-    <link rel="stylesheet" href="/vendor/adminlte/dist/css/adminlte.min.css">
-@stop
-
 @section('js')
     <script>
-        console.log('Formulario de Agregar Cuidador cargado.');
+        document.addEventListener("DOMContentLoaded", function () {
+            const fullNameInput = document.getElementById("full_name");
+            const dniInput = document.getElementById("dni");
+            const phoneInput = document.getElementById("phone");
+
+            // Formatear el nombre con mayúsculas iniciales
+            function formatName(name) {
+                return name.toLowerCase().replace(/\b\w/g, char => char.toUpperCase());
+            }
+
+            fullNameInput.addEventListener("input", function () {
+                this.value = formatName(this.value);
+            });
+
+            // Solo permitir números en DNI y Teléfono
+            dniInput.addEventListener("input", function () {
+                this.value = this.value.replace(/\D/g, "").slice(0, 8);
+            });
+
+            phoneInput.addEventListener("input", function () {
+                this.value = this.value.replace(/\D/g, "").slice(0, 9);
+            });
+        });
     </script>
 @stop

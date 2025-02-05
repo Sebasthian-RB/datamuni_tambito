@@ -9,7 +9,7 @@
 @section('content')
     <form action="{{ route('om-people.store') }}" method="POST">
         @csrf
-
+        <label for="registration_date">Fecha de Registro</label>
         <input type="datetime-local" class="form-control @error('registration_date') is-invalid @enderror"
             name="registration_date"
             value="{{ old('registration_date') ? \Carbon\Carbon::parse(old('registration_date'))->format('Y-m-d\TH:i') : '' }}"
@@ -264,6 +264,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Registrar Persona</button>
+        <a href="{{ route('om-people.index') }}" class="btn btn-secondary">Volver al listado</a>
     </form>
 @stop
 

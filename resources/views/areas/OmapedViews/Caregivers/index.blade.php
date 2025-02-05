@@ -45,12 +45,16 @@
                             <a href="{{ route('caregivers.edit', $caregiver) }}" class="btn btn-warning btn-sm">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <form action="{{ route('caregivers.destroy', $caregiver) }}" method="POST" class="d-inline">
+
+                            <!-- Botón de eliminar con SweetAlert -->
+                            <button class="btn btn-danger btn-sm delete-button" data-id="{{ $caregiver->id }}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+
+                            <!-- Formulario oculto para la eliminación -->
+                            <form id="delete-form-{{ $caregiver->id }}" action="{{ route('caregivers.destroy', $caregiver) }}" method="POST" style="display: none;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este cuidador?')">
-                                    <i class="fas fa-trash"></i>
-                                </button>
                             </form>
                         </td>
                     </tr>
@@ -70,7 +74,30 @@
 @stop
 
 @section('js')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        console.log('Listado de Cuidadores cargado.');
+        document.addEventListener("DOMContentLoaded", function () {
+            const deleteButtons = document.querySelectorAll(".delete-button");
+
+            deleteButtons.forEach(button => {
+                button.addEventListener("click", function () {
+                    const caregiverId = this.getAttribute("data-id");
+                    Swal.fire({
+                        title: "¿Estás seguro?",
+                        text: "Esta acción no se puede deshacer.",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#d33",
+                        cancelButtonColor: "#3085d6",
+                        confirmButtonText: "Sí, eliminar",
+                        cancelButtonText: "Cancelar"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            document.getElementById(`delete-form-${caregiverId}`).submit();
+                        }
+                    });
+                });
+            });
+        });
     </script>
 @stop

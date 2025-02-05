@@ -12,7 +12,7 @@
         @method('PUT')
 
         <div class="form-group">
-            <label for="registration_date">Apellido Paterno</label>
+            <label for="registration_date">Fecha de Registro</label>
             <input type="datetime-local" class="form-control" name="registration_date"
                 value="{{ old('registration_date', $omPerson->registration_date ? \Carbon\Carbon::parse($omPerson->registration_date)->format('Y-m-d\TH:i') : '') }}"
                 required>
@@ -189,6 +189,7 @@
         </div>
 
         <button type="submit" class="btn btn-warning">Actualizar Persona</button>
+        <a href="{{ route('om-people.index') }}" class="btn btn-secondary">Volver al listado</a>
     </form>
 @stop
 @section('js')
