@@ -88,11 +88,16 @@
                     <option value="{{ $relation }}" {{ old('relationship', $guardian->relationship) == $relation ? 'selected' : '' }}>{{ $relation }}</option>
                     @endforeach
                 </select>
-                <input type="text" id="other_relationship" name="other_relationship" class="form-control mt-2 d-none"
-                    placeholder="Ingrese otra relación">
                 @error('relationship')
                 <span class="text-danger">{{ $message }}</span>
                 @enderror
+            </div>
+
+            <!-- Campo para ingresar otra relación si se selecciona "Otro" -->
+            <div class="form-group {{ old('relationship', $guardian->relationship) === 'Otro' ? '' : 'd-none' }}" id="other_relationship_div">
+                <label for="other_relationship" style="color: #6E8E59;">Especifique otra relación</label>
+                <input type="text" id="other_relationship" name="other_relationship" class="form-control"
+                    value="{{ old('other_relationship', $guardian->other_relationship ?? '') }}" placeholder="Ingrese otra relación">
             </div>
 
             <!-- Botones de acción -->
@@ -106,38 +111,23 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const documentType = document.getElementById('document_type');
-        const idField = document.getElementById('id');
         const relationshipSelect = document.getElementById('relationship');
-        const otherRelationshipField = document.getElementById('other_relationship');
+        const otherRelationshipDiv = document.getElementById('other_relationship_div');
+        const otherRelationshipInput = document.getElementById('other_relationship');
 
-        documentType.addEventListener('change', function() {
-            let selectedType = this.value;
-            if (selectedType === 'DNI') {
-                idField.setAttribute('maxlength', '8');
-                idField.setAttribute('pattern', '\\d{8}');
-                idField.setAttribute('placeholder', 'Ingrese 8 dígitos');
-            } else if (selectedType === 'Pasaporte' || selectedType === 'Carnet') {
-                idField.setAttribute('maxlength', '20');
-                idField.removeAttribute('pattern');
-                idField.setAttribute('placeholder', 'Ingrese hasta 20 caracteres');
-            } else if (selectedType === 'Cedula') {
-                idField.setAttribute('maxlength', '10');
-                idField.setAttribute('pattern', '\\d{10}');
-                idField.setAttribute('placeholder', 'Ingrese 10 dígitos');
-            }
-        });
-
-        relationshipSelect.addEventListener('change', function() {
-            if (this.value === 'Otro') {
-                otherRelationshipField.classList.remove('d-none');
-                otherRelationshipField.setAttribute('required', 'true');
+        function toggleOtherRelationship() {
+            if (relationshipSelect.value === 'Otro') {
+                otherRelationshipDiv.classList.remove('d-none');
+                otherRelationshipInput.setAttribute('required', 'true');
             } else {
-                otherRelationshipField.classList.add('d-none');
-                otherRelationshipField.removeAttribute('required');
+                otherRelationshipDiv.classList.add('d-none');
+                otherRelationshipInput.removeAttribute('required');
+                otherRelationshipInput.value = ''; // Limpiar el campo
             }
-        });
+        }
+
+        relationshipSelect.addEventListener('change', toggleOtherRelationship);
+        toggleOtherRelationship(); // Ejecutar al cargar la página
     });
 </script>
-
 @stop

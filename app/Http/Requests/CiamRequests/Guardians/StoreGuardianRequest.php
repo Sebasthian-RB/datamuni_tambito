@@ -63,6 +63,11 @@ class StoreGuardianRequest extends FormRequest
                 'regex:/^\+?[0-9]*$/', // Solo números y opcionalmente el prefijo "+"
             ],
             'relationship' => 'required|string|max:50',
+            function ($attribute, $value, $fail) {
+                if ($this->input('relationship') === 'Otro' && empty($value)) {
+                    $fail('Debe especificar el valor para "Otro".');
+                }
+            },
         ];
     }
 

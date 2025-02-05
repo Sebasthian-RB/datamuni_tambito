@@ -2,15 +2,15 @@
 
 namespace App\Models\CiamModels;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class ElderlyAdult extends Model
 {
     use HasFactory;
 
     /**
-     * Definición de la clave primaria.
+     * Clave primaria y configuración del modelo.
      */
     protected $primaryKey = 'id';
     public $incrementing = false;
@@ -34,8 +34,14 @@ class ElderlyAdult extends Model
         'household_members',
         'permanent_attention',
         'observation',
-        'location_id',
-        'public_insurance_id'
+        'guardian_id', // Relación con Guardian
+        'department', // Nuevo: Departamento
+        'province', // Nuevo: Provincia
+        'district', // Nuevo: Distrito
+        'public_insurance', // Nuevo: Seguro público
+        'private_insurance', // Nuevo: Seguro privado
+        'social_program', // Nuevo: Programa social
+        'state', // Nuevo: Estado en el CIAM (Activo/Inactivo)
     ];
 
     /**
@@ -56,42 +62,23 @@ class ElderlyAdult extends Model
         'household_members' => 'integer',
         'permanent_attention' => 'boolean',
         'observation' => 'string',
-        'location_id' => 'integer',
-        'public_insurance_id' => 'integer'
+        'guardian_id' => 'string',
+        'department' => 'string',
+        'province' => 'string',
+        'district' => 'string',
+        'public_insurance' => 'string',
+        'private_insurance' => 'string',
+        'social_program' => 'string',
+        'state' => 'string',
     ];
 
     /**
-     * Relaciones de muchos a muchos con otras entidades.
+     * Relación con Guardian.
+     * Un adulto mayor puede tener un guardián, pero no es obligatorio.
      */
-    public function socialPrograms()
+    public function guardian()
     {
-        return $this->belongsToMany(SocialProgram::class, 'elderly_adult_social_programs')
-            ->withTimestamps();
-    }
-
-    public function guardians()
-    {
-        return $this->belongsToMany(Guardian::class, 'elderly_adult_guardians')
-            ->withTimestamps();
-    }
-
-    public function privateInsurances()
-    {
-        return $this->belongsToMany(PrivateInsurance::class, 'elderly_adult_private_insurances')
-            ->withTimestamps();
-    }
-
-    /**
-     * Relaciones de muchos a uno con otras entidades.
-     */
-    public function location()
-    {
-        return $this->belongsTo(Location::class);
-    }
-
-    public function publicInsurance()
-    {
-        return $this->belongsTo(PublicInsurance::class);
+        return $this->belongsTo(Guardian::class, 'guardian_id');
     }
 
     /**
@@ -111,7 +98,17 @@ class ElderlyAdult extends Model
     }
 
     /**
-     * Mutadores para formatear los nombres correctamente.
+     * Accesor: Obtener el estado como etiqueta HTML.
+     */
+    public function getStateLabelAttribute()
+    {
+        return $this->state === 'Activo'
+            ? '<span class="badge badge-success">Activo</span>'
+            : '<span class="badge badge-danger">Inactivo</span>';
+    }
+
+    /**
+     * Mutadores: Formatear nombres correctamente.
      */
     public function setGivenNameAttribute($value)
     {
@@ -145,10 +142,28 @@ class ElderlyAdult extends Model
     }
 
     /**
-     * Scope: Filtrar por ubicación.
+     * Scope: Filtrar por ubicación (departamento, provincia, distrito).
      */
-    public function scopeByLocation($query, $locationId)
+    public function scopeByLocation($query, $department, $province = null, $district = null)
     {
-        return $query->where('location_id', $locationId);
+        $query->where('department', $department);
+
+        if ($province) {
+            $query->where('province', $province);
+        }
+
+        if ($district) {
+            $query->where('district', $district);
+        }
+
+        return $query;
+    }
+
+    /**
+     * Scope: Filtrar por estado (activo o inactivo).
+     */
+    public function scopeByState($query, $state)
+    {
+        return $query->where('state', $state);
     }
 }

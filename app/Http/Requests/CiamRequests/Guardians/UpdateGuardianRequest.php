@@ -82,6 +82,11 @@ class UpdateGuardianRequest extends FormRequest
                 'required',
                 'string',
                 'max:50',
+                function ($attribute, $value, $fail) {
+                    if ($this->input('relationship') === 'Otro' && empty($value)) {
+                        $fail('Debe especificar el valor para "Otro".');
+                    }
+                },
             ],
         ];
     }
