@@ -12,18 +12,28 @@
         @method('PUT')
 
         <div class="form-group">
+            <label for="registration_date">Apellido Paterno</label>
+            <input type="datetime-local" class="form-control" name="registration_date"
+                value="{{ old('registration_date', $omPerson->registration_date ? \Carbon\Carbon::parse($omPerson->registration_date)->format('Y-m-d\TH:i') : '') }}"
+                required>
+        </div>
+
+        <div class="form-group">
             <label for="paternal_last_name">Apellido Paterno</label>
-            <input type="text" class="form-control" name="paternal_last_name" value="{{ old('paternal_last_name', $omPerson->paternal_last_name) }}" required>
+            <input type="text" class="form-control" name="paternal_last_name"
+                value="{{ old('paternal_last_name', $omPerson->paternal_last_name) }}" required>
         </div>
 
         <div class="form-group">
             <label for="maternal_last_name">Apellido Materno</label>
-            <input type="text" class="form-control" name="maternal_last_name" value="{{ old('maternal_last_name', $omPerson->maternal_last_name) }}" required>
+            <input type="text" class="form-control" name="maternal_last_name"
+                value="{{ old('maternal_last_name', $omPerson->maternal_last_name) }}" required>
         </div>
 
         <div class="form-group">
             <label for="given_name">Nombres</label>
-            <input type="text" class="form-control" name="given_name" value="{{ old('given_name', $omPerson->given_name) }}" required>
+            <input type="text" class="form-control" name="given_name"
+                value="{{ old('given_name', $omPerson->given_name) }}" required>
         </div>
 
         <div class="form-group">
@@ -31,9 +41,11 @@
             <select class="form-control" name="marital_status" required>
                 <option value="Soltero" {{ $omPerson->marital_status == 'Soltero' ? 'selected' : '' }}>Soltero</option>
                 <option value="Casado" {{ $omPerson->marital_status == 'Casado' ? 'selected' : '' }}>Casado</option>
-                <option value="Divorciado" {{ $omPerson->marital_status == 'Divorciado' ? 'selected' : '' }}>Divorciado</option>
+                <option value="Divorciado" {{ $omPerson->marital_status == 'Divorciado' ? 'selected' : '' }}>Divorciado
+                </option>
                 <option value="Viudo" {{ $omPerson->marital_status == 'Viudo' ? 'selected' : '' }}>Viudo</option>
-                <option value="Unión libre" {{ $omPerson->marital_status == 'Unión libre' ? 'selected' : '' }}>Unión libre</option>
+                <option value="Unión libre" {{ $omPerson->marital_status == 'Unión libre' ? 'selected' : '' }}>Unión libre
+                </option>
             </select>
         </div>
 
@@ -44,12 +56,14 @@
 
         <div class="form-group">
             <label for="birth_date">Fecha de Nacimiento</label>
-            <input type="date" class="form-control" name="birth_date" value="{{ old('birth_date', $omPerson->birth_date) }}" required>
+            <input type="date" class="form-control" name="birth_date"
+                value="{{ old('birth_date', $omPerson->birth_date) }}" required>
         </div>
 
         <div class="form-group">
             <label for="age">Edad</label>
-            <input type="number" class="form-control" name="age" value="{{ old('age', $omPerson->age) }}" required min="0">
+            <input type="number" class="form-control" name="age" value="{{ old('age', $omPerson->age) }}" required
+                min="0">
         </div>
 
         <div class="form-group">
@@ -73,12 +87,14 @@
 
         <div class="form-group">
             <label for="education_level">Nivel Educativo</label>
-            <input type="text" class="form-control" name="education_level" value="{{ old('education_level', $omPerson->education_level) }}">
+            <input type="text" class="form-control" name="education_level"
+                value="{{ old('education_level', $omPerson->education_level) }}">
         </div>
 
         <div class="form-group">
             <label for="occupation">Ocupación</label>
-            <input type="text" class="form-control" name="occupation" value="{{ old('occupation', $omPerson->occupation) }}">
+            <input type="text" class="form-control" name="occupation"
+                value="{{ old('occupation', $omPerson->occupation) }}">
         </div>
 
         <div class="form-group">
@@ -86,7 +102,8 @@
             <select class="form-control" name="health_insurance">
                 <option value="SIS" {{ $omPerson->health_insurance == 'SIS' ? 'selected' : '' }}>SIS</option>
                 <option value="EsSalud" {{ $omPerson->health_insurance == 'EsSalud' ? 'selected' : '' }}>EsSalud</option>
-                <option value="Seguro Privado" {{ $omPerson->health_insurance == 'Seguro Privado' ? 'selected' : '' }}>Seguro Privado</option>
+                <option value="Seguro Privado" {{ $omPerson->health_insurance == 'Seguro Privado' ? 'selected' : '' }}>
+                    Seguro Privado</option>
                 <option value="Ninguno" {{ $omPerson->health_insurance == 'Ninguno' ? 'selected' : '' }}>Ninguno</option>
             </select>
         </div>
@@ -103,16 +120,20 @@
             <label for="employment_status">Estado Laboral</label>
             <select class="form-control" name="employment_status">
                 <option value="Activo" {{ $omPerson->employment_status == 'Activo' ? 'selected' : '' }}>Activo</option>
-                <option value="Inactivo" {{ $omPerson->employment_status == 'Inactivo' ? 'selected' : '' }}>Inactivo</option>
-                <option value="Pensionista" {{ $omPerson->employment_status == 'Pensionista' ? 'selected' : '' }}>Pensionista</option>
+                <option value="Inactivo" {{ $omPerson->employment_status == 'Inactivo' ? 'selected' : '' }}>Inactivo
+                </option>
+                <option value="Pensionista" {{ $omPerson->employment_status == 'Pensionista' ? 'selected' : '' }}>
+                    Pensionista</option>
             </select>
         </div>
 
         <div class="form-group">
             <label for="pension_status">Estado de Pensión</label>
             <select class="form-control" name="pension_status">
-                <option value="Pensionado" {{ $omPerson->pension_status == 'Pensionado' ? 'selected' : '' }}>Pensionado</option>
-                <option value="No Pensionado" {{ $omPerson->pension_status == 'No Pensionado' ? 'selected' : '' }}>No Pensionado</option>
+                <option value="Pensionado" {{ $omPerson->pension_status == 'Pensionado' ? 'selected' : '' }}>Pensionado
+                </option>
+                <option value="No Pensionado" {{ $omPerson->pension_status == 'No Pensionado' ? 'selected' : '' }}>No
+                    Pensionado</option>
             </select>
         </div>
 
@@ -121,7 +142,9 @@
             <select class="form-control" name="om_dwelling_id">
                 <option value="">Seleccione Vivienda</option>
                 @foreach ($dwellings as $dwelling)
-                    <option value="{{ $dwelling->id }}" {{ $omPerson->om_dwelling_id == $dwelling->id ? 'selected' : '' }}>{{ $dwelling->exact_location }}</option>
+                    <option value="{{ $dwelling->id }}"
+                        {{ $omPerson->om_dwelling_id == $dwelling->id ? 'selected' : '' }}>{{ $dwelling->exact_location }}
+                    </option>
                 @endforeach
             </select>
         </div>
@@ -131,7 +154,9 @@
             <select class="form-control" name="disability_id">
                 <option value="">Seleccione Discapacidad</option>
                 @foreach ($disabilities as $disability)
-                    <option value="{{ $disability->id }}" {{ $omPerson->disability_id == $disability->id ? 'selected' : '' }}>{{ $disability->certificate_number }}</option>
+                    <option value="{{ $disability->id }}"
+                        {{ $omPerson->disability_id == $disability->id ? 'selected' : '' }}>
+                        {{ $disability->certificate_number }}</option>
                 @endforeach
             </select>
         </div>
@@ -141,7 +166,9 @@
             <select class="form-control" name="caregiver_id">
                 <option value="">Seleccione Cuidador</option>
                 @foreach ($caregivers as $caregiver)
-                    <option value="{{ $caregiver->id }}" {{ $omPerson->caregiver_id == $caregiver->id ? 'selected' : '' }}>{{ $caregiver->full_name }}</option>
+                    <option value="{{ $caregiver->id }}"
+                        {{ $omPerson->caregiver_id == $caregiver->id ? 'selected' : '' }}>{{ $caregiver->full_name }}
+                    </option>
                 @endforeach
             </select>
         </div>
@@ -163,4 +190,33 @@
 
         <button type="submit" class="btn btn-warning">Actualizar Persona</button>
     </form>
+@stop
+@section('js')
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const birthDateInput = document.querySelector('input[name="birth_date"]');
+        const ageInput = document.querySelector('input[name="age"]');
+
+        function calculateAge() {
+            if (birthDateInput.value) {
+                const birthDate = new Date(birthDateInput.value);
+                const today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const monthDiff = today.getMonth() - birthDate.getMonth();
+
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+
+                ageInput.value = age > 0 ? age : 0;
+            }
+        }
+
+        // Calcular edad al cargar la página (para edición)
+        calculateAge();
+
+        // Calcular edad cuando cambia la fecha de nacimiento
+        birthDateInput.addEventListener("change", calculateAge);
+    });
+</script>
 @stop

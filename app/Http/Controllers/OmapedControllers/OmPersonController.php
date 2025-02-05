@@ -39,7 +39,14 @@ class OmPersonController extends Controller
      */
     public function store(StoreOmPersonRequest $request)
     {
-        OmPerson::create($request->validated());
+        // Obtener los datos validados
+        $validatedData = $request->validated();
+
+        // Convertir la fecha al formato correcto
+        $validatedData['registration_date'] = \Carbon\Carbon::parse($request->registration_date)->format('Y-m-d H:i:s');
+
+        // Guardar en la base de datos
+        OmPerson::create($validatedData);
 
         return redirect()->route('om-people.index')->with('success', 'Persona registrada con éxito.');
     }
@@ -70,7 +77,14 @@ class OmPersonController extends Controller
      */
     public function update(UpdateOmPersonRequest $request, OmPerson $omPerson)
     {
-        $omPerson->update($request->validated());
+        $validatedData = $request->validated();
+
+        // Convertir fecha y hora correctamente
+        if ($request->has('registration_date')) {
+            $validatedData['registration_date'] = \Carbon\Carbon::parse($request->registration_date)->format('Y-m-d H:i:s');
+        }
+        // Actualizar la persona en la base de datos
+        $omPerson->update($validatedData);
 
         return redirect()->route('om-people.index')->with('success', 'Persona actualizada con éxito.');
     }

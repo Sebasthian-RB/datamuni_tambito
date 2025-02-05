@@ -15,6 +15,7 @@ class OmDashboardController extends Controller
     {
 
         $totalPersonas = OmPerson::count();
+        $totalCertificados = Disability::count();
         $totalCuidadores = Caregiver::count();
         $totalViviendas = OmDwelling::count();
         $personasSinSeguro = OmPerson::where('health_insurance', 'Ninguno')->count();
@@ -24,6 +25,7 @@ class OmDashboardController extends Controller
 
         return view('areas.OmapedViews.OMDashboard', compact(
             'totalPersonas',
+            'totalCertificados',
             'totalCuidadores',
             'totalViviendas',
             'personasSinSeguro',

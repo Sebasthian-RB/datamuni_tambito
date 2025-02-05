@@ -40,7 +40,7 @@ class OmPerson extends Model
      * Casts de algunos atributos
      */
     protected $casts = [
-        'registration_date' => 'date', // Asegura formato de fecha
+        'registration_date' => 'datetime', // Asegura formato de fecha
         'birth_date' => 'date', // Trata correctamente las fechas
         'age' => 'integer', // Edad como entero
         'sisfoh' => 'boolean', // Representa como verdadero/falso
@@ -49,6 +49,38 @@ class OmPerson extends Model
         'caregiver_id' => 'integer',
     ];
 
+    // 🚀 Mutadores (setters) para guardar nombres con formato correcto
+    public function setPaternalLastNameAttribute($value)
+    {
+        $this->attributes['paternal_last_name'] = ucfirst(strtolower($value));
+    }
+
+    public function setMaternalLastNameAttribute($value)
+    {
+        $this->attributes['maternal_last_name'] = ucfirst(strtolower($value));
+    }
+
+    public function setGivenNameAttribute($value)
+    {
+        $this->attributes['given_name'] = ucfirst(strtolower($value));
+    }
+
+    // 🔥 Accesores (getters) para mostrar nombres con formato correcto
+    public function getPaternalLastNameAttribute($value)
+    {
+        return ucfirst(strtolower($value));
+    }
+
+    public function getMaternalLastNameAttribute($value)
+    {
+        return ucfirst(strtolower($value));
+    }
+
+    public function getGivenNameAttribute($value)
+    {
+        return ucfirst(strtolower($value));
+    }
+    
      // Relación con OmDwelling (Muchas personas en una vivienda)
      public function dwelling()
      {

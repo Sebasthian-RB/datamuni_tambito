@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('om_people', function (Blueprint $table) {
             $table->id();
-            $table->date('registration_date'); // Fecha de inscripción
+            $table->datetime('registration_date'); // Fecha de inscripción
             $table->string('paternal_last_name', 100); // Apellido paterno
             $table->string('maternal_last_name', 100); // Apellido materno
             $table->string('given_name', 100); // Nombres
