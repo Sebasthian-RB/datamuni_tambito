@@ -103,61 +103,75 @@
                         @enderror
                     </div>
                     
+                    <!-- Card Principal - Oculto por Defecto -->
+                    <div id="family-member-details" class="card" 
+                        style="display: none; background-color: #D4BEE4; border: none; border-radius: 12px; 
+                            padding: 25px; box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.08); max-width: 600px; 
+                            margin: auto; transition: all 0.3s ease;">
 
-                    <!-- Dentro de la sección de detalles del familiar -->
-                    <div id="family-member-details" class="card p-3" style="display: none; background-color: #FFFFFF; border-radius: 10px; box-shadow: 0px 4px 12px rgba(0,0,0,0.1);">
-                        <h5 class="text-center" style="background-color: #3B1E54; color: #FFFFFF; padding: 10px 15px; border-radius: 6px; margin-bottom: 25px; font-size: 16px;">
-                            Detalles del Familiar
-                            <!-- Ícono de lápiz para editar -->
-                            <button type="button" class="btn btn-warning btn-sm float-right" id="editFamilyMemberBtn">
-                                <i class="fas fa-pencil-alt"></i> Editar
-                            </button>
-                        </h5>
+                        <div class="card-body">
+                            <!-- Título y Botón de Editar -->
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="card-title text-center" 
+                                    style="color: #3B1E54; font-weight: bold; font-size: 20px; margin-bottom: 0;">
+                                    🟣 Detalles del Familiar
+                                </h5>
+                                <button type="button" class="btn btn-warning btn-sm" style="background-color: #3B1E54; color: #FFFFFF" id="editFamilyMemberBtn">
+                                    <i class="fas fa-pencil-alt"></i> Editar
+                                </button>
+                            </div>
 
-                        <!-- Detalles del familiar (Campos no editables inicialmente) -->
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="member_id" style="color: #3B1E54; font-weight: 600;">ID</label>
-                                    <input type="text" class="form-control" id="member_id" disabled style="background-color: #EEEEEE; border: 1px solid #9B7EBD; border-radius: 5px; padding: 10px; font-size: 14px;">
+                            <!-- Sección 1: ID y Documento -->
+                            <div class="info-box d-flex justify-content-between align-items-center"
+                                style="background: white; border-radius: 10px; padding: 15px 20px; 
+                                    border-left: 4px solid #9B7EBD; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.05);">
+                                <div>
+                                    <label style="color: #3B1E54; font-weight: 600; font-size: 14px;">ID</label>
+                                    <input type="text" class="form-control" id="member_id" disabled 
+                                        style="border: none; background: transparent; font-size: 16px; 
+                                            font-weight: bold; color: #3B1E54;">
+                                </div>
+                                <div>
+                                    <label style="color: #3B1E54; font-weight: 600; font-size: 14px;">Documento</label>
+                                    <input type="text" class="form-control" id="identity_document" disabled 
+                                        style="border: none; background: transparent; font-size: 16px; 
+                                            font-weight: bold; color: #3B1E54;">
                                 </div>
                             </div>
 
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="identity_document" style="color: #3B1E54; font-weight: 600;">Documento</label>
-                                    <input type="text" class="form-control" id="identity_document" disabled style="background-color: #EEEEEE; border: 1px solid #9B7EBD; border-radius: 5px; padding: 10px; font-size: 14px;">
+                            <!-- Espaciado entre secciones -->
+                            <div class="mt-3"></div>
+
+                            <!-- Sección 2: Nombre y Apellidos -->
+                            <div class="info-box d-flex flex-column"
+                                style="background: white; border-radius: 10px; padding: 15px 20px; 
+                                    border-left: 4px solid #9B7EBD; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.05);">
+                                <label style="color: #3B1E54; font-weight: 600; font-size: 14px;">Nombres</label>
+                                <input type="text" class="form-control" id="given_name" disabled 
+                                    style="border: none; background: transparent; font-size: 16px; 
+                                        font-weight: bold; color: #3B1E54;">
+                                
+                                <div class="d-flex justify-content-between mt-2">
+                                    <div>
+                                        <label style="color: #3B1E54; font-weight: 600; font-size: 14px;">Apellido Paterno</label>
+                                        <input type="text" class="form-control" id="paternal_last_name" disabled 
+                                            style="border: none; background: transparent; font-size: 16px; 
+                                                font-weight: bold; color: #3B1E54;">
+                                    </div>
+                                    <div>
+                                        <label style="color: #3B1E54; font-weight: 600; font-size: 14px;">Apellido Materno</label>
+                                        <input type="text" class="form-control" id="maternal_last_name" disabled 
+                                            style="border: none; background: transparent; font-size: 16px; 
+                                                font-weight: bold; color: #3B1E54;">
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="given_name" style="color: #3B1E54; font-weight: 600;">Nombres</label>
-                                    <input type="text" class="form-control" id="given_name" disabled style="background-color: #EEEEEE; border: 1px solid #9B7EBD; border-radius: 5px; padding: 10px; font-size: 14px;">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="paternal_last_name" style="color: #3B1E54; font-weight: 600;">Apellido Paterno</label>
-                                    <input type="text" class="form-control" id="paternal_last_name" disabled style="background-color: #EEEEEE; border: 1px solid #9B7EBD; border-radius: 5px; padding: 10px; font-size: 14px;">
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="maternal_last_name" style="color: #3B1E54; font-weight: 600;">Apellido Materno</label>
-                                    <input type="text" class="form-control" id="maternal_last_name" disabled style="background-color: #EEEEEE; border: 1px solid #9B7EBD; border-radius: 5px; padding: 10px; font-size: 14px;">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Botones de guardar y cancelar que aparecerán solo si los campos son editables -->
-                        <div id="saveCancelButtons" style="display: none;">
-                            <button type="button" class="btn btn-success" id="saveFamilyMemberBtn" style="background-color: #9B7EBD; color: white; border: #9B7EBD;">Actualizar datos</button>
-                            <button type="button" class="btn btn-secondary" id="cancelEditBtn">Cancelar</button>
+                            <!-- Botones (solo visibles si los campos son editables) -->
+                            <div id="saveCancelButtons" class="text-center mt-4" style="display: none;">
+                                <button type="button" class="btn btn-success" id="saveFamilyMemberBtn" style="background-color: #9B7EBD; color: white; border: #9B7EBD;">Actualizar datos</button>
+                                <button type="button" class="btn btn-secondary" id="cancelEditBtn">Cancelar</button>
+                            </div>   
                         </div>
                     </div>
 
