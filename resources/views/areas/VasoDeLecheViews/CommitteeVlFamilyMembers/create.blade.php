@@ -23,6 +23,14 @@
             max-height: 300px !important; /* Define la altura máxima */
             overflow-y: auto !important; /* Permite el scroll si es necesario */
         }
+
+        /* Estilos para campos editables */
+        .editable-field {
+            background-color: white !important; /* Fondo blanco */
+            border: 1px solid #9B7EBD !important; /* Borde con color */
+            padding: 10px;
+            font-size: 13px !important; /* Tamaño de fuente */
+        }
     </style>
 @stop
 
@@ -75,7 +83,7 @@
 
                     <!-- Selección del Miembro de Familia -->
                     <div class="form-group">
-                        <label for="vl_family_member_id">Miembro de Familia</label>
+                        <label for="vl_family_member_id">Miembro de Familia: </label>
                         <select class="form-control select2 @error('vl_family_member_id') is-invalid @enderror" id="vl_family_member_id" name="vl_family_member_id" required>
                             <option value="" disabled selected>Seleccione un miembro de familia</option>
                             @foreach($vlFamilyMembers as $member)
@@ -89,55 +97,81 @@
                                     {{ $member->id }}
                                 </option>
                             @endforeach
-
                         </select>
                         @error('vl_family_member_id')
                             <span class="invalid-feedback">{{ $message }}</span>
                         @enderror
                     </div>
+                    
+                    <!-- Card Principal - Oculto por Defecto -->
+                    <div id="family-member-details" class="card" 
+                        style="display: none; background-color: #D4BEE4; border: none; border-radius: 12px; 
+                            padding: 25px; box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.08); max-width: 600px; 
+                            margin: auto; transition: all 0.3s ease;">
 
-                    <div id="family-member-details" class="card p-3" style="display: none; background-color: #FFFFFF; border-radius: 10px; box-shadow: 0px 4px 12px rgba(0,0,0,0.1);">
-                        <h5 class="text-center" style="background-color: #3B1E54; color: #FFFFFF; padding: 10px 15px; border-radius: 6px; margin-bottom: 25px; font-size: 16px;">Detalles del Familiar</h5>
-                    
-                        <div class="row">
-                            <!-- Columna izquierda: ID, Documento y Nombres -->
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="member_id" style="color: #3B1E54; font-weight: 600;">ID</label>
-                                    <input type="text" class="form-control" id="member_id" disabled style="background-color: #EEEEEE; border: 1px solid #9B7EBD; border-radius: 5px; padding: 10px; font-size: 14px;">
+                        <div class="card-body">
+                            <!-- Título y Botón de Editar -->
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="card-title text-center" 
+                                    style="color: #3B1E54; font-weight: bold; font-size: 20px; margin-bottom: 0;">
+                                    🟣 Detalles del Familiar
+                                </h5>
+                                <button type="button" class="btn btn-warning btn-sm" style="background-color: #3B1E54; color: #FFFFFF" id="editFamilyMemberBtn">
+                                    <i class="fas fa-pencil-alt"></i> Editar
+                                </button>
+                            </div>
+
+                            <!-- Sección 1: ID y Documento -->
+                            <div class="info-box d-flex justify-content-between align-items-center"
+                                style="background: white; border-radius: 10px; padding: 15px 20px; 
+                                    border-left: 4px solid #9B7EBD; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.05);">
+                                <div>
+                                    <label style="color: #3B1E54; font-weight: 600; font-size: 14px;">ID</label>
+                                    <input type="text" class="form-control" id="member_id" disabled 
+                                        style="border: none; background: transparent; font-size: 16px; 
+                                            font-weight: bold; color: #3B1E54;">
+                                </div>
+                                <div>
+                                    <label style="color: #3B1E54; font-weight: 600; font-size: 14px;">Documento</label>
+                                    <input type="text" class="form-control" id="identity_document" disabled 
+                                        style="border: none; background: transparent; font-size: 16px; 
+                                            font-weight: bold; color: #3B1E54;">
                                 </div>
                             </div>
-                    
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="identity_document" style="color: #3B1E54; font-weight: 600;">Documento</label>
-                                    <input type="text" class="form-control" id="identity_document" disabled style="background-color: #EEEEEE; border: 1px solid #9B7EBD; border-radius: 5px; padding: 10px; font-size: 14px;">
+
+                            <!-- Espaciado entre secciones -->
+                            <div class="mt-3"></div>
+
+                            <!-- Sección 2: Nombre y Apellidos -->
+                            <div class="info-box d-flex flex-column"
+                                style="background: white; border-radius: 10px; padding: 15px 20px; 
+                                    border-left: 4px solid #9B7EBD; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.05);">
+                                <label style="color: #3B1E54; font-weight: 600; font-size: 14px;">Nombres</label>
+                                <input type="text" class="form-control" id="given_name" disabled 
+                                    style="border: none; background: transparent; font-size: 16px; 
+                                        font-weight: bold; color: #3B1E54;">
+                                
+                                <div class="d-flex justify-content-between mt-2">
+                                    <div>
+                                        <label style="color: #3B1E54; font-weight: 600; font-size: 14px;">Apellido Paterno</label>
+                                        <input type="text" class="form-control" id="paternal_last_name" disabled 
+                                            style="border: none; background: transparent; font-size: 16px; 
+                                                font-weight: bold; color: #3B1E54;">
+                                    </div>
+                                    <div>
+                                        <label style="color: #3B1E54; font-weight: 600; font-size: 14px;">Apellido Materno</label>
+                                        <input type="text" class="form-control" id="maternal_last_name" disabled 
+                                            style="border: none; background: transparent; font-size: 16px; 
+                                                font-weight: bold; color: #3B1E54;">
+                                    </div>
                                 </div>
                             </div>
-                    
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="given_name" style="color: #3B1E54; font-weight: 600;">Nombres</label>
-                                    <input type="text" class="form-control" id="given_name" disabled style="background-color: #EEEEEE; border: 1px solid #9B7EBD; border-radius: 5px; padding: 10px; font-size: 14px;">
-                                </div>
-                            </div>
-                        </div>
-                    
-                        <div class="row mt-3">
-                            <!-- Columna derecha: Apellidos -->
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="paternal_last_name" style="color: #3B1E54; font-weight: 600;">Apellido Paterno</label>
-                                    <input type="text" class="form-control" id="paternal_last_name" disabled style="background-color: #EEEEEE; border: 1px solid #9B7EBD; border-radius: 5px; padding: 10px; font-size: 14px;">
-                                </div>
-                            </div>
-                    
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="maternal_last_name" style="color: #3B1E54; font-weight: 600;">Apellido Materno</label>
-                                    <input type="text" class="form-control" id="maternal_last_name" disabled style="background-color: #EEEEEE; border: 1px solid #9B7EBD; border-radius: 5px; padding: 10px; font-size: 14px;">
-                                </div>
-                            </div>
+
+                            <!-- Botones (solo visibles si los campos son editables) -->
+                            <div id="saveCancelButtons" class="text-center mt-4" style="display: none;">
+                                <button type="button" class="btn btn-success" id="saveFamilyMemberBtn" style="background-color: #9B7EBD; color: white; border: #9B7EBD;">Actualizar datos</button>
+                                <button type="button" class="btn btn-secondary" id="cancelEditBtn">Cancelar</button>
+                            </div>   
                         </div>
                     </div>
 
@@ -243,16 +277,99 @@
     <!-- Script para mostrar datos del familiar -->
     <script>
         $(document).ready(function() {
-            $('#vl_family_member_id').select2();
-            $('#vl_family_member_id').on('change', function() {
-                const selected = $(this).find(':selected');
-                $('#member_id').val(selected.data('id'));
-                $('#identity_document').val(selected.data('identity'));
-                $('#given_name').val(selected.data('given-name'));
-                $('#paternal_last_name').val(selected.data('paternal'));
-                $('#maternal_last_name').val(selected.data('maternal'));
-                $('#family-member-details').show();
+        // Muestra los detalles del familiar al seleccionar uno
+        $('#vl_family_member_id').on('change', function() {
+            const selected = $(this).find(':selected');
+
+            // Rellenar los campos de detalles del familiar
+            $('#member_id').val(selected.data('id'));
+            $('#identity_document').val(selected.data('identity'));
+            $('#given_name').val(selected.data('given-name'));
+            $('#paternal_last_name').val(selected.data('paternal'));
+            $('#maternal_last_name').val(selected.data('maternal'));
+
+            $('#family-member-details').show();
+        });
+
+        // Al hacer clic en el botón de "Editar"
+        $('#editFamilyMemberBtn').on('click', function() {
+            // Obtener el valor actual almacenado en la BD
+            let currentIdentityDocument = $('#identity_document').val();
+            
+            // Asegurar que el valor sea una cadena (para evitar problemas de comparación)
+            currentIdentityDocument = currentIdentityDocument ? String(currentIdentityDocument) : "";
+
+            // Reemplazar el input de identity_document con un select
+            $('#identity_document').replaceWith(`
+                <select class="form-control editable-field @error('identity_document') is-invalid @enderror" id="identity_document" name="identity_document" required>
+                    <option value="" disabled>Seleccione un tipo de documento</option>
+                    @foreach($identityDocumentTypes as $key => $label)
+                        <option value="{{ $key }}" ${"{{ $key }}" === currentIdentityDocument ? "selected" : ""}>{{ $label }}</option>
+                    @endforeach
+                </select>
+            `);
+
+            // Esperar un momento para asegurarse de que el DOM está listo y luego asignar el valor
+            setTimeout(function() {
+                $('#identity_document').val(currentIdentityDocument).trigger('change');
+            }, 100);
+
+            // Habilitar otros campos
+            $('#given_name, #paternal_last_name, #maternal_last_name').prop('disabled', false).addClass('editable-field');;
+            $('#saveCancelButtons').show();
+            $(this).hide();
+        });
+
+
+        // Al hacer clic en el botón de "Guardar"
+        $('#saveFamilyMemberBtn').on('click', function() {
+            // Obtener el ID del miembro seleccionado
+            const memberId = $('#member_id').val();
+            
+            // Validar que memberId tenga un valor
+            if (!memberId) {
+                alert("Error: No se ha seleccionado un miembro de familia.");
+                return;
+            }
+
+            // Construir la URL correcta para la actualización
+            const updateUrl = `{{ url('vl_family_members') }}/${memberId}`;
+
+            // Datos a enviar en la petición AJAX
+            const updatedData = {
+                _token: "{{ csrf_token() }}", // Agregar el token CSRF
+                _method: "PUT", // Laravel necesita esto para tratar la solicitud como PUT
+                id: memberId,  // Agregar el ID porque Laravel lo espera en la validación
+                identity_document: $('#identity_document').val(),
+                given_name: $('#given_name').val(),
+                paternal_last_name: $('#paternal_last_name').val(),
+                maternal_last_name: $('#maternal_last_name').val(),
+            };
+
+            // Realizar la petición AJAX
+            $.ajax({
+                url: updateUrl,
+                type: "POST", // Laravel espera PUT, pero AJAX solo permite POST, por eso usamos _method: PUT
+                data: updatedData,
+                success: function(response) {
+                    alert('Datos actualizados correctamente');
+                    $('#saveCancelButtons').hide();
+                    $('#editFamilyMemberBtn').show();
+                    $('#identity_document, #given_name, #paternal_last_name, #maternal_last_name').prop('disabled', true);
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText); // Muestra detalles del error en la consola
+                    alert('Error al actualizar los datos: ' + xhr.responseText);
+                }
             });
         });
+
+        // Al hacer clic en el botón de "Cancelar"
+        $('#cancelEditBtn').on('click', function() {
+            $('#identity_document, #given_name, #paternal_last_name, #maternal_last_name').prop('disabled', true);
+            $('#saveCancelButtons').hide();
+            $('#editFamilyMemberBtn').show();
+        });
+    });
     </script>
 @stop

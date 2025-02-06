@@ -40,6 +40,7 @@
                         <th>Sexo</th>
                         <th>Edad</th>
                         <th>Teléfono</th>
+                        <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -51,6 +52,13 @@
                         <td class="text-center">{{ $elderlyAdult->sex_type == 0 ? 'Femenino' : 'Masculino' }}</td>
                         <td class="text-center">{{ $elderlyAdult->birth_date->age }} años</td>
                         <td class="text-center">{{ $elderlyAdult->phone_number ?? 'No registrado' }}</td>
+                        <td class="text-center">
+                            @if ($elderlyAdult->state)
+                            <span class="badge bg-success">Activo</span>
+                            @else
+                            <span class="badge bg-danger">Inactivo</span>
+                            @endif
+                        </td>
                         <td class="text-center">
                             <!-- Botones de acciones -->
                             <a href="{{ route('elderly_adults.show', $elderlyAdult->id) }}" class="btn btn-sm text-white" style="background-color: #6E8E59;">
