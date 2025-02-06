@@ -7,7 +7,6 @@ use Illuminate\Validation\Rule;
 
 /**
  * Form Request para almacenar un nuevo adulto mayor.
- * Define las reglas de validación para la creación de registros.
  */
 class StoreElderlyAdultRequest extends FormRequest
 {
@@ -21,8 +20,6 @@ class StoreElderlyAdultRequest extends FormRequest
 
     /**
      * Reglas de validación que se aplican a la solicitud.
-     *
-     * @return array<string, mixed>
      */
     public function rules(): array
     {
@@ -39,7 +36,7 @@ class StoreElderlyAdultRequest extends FormRequest
             ],
             'given_name' => 'required|string|max:50',
             'paternal_last_name' => 'required|string|max:50',
-            'maternal_last_name' => 'required|string|max:50',
+            'maternal_last_name' => 'nullable|string|max:50',
             'birth_date' => [
                 'required',
                 'date',
@@ -57,75 +54,76 @@ class StoreElderlyAdultRequest extends FormRequest
             'household_members' => 'nullable|integer|min:1',
             'permanent_attention' => 'nullable|boolean',
             'observation' => 'nullable|string|max:500',
+            'state' => 'required|boolean', // Activo o no en CIAM
 
-            // **Relaciones foráneas (IDs de otras entidades)**
-            'location_id' => 'required|exists:locations,id',
-            'public_insurance_id' => 'required|exists:public_insurances,id',
-            'private_insurance_id' => 'nullable|exists:private_insurances,id',
+            // **Ubicación (departamento, provincia, distrito)**
+            'department' => 'required|string|max:100',
+            'province' => 'required|string|max:100',
+            'district' => 'required|string|max:100',
 
-            // **Relaciones muchos a muchos (pueden ser opcionales)**
-            'guardian_ids' => 'nullable|array',
-            'guardian_ids.*' => 'exists:guardians,id',
+            // **Seguro público y privado**
+            'public_insurance' => 'nullable|string|max:100',
+            'private_insurance' => 'nullable|string|max:100',
 
-            'social_program_ids' => 'nullable|array',
-            'social_program_ids.*' => 'exists:social_programs,id',
+            // **Guardian opcional**
+            'guardian_id' => 'nullable|string|exists:guardians,id',
+
+            // **Lista de programas sociales (array de strings)**
+            'social_programs' => 'nullable|array',
+            'social_programs.*' => 'string|max:100',
         ];
     }
 
     /**
-     * Mensajes de error personalizados para validaciones específicas.
+     * Mensajes de error personalizados.
      */
     public function messages(): array
     {
         return [
             'id.required' => 'El ID del adulto mayor es obligatorio.',
-            'id.string' => 'El ID debe ser una cadena de texto.',
-            'id.max' => 'El ID no debe exceder los 36 caracteres.',
             'id.unique' => 'El ID ya está registrado.',
 
             'document_type.required' => 'El tipo de documento es obligatorio.',
-            'document_type.in' => 'El tipo de documento debe ser DNI, Pasaporte, Carnet o Cédula.',
+            'document_type.in' => 'Debe ser DNI, Pasaporte, Carnet o Cédula.',
 
             'given_name.required' => 'El nombre es obligatorio.',
             'paternal_last_name.required' => 'El apellido paterno es obligatorio.',
-            'maternal_last_name.required' => 'El apellido materno es obligatorio.',
             'birth_date.required' => 'La fecha de nacimiento es obligatoria.',
-            'birth_date.before_or_equal' => 'La fecha de nacimiento no puede ser una fecha futura.',
-            'birth_date.after_or_equal' => 'La fecha de nacimiento debe ser al menos 120 años atrás.',
+            'birth_date.before_or_equal' => 'No puede ser una fecha futura.',
+            'birth_date.after_or_equal' => 'Debe ser menor de 120 años.',
 
-            'address.max' => 'La dirección no debe exceder los 255 caracteres.',
-            'reference.max' => 'La referencia no debe exceder los 255 caracteres.',
+            'address.max' => 'Máximo 255 caracteres.',
+            'reference.max' => 'Máximo 255 caracteres.',
             'sex_type.required' => 'El sexo es obligatorio.',
+            'phone_number.max' => 'Máximo 50 caracteres.',
 
-            'phone_number.max' => 'El número de teléfono no debe exceder los 50 caracteres.',
-            'type_of_disability.in' => 'El tipo de discapacidad debe ser Visual, Motriz o Mental.',
-
-            'household_members.integer' => 'El número de miembros del hogar debe ser un número.',
+            'type_of_disability.in' => 'Debe ser Visual, Motriz o Mental.',
             'household_members.min' => 'Debe haber al menos 1 miembro en el hogar.',
 
-            'permanent_attention.boolean' => 'El campo de atención permanente debe ser un valor booleano.',
-            'observation.max' => 'La observación no debe exceder los 500 caracteres.',
+            'permanent_attention.boolean' => 'Debe ser verdadero o falso.',
+            'state.required' => 'Debe indicar si está activo en CIAM.',
 
-            // **Mensajes de error para relaciones foráneas**
-            'location_id.required' => 'Debe seleccionar una ubicación.',
-            'location_id.exists' => 'La ubicación seleccionada no existe.',
-            'public_insurance_id.required' => 'Debe seleccionar un seguro público.',
-            'public_insurance_id.exists' => 'El seguro público seleccionado no existe.',
-            'private_insurance_id.exists' => 'El seguro privado seleccionado no existe.',
+            // **Errores de ubicación**
+            'department.required' => 'El departamento es obligatorio.',
+            'province.required' => 'La provincia es obligatoria.',
+            'district.required' => 'El distrito es obligatorio.',
 
-            // **Mensajes de error para relaciones muchos a muchos**
-            'guardian_ids.array' => 'La selección de guardianes debe ser un conjunto de valores válidos.',
-            'guardian_ids.*.exists' => 'Uno o más guardianes seleccionados no existen en la base de datos.',
+            // **Errores de seguros**
+            'public_insurance.max' => 'Máximo 100 caracteres.',
+            'private_insurance.max' => 'Máximo 100 caracteres.',
 
-            'social_program_ids.array' => 'La selección de programas sociales debe ser un conjunto de valores válidos.',
-            'social_program_ids.*.exists' => 'Uno o más programas sociales seleccionados no existen en la base de datos.',
+            // **Errores de guardianes**
+            'guardian_id.exists' => 'El guardián seleccionado no existe.',
+
+            // **Errores de programas sociales**
+            'social_programs.array' => 'Debe ser una lista de valores válidos.',
+            'social_programs.*.string' => 'Cada programa social debe ser un texto.',
+            'social_programs.*.max' => 'El nombre del programa social no debe exceder los 100 caracteres.',
         ];
     }
 
     /**
-     * Personaliza los nombres de los campos de la solicitud.
-     *
-     * @return array
+     * Personaliza los nombres de los campos.
      */
     public function attributes(): array
     {
@@ -144,11 +142,14 @@ class StoreElderlyAdultRequest extends FormRequest
             'household_members' => 'miembros del hogar',
             'permanent_attention' => 'atención permanente',
             'observation' => 'observación',
-            'location_id' => 'ubicación',
-            'public_insurance_id' => 'seguro público',
-            'private_insurance_id' => 'seguro privado',
-            'guardian_ids' => 'guardianes',
-            'social_program_ids' => 'programas sociales',
+            'state' => 'estado en CIAM',
+            'department' => 'departamento',
+            'province' => 'provincia',
+            'district' => 'distrito',
+            'public_insurance' => 'seguro público',
+            'private_insurance' => 'seguro privado',
+            'guardian_id' => 'guardia',
+            'social_programs' => 'programas sociales',
         ];
     }
 }

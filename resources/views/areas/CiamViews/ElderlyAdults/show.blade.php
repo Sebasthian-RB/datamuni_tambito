@@ -38,6 +38,16 @@
                         <td>{{ $elderlyAdult->sex_type == 0 ? 'Femenino' : 'Masculino' }}</td>
                     </tr>
                     <tr>
+                        <th style="background-color: #CAE0BC;">Estado</th>
+                        <td>
+                            @if ($elderlyAdult->state)
+                            <span class="badge bg-success">Activo</span>
+                            @else
+                            <span class="badge bg-danger">Inactivo</span>
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
                         <th style="background-color: #CAE0BC;">Dirección</th>
                         <td>{{ $elderlyAdult->address ?? 'No especificado' }}</td>
                     </tr>
@@ -72,18 +82,15 @@
             <h4 class="mt-4 text-center" style="color: #6E8E59;"><i class="fas fa-link"></i> Información Relacionada</h4>
             <table class="table table-bordered">
                 <tbody>
-                    <!-- Guardianes -->
+                    <!-- Guardian -->
                     <tr>
-                        <th style="background-color: #9cbf5c; color: white;">Guardianes</th>
+                        <th style="background-color: #9cbf5c; color: white;">Guardían</th>
                         <td>
-                            @if($elderlyAdult->guardians->isEmpty())
-                            No tiene guardianes registrados.
+                            @if($elderlyAdult->guardian)
+                            {{ $elderlyAdult->guardian->given_name }} {{ $elderlyAdult->guardian->paternal_last_name }} - {{ $elderlyAdult->guardian->phone_number ?? 'Sin teléfono' }}
+                            <br><strong>Relación:</strong> {{ $elderlyAdult->guardian->display_relationship }}
                             @else
-                            <ul>
-                                @foreach($elderlyAdult->guardians as $guardian)
-                                <li>{{ $guardian->given_name }} {{ $guardian->paternal_last_name }} {{ $guardian->maternal_last_name }} - {{ $guardian->phone_number ?? 'Sin teléfono' }}</li>
-                                @endforeach
-                            </ul>
+                            No tiene guardián registrado.
                             @endif
                         </td>
                     </tr>
@@ -92,46 +99,32 @@
                     <tr>
                         <th style="background-color: #9cbf5c; color: white;">Ubicación</th>
                         <td>
-                            {{ optional($elderlyAdult->location)->department ?? 'No registrado' }},
-                            {{ optional($elderlyAdult->location)->province ?? 'No registrado' }},
-                            {{ optional($elderlyAdult->location)->district ?? 'No registrado' }}
+                            {{ $elderlyAdult->department ?? 'No registrado' }},
+                            {{ $elderlyAdult->province ?? 'No registrado' }},
+                            {{ $elderlyAdult->district ?? 'No registrado' }}
                         </td>
                     </tr>
 
                     <!-- Seguro Público -->
                     <tr>
                         <th style="background-color: #9cbf5c; color: white;">Seguro Público</th>
-                        <td>{{ optional($elderlyAdult->publicInsurance)->name ?? 'No registrado' }}</td>
+                        <td>{{ $elderlyAdult->public_insurance ?? 'No registrado' }}</td>
                     </tr>
 
-                    <!-- Seguros Privados -->
+                    <!-- Seguro Privado -->
                     <tr>
-                        <th style="background-color: #9cbf5c; color: white;">Seguros Privados</th>
-                        <td>
-                            @if($elderlyAdult->privateInsurances->isEmpty())
-                            No tiene seguros privados registrados.
-                            @else
-                            <ul>
-                                @foreach($elderlyAdult->privateInsurances as $insurance)
-                                <li>{{ $insurance->name }}</li>
-                                @endforeach
-                            </ul>
-                            @endif
-                        </td>
+                        <th style="background-color: #9cbf5c; color: white;">Seguro Privado</th>
+                        <td>{{ $elderlyAdult->private_insurance ?? 'No registrado' }}</td>
                     </tr>
 
                     <!-- Programas Sociales -->
                     <tr>
                         <th style="background-color: #9cbf5c; color: white;">Programas Sociales</th>
                         <td>
-                            @if($elderlyAdult->socialPrograms->isEmpty())
-                            No pertenece a ningún programa social.
+                            @if($elderlyAdult->social_programs)
+                            {{ implode(', ', json_decode($elderlyAdult->social_programs, true)) }}
                             @else
-                            <ul>
-                                @foreach($elderlyAdult->socialPrograms as $program)
-                                <li>{{ $program->name }}</li>
-                                @endforeach
-                            </ul>
+                            No pertenece a ningún programa social.
                             @endif
                         </td>
                     </tr>

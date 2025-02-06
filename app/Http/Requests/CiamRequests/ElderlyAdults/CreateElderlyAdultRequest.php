@@ -5,23 +5,23 @@ namespace App\Http\Requests\CiamRequests\ElderlyAdults;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Form Request para la creación de un adulto mayor.
- * Define las reglas de validación para crear un nuevo registro.
+ * Form Request para mostrar el formulario de creación de un adulto mayor.
+ * No aplica validaciones actualmente.
  */
 class CreateElderlyAdultRequest extends FormRequest
 {
     /**
      * Determina si el usuario está autorizado para realizar esta solicitud.
+     * Permitir el acceso a cualquier usuario autenticado.
      */
     public function authorize(): bool
     {
-        return true; // Permitir acceso a cualquier usuario autorizado.
+        return true;
     }
 
     /**
      * Reglas de validación que se aplican a la solicitud.
-     *
-     * @return array<string, mixed>
+     * No se necesitan reglas para mostrar el formulario.
      */
     public function rules(): array
     {
@@ -29,7 +29,7 @@ class CreateElderlyAdultRequest extends FormRequest
     }
 
     /**
-     * Mensajes de error personalizados para validaciones específicas.
+     * Mensajes de error personalizados para validaciones (si se agregan en el futuro).
      */
     public function messages(): array
     {
@@ -37,7 +37,7 @@ class CreateElderlyAdultRequest extends FormRequest
     }
 
     /**
-     * Nombres personalizados para los atributos validados.
+     * Personaliza los nombres de los atributos (si se agregan reglas en el futuro).
      */
     public function attributes(): array
     {
