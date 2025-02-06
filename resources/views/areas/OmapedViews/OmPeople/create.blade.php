@@ -9,7 +9,7 @@
 @section('content')
     <form action="{{ route('om-people.store') }}" method="POST">
         @csrf
-        <label for="registration_date">Fecha de Registro</label>
+        <label for="paternal_last_name">Fecha de Registro</label>
         <input type="datetime-local" class="form-control @error('registration_date') is-invalid @enderror"
             name="registration_date"
             value="{{ old('registration_date') ? \Carbon\Carbon::parse(old('registration_date'))->format('Y-m-d\TH:i') : '' }}"
@@ -192,16 +192,26 @@
             @enderror
         </div>
 
+        <!-- Añade esto en la sección del dropdown de viviendas -->
         <div class="form-group">
             <label for="om_dwelling_id">Vivienda</label>
-            <select class="form-control @error('om_dwelling_id') is-invalid @enderror" name="om_dwelling_id">
-                <option value="">Seleccione Vivienda</option>
-                @foreach ($dwellings as $dwelling)
-                    <option value="{{ $dwelling->id }}" {{ old('om_dwelling_id') == $dwelling->id ? 'selected' : '' }}>
-                        {{ $dwelling->exact_location }}
-                    </option>
-                @endforeach
-            </select>
+            <div class="input-group">
+                <select class="form-control @error('om_dwelling_id') is-invalid @enderror" name="om_dwelling_id"
+                    id="om_dwelling_id" required>
+                    <option value="">Seleccione Vivienda</option>
+                    @foreach ($dwellings as $dwelling)
+                        <option value="{{ $dwelling->id }}"
+                            {{ old('om_dwelling_id') == $dwelling->id ? 'selected' : '' }}>
+                            {{ $dwelling->exact_location }}
+                        </option>
+                    @endforeach
+                </select>
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dwellingModal">
+                        <i class="fas fa-plus"></i> Nueva Vivienda
+                    </button>
+                </div>
+            </div>
             @error('om_dwelling_id')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
@@ -266,9 +276,91 @@
         <button type="submit" class="btn btn-primary">Registrar Persona</button>
         <a href="{{ route('om-people.index') }}" class="btn btn-secondary">Volver al listado</a>
     </form>
+
+
+    <!-- Modal para nueva vivienda -->
+    <div class="modal fade" id="dwellingModal" tabindex="-1" role="dialog" aria-labelledby="dwellingModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="dwellingModalLabel">Registrar Nueva Vivienda</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="dwellingForm">
+                        @csrf
+                        <div class="form-group">
+                            <label for="exact_location">Localización Exacta</label>
+                            <input type="text" name="exact_location" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reference">Referencia</label>
+                            <textarea name="reference" class="form-control"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="annex_sector">Anexo/Sector</label>
+                            <input type="text" name="annex_sector" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="water_electricity">Agua y/o Luz</label>
+                            <select name="water_electricity" class="form-control">
+                                <option value="">Seleccione</option>
+                                <option value="Agua">Agua</option>
+                                <option value="Luz">Luz</option>
+                                <option value="Agua y Luz">Agua y Luz</option>
+                                <option value="Ninguno">Ninguno</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="type">Tipo de Vivienda</label>
+                            <input type="text" name="type" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="ownership_status">Situación de Vivienda</label>
+                            <select name="ownership_status" class="form-control">
+                                <option value="">Seleccione</option>
+                                <option value="Propia">Propia</option>
+                                <option value="Alquilada">Alquilada</option>
+                                <option value="Prestada">Prestada</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="permanent_occupants">Ocupantes Permanentes</label>
+                            <input type="number" name="permanent_occupants" class="form-control">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="saveDwelling">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@stop
+
+
+@section('css')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 @stop
 
 @section('js')
+    <!-- En la sección head -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "timeOut": "5000"
+        };
+    </script>
     <script>
         function calcularEdad() {
             let birthDate = document.getElementById("birth_date").value;
@@ -287,5 +379,57 @@
                 document.getElementById("age").value = age > 0 ? age : 0;
             }
         }
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#saveDwelling').click(function() {
+                $.ajax({
+                    url: '{{ route('om-dwellings.store') }}',
+                    method: 'POST',
+                    data: $('#dwellingForm').serialize(),
+                    dataType: 'json', // Añadir esta línea
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    },
+                    beforeSend: function() {
+                        $('#saveDwelling').prop('disabled', true).html(
+                            '<i class="fas fa-spinner fa-spin"></i> Guardando...');
+                    },
+                    success: function(response) {
+                        // Añadir nueva opción al select y seleccionarla
+                        var newOption = new Option(response.dwelling.exact_location, response
+                            .dwelling.id, true, true);
+                        $('#om_dwelling_id').append(newOption).trigger('change');
+
+                        // Cerrar modal y limpiar formulario
+                        $('#dwellingModal').modal('hide');
+                        $('#dwellingForm')[0].reset();
+
+                        // Mostrar notificación
+                        toastr.success('Vivienda registrada exitosamente');
+                    },
+                    error: function(xhr) {
+                        let errors = xhr.responseJSON?.errors || {};
+                        let errorMessages = 'Error desconocido';
+
+                        if (xhr.status === 422) {
+                            errorMessages = Object.values(errors).join('\n');
+                        }
+
+                        toastr.error(errorMessages);
+                    },
+                    complete: function() {
+                        $('#saveDwelling').prop('disabled', false).html('Guardar');
+                        // Si aún queda un backdrop en el DOM, elimínalo
+                        if ($('.modal-backdrop').length) {
+                            $('.modal-backdrop').remove();
+                            $('body').removeClass('modal-open');
+                        }
+                    }
+                });
+            });
+        });
     </script>
 @stop

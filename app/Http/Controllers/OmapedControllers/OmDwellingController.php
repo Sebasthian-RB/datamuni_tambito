@@ -34,9 +34,17 @@ class OmDwellingController extends Controller
      */
     public function store(StoreOmDwellingRequest $request)
     {
-        // Crear nueva vivienda
-        OmDwelling::create($request->validated());
-        return redirect()->route('om-dwellings.index')->with('success', '¡Vivienda creada exitosamente!');
+        $dwelling = OmDwelling::create($request->validated());
+    
+        if ($request->ajax()) { // Cambiar de wantsJson() a ajax()
+            return response()->json([
+                'success' => true,
+                'dwelling' => $dwelling
+            ]);
+        }
+    
+        return redirect()->route('om-dwellings.index')
+            ->with('success', '¡Vivienda creada exitosamente!');
     }
 
     /**
