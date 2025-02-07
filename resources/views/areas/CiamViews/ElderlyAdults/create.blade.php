@@ -114,7 +114,10 @@
                 <!-- Teléfono -->
                 <div class="form-group">
                     <label for="phone_number">Teléfono</label>
-                    <input type="text" class="form-control" id="phone_number" name="phone_number">
+                    <input type="text" class="form-control @error('phone_number') is-invalid @enderror" id="phone_number" name="phone_number" maxlength="9" placeholder="Ingrese 9 dígitos numéricos" required>
+                    @error('phone_number')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <!-- Número de miembros del hogar -->
@@ -383,6 +386,18 @@
                 this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');
             }
         });
+    });
+</script>
+
+<script>
+    document.getElementById("phone_number").addEventListener("input", function(e) {
+        // Eliminar caracteres que no sean números
+        e.target.value = e.target.value.replace(/\D/g, '');
+
+        // Limitar a 9 caracteres
+        if (e.target.value.length > 9) {
+            e.target.value = e.target.value.slice(0, 9);
+        }
     });
 </script>
 
