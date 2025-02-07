@@ -24,16 +24,26 @@ class StoreElderlyAdultRequest extends FormRequest
     public function rules(): array
     {
         return [
+
+            'document_type' => 'required|in:DNI,Pasaporte,Carnet,Cedula',
+
             'id' => [
                 'required',
                 'string',
-                'max:36',
-                Rule::unique('elderly_adults', 'id'),
+                function ($attribute, $value, $fail) {
+                    $documentType = request('document_type');
+                    if ($documentType === 'DNI' && !preg_match('/^\d{8}$/', $value)) {
+                        $fail('El DNI debe tener exactamente 8 dígitos.');
+                    } elseif ($documentType === 'Pasaporte' && !preg_match('/^[A-Za-z0-9]{9}$/', $value)) {
+                        $fail('El Pasaporte debe tener 9 caracteres alfanuméricos.');
+                    } elseif ($documentType === 'Carnet' && !preg_match('/^\d{12}$/', $value)) {
+                        $fail('El Carnet debe tener 12 dígitos.');
+                    } elseif ($documentType === 'Cedula' && !preg_match('/^\d{10}$/', $value)) {
+                        $fail('La Cédula debe tener 10 dígitos.');
+                    }
+                },
             ],
-            'document_type' => [
-                'required',
-                Rule::in(['DNI', 'Pasaporte', 'Carnet', 'Cedula']),
-            ],
+
             'given_name' => 'required|string|max:50',
             'paternal_last_name' => 'required|string|max:50',
             'maternal_last_name' => 'nullable|string|max:50',

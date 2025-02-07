@@ -31,8 +31,8 @@
 
                 <!-- ID -->
                 <div class="form-group">
-                    <label for="id">ID</label>
-                    <input type="text" class="form-control @error('id') is-invalid @enderror" id="id" name="id" value="{{ old('id') }}" required>
+                    <label for="id">Número de Documento</label>
+                    <input type="text" class="form-control @error('id') is-invalid @enderror" id="id" name="id" required>
                     @error('id') <span class="invalid-feedback">{{ $message }}</span> @enderror
                 </div>
 
@@ -236,6 +236,7 @@
 @section('js')
 
 <!-- Select2 JS -->
+
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
@@ -247,6 +248,7 @@
         });
     });
 </script>
+
 <script>
     $(document).ready(function() {
         $('#guardian_id').select2({
@@ -330,6 +332,60 @@
     });
 </script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const documentTypeSelect = document.getElementById('document_type');
+        const documentInput = document.getElementById('id');
+
+        documentTypeSelect.addEventListener('change', function() {
+            const selectedType = this.value;
+
+            // Resetea restricciones
+            documentInput.value = '';
+            documentInput.removeAttribute('maxlength');
+            documentInput.removeAttribute('pattern');
+
+            if (selectedType === 'DNI') {
+                documentInput.setAttribute('maxlength', '8');
+                documentInput.setAttribute('pattern', '\\d{8}');
+                documentInput.setAttribute('placeholder', 'Ingrese 8 dígitos');
+                documentInput.title = 'Debe tener 8 dígitos numéricos.';
+                documentInput.dataset.type = 'numeric';
+            } else if (selectedType === 'Pasaporte') {
+                documentInput.setAttribute('maxlength', '9');
+                documentInput.setAttribute('pattern', '[A-Za-z0-9]{9}');
+                documentInput.setAttribute('placeholder', 'Ingrese 9 caracteres alfanuméricos');
+                documentInput.title = 'Debe tener 9 caracteres alfanuméricos.';
+                documentInput.dataset.type = 'alphanumeric';
+            } else if (selectedType === 'Carnet') {
+                documentInput.setAttribute('maxlength', '12');
+                documentInput.setAttribute('pattern', '\\d{12}');
+                documentInput.setAttribute('placeholder', 'Ingrese 12 dígitos numéricos');
+                documentInput.title = 'Debe tener 12 dígitos numéricos.';
+                documentInput.dataset.type = 'numeric';
+            } else if (selectedType === 'Cedula') {
+                documentInput.setAttribute('maxlength', '10');
+                documentInput.setAttribute('pattern', '\\d{10}');
+                documentInput.setAttribute('placeholder', 'Ingrese 10 dígitos numéricos');
+                documentInput.title = 'Debe tener 10 dígitos numéricos.';
+                documentInput.dataset.type = 'numeric';
+            }
+        });
+
+        // Validación en tiempo real del contenido del campo
+        documentInput.addEventListener('input', function() {
+            const type = documentInput.dataset.type;
+            if (type === 'numeric') {
+                // Permitir solo números
+                this.value = this.value.replace(/[^0-9]/g, '');
+            } else if (type === 'alphanumeric') {
+                // Permitir solo caracteres alfanuméricos
+                this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');
+            }
+        });
+    });
+</script>
+
 
 @stop
 
@@ -408,8 +464,6 @@
         justify-content: center;
     }
 </style>
-
-
 
 <style>
     /* Personalización de los radios con casillas */
