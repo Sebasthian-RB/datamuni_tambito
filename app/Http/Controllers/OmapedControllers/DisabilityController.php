@@ -34,7 +34,19 @@ class DisabilityController extends Controller
      */
     public function store(StoreDisabilityRequest $request)
     {
-        Disability::create($request->validated());
+        $disability = Disability::create($request->validated());
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'disability' => [
+                    'id' => $disability->id,
+                    'certificate_number' => $disability->certificate_number
+                ],
+                'message' => '¡Discapacidad registrada exitosamente!'
+            ]);
+        }
+
         return redirect()->route('disabilities.index')->with('success', '¡Discapacidad creada exitosamente!');
     }
 

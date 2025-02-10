@@ -7,6 +7,7 @@
 @stop
 
 @section('content')
+
     <form action="{{ route('om-people.store') }}" method="POST">
         @csrf
         <label for="paternal_last_name">Fecha de Registro</label>
@@ -219,8 +220,9 @@
 
         <div class="form-group">
             <label for="disability_id">Discapacidad</label>
-            <select class="form-control @error('disability_id') is-invalid @enderror" name="disability_id">
-                <option value="">Seleccione Discapacidad</option>
+            <select class="form-control select2 @error('disability_id') is-invalid @enderror" name="disability_id"
+                id="disability_id" data-placeholder="Seleccione Discapacidad">
+                <option value=""></option>
                 @foreach ($disabilities as $disability)
                     <option value="{{ $disability->id }}"
                         {{ old('disability_id') == $disability->id ? 'selected' : '' }}>
@@ -228,6 +230,10 @@
                     </option>
                 @endforeach
             </select>
+            <!-- Botón para abrir el modal de discapacidad -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#disabilityModal">
+                <i class="fas fa-plus"></i> Nueva Discapacidad
+            </button>
             @error('disability_id')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
@@ -295,14 +301,17 @@
                         <div class="form-group">
                             <label for="exact_location">Localización Exacta</label>
                             <input type="text" name="exact_location" class="form-control" required>
+                            <span class="error-message text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label for="reference">Referencia</label>
                             <textarea name="reference" class="form-control"></textarea>
+                            <span class="error-message text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label for="annex_sector">Anexo/Sector</label>
                             <input type="text" name="annex_sector" class="form-control">
+                            <span class="error-message text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label for="water_electricity">Agua y/o Luz</label>
@@ -313,10 +322,12 @@
                                 <option value="Agua y Luz">Agua y Luz</option>
                                 <option value="Ninguno">Ninguno</option>
                             </select>
+                            <span class="error-message text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label for="type">Tipo de Vivienda</label>
                             <input type="text" name="type" class="form-control">
+                            <span class="error-message text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label for="ownership_status">Situación de Vivienda</label>
@@ -326,10 +337,12 @@
                                 <option value="Alquilada">Alquilada</option>
                                 <option value="Prestada">Prestada</option>
                             </select>
+                            <span class="error-message text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label for="permanent_occupants">Ocupantes Permanentes</label>
                             <input type="number" name="permanent_occupants" class="form-control">
+                            <span class="error-message text-danger"></span>
                         </div>
                     </form>
                 </div>
@@ -340,6 +353,90 @@
             </div>
         </div>
     </div>
+
+
+
+    <!-- Modal para discapacidad -->
+    <div class="modal fade" id="disabilityModal" tabindex="-1" role="dialog" aria-labelledby="disabilityModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="disabilityModalLabel">Registrar Discapacidad</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="disabilityForm">
+                        @csrf
+                        <div class="form-group">
+                            <label>N° Certificado</label>
+                            <input type="text" name="certificate_number" class="form-control" required>
+                            <span class="text-danger error-certificate_number"></span> <!-- Aquí se mostrará el error -->
+                        </div>
+
+                        <div class="form-group">
+                            <label>Fecha de Emisión</label>
+                            <input type="date" name="certificate_issue_date" class="form-control" required>
+                            <span class="text-danger error-certificate_issue_date"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Fecha de Caducidad</label>
+                            <input type="date" name="certificate_expiry_date" class="form-control">
+                            <span class="text-danger error-certificate_expiry_date"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Organización</label>
+                            <input type="text" name="organization_name" class="form-control" required>
+                            <span class="text-danger error-organization_name"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Diagnóstico</label>
+                            <input type="text" name="diagnosis" class="form-control" required>
+                            <span class="text-danger error-diagnosis"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tipo de Discapacidad</label>
+                            <input type="text" name="disability_type" class="form-control" required>
+                            <span class="text-danger error-disability_type"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Nivel de Gravedad</label>
+                            <select name="severity_level" class="form-control">
+                                <option value="Leve">Leve</option>
+                                <option value="Moderado">Moderado</option>
+                                <option value="Severo">Severo</option>
+                            </select>
+                            <span class="text-danger error-severity_level"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Dispositivos Necesarios</label>
+                            <textarea name="required_support_devices" class="form-control"></textarea>
+                            <span class="text-danger error-required_support_devices"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Dispositivos Usados</label>
+                            <textarea name="used_support_devices" class="form-control"></textarea>
+                            <span class="text-danger error-used_support_devices"></span>
+                        </div>
+
+                        <button type="button" id="saveDisability" class="btn btn-success">
+                            <i class="fas fa-save"></i> Guardar
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @stop
 
 
@@ -349,7 +446,6 @@
 @stop
 
 @section('js')
-    <!-- En la sección head -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
@@ -361,6 +457,7 @@
             "timeOut": "5000"
         };
     </script>
+    <!-- Calcular Edad -->
     <script>
         function calcularEdad() {
             let birthDate = document.getElementById("birth_date").value;
@@ -381,6 +478,7 @@
         }
     </script>
 
+    <!-- Ajax del modal de vivienda -->
     <script>
         $(document).ready(function() {
             $('#saveDwelling').click(function() {
@@ -429,6 +527,88 @@
                         }
                     }
                 });
+            });
+        });
+    </script>
+
+    <!-- Ajax del modal de discapacidad -->
+
+    <script>
+        $(document).ready(function() {
+            $('#saveDisability').click(function() {
+                let formData = $('#disabilityForm').serialize();
+
+                // Limpiar errores anteriores
+                $('.text-danger').text('');
+
+                $.ajax({
+                    url: '{{ route('disabilities.store') }}',
+                    method: 'POST',
+                    data: formData,
+                    dataType: 'json',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    beforeSend: function() {
+                        $('#saveDisability').prop('disabled', true).html(
+                            '<i class="fas fa-spinner fa-spin"></i> Guardando...'
+                        );
+                    },
+                    success: function(response) {
+                        if (response.success && response.disability) {
+                            // Crear y agregar la nueva opción al select
+                            let newOption = new Option(
+                                response.disability.certificate_number,
+                                response.disability.id,
+                                true, // selected
+                                true // selected
+                            );
+
+                            // Agregar al select
+                            $('#disability_id').append(newOption);
+
+                            // Actualizar Select2 si está en uso
+                            if ($('#disability_id').hasClass('select2-hidden-accessible')) {
+                                $('#disability_id').trigger('change.select2');
+                            }
+
+                            // Cerrar modal y resetear formulario
+                            $('#disabilityModal').modal('hide');
+                            $('#disabilityForm')[0].reset();
+
+                            toastr.success(response.message);
+                        }
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 422) {
+                            // Mostrar errores de validación
+                            let errors = xhr.responseJSON.errors;
+                            Object.keys(errors).forEach(function(key) {
+                                $('.error-' + key).text(errors[key][0]);
+                            });
+                        } else {
+                            toastr.error('Error inesperado. Intente nuevamente.');
+                        }
+                    },
+                    complete: function() {
+                        $('#saveDisability').prop('disabled', false).html(
+                            '<i class="fas fa-save"></i> Guardar'
+                        );
+                        // Limpiar backdrop si es necesario
+                        $('.modal-backdrop').remove();
+                        $('body').removeClass('modal-open');
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        // En tu sección JS
+        $(document).ready(function() {
+            $('#disability_id').select2({
+                placeholder: "Seleccione Discapacidad",
+                allowClear: true
             });
         });
     </script>
