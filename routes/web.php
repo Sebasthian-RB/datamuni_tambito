@@ -37,7 +37,7 @@ use App\Http\Controllers\SisfohControllers\SfhDwellingController;
 use App\Http\Controllers\SisfohControllers\SfhPersonController;
 use App\Http\Controllers\SisfohControllers\VisitController;
 
-use App\Http\Controllers\SisfohControllers\SisfohDashboardController; //dashboard de Sisfoh
+use App\Http\Controllers\SisfohControllers\SfhDashboardController; //dashboard de Sisfoh
 
 //Controladores deL Área: CIAM
 use App\Http\Controllers\CiamControllers\ElderlyAdultController;
@@ -113,7 +113,7 @@ Route::middleware([
     Route::resource('sfh_requests', SfhRequestController::class);
     Route::resource('visits', VisitController::class);
 
-    // Route::get('/sisfoh', [SisfohController::class, 'index'])->name('sisfoh.index');
+    Route::get('/sisfoh_dashboard', [SfhDashboardController::class, 'index'])->name('sfhdashboard');
 
     // Rutas de los controladores de Ciam dentro del grupo de autenticación    
     Route::resource('elderly_adults', ElderlyAdultController::class);
