@@ -52,7 +52,7 @@ class CommitteeVlFamilyMemberController extends Controller
         $committees = Committee::all();
 
         // Obtener los miembros de la familia desde el modelo VlFamilyMember
-        $vlFamilyMembers = VlFamilyMember::all();
+        $vlFamilyMembers = VlFamilyMember::with('vlMinors')->get();        
 
         // Definir las opciones para el campo 'status' en el controlador
         $statusOptions = [

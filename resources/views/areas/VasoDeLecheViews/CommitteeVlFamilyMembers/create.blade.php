@@ -10,20 +10,42 @@
             height: 45px !important; /* Ajusta la altura del select */
             line-height: 45px !important; /* Alineación vertical del texto */
             font-size: 16px !important; /* Tamaño de fuente */
+            background-color: #ffffff !important; /* Color de fondo igual que el card */
+            border: 2px solid #9B7EBD !important; /* Borde similar al diseño del card */
+            border-radius: 12px !important; /* Bordes redondeados */
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1) !important; /* Sombra suave */
         }
-
-        /* Ajustar el padding para el texto */
+    
+        /* Ajuste del padding para el texto */
         .select2-container--default .select2-selection__rendered {
             padding-top: 5px !important;
             padding-bottom: 5px !important;
+            color: #3B1E54 !important; /* Color del texto, como en el card */
         }
-
+    
         /* Ajuste del dropdown de opciones */
         .select2-dropdown {
             max-height: 300px !important; /* Define la altura máxima */
             overflow-y: auto !important; /* Permite el scroll si es necesario */
+            background-color: #D4BEE4 !important; /* Fondo similar al de la selección */
+            border: 2px solid #9B7EBD !important; /* Borde del dropdown */
+            border-radius: 12px !important; /* Bordes redondeados */
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1) !important; /* Sombra suave */
         }
-
+    
+        /* Estilo para los elementos del dropdown */
+        .select2-results__option {
+            padding: 10px !important; /* Aumentar padding para mejor clicabilidad */
+            font-size: 16px !important; /* Ajustar tamaño de la fuente */
+            color: #3B1E54 !important; /* Color del texto en las opciones */
+        }
+    
+        /* Hover sobre los elementos del dropdown */
+        .select2-results__option--highlighted {
+            background-color: #9B7EBD !important; /* Color de fondo al pasar el mouse */
+            color: white !important; /* Color del texto al pasar el mouse */
+        }
+        
         /* Estilos para campos editables */
         .editable-field {
             background-color: white !important; /* Fondo blanco */
@@ -83,7 +105,7 @@
 
                     <!-- Selección del Miembro de Familia -->
                     <div class="form-group">
-                        <label for="vl_family_member_id">Miembro de Familia: </label>
+                        <label for="vl_family_member_id">Miembro de Familia</label>
                         <select class="form-control select2 @error('vl_family_member_id') is-invalid @enderror" id="vl_family_member_id" name="vl_family_member_id" required>
                             <option value="" disabled selected>Seleccione un miembro de familia</option>
                             @foreach($vlFamilyMembers as $member)
@@ -93,6 +115,7 @@
                                     data-given-name="{{ $member->given_name }}"
                                     data-paternal="{{ $member->paternal_last_name }}"
                                     data-maternal="{{ $member->maternal_last_name }}"
+                                    data-minors='@json($member->vlMinors)'
                                     {{ old('vl_family_member_id') == $member->id ? 'selected' : '' }}>
                                     {{ $member->id }}
                                 </option>
@@ -145,12 +168,7 @@
                             <!-- Sección 2: Nombre y Apellidos -->
                             <div class="info-box d-flex flex-column"
                                 style="background: white; border-radius: 10px; padding: 15px 20px; 
-                                    border-left: 4px solid #9B7EBD; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.05);">
-                                <label style="color: #3B1E54; font-weight: 600; font-size: 14px;">Nombres</label>
-                                <input type="text" class="form-control" id="given_name" disabled 
-                                    style="border: none; background: transparent; font-size: 16px; 
-                                        font-weight: bold; color: #3B1E54;">
-                                
+                                    border-left: 4px solid #9B7EBD; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.05);">  
                                 <div class="d-flex justify-content-between mt-2">
                                     <div>
                                         <label style="color: #3B1E54; font-weight: 600; font-size: 14px;">Apellido Paterno</label>
@@ -165,6 +183,25 @@
                                                 font-weight: bold; color: #3B1E54;">
                                     </div>
                                 </div>
+
+                                <label style="color: #3B1E54; font-weight: 600; font-size: 14px; padding-top: 15px;">Nombres</label>
+                                <input type="text" class="form-control" id="given_name" disabled 
+                                    style="border: none; background: transparent; font-size: 16px; 
+                                        font-weight: bold; color: #3B1E54;">
+                            </div>
+
+                            <!-- Título y Botón de Editar -->
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="card-title text-center" 
+                                    style="color: #3B1E54; font-weight: bold; font-size: 20px; margin-bottom: 0;">
+                                    🟣 Detalles de Menor(es) de Edad asociado(s)
+                                </h5>
+                            </div>
+
+                            <div id="children-list" class="mt-3"
+                                style="background: white; border-radius: 10px; padding: 15px 20px;
+                                    border-left: 4px solid #9B7EBD; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.05);">
+                                <ul id="childrenList" class="list-group" style="border-radius: 8px;"></ul>
                             </div>
 
                             <!-- Botones (solo visibles si los campos son editables) -->
@@ -277,99 +314,226 @@
     <!-- Script para mostrar datos del familiar -->
     <script>
         $(document).ready(function() {
-        // Muestra los detalles del familiar al seleccionar uno
-        $('#vl_family_member_id').on('change', function() {
-            const selected = $(this).find(':selected');
+            let originalValues = {}; // Objeto para almacenar los valores originales
 
-            // Rellenar los campos de detalles del familiar
-            $('#member_id').val(selected.data('id'));
-            $('#identity_document').val(selected.data('identity'));
-            $('#given_name').val(selected.data('given-name'));
-            $('#paternal_last_name').val(selected.data('paternal'));
-            $('#maternal_last_name').val(selected.data('maternal'));
+            $('#vl_family_member_id').on('change', function() {
+                const selected = $(this).find(':selected');
 
-            $('#family-member-details').show();
-        });
+                // Guardar valores originales correctamente
+                originalValues = {
+                    id: selected.attr('data-id') || '',
+                    identity_document: selected.attr('data-identity') || '',
+                    given_name: selected.attr('data-given-name') || '',
+                    paternal_last_name: selected.attr('data-paternal') || '',
+                    maternal_last_name: selected.attr('data-maternal') || '',
+                    minors: JSON.parse(selected.attr('data-minors') || '[]')
+                };
 
-        // Al hacer clic en el botón de "Editar"
-        $('#editFamilyMemberBtn').on('click', function() {
-            // Obtener el valor actual almacenado en la BD
-            let currentIdentityDocument = $('#identity_document').val();
-            
-            // Asegurar que el valor sea una cadena (para evitar problemas de comparación)
-            currentIdentityDocument = currentIdentityDocument ? String(currentIdentityDocument) : "";
+                // Asignar los valores a los campos del formulario
+                $('#member_id').val(originalValues.id).prop('disabled', true).css('background-color', '#e9ecef');
+                $('#identity_document').val(originalValues.identity_document).prop('disabled', true).css('background-color', '#e9ecef');
+                $('#given_name').val(originalValues.given_name).prop('disabled', true).css('background-color', '#e9ecef');
+                $('#paternal_last_name').val(originalValues.paternal_last_name).prop('disabled', true).css('background-color', '#e9ecef');
+                $('#maternal_last_name').val(originalValues.maternal_last_name).prop('disabled', true).css('background-color', '#e9ecef');
 
-            // Reemplazar el input de identity_document con un select
-            $('#identity_document').replaceWith(`
-                <select class="form-control editable-field @error('identity_document') is-invalid @enderror" id="identity_document" name="identity_document" required>
-                    <option value="" disabled>Seleccione un tipo de documento</option>
-                    @foreach($identityDocumentTypes as $key => $label)
-                        <option value="{{ $key }}" ${"{{ $key }}" === currentIdentityDocument ? "selected" : ""}>{{ $label }}</option>
-                    @endforeach
-                </select>
-            `);
+                // Ajustar ancho original
+                $('#given_name, #paternal_last_name, #maternal_last_name').css('width', '')
 
-            // Esperar un momento para asegurarse de que el DOM está listo y luego asignar el valor
-            setTimeout(function() {
-                $('#identity_document').val(currentIdentityDocument).trigger('change');
-            }, 100);
+                // Ocultar mensajes de error si existen
+                $('.invalid-feedback').remove();
+                $('.is-invalid').removeClass('is-invalid');
 
-            // Habilitar otros campos
-            $('#given_name, #paternal_last_name, #maternal_last_name').prop('disabled', false).addClass('editable-field');;
-            $('#saveCancelButtons').show();
-            $(this).hide();
-        });
+                // Mostrar la tarjeta con los datos
+                $('#family-member-details').show();
 
+                // Limpiar la lista de menores antes de hacer la solicitud AJAX
+                $('#childrenList').empty();
 
-        // Al hacer clic en el botón de "Guardar"
-        $('#saveFamilyMemberBtn').on('click', function() {
-            // Obtener el ID del miembro seleccionado
-            const memberId = $('#member_id').val();
-            
-            // Validar que memberId tenga un valor
-            if (!memberId) {
-                alert("Error: No se ha seleccionado un miembro de familia.");
-                return;
-            }
+                // Mostrar los menores si existen
+                if (originalValues.minors.length > 0) {
+                    originalValues.minors.forEach(function(minor) {
+                        // Calcular la edad a partir de la fecha de nacimiento
+                        let birthDate = new Date(minor.birth_date);
+                        let today = new Date();
+                        let age = today.getFullYear() - birthDate.getFullYear();
+                        let monthDiff = today.getMonth() - birthDate.getMonth();
 
-            // Construir la URL correcta para la actualización
-            const updateUrl = `{{ url('vl_family_members') }}/${memberId}`;
+                        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                            age--;
+                        }
 
-            // Datos a enviar en la petición AJAX
-            const updatedData = {
-                _token: "{{ csrf_token() }}", // Agregar el token CSRF
-                _method: "PUT", // Laravel necesita esto para tratar la solicitud como PUT
-                id: memberId,  // Agregar el ID porque Laravel lo espera en la validación
-                identity_document: $('#identity_document').val(),
-                given_name: $('#given_name').val(),
-                paternal_last_name: $('#paternal_last_name').val(),
-                maternal_last_name: $('#maternal_last_name').val(),
-            };
+                        // Iconos personalizados con color #9B7EBD
+                        let idIcon = '<i class="fas fa-id-card" style="color: #9B7EBD;"></i>';
+                        let birthIcon = '<i class="fas fa-birthday-cake" style="color: #9B7EBD;"></i>';
+                        let locationIcon = '<i class="fas fa-map-marker-alt" style="color: #9B7EBD;"></i>';
+                        let kinshipIcon = '<i class="fas fa-users" style="color: #9B7EBD;"></i>';
 
-            // Realizar la petición AJAX
-            $.ajax({
-                url: updateUrl,
-                type: "POST", // Laravel espera PUT, pero AJAX solo permite POST, por eso usamos _method: PUT
-                data: updatedData,
-                success: function(response) {
-                    alert('Datos actualizados correctamente');
-                    $('#saveCancelButtons').hide();
-                    $('#editFamilyMemberBtn').show();
-                    $('#identity_document, #given_name, #paternal_last_name, #maternal_last_name').prop('disabled', true);
-                },
-                error: function(xhr, status, error) {
-                    console.log(xhr.responseText); // Muestra detalles del error en la consola
-                    alert('Error al actualizar los datos: ' + xhr.responseText);
+                        // Icono de sexo con colores específicos
+                        let sexIcon = minor.sex_type 
+                            ? '<i class="fas fa-mars" style="color: #007bff;"></i>'   // Azul para masculino
+                            : '<i class="fas fa-venus" style="color: #ff69b4;"></i>'; // Rosa para femenino
+
+                        // Estilo para resaltar nombres de mayores de 7 años con advertencia
+                        let warningBox = age >= 7 ? `
+                        <div class="alert alert-danger text-center" style="border-radius: 10px; font-weight: bold; margin-bottom: 10px;">
+                            <i class="fas fa-exclamation-triangle warning-icon"></i> 
+                            <span style="font-size: 16px;">${minor.given_name} tiene más de 7 años</span>
+                        </div>` 
+                        : '';
+
+                        // Estilos de animación para la advertencia
+                        let animationStyle = `
+                            <style>
+                                .warning-icon {
+                                    font-size: 24px;
+                                    animation: pulse 1s infinite;
+                                }
+
+                                @keyframes pulse {
+                                    0% { transform: scale(1); }
+                                    50% { transform: scale(1.3); }
+                                    100% { transform: scale(1); }
+                                }
+                            </style>`;
+
+                        // Presentación de información de menor de edad
+                        let minorHTML = `
+                            ${animationStyle}
+                            <div class="card mt-3" style="border: none; border-radius: 12px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+                                <div class="card-header" style="background-color: #9B7EBD; color: white; border-top-left-radius: 12px; border-top-right-radius: 12px;">
+                                    <h6 class="card-title text-center mb-0">
+                                        ${minor.given_name} ${minor.paternal_last_name} ${minor.maternal_last_name}
+                                    </h6>
+                                </div>
+                                <div class="card-body" style="padding: 15px; background-color: #f9f9f9; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;">
+                                    ${warningBox}
+                                    <table class="table table-borderless" style="font-size: 14px; margin-bottom: 0;">
+                                        <tr>
+                                            <td>${idIcon} <strong>Documento:</strong></td>
+                                            <td>${minor.identity_document} N° ${minor.id}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>${birthIcon} <strong>Edad:</strong></td>
+                                            <td>${age} años</td>
+                                        </tr>
+                                        <tr>
+                                            <td>${sexIcon} <strong>Sexo:</strong></td>
+                                            <td>${minor.sex_type ? 'Masculino' : 'Femenino'}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>${locationIcon} <strong>Dirección:</strong></td>
+                                            <td>${minor.address}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>${kinshipIcon} <strong>Relación:</strong></td>
+                                            <td>${minor.kinship}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>`;
+                        $('#childrenList').append(minorHTML);
+                    });
+                } else {
+                    $('#childrenList').append(`<li class="text-muted text-center">No hay menores asociados</li>`);
                 }
             });
-        });
 
-        // Al hacer clic en el botón de "Cancelar"
-        $('#cancelEditBtn').on('click', function() {
-            $('#identity_document, #given_name, #paternal_last_name, #maternal_last_name').prop('disabled', true);
-            $('#saveCancelButtons').hide();
-            $('#editFamilyMemberBtn').show();
+            // Al hacer clic en "Editar"
+            $('#editFamilyMemberBtn').on('click', function() {
+                // Guardar valores actuales antes de editar
+                originalValues.id = $('#member_id').val();
+                originalValues.identity_document = $('#identity_document').val();
+                originalValues.given_name = $('#given_name').val();
+                originalValues.paternal_last_name = $('#paternal_last_name').val();
+                originalValues.maternal_last_name = $('#maternal_last_name').val();
+
+                // Habilitar edición en los otros campos
+                $('#given_name, #paternal_last_name, #maternal_last_name')
+                    .prop('disabled', false)
+                    .css('background-color', 'white')
+                    .addClass('editable-field');
+
+                $('#saveCancelButtons').show();
+                $(this).hide();
+            });
+
+            // Al hacer clic en "Cancelar"
+            $('#cancelEditBtn').on('click', function() {
+                // Restaurar los valores originales
+                $('#member_id').val(originalValues.id).prop('disabled', true).removeClass('editable-field');
+                $('#identity_document').val(originalValues.identity_document);
+                $('#given_name').val(originalValues.given_name).prop('disabled', true).css('background-color', '#e9ecef').removeClass('editable-field');
+                $('#paternal_last_name').val(originalValues.paternal_last_name).prop('disabled', true).css('background-color', '#e9ecef').removeClass('editable-field');
+                $('#maternal_last_name').val(originalValues.maternal_last_name).prop('disabled', true).css('background-color', '#e9ecef').removeClass('editable-field');
+
+                $('#saveCancelButtons').hide();
+                $('#editFamilyMemberBtn').show();
+
+                // Ocultar mensajes de error si existen
+                $('.invalid-feedback').remove();
+                $('.is-invalid').removeClass('is-invalid');
+            });
+
+            // Al hacer clic en "Guardar"
+            $('#saveFamilyMemberBtn').on('click', function() {
+                const memberId = $('#member_id').val();
+
+                if (!memberId) {
+                    alert("Error: No se ha seleccionado un miembro de familia.");
+                    return;
+                }
+
+                const updateUrl = `{{ url('vl_family_members') }}/${memberId}`;
+
+                const updatedData = {
+                    _token: "{{ csrf_token() }}",
+                    _method: "PUT",
+                    id: memberId,
+                    identity_document: $('#identity_document').val(),
+                    given_name: $('#given_name').val(),
+                    paternal_last_name: $('#paternal_last_name').val(),
+                    maternal_last_name: $('#maternal_last_name').val(),
+                };
+
+                $.ajax({
+                    url: updateUrl,
+                    type: "POST",
+                    data: updatedData,
+                    success: function(response) {
+                        alert('Datos actualizados correctamente');
+                        $('#saveCancelButtons').hide();
+                        $('#editFamilyMemberBtn').show();
+                        $('#member_id, #identity_document, #given_name, #paternal_last_name, #maternal_last_name').prop('disabled', true).removeClass('editable-field').css('background-color', '#e9ecef');
+                        
+                        // Ocultar mensajes de error si existen
+                        $('.invalid-feedback').remove();
+                        $('.is-invalid').removeClass('is-invalid');
+                    },
+                    error: function(xhr) {
+                        
+                        if (xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
+
+                            // Eliminar mensajes de error previos
+                            $('.invalid-feedback').remove();
+                            $('.is-invalid').removeClass('is-invalid');
+
+                            $.each(errors, function(key, messages) {
+                                let inputField = $('#' + key);
+
+                                // Agregar clase de error al input
+                                inputField.addClass('is-invalid');
+
+                                // Mostrar el mensaje de error debajo del campo
+                                inputField.after(`<div class="invalid-feedback">${messages[0]}</div>`);
+                            });
+                        } else {
+                            console.log(xhr.responseText);
+                            alert('Error al actualizar los datos: ' + xhr.responseText);
+                        }
+                    }
+                });
+            });
         });
-    });
     </script>
 @stop
