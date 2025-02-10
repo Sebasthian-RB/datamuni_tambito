@@ -32,7 +32,7 @@ class ElderlyAdultController extends Controller
      */
     public function create(CreateElderlyAdultRequest $request): View
     {
-        $guardians = Guardian::all(['id', 'given_name', 'paternal_last_name', 'maternal_last_name']);
+        $guardians = Guardian::all();
         return view('areas.CiamViews.ElderlyAdults.create', compact('guardians'));
     }
 

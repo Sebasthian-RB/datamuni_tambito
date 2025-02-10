@@ -17,12 +17,6 @@
             </div>
             <div class="card-body">
 
-                <!-- ID -->
-                <div class="form-group">
-                    <label for="id">ID</label>
-                    <input type="text" class="form-control @error('id') is-invalid @enderror" id="id" name="id" value="{{ old('id') }}" required>
-                    @error('id') <span class="invalid-feedback">{{ $message }}</span> @enderror
-                </div>
 
                 <!-- Tipo de Documento -->
                 <div class="form-group">
@@ -33,6 +27,13 @@
                         <option value="{{ $type }}">{{ $type }}</option>
                         @endforeach
                     </select>
+                </div>
+
+                <!-- ID -->
+                <div class="form-group">
+                    <label for="id">Número de Documento</label>
+                    <input type="text" class="form-control @error('id') is-invalid @enderror" id="id" name="id" required>
+                    @error('id') <span class="invalid-feedback">{{ $message }}</span> @enderror
                 </div>
 
                 <!-- Nombre y Apellidos -->
@@ -49,25 +50,33 @@
                     <input type="text" class="form-control" id="maternal_last_name" name="maternal_last_name" required>
                 </div>
 
+                <!-- Sexo -->
+                <div class="form-group">
+                    <label class="form-label fw-bold" style="font-size: 1.2rem;">Sexo</label>
+                    <div class="d-flex justify-content-start align-items-center mt-3" style="gap: 20px;">
+                        <!-- Masculino -->
+                        <div class="form-check" style="border: 2px solid #6E8E59; border-radius: 10px; padding: 10px 15px; background-color: #CCE6FF; display: flex; align-items: center; gap: 15px; cursor: pointer;">
+                            <input class="form-check-input" type="radio" name="sex_type" id="male" value="1" style="margin-right: 10px;" required>
+                            <label class="form-check-label fw-bold d-flex align-items-center" for="male" style="color: #333; margin: 0; cursor: pointer;">
+                                <i class="fas fa-mars" style="color: #6E8E59; font-size: 1.5rem; margin-right: 10px;"></i> Masculino
+                            </label>
+                        </div>
+
+                        <!-- Femenino -->
+                        <div class="form-check" style="border: 2px solid #780C28; border-radius: 10px; padding: 10px 15px; background-color: #FFE6E6; display: flex; align-items: center; gap: 15px; cursor: pointer;">
+                            <input class="form-check-input" type="radio" name="sex_type" id="female" value="0" style="margin-right: 10px;" required>
+                            <label class="form-check-label fw-bold d-flex align-items-center" for="female" style="color: #333; margin: 0; cursor: pointer;">
+                                <i class="fas fa-venus" style="color: #780C28; font-size: 1.5rem; margin-right: 10px;"></i> Femenino
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+
                 <!-- Fecha de Nacimiento -->
                 <div class="form-group">
                     <label for="birth_date">Fecha de Nacimiento</label>
                     <input type="date" class="form-control" id="birth_date" name="birth_date" required>
-                </div>
-
-                <!-- Sexo -->
-                <div class="form-group">
-                    <label>Sexo</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="sex_type" value="1" required> Masculino
-                        <input class="form-check-input" type="radio" name="sex_type" value="0"> Femenino
-                    </div>
-                </div>
-
-                <!-- Teléfono -->
-                <div class="form-group">
-                    <label for="phone_number">Teléfono</label>
-                    <input type="text" class="form-control" id="phone_number" name="phone_number">
                 </div>
 
                 <!-- Ubicación -->
@@ -81,11 +90,15 @@
                 </div>
                 <div class="form-group">
                     <label for="province">Provincia</label>
-                    <select id="province" class="form-control" name="province" required></select>
+                    <select id="province" class="form-control" name="province" required>
+                        <option value="" disabled selected>Seleccione una provincia</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="district">Distrito</label>
-                    <select id="district" class="form-control" name="district" required></select>
+                    <select id="district" class="form-control" name="district" required>
+                        <option value="" disabled selected>Seleccione un distrito</option>
+                    </select>
                 </div>
 
                 <!-- Dirección y Referencia -->
@@ -98,6 +111,35 @@
                     <input type="text" class="form-control" id="reference" name="reference">
                 </div>
 
+                <!-- Teléfono -->
+                <div class="form-group">
+                    <label for="phone_number">Teléfono</label>
+                    <input type="text" class="form-control @error('phone_number') is-invalid @enderror" id="phone_number" name="phone_number" maxlength="9" placeholder="Ingrese 9 dígitos numéricos" required>
+                    @error('phone_number')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <!-- Número de miembros del hogar -->
+                <div class="form-group">
+                    <label for="household_members">Número de Miembros en el Hogar</label>
+                    <input type="number" class="form-control" name="household_members">
+                </div>
+
+                <!-- Campo para seleccionar el guardián con Select2 -->
+                <div class="form-group">
+                    <label for="guardian_id" style="font-weight: bold;">Seleccionar Guardián</label>
+                    <select id="guardian_id" name="guardian_id" class="form-control select2" style="width: 100%; text-align-last: center;">
+                        <option value="" disabled selected>Seleccione un guardián...</option>
+                        @foreach($guardians as $guardian)
+                        <option value="{{ $guardian->id }}">
+                            {{ $guardian->given_name }} {{ $guardian->paternal_last_name }} {{ $guardian->maternal_last_name }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
+
+
                 <!-- Tipo de Discapacidad -->
                 <div class="form-group">
                     <label for="type_of_disability">Tipo de Discapacidad</label>
@@ -109,36 +151,21 @@
                     </select>
                 </div>
 
-                <!-- Número de miembros del hogar -->
-                <div class="form-group">
-                    <label for="household_members">Número de Miembros en el Hogar</label>
-                    <input type="number" class="form-control" name="household_members">
-                </div>
 
                 <!-- Atención Permanente -->
                 <div class="form-group">
-                    <label for="permanent_attention">Requiere Atención Permanente</label>
-                    <input type="checkbox" name="permanent_attention" value="1">
+                    <label for="permanent_attention" class="form-label fw-bold" style="font-size: 1.2rem;">Requiere Atención Permanente</label>
+                    <div class="d-flex align-items-center mt-3">
+                        <div class="form-check" style="border: 2px solid #6E8E59; border-radius: 10px; padding: 10px 15px; background-color: #FFEECC;">
+                            <input class="form-check-input" type="checkbox" name="permanent_attention" id="permanent_attention" value="1" style="transform: scale(1.5); margin-right: 10px;">
+                            <label class="form-check-label fw-bold" for="permanent_attention" style="color: #333;">
+                                <i class="fas fa-question-circle" style="margin-right: 5px; color: #FFA500;"></i> Atención Permanente
+                            </label>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Campo para buscar y seleccionar Guardián -->
-                <div class="form-group">
-                    <label for="guardian_search">Buscar Guardián</label>
-                    <input type="text" class="form-control" id="guardian_search" placeholder="Escribe el nombre del guardián...">
-                    <div id="guardian_list" class="list-group mt-2" style="max-height: 150px; overflow-y: auto; display: none;"></div>
-                    <input type="hidden" name="guardian_id" id="guardian_id">
-                </div>
 
-
-
-
-
-
-                <!-- Observaciones -->
-                <div class="form-group">
-                    <label for="observation">Observaciones</label>
-                    <textarea class="form-control" name="observation"></textarea>
-                </div>
 
                 <!-- Seguro Público -->
                 <div class="form-group">
@@ -169,12 +196,34 @@
 
                 <!-- Estado -->
                 <div class="form-group">
-                    <label for="state">Estado</label>
-                    <select class="form-control" name="state">
-                        <option value="1">Activo</option>
-                        <option value="0">Inactivo</option>
-                    </select>
+                    <label class="form-label fw-bold" style="font-size: 1.2rem;">Estado</label>
+                    <div class="d-flex justify-content-start align-items-center mt-3" style="gap: 20px;">
+                        <!-- Botón Activo -->
+                        <div class="form-check" style="border: 2px solid #6E8E59; border-radius: 10px; padding: 10px 15px; background-color: #E6FFCC;">
+                            <input class="form-check-input" type="radio" name="state" id="state_active" value="1" style="transform: scale(1.5); margin-right: 10px;" required>
+                            <label class="form-check-label fw-bold d-flex align-items-center" for="state_active" style="color: #333;">
+                                <i class="fas fa-smile" style="color: #6E8E59; font-size: 1.5rem; margin-right: 10px;"></i> Activo
+                            </label>
+                        </div>
+
+                        <!-- Botón Inactivo -->
+                        <div class="form-check" style="border: 2px solid #780C28; border-radius: 10px; padding: 10px 15px; background-color: #FFCCCC;">
+                            <input class="form-check-input" type="radio" name="state" id="state_inactive" value="0" style="transform: scale(1.5); margin-right: 10px;" required>
+                            <label class="form-check-label fw-bold d-flex align-items-center" for="state_inactive" style="color: #333;">
+                                <i class="fas fa-frown" style="color: #780C28; font-size: 1.5rem; margin-right: 10px;"></i> Inactivo
+                            </label>
+                        </div>
+                    </div>
                 </div>
+
+
+
+                <!-- Observaciones -->
+                <div class="form-group">
+                    <label for="observation">Observaciones</label>
+                    <textarea class="form-control" name="observation"></textarea>
+                </div>
+
 
             </div>
 
@@ -188,55 +237,273 @@
 @stop
 
 @section('js')
-<!-- Lista oculta con los guardianes ya cargados en la página -->
+
+<!-- Select2 JS -->
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#guardian_id').select2({
+            placeholder: "Seleccione un guardián",
+            allowClear: true,
+            width: 'resolve'
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#guardian_id').select2({
+            placeholder: "Seleccione un guardián",
+            allowClear: true,
+            width: 'resolve',
+            templateResult: formatGuardian, // Formato para las opciones
+            templateSelection: formatGuardianSelection // Formato para la selección
+        });
+
+        function formatGuardian(guardian) {
+            if (!guardian.id) {
+                return guardian.text; // Muestra la opción por defecto
+            }
+
+            // Personaliza las opciones con íconos o diseño
+            var html = `<div class="d-flex align-items-center">
+                            <i class="fas fa-user" style="color: #6E8E59; margin-right: 8px;"></i>
+                            ${guardian.text}
+                        </div>`;
+            return $(html);
+        }
+
+        function formatGuardianSelection(guardian) {
+            return guardian.text; // Texto seleccionado
+        }
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Objeto con las provincias y distritos de Junín
+        const locations = {
+            Junin: {
+                Huancayo: ["El Tambo", "Chilca", "Sapallanga", "San Jerónimo"],
+                Concepción: ["Aco", "Chambara", "Chupaca"],
+                Tarma: ["Huaricolca", "Acobamba", "Palca"],
+            },
+            Otro: {
+                Otro: ["Otro Distrito"]
+            }
+        };
+
+        // Referencias a los elementos
+        const departmentSelect = document.getElementById("department");
+        const provinceSelect = document.getElementById("province");
+        const districtSelect = document.getElementById("district");
+
+        // Al cambiar el departamento
+        departmentSelect.addEventListener("change", function() {
+            const department = this.value;
+            const provinces = locations[department] || {};
+
+            // Limpiar y rellenar provincias
+            provinceSelect.innerHTML = '<option value="" disabled selected>Seleccione una provincia</option>';
+            districtSelect.innerHTML = '<option value="" disabled selected>Seleccione un distrito</option>'; // Limpiar distritos
+
+            Object.keys(provinces).forEach(province => {
+                const option = document.createElement("option");
+                option.value = province;
+                option.textContent = province;
+                provinceSelect.appendChild(option);
+            });
+        });
+
+        // Al cambiar la provincia
+        provinceSelect.addEventListener("change", function() {
+            const department = departmentSelect.value;
+            const province = this.value;
+            const districts = locations[department]?.[province] || [];
+
+            // Limpiar y rellenar distritos
+            districtSelect.innerHTML = '<option value="" disabled selected>Seleccione un distrito</option>';
+            districts.forEach(district => {
+                const option = document.createElement("option");
+                option.value = district;
+                option.textContent = district;
+                districtSelect.appendChild(option);
+            });
+        });
+    });
+</script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        let searchInput = document.getElementById('guardian_search');
-        let resultList = document.getElementById('guardian_list');
-        let guardianIdInput = document.getElementById('guardian_id');
+        const documentTypeSelect = document.getElementById('document_type');
+        const documentInput = document.getElementById('id');
 
-        // Convertir los datos de Guardianes en un array de JavaScript
-        let guardians = @json($guardians - > map(function($guardian) {
-            return [
-                'id' => $guardian - > id,
-                'name' => $guardian - > given_name.
-                ' '.$guardian - > paternal_last_name.
-                ' '.$guardian - > maternal_last_name,
-            ];
-        }));
+        documentTypeSelect.addEventListener('change', function() {
+            const selectedType = this.value;
 
-        searchInput.addEventListener('input', function() {
-            let query = this.value.toLowerCase();
+            // Resetea restricciones
+            documentInput.value = '';
+            documentInput.removeAttribute('maxlength');
+            documentInput.removeAttribute('pattern');
 
-            if (query.length >= 2) {
-                let filteredGuardians = guardians.filter(g =>
-                    g.name.toLowerCase().includes(query)
-                );
+            if (selectedType === 'DNI') {
+                documentInput.setAttribute('maxlength', '8');
+                documentInput.setAttribute('pattern', '\\d{8}');
+                documentInput.setAttribute('placeholder', 'Ingrese 8 dígitos');
+                documentInput.title = 'Debe tener 8 dígitos numéricos.';
+                documentInput.dataset.type = 'numeric';
+            } else if (selectedType === 'Pasaporte') {
+                documentInput.setAttribute('maxlength', '9');
+                documentInput.setAttribute('pattern', '[A-Za-z0-9]{9}');
+                documentInput.setAttribute('placeholder', 'Ingrese 9 caracteres alfanuméricos');
+                documentInput.title = 'Debe tener 9 caracteres alfanuméricos.';
+                documentInput.dataset.type = 'alphanumeric';
+            } else if (selectedType === 'Carnet') {
+                documentInput.setAttribute('maxlength', '12');
+                documentInput.setAttribute('pattern', '\\d{12}');
+                documentInput.setAttribute('placeholder', 'Ingrese 12 dígitos numéricos');
+                documentInput.title = 'Debe tener 12 dígitos numéricos.';
+                documentInput.dataset.type = 'numeric';
+            } else if (selectedType === 'Cedula') {
+                documentInput.setAttribute('maxlength', '10');
+                documentInput.setAttribute('pattern', '\\d{10}');
+                documentInput.setAttribute('placeholder', 'Ingrese 10 dígitos numéricos');
+                documentInput.title = 'Debe tener 10 dígitos numéricos.';
+                documentInput.dataset.type = 'numeric';
+            }
+        });
 
-                resultList.innerHTML = '';
-                resultList.style.display = filteredGuardians.length ? 'block' : 'none';
-
-                filteredGuardians.forEach(guardian => {
-                    let item = document.createElement('a');
-                    item.href = '#';
-                    item.classList.add('list-group-item', 'list-group-item-action');
-                    item.textContent = guardian.name;
-                    item.dataset.id = guardian.id;
-
-                    item.addEventListener('click', function(event) {
-                        event.preventDefault();
-                        searchInput.value = this.textContent;
-                        guardianIdInput.value = this.dataset.id;
-                        resultList.style.display = 'none';
-                    });
-
-                    resultList.appendChild(item);
-                });
-            } else {
-                resultList.innerHTML = '';
-                resultList.style.display = 'none';
+        // Validación en tiempo real del contenido del campo
+        documentInput.addEventListener('input', function() {
+            const type = documentInput.dataset.type;
+            if (type === 'numeric') {
+                // Permitir solo números
+                this.value = this.value.replace(/[^0-9]/g, '');
+            } else if (type === 'alphanumeric') {
+                // Permitir solo caracteres alfanuméricos
+                this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');
             }
         });
     });
 </script>
+
+<script>
+    document.getElementById("phone_number").addEventListener("input", function(e) {
+        // Eliminar caracteres que no sean números
+        e.target.value = e.target.value.replace(/\D/g, '');
+
+        // Limitar a 9 caracteres
+        if (e.target.value.length > 9) {
+            e.target.value = e.target.value.slice(0, 9);
+        }
+    });
+</script>
+
+
+@stop
+
+@section('css')
+
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+<style>
+    .select2-container--default .select2-selection--single {
+        height: 38px;
+        /* Ajustar la altura */
+        border-radius: 5px;
+        /* Bordes redondeados */
+        border: 1px solid #6E8E59;
+        /* Color del borde */
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: #6E8E59;
+        /* Color del texto */
+        font-weight: bold;
+        /* Negrita */
+        padding: 8px;
+        /* Espaciado interno */
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        top: 6px;
+        /* Centrar la flecha */
+        color: #6E8E59;
+        /* Color de la flecha */
+    }
+
+    .select2-results__option {
+        color: black;
+        /* Color de las opciones */
+    }
+
+    .select2-results__option--highlighted {
+        background-color: #CAE0BC;
+        /* Color de fondo al pasar el mouse */
+        color: black;
+        /* Color del texto al resaltar */
+    }
+</style>
+
+<!-- Estilos adicionales -->
+<style>
+    .select2-container--default .select2-selection--single {
+        height: 45px;
+        /* Altura del select */
+        display: flex;
+        /* Para centrar el contenido */
+        align-items: center;
+        /* Centrar verticalmente */
+
+        border: 2px solid #d9d9d9;
+        /* Bordes */
+        border-radius: 5px;
+        /* Bordes redondeados */
+        background-color: #fff;
+        /* Fondo blanco */
+        font-size: 16px;
+        /* Tamaño de texto */
+        color: #333;
+        /* Color del texto */
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 100%;
+        /* Flecha centrada */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+
+<style>
+    /* Personalización de los radios con casillas */
+    .form-check-input {
+        width: 20px;
+        height: 20px;
+        border: 2px solid #333;
+        cursor: pointer;
+    }
+
+    .form-check-input:checked {
+        background-color: #333;
+        border-color: #333;
+    }
+
+    .form-check {
+        transition: all 0.2s ease-in-out;
+    }
+
+    .form-check:hover {
+        transform: scale(1.05);
+    }
+</style>
+
+
+
+
 @stop
