@@ -31,6 +31,18 @@ class UpdateElderlyAdultRequest extends FormRequest
                 'string',
                 'max:36',
                 Rule::unique('elderly_adults', 'id')->ignore($elderlyAdultId),
+                function ($attribute, $value, $fail) {
+                    $documentType = request('document_type');
+                    if ($documentType === 'DNI' && !preg_match('/^\d{8}$/', $value)) {
+                        $fail('El DNI debe tener exactamente 8 dígitos.');
+                    } elseif ($documentType === 'Pasaporte' && !preg_match('/^[A-Za-z0-9]{9}$/', $value)) {
+                        $fail('El Pasaporte debe tener 9 caracteres alfanuméricos.');
+                    } elseif ($documentType === 'Carnet' && !preg_match('/^\d{12}$/', $value)) {
+                        $fail('El Carnet debe tener 12 dígitos.');
+                    } elseif ($documentType === 'Cedula' && !preg_match('/^\d{10}$/', $value)) {
+                        $fail('La Cédula debe tener 10 dígitos.');
+                    }
+                },
             ],
             'document_type' => [
                 'required',

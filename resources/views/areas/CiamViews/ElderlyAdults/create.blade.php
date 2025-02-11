@@ -242,6 +242,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+<!-- PARA GUARDIAN -->
 <script>
     $(document).ready(function() {
         $('#guardian_id').select2({
@@ -281,6 +282,7 @@
     });
 </script>
 
+<!-- PARA LA UBICACION , DEPARTAMENTO, PROVINCIA, DISTRITO -->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         // Objeto con las provincias y distritos de Junín
@@ -335,6 +337,7 @@
     });
 </script>
 
+<!-- PARA EL TIPO DE DOCUMENTOS Y ID'S -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const documentTypeSelect = document.getElementById('document_type');
@@ -389,6 +392,7 @@
     });
 </script>
 
+<!-- PARA EL TELEFONO -->
 <script>
     document.getElementById("phone_number").addEventListener("input", function(e) {
         // Eliminar caracteres que no sean números
@@ -502,8 +506,5 @@
         transform: scale(1.05);
     }
 </style>
-
-
-
 
 @stop
