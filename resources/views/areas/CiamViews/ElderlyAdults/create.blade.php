@@ -27,6 +27,9 @@
                         <option value="{{ $type }}">{{ $type }}</option>
                         @endforeach
                     </select>
+                    @error('document_type')
+                    <span class="text-danger d-block mt-2">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <!-- ID -->
@@ -34,20 +37,37 @@
                     <label for="id">Número de Documento</label>
                     <input type="text" class="form-control @error('id') is-invalid @enderror" id="id" name="id" required>
                     @error('id') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                    @error('id')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
 
-                <!-- Nombre y Apellidos -->
+                <!-- Nombres-->
                 <div class="form-group">
                     <label for="given_name">Nombres</label>
-                    <input type="text" class="form-control" id="given_name" name="given_name" required>
+                    <input type="text" class="form-control" id="given_name" name="given_name"
+                        value="{{ old('given_name') }}" required>
+                    @error('given_name')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
+                <!-- Apellido Paterno -->
                 <div class="form-group">
                     <label for="paternal_last_name">Apellido Paterno</label>
-                    <input type="text" class="form-control" id="paternal_last_name" name="paternal_last_name" required>
+                    <input type="text" class="form-control" id="paternal_last_name" name="paternal_last_name"
+                        value="{{ old('paternal_last_name') }}" required>
+                    @error('paternal_last_name')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
+                <!-- Apellido Materno -->
                 <div class="form-group">
                     <label for="maternal_last_name">Apellido Materno</label>
-                    <input type="text" class="form-control" id="maternal_last_name" name="maternal_last_name" required>
+                    <input type="text" class="form-control" id="maternal_last_name" name="maternal_last_name"
+                        value="{{ old('maternal_last_name') }}" required>
+                    @error('maternal_last_name')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <!-- Sexo -->
@@ -56,7 +76,9 @@
                     <div class="d-flex justify-content-start align-items-center mt-3" style="gap: 20px;">
                         <!-- Masculino -->
                         <div class="form-check" style="border: 2px solid #6E8E59; border-radius: 10px; padding: 10px 15px; background-color: #CCE6FF; display: flex; align-items: center; gap: 15px; cursor: pointer;">
-                            <input class="form-check-input" type="radio" name="sex_type" id="male" value="1" style="margin-right: 10px;" required>
+                            <input class="form-check-input" type="radio" name="sex_type" id="male" value="1"
+                                style="margin-right: 10px;"
+                                {{ old('sex_type') == '1' ? 'checked' : '' }} required>
                             <label class="form-check-label fw-bold d-flex align-items-center" for="male" style="color: #333; margin: 0; cursor: pointer;">
                                 <i class="fas fa-mars" style="color: #6E8E59; font-size: 1.5rem; margin-right: 10px;"></i> Masculino
                             </label>
@@ -64,22 +86,31 @@
 
                         <!-- Femenino -->
                         <div class="form-check" style="border: 2px solid #780C28; border-radius: 10px; padding: 10px 15px; background-color: #FFE6E6; display: flex; align-items: center; gap: 15px; cursor: pointer;">
-                            <input class="form-check-input" type="radio" name="sex_type" id="female" value="0" style="margin-right: 10px;" required>
+                            <input class="form-check-input" type="radio" name="sex_type" id="female" value="0"
+                                style="margin-right: 10px;"
+                                {{ old('sex_type') == '0' ? 'checked' : '' }} required>
                             <label class="form-check-label fw-bold d-flex align-items-center" for="female" style="color: #333; margin: 0; cursor: pointer;">
                                 <i class="fas fa-venus" style="color: #780C28; font-size: 1.5rem; margin-right: 10px;"></i> Femenino
                             </label>
                         </div>
                     </div>
+                    @error('sex_type')
+                    <span class="text-danger d-block mt-2">{{ $message }}</span>
+                    @enderror
                 </div>
 
 
                 <!-- Fecha de Nacimiento -->
                 <div class="form-group">
                     <label for="birth_date">Fecha de Nacimiento</label>
-                    <input type="date" class="form-control" id="birth_date" name="birth_date" required>
+                    <input type="date" class="form-control" id="birth_date" name="birth_date"
+                        value="{{ old('birth_date') }}" required>
+                    @error('birth_date')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
 
-                <!-- Ubicación -->
+                <!-- Departamento -->
                 <div class="form-group">
                     <label for="department">Departamento</label>
                     <select id="department" class="form-control" name="department" required>
@@ -87,34 +118,61 @@
                         <option value="Junin">Junín</option>
                         <option value="Otro">Otro</option>
                     </select>
+                    @error('department')
+                    <span class="text-danger d-block mt-2">{{ $message }}</span>
+                    @enderror
                 </div>
+
+                <!-- Provincia -->
                 <div class="form-group">
                     <label for="province">Provincia</label>
                     <select id="province" class="form-control" name="province" required>
                         <option value="" disabled selected>Seleccione una provincia</option>
                     </select>
+                    @error('province')
+                    <span class="text-danger d-block mt-2">{{ $message }}</span>
+                    @enderror
                 </div>
+
+                <!-- Distrito -->
                 <div class="form-group">
                     <label for="district">Distrito</label>
                     <select id="district" class="form-control" name="district" required>
                         <option value="" disabled selected>Seleccione un distrito</option>
                     </select>
+                    @error('district')
+                    <span class="text-danger d-block mt-2">{{ $message }}</span>
+                    @enderror
                 </div>
 
-                <!-- Dirección y Referencia -->
+                <!-- Dirección -->
                 <div class="form-group">
                     <label for="address">Dirección</label>
-                    <input type="text" class="form-control" id="address" name="address">
+                    <input type="text" class="form-control @error('address') is-invalid @enderror" id="address" name="address"
+                        value="{{ old('address') }}" required maxlength="255">
+                    @error('address')
+                    <span class="text-danger d-block mt-2">{{ $message }}</span>
+                    @enderror
                 </div>
+
+                <!-- Referencia -->
                 <div class="form-group">
                     <label for="reference">Referencia</label>
-                    <input type="text" class="form-control" id="reference" name="reference">
+                    <input type="text" class="form-control @error('reference') is-invalid @enderror" id="reference" name="reference"
+                        value="{{ old('reference') }}" maxlength="255">
+                    @error('reference')
+                    <span class="text-danger d-block mt-2">{{ $message }}</span>
+                    @enderror
                 </div>
+
 
                 <!-- Teléfono -->
                 <div class="form-group">
                     <label for="phone_number">Teléfono</label>
-                    <input type="text" class="form-control @error('phone_number') is-invalid @enderror" id="phone_number" name="phone_number" maxlength="9" placeholder="Ingrese 9 dígitos numéricos" required>
+                    <input type="text" class="form-control @error('phone_number') is-invalid @enderror"
+                        id="phone_number" name="phone_number"
+                        value="{{ old('phone_number', $elderlyAdult->phone_number ?? '') }}"
+                        maxlength="9" placeholder="Ingrese 9 dígitos">
                     @error('phone_number')
                     <span class="invalid-feedback">{{ $message }}</span>
                     @enderror
@@ -123,7 +181,13 @@
                 <!-- Número de miembros del hogar -->
                 <div class="form-group">
                     <label for="household_members">Número de Miembros en el Hogar</label>
-                    <input type="number" class="form-control" name="household_members">
+                    <input type="number" class="form-control @error('household_members') is-invalid @enderror"
+                        id="household_members" name="household_members"
+                        value="{{ old('household_members') }}"
+                        min="1">
+                    @error('household_members')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <!-- Campo para seleccionar el guardián con Select2 -->
@@ -242,6 +306,76 @@
 
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+<!-- PARA EL TIPO DE DOCUMENTOS Y ID'S -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const documentTypeSelect = document.getElementById('document_type');
+        const documentInput = document.getElementById('id');
+
+        documentTypeSelect.addEventListener('change', function() {
+            const selectedType = this.value;
+
+            // Resetea restricciones
+            documentInput.value = '';
+            documentInput.removeAttribute('maxlength');
+            documentInput.removeAttribute('pattern');
+
+            if (selectedType === 'DNI') {
+                documentInput.setAttribute('maxlength', '8');
+                documentInput.setAttribute('pattern', '\\d{8}');
+                documentInput.setAttribute('placeholder', 'Ingrese 8 dígitos');
+                documentInput.title = 'Debe tener 8 dígitos numéricos.';
+                documentInput.dataset.type = 'numeric';
+            } else if (selectedType === 'Pasaporte') {
+                documentInput.setAttribute('maxlength', '9');
+                documentInput.setAttribute('pattern', '[A-Za-z0-9]{9}');
+                documentInput.setAttribute('placeholder', 'Ingrese 9 caracteres alfanuméricos');
+                documentInput.title = 'Debe tener 9 caracteres alfanuméricos.';
+                documentInput.dataset.type = 'alphanumeric';
+            } else if (selectedType === 'Carnet') {
+                documentInput.setAttribute('maxlength', '12');
+                documentInput.setAttribute('pattern', '\\d{12}');
+                documentInput.setAttribute('placeholder', 'Ingrese 12 dígitos numéricos');
+                documentInput.title = 'Debe tener 12 dígitos numéricos.';
+                documentInput.dataset.type = 'numeric';
+            } else if (selectedType === 'Cedula') {
+                documentInput.setAttribute('maxlength', '10');
+                documentInput.setAttribute('pattern', '\\d{10}');
+                documentInput.setAttribute('placeholder', 'Ingrese 10 dígitos numéricos');
+                documentInput.title = 'Debe tener 10 dígitos numéricos.';
+                documentInput.dataset.type = 'numeric';
+            }
+        });
+
+        // Validación en tiempo real del contenido del campo
+        documentInput.addEventListener('input', function() {
+            const type = documentInput.dataset.type;
+            if (type === 'numeric') {
+                // Permitir solo números
+                this.value = this.value.replace(/[^0-9]/g, '');
+            } else if (type === 'alphanumeric') {
+                // Permitir solo caracteres alfanuméricos
+                this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');
+            }
+        });
+    });
+</script>
+
+<!--  PARA LOS NOMBRES-->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let nameInputs = ['given_name', 'paternal_last_name', 'maternal_last_name'];
+
+        nameInputs.forEach(function(inputId) {
+            let input = document.getElementById(inputId);
+            input.addEventListener('input', function() {
+                this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+            });
+        });
+    });
+</script>
+
+
 <!-- PARA GUARDIAN -->
 <script>
     $(document).ready(function() {
@@ -337,61 +471,6 @@
     });
 </script>
 
-<!-- PARA EL TIPO DE DOCUMENTOS Y ID'S -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const documentTypeSelect = document.getElementById('document_type');
-        const documentInput = document.getElementById('id');
-
-        documentTypeSelect.addEventListener('change', function() {
-            const selectedType = this.value;
-
-            // Resetea restricciones
-            documentInput.value = '';
-            documentInput.removeAttribute('maxlength');
-            documentInput.removeAttribute('pattern');
-
-            if (selectedType === 'DNI') {
-                documentInput.setAttribute('maxlength', '8');
-                documentInput.setAttribute('pattern', '\\d{8}');
-                documentInput.setAttribute('placeholder', 'Ingrese 8 dígitos');
-                documentInput.title = 'Debe tener 8 dígitos numéricos.';
-                documentInput.dataset.type = 'numeric';
-            } else if (selectedType === 'Pasaporte') {
-                documentInput.setAttribute('maxlength', '9');
-                documentInput.setAttribute('pattern', '[A-Za-z0-9]{9}');
-                documentInput.setAttribute('placeholder', 'Ingrese 9 caracteres alfanuméricos');
-                documentInput.title = 'Debe tener 9 caracteres alfanuméricos.';
-                documentInput.dataset.type = 'alphanumeric';
-            } else if (selectedType === 'Carnet') {
-                documentInput.setAttribute('maxlength', '12');
-                documentInput.setAttribute('pattern', '\\d{12}');
-                documentInput.setAttribute('placeholder', 'Ingrese 12 dígitos numéricos');
-                documentInput.title = 'Debe tener 12 dígitos numéricos.';
-                documentInput.dataset.type = 'numeric';
-            } else if (selectedType === 'Cedula') {
-                documentInput.setAttribute('maxlength', '10');
-                documentInput.setAttribute('pattern', '\\d{10}');
-                documentInput.setAttribute('placeholder', 'Ingrese 10 dígitos numéricos');
-                documentInput.title = 'Debe tener 10 dígitos numéricos.';
-                documentInput.dataset.type = 'numeric';
-            }
-        });
-
-        // Validación en tiempo real del contenido del campo
-        documentInput.addEventListener('input', function() {
-            const type = documentInput.dataset.type;
-            if (type === 'numeric') {
-                // Permitir solo números
-                this.value = this.value.replace(/[^0-9]/g, '');
-            } else if (type === 'alphanumeric') {
-                // Permitir solo caracteres alfanuméricos
-                this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');
-            }
-        });
-    });
-</script>
-
 <!-- PARA EL TELEFONO -->
 <script>
     document.getElementById("phone_number").addEventListener("input", function(e) {
@@ -405,8 +484,8 @@
     });
 </script>
 
-
 @stop
+
 
 @section('css')
 

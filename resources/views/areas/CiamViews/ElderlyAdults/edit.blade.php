@@ -27,14 +27,169 @@
                         <option value="Carnet" {{ $elderlyAdult->document_type == 'Carnet' ? 'selected' : '' }}>Carnet</option>
                         <option value="Cedula" {{ $elderlyAdult->document_type == 'Cedula' ? 'selected' : '' }}>Cédula</option>
                     </select>
+                    @error('document_type')
+                    <span class="text-danger d-block mt-2">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <!-- Número de Documento -->
                 <div class="form-group">
                     <label for="id">Número de Documento</label>
                     <input type="text" class="form-control @error('id') is-invalid @enderror" id="id" name="id" value="{{ $elderlyAdult->id }}" required>
+                    @error('id')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                     @error('id') <span class="invalid-feedback">{{ $message }}</span> @enderror
                 </div>
+
+                <!-- Nombres -->
+                <div class="form-group">
+                    <label for="given_name">Nombres</label>
+                    <input type="text" class="form-control" id="given_name" name="given_name"
+                        value="{{ old('given_name', $elderlyAdult->given_name) }}" required>
+                    @error('given_name')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <!-- Apellido Paterno -->
+                <div class="form-group">
+                    <label for="paternal_last_name">Apellido Paterno</label>
+                    <input type="text" class="form-control" id="paternal_last_name" name="paternal_last_name"
+                        value="{{ old('paternal_last_name', $elderlyAdult->paternal_last_name) }}" required>
+                    @error('paternal_last_name')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <!-- Apellido Materno -->
+                <div class="form-group">
+                    <label for="maternal_last_name">Apellido Materno</label>
+                    <input type="text" class="form-control" id="maternal_last_name" name="maternal_last_name"
+                        value="{{ old('maternal_last_name', $elderlyAdult->maternal_last_name) }}" required>
+                    @error('maternal_last_name')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <!-- SEXO -->
+                <div class="form-group">
+                    <label class="form-label fw-bold" style="font-size: 1.2rem;">Sexo</label>
+                    <div class="d-flex justify-content-start align-items-center mt-3" style="gap: 20px;">
+                        <!-- Masculino -->
+                        <div class="form-check" style="border: 2px solid #6E8E59; border-radius: 10px; padding: 10px 15px; background-color: #CCE6FF; display: flex; align-items: center; gap: 15px; cursor: pointer;">
+                            <input class="form-check-input" type="radio" name="sex_type" id="male" value="1"
+                                style="margin-right: 10px;"
+                                {{ old('sex_type', $elderlyAdult->sex_type) == '1' ? 'checked' : '' }} required>
+                            <label class="form-check-label fw-bold d-flex align-items-center" for="male" style="color: #333; margin: 0; cursor: pointer;">
+                                <i class="fas fa-mars" style="color: #6E8E59; font-size: 1.5rem; margin-right: 10px;"></i> Masculino
+                            </label>
+                        </div>
+                        <!-- Femenino -->
+                        <div class="form-check" style="border: 2px solid #780C28; border-radius: 10px; padding: 10px 15px; background-color: #FFE6E6; display: flex; align-items: center; gap: 15px; cursor: pointer;">
+                            <input class="form-check-input" type="radio" name="sex_type" id="female" value="0"
+                                style="margin-right: 10px;"
+                                {{ old('sex_type', $elderlyAdult->sex_type) == '0' ? 'checked' : '' }} required>
+                            <label class="form-check-label fw-bold d-flex align-items-center" for="female" style="color: #333; margin: 0; cursor: pointer;">
+                                <i class="fas fa-venus" style="color: #780C28; font-size: 1.5rem; margin-right: 10px;"></i> Femenino
+                            </label>
+                        </div>
+                    </div>
+                    @error('sex_type')
+                    <span class="text-danger d-block mt-2">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <!-- Fecha de Nacimiento -->
+                <div class="form-group">
+                    <label for="birth_date">Fecha de Nacimiento</label>
+                    <input type="date" class="form-control" id="birth_date" name="birth_date"
+                        value="{{ old('birth_date', $elderlyAdult->birth_date ? $elderlyAdult->birth_date->format('Y-m-d') : '') }}"
+                        required>
+                    @error('birth_date')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <!-- Departamento -->
+                <div class="form-group">
+                    <label for="department">Departamento</label>
+                    <select id="department" class="form-control @error('department') is-invalid @enderror" name="department" required>
+                        <option value="" disabled>Seleccione</option>
+                        <option value="Junin" {{ old('department', $elderlyAdult->department) == 'Junin' ? 'selected' : '' }}>Junín</option>
+                        <option value="Otro" {{ old('department', $elderlyAdult->department) == 'Otro' ? 'selected' : '' }}>Otro</option>
+                    </select>
+                    @error('department')
+                    <span class="text-danger d-block mt-2">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <!-- Provincia -->
+                <div class="form-group">
+                    <label for="province">Provincia</label>
+                    <select id="province" class="form-control @error('province') is-invalid @enderror" name="province" required>
+                        <option value="" disabled>Seleccione una provincia</option>
+                        <option value="{{ old('province', $elderlyAdult->province) }}" selected>{{ old('province', $elderlyAdult->province) }}</option>
+                    </select>
+                    @error('province')
+                    <span class="text-danger d-block mt-2">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <!-- Distrito -->
+                <div class="form-group">
+                    <label for="district">Distrito</label>
+                    <select id="district" class="form-control @error('district') is-invalid @enderror" name="district" required>
+                        <option value="" disabled>Seleccione un distrito</option>
+                        <option value="{{ old('district', $elderlyAdult->district) }}" selected>{{ old('district', $elderlyAdult->district) }}</option>
+                    </select>
+                    @error('district')
+                    <span class="text-danger d-block mt-2">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <!-- Dirección -->
+                <div class="form-group">
+                    <label for="address">Dirección</label>
+                    <input type="text" class="form-control @error('address') is-invalid @enderror" id="address" name="address"
+                        value="{{ old('address', $elderlyAdult->address) }}" required maxlength="255">
+                    @error('address')
+                    <span class="text-danger d-block mt-2">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <!-- Referencia -->
+                <div class="form-group">
+                    <label for="reference">Referencia</label>
+                    <input type="text" class="form-control @error('reference') is-invalid @enderror" id="reference" name="reference"
+                        value="{{ old('reference', $elderlyAdult->reference) }}" maxlength="255">
+                    @error('reference')
+                    <span class="text-danger d-block mt-2">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <!-- Teléfono -->
+                <div class="form-group">
+                    <label for="phone_number">Teléfono</label>
+                    <input type="text" class="form-control @error('phone_number') is-invalid @enderror"
+                        id="phone_number" name="phone_number"
+                        value="{{ old('phone_number', $elderlyAdult->phone_number ?? '') }}"
+                        maxlength="9" placeholder="Ingrese 9 dígitos">
+                    @error('phone_number')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <!-- Número de miembros del hogar -->
+                <div class="form-group">
+                    <label for="household_members">Número de Miembros en el Hogar</label>
+                    <input type="number" class="form-control @error('household_members') is-invalid @enderror"
+                        id="household_members" name="household_members"
+                        value="{{ old('household_members', $elderlyAdult->household_members) }}"
+                        min="1">
+                    @error('household_members') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                </div>
+
 
             </div>
             <div class="card-footer" style="background-color: #9cbf5c;">
@@ -46,8 +201,8 @@
 </div>
 @stop
 
-@section('js')
 
+@section('js')
 <!--  JS -->
 
 <!--  PARA EL TIPO DE DOCUMENTOS Y ID'S -->
@@ -112,6 +267,94 @@
 
         // Aplica la validación cuando se carga la página
         updateValidation();
+    });
+</script>
+
+<!--  PARA LOS NOMBRES-->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let nameInputs = ['given_name', 'paternal_last_name', 'maternal_last_name'];
+
+        nameInputs.forEach(function(inputId) {
+            let input = document.getElementById(inputId);
+            input.addEventListener('input', function() {
+                this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+            });
+        });
+    });
+</script>
+
+<!-- PARA LA UBICACION , DEPARTAMENTO, PROVINCIA, DISTRITO -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const locations = {
+            Junin: {
+                Huancayo: ["El Tambo", "Chilca", "Sapallanga", "San Jerónimo"],
+                Concepción: ["Aco", "Chambara", "Chupaca"],
+                Tarma: ["Huaricolca", "Acobamba", "Palca"],
+            },
+            Otro: {
+                Otro: ["Otro Distrito"]
+            }
+        };
+
+        const departmentSelect = document.getElementById("department");
+        const provinceSelect = document.getElementById("province");
+        const districtSelect = document.getElementById("district");
+
+        function loadProvinces() {
+            const department = departmentSelect.value;
+            provinceSelect.innerHTML = '<option value="" disabled selected>Seleccione una provincia</option>';
+            districtSelect.innerHTML = '<option value="" disabled selected>Seleccione un distrito</option>';
+
+            if (locations[department]) {
+                Object.keys(locations[department]).forEach(province => {
+                    let option = document.createElement("option");
+                    option.value = province;
+                    option.textContent = province;
+                    provinceSelect.appendChild(option);
+                });
+            }
+        }
+
+        function loadDistricts() {
+            const department = departmentSelect.value;
+            const province = provinceSelect.value;
+            districtSelect.innerHTML = '<option value="" disabled selected>Seleccione un distrito</option>';
+
+            if (locations[department] && locations[department][province]) {
+                locations[department][province].forEach(district => {
+                    let option = document.createElement("option");
+                    option.value = district;
+                    option.textContent = district;
+                    districtSelect.appendChild(option);
+                });
+            }
+        }
+
+        departmentSelect.addEventListener("change", loadProvinces);
+        provinceSelect.addEventListener("change", loadDistricts);
+
+        // Cargar provincias y distritos si ya hay un valor guardado
+        if (departmentSelect.value) {
+            loadProvinces();
+            provinceSelect.value = "{{ $elderlyAdult->province }}";
+            loadDistricts();
+            districtSelect.value = "{{ $elderlyAdult->district }}";
+        }
+    });
+</script>
+
+<!-- PARA EL TELEFONO -->
+<script>
+    document.getElementById("phone_number").addEventListener("input", function(e) {
+        // Eliminar caracteres que no sean números
+        e.target.value = e.target.value.replace(/\D/g, '');
+
+        // Limitar a 9 caracteres
+        if (e.target.value.length > 9) {
+            e.target.value = e.target.value.slice(0, 9);
+        }
     });
 </script>
 

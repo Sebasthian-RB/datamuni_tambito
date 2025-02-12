@@ -26,6 +26,9 @@ class UpdateElderlyAdultRequest extends FormRequest
         $elderlyAdultId = $this->route('elderly_adult'); // ID del adulto mayor
 
         return [
+
+            'document_type' => 'required|in:DNI,Pasaporte,Carnet,Cedula',
+
             'id' => [
                 'required',
                 'string',
@@ -44,47 +47,58 @@ class UpdateElderlyAdultRequest extends FormRequest
                     }
                 },
             ],
-            'document_type' => [
+
+            'given_name' => [
                 'required',
-                Rule::in(['DNI', 'Pasaporte', 'Carnet', 'Cedula']),
+                'string',
+                'regex:/^[\pL\s]+$/u', // Solo permite letras y espacios
+                'max:100'
             ],
-            'given_name' => 'required|string|max:50',
-            'paternal_last_name' => 'required|string|max:50',
-            'maternal_last_name' => 'nullable|string|max:50',
+            'paternal_last_name' => [
+                'required',
+                'string',
+                'regex:/^[\pL\s]+$/u', // Solo permite letras y espacios
+                'max:100'
+            ],
+            'maternal_last_name' => [
+                'required',
+                'string',
+                'regex:/^[\pL\s]+$/u', // Solo permite letras y espacios
+                'max:100'
+            ],
+
+            'sex_type' => ['required', Rule::in(['0', '1'])],
+
             'birth_date' => [
                 'required',
                 'date',
-                'before_or_equal:today',
-                'after_or_equal:' . now()->subYears(120)->toDateString(),
+                'before_or_equal:today', // No puede ser una fecha futura
+                'after_or_equal:' . now()->subYears(120)->format('Y-m-d'), // No debe tener más de 120 años
             ],
-            'address' => 'nullable|string|max:255',
-            'reference' => 'nullable|string|max:255',
-            'sex_type' => 'required|boolean',
-            'phone_number' => 'nullable|string|max:50',
-            'type_of_disability' => [
-                'nullable',
-                Rule::in(['Visual', 'Motriz', 'Mental']),
-            ],
-            'household_members' => 'nullable|integer|min:1',
-            'permanent_attention' => 'nullable|boolean',
-            'observation' => 'nullable|string|max:500',
-            'state' => 'required|boolean', // Activo o no en CIAM
 
             // **Ubicación (departamento, provincia, distrito)**
             'department' => 'required|string|max:100',
             'province' => 'required|string|max:100',
             'district' => 'required|string|max:100',
 
-            // **Seguro público y privado**
-            'public_insurance' => 'nullable|string|max:100',
-            'private_insurance' => 'nullable|string|max:100',
+            'address' => 'nullable|string|max:255',
+            'reference' => 'nullable|string|max:255',
 
-            // **Guardian opcional**
-            'guardian_id' => 'nullable|string|exists:guardians,id',
+            'phone_number' => [
+                'nullable',
+                'regex:/^\d{9}$/',
+            ],
 
-            // **Lista de programas sociales (array de strings)**
-            'social_programs' => 'nullable|array',
-            'social_programs.*' => 'string|max:100',
+            'household_members' => ['nullable', 'integer', 'min:1'],
+
+            'guardian_id' => ['sometimes', 'nullable', 'exists:guardians,id'],
+            'type_of_disability' => ['sometimes', 'nullable', 'string'],
+            'permanent_attention' => ['sometimes', 'nullable', 'boolean'],
+            'public_insurance' => ['sometimes', 'nullable', 'string'],
+            'private_insurance' => ['sometimes', 'nullable', 'string'],
+            'social_program' => ['sometimes', 'nullable', 'array'],
+            'state' => ['sometimes', 'nullable', 'in:0,1'],
+            'observation' => ['sometimes', 'nullable', 'string'],
         ];
     }
 
@@ -109,10 +123,13 @@ class UpdateElderlyAdultRequest extends FormRequest
             'address.max' => 'Máximo 255 caracteres.',
             'reference.max' => 'Máximo 255 caracteres.',
             'sex_type.required' => 'El sexo es obligatorio.',
-            'phone_number.max' => 'Máximo 50 caracteres.',
+            'sex_type.in' => 'El valor seleccionado para el sexo no es válido.',
+            'phone_number.regex' => 'El número de teléfono debe contener exactamente 9 dígitos numéricos.',
+
+            'household_members.integer' => 'El número de miembros del hogar debe ser un número entero.',
+            'household_members.min' => 'Debe haber al menos 1 miembro en el hogar.',
 
             'type_of_disability.in' => 'Debe ser Visual, Motriz o Mental.',
-            'household_members.min' => 'Debe haber al menos 1 miembro en el hogar.',
 
             'permanent_attention.boolean' => 'Debe ser verdadero o falso.',
             'state.required' => 'Debe indicar si está activo en CIAM.',
