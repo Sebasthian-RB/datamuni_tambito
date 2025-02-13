@@ -566,7 +566,62 @@ return [
             ],
         ],
             
-
+        /*SISFOH*/
+        [
+            'text' => 'SISFOH',
+            'icon' => 'fas fa-fw fa-users',
+            'submenu' => [
+                [
+                    'text' => 'Panel SISFOH',
+                    'url' => 'sisfoh_dashboard',
+                    'icon' => 'fas fa-chart-line',
+                    'icon_color' => 'orange',
+                ],
+                [
+                    'text' => 'Gestión Principal',
+                    'url' => '#',
+                    'icon' => 'fas fa-cogs',
+                    'submenu' => [
+                        [
+                            'text' => 'Personas',
+                            'url' => 'sfh_people',
+                            'icon' => 'fas fa-user-friends',
+                            'icon_color' => 'pink',
+                        ],
+                        [
+                            'text' => 'Viviendas',
+                            'url' => 'sfh_dwelling',
+                            'icon' => 'fas fa-home',
+                            'icon_color' => 'orange',
+                        ],
+                        [
+                            'text' => 'Encuestadores',
+                            'url' => 'enumerators',
+                            'icon' => 'fas fa-user-tie',
+                            'icon_color' => 'green',
+                        ],
+                        [
+                            'text' => 'Solicitudes',
+                            'url' => 'sfh_requests',
+                            'icon' => 'fas fa-folder-open',
+                            'icon_color' => 'blue',
+                        ],
+                        [
+                            'text' => 'Visitas',
+                            'url' => 'visits',
+                            'icon' => 'fas fa-walking',
+                            'icon_color' => 'red',
+                        ],
+                        [
+                            'text' => 'Instrumentos',
+                            'url' => 'instruments',
+                            'icon' => 'fas fa-clipboard-list',
+                            'icon_color' => 'yellow',
+                        ],
+                    ],
+                ],
+            ],
+        ],
 
 
     ],

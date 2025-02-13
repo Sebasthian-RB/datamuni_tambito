@@ -3,7 +3,33 @@
 @section('title', 'Dashboard SISFOH')
 
 @section('content_header')
-    <h1>Dashboard SISFOH</h1>
+    <!-- Header con la imagen grande -->
+    <div class="mb-4 card">
+        <div class="p-0 card-header d-flex justify-content-center align-items-center"
+            style="background-color: #F57C00; height: 60px;">
+            <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="img-fluid"
+                style="height: 100%; width: auto;">
+        </div>
+    </div>
+
+    <!-- Panel de Control de SISFOH -->
+    <div class="d-flex align-items-center justify-content-between" style="height: 50vh; padding: 0;">
+
+        <!-- Contenedor de Texto -->
+        <div
+            style="flex: 1; text-align: center; color: #54585A; z-index: 1; padding: 40px; display: flex; justify-content: center; align-items: center; height: 100%; background: #64B5F6;">
+            <h1 style="font-family: 'Raleway', serif; font-size: 3rem; font-weight: 300; margin: 0; letter-spacing: 1px;">
+                PANEL DE CONTROL DE SISFOH
+            </h1>
+        </div>
+
+        <!-- Contenedor Multimedia (imagen) -->
+        <div
+            style="flex: 1; height: 100%; overflow: hidden; position: relative; display: flex; justify-content: center; align-items: center;">
+            <img src="{{ asset('Images/sfh_family01_sinfondo.png') }}" alt="Logo Familia"
+                style="max-width: 90%; max-height: 90%; object-fit: contain;">
+        </div>
+    </div>
 @stop
 
 @section('content')
