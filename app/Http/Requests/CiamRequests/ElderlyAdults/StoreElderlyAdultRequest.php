@@ -87,24 +87,24 @@ class StoreElderlyAdultRequest extends FormRequest
 
             'household_members' => ['nullable', 'integer', 'min:1'],
 
-            'type_of_disability' => [
-                'nullable',
-                Rule::in(['Visual', 'Motriz', 'Mental']),
-            ],
-            'permanent_attention' => 'nullable|boolean',
+            // **Guardian opcional**
+            'guardian_id' => 'nullable|integer|exists:guardians,id',
+
+            'type_of_disability' => ['nullable', Rule::in(['Visual', 'Motriz', 'Mental'])],
+
+            'permanent_attention' => ['nullable', 'boolean'],
+
+            'public_insurance' => ['nullable', 'string', Rule::in(['SIS', 'ESSALUD'])],
+
+
+            'private_insurance' => 'nullable|string|max:100',
+
             'observation' => 'nullable|string|max:500',
             'state' => 'required|boolean', // Activo o no en CIAM
 
-            // **Seguro público y privado**
-            'public_insurance' => 'nullable|string|max:100',
-            'private_insurance' => 'nullable|string|max:100',
-
-            // **Guardian opcional**
-            'guardian_id' => 'nullable|string|exists:guardians,id',
-
             // **Lista de programas sociales (array de strings)**
-            'social_programs' => 'nullable|array',
-            'social_programs.*' => 'string|max:100',
+            'social_program' => 'nullable|array',
+            'social_program.*' => 'string|max:255',
         ];
     }
 
@@ -134,7 +134,7 @@ class StoreElderlyAdultRequest extends FormRequest
 
             'household_members.integer' => 'El número de miembros del hogar debe ser un número entero.',
             'household_members.min' => 'Debe haber al menos 1 miembro en el hogar.',
-            'type_of_disability.in' => 'Debe ser Visual, Motriz o Mental.',
+            'type_of_disability.in' => 'El tipo de discapacidad seleccionado no es válido.',
             'permanent_attention.boolean' => 'Debe ser verdadero o falso.',
             'state.required' => 'Debe indicar si está activo en CIAM.',
 
@@ -144,16 +144,17 @@ class StoreElderlyAdultRequest extends FormRequest
             'district.required' => 'El distrito es obligatorio.',
 
             // **Errores de seguros**
-            'public_insurance.max' => 'Máximo 100 caracteres.',
+            'public_insurance.in' => 'El seguro público seleccionado no es válido.',
             'private_insurance.max' => 'Máximo 100 caracteres.',
 
             // **Errores de guardianes**
-            'guardian_id.exists' => 'El guardián seleccionado no existe.',
+            'guardian_id.integer' => 'El guardián seleccionado no es válido.',
+            'guardian_id.exists' => 'El guardián seleccionado no existe en el sistema.',
 
             // **Errores de programas sociales**
-            'social_programs.array' => 'Debe ser una lista de valores válidos.',
-            'social_programs.*.string' => 'Cada programa social debe ser un texto.',
-            'social_programs.*.max' => 'El nombre del programa social no debe exceder los 100 caracteres.',
+            'social_program.array' => 'Debe ser una lista de valores válidos.',
+            'social_program.*.string' => 'Cada programa social debe ser un texto.',
+            'social_program.*.max' => 'El nombre del programa social no debe exceder los 100 caracteres.',
         ];
     }
 
@@ -184,7 +185,7 @@ class StoreElderlyAdultRequest extends FormRequest
             'public_insurance' => 'seguro público',
             'private_insurance' => 'seguro privado',
             'guardian_id' => 'guardia',
-            'social_programs' => 'programas sociales',
+            'social_program' => 'programas sociales',
         ];
     }
 }

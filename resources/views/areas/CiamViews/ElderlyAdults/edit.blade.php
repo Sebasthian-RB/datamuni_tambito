@@ -8,6 +8,19 @@
 
 @section('content')
 <div class="container">
+
+    <!--  AQUÍ colocamos el código para mostrar los errores -->
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+    <!--  FIN DEL CÓDIGO PARA MOSTRAR ERRORES -->
+
     <form action="{{ route('elderly_adults.update', $elderlyAdult->id) }}" method="POST">
         @csrf
         @method('PUT')
@@ -191,6 +204,85 @@
                 </div>
 
 
+                <!-- Guardian (Campo para seleccionar el guardián con Select2) -->
+                <div class="form-group">
+                    <label for="guardian_id" style="font-weight: bold;">Seleccionar Guardián</label>
+                    <select id="guardian_id" name="guardian_id" class="form-control select2" style="width: 100%; text-align-last: center;">
+                        <option value="" {{ is_null($elderlyAdult->guardian_id) ? 'selected' : '' }}>Sin guardián asignado</option>
+                        @foreach($guardians as $guardian)
+                        <option value="{{ $guardian->id }}" {{ $elderlyAdult->guardian_id == $guardian->id ? 'selected' : '' }}>
+                            {{ $guardian->given_name }} {{ $guardian->paternal_last_name }} {{ $guardian->maternal_last_name }}
+                        </option>
+                        @endforeach
+                    </select>
+                    @error('guardian_id') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>
+
+                <!-- TIPO DE DISCAPACIDAD -->
+                <div class="form-group">
+                    <label for="type_of_disability" class="fw-bold">Tipo de Discapacidad</label>
+                    <select class="form-control" name="type_of_disability" id="type_of_disability">
+                        <option value="">Ninguna</option>
+                        <option value="Visual" {{ $elderlyAdult->type_of_disability == 'Visual' ? 'selected' : '' }}>Visual</option>
+                        <option value="Motriz" {{ $elderlyAdult->type_of_disability == 'Motriz' ? 'selected' : '' }}>Motriz</option>
+                        <option value="Mental" {{ $elderlyAdult->type_of_disability == 'Mental' ? 'selected' : '' }}>Mental</option>
+                    </select>
+                </div>
+
+                <!-- Atención Permanente -->
+
+                <input type="hidden" name="permanent_attention" value="0">
+
+                <div class="form-group">
+                    <label for="permanent_attention" class="form-label fw-bold" style="font-size: 1.2rem;">Requiere Atención Permanente</label>
+                    <div class="d-flex align-items-center mt-3">
+                        <div class="form-check" style="border: 2px solid #6E8E59; border-radius: 10px; padding: 10px 15px; background-color: #FFEECC;">
+                            <input class="form-check-input" type="checkbox" name="permanent_attention" id="permanent_attention" value="1"
+                                style="transform: scale(1.5); margin-right: 10px;" {{ $elderlyAdult->permanent_attention ? 'checked' : '' }}>
+                            <label class="form-check-label fw-bold" for="permanent_attention" style="color: #333;">
+                                <i class="fas fa-question-circle" style="margin-right: 5px; color: #FFA500;"></i> Atención Permanente
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SEGURO PUBLICO -->
+                <div class="form-group">
+                    <label for="public_insurance">Seguro Público</label>
+                    <select class="form-control @error('public_insurance') is-invalid @enderror" name="public_insurance" id="public_insurance">
+                        <option value="" {{ old('public_insurance', $elderlyAdult->public_insurance) == '' ? 'selected' : '' }}>Sin seguro</option>
+                        <option value="SIS" {{ old('public_insurance', $elderlyAdult->public_insurance) == 'SIS' ? 'selected' : '' }}>SIS</option>
+                        <option value="ESSALUD" {{ old('public_insurance', $elderlyAdult->public_insurance) == 'ESSALUD' ? 'selected' : '' }}>ESSALUD</option>
+                    </select>
+                    @error('public_insurance')
+                    <span class="invalid-feedback d-block">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <!-- SEGURO PRIVADO -->
+                <div class="form-group">
+                    <label for="private_insurance">Seguro Privado</label>
+                    <input type="text" class="form-control @error('private_insurance') is-invalid @enderror"
+                        id="private_insurance" name="private_insurance"
+                        value="{{ old('private_insurance', $elderlyAdult->private_insurance) }}"
+                        placeholder="Ingrese el nombre del seguro privado (opcional)">
+                    @error('private_insurance')
+                    <span class="invalid-feedback d-block">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <!-- Programas Sociales -->
+                <div class="form-group">
+                    <label>Programas Sociales</label>
+                    @foreach(['Pensión 65', 'Qali Warma', 'FOCAM'] as $program)
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="social_program[]" id="program_{{ $loop->index }}" value="{{ $program }}"
+                            {{ in_array($program, explode(', ', $elderlyAdult->social_program ?? '')) ? 'checked' : '' }}>
+                        <label class="form-check-label" for="program_{{ $loop->index }}">{{ $program }}</label>
+                    </div>
+                    @endforeach
+                </div>
+
             </div>
             <div class="card-footer" style="background-color: #9cbf5c;">
                 <button type="submit" class="btn btn-success">Actualizar</button>
@@ -202,8 +294,9 @@
 @stop
 
 
+<!-- JAVA SECTION-->
+
 @section('js')
-<!--  JS -->
 
 <!--  PARA EL TIPO DE DOCUMENTOS Y ID'S -->
 <script>
@@ -357,5 +450,131 @@
         }
     });
 </script>
+
+
+<!-- PARA EL GUARDIAN -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<!-- PARA GUARDIAN -->
+<script>
+    $(document).ready(function() {
+        $('#guardian_id').select2({
+            placeholder: "Seleccione un guardián",
+            allowClear: true,
+            width: 'resolve'
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#guardian_id').select2({
+            placeholder: "Seleccione un guardián",
+            allowClear: true,
+            width: 'resolve',
+            templateResult: formatGuardian, // Formato para las opciones
+            templateSelection: formatGuardianSelection // Formato para la selección
+        });
+
+        function formatGuardian(guardian) {
+            if (!guardian.id) {
+                return guardian.text; // Muestra la opción por defecto
+            }
+
+            // Personaliza las opciones con íconos o diseño
+            var html = `<div class="d-flex align-items-center">
+                            <i class="fas fa-user" style="color: #6E8E59; margin-right: 8px;"></i>
+                            ${guardian.text}
+                        </div>`;
+            return $(html);
+        }
+
+        function formatGuardianSelection(guardian) {
+            return guardian.text; // Texto seleccionado
+        }
+    });
+</script>
+
+@stop
+
+
+
+<!-- CSS SECTION-->
+
+@section('css')
+
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+<style>
+    .select2-container--default .select2-selection--single {
+        height: 38px;
+        /* Ajustar la altura */
+        border-radius: 5px;
+        /* Bordes redondeados */
+        border: 1px solid #6E8E59;
+        /* Color del borde */
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: #6E8E59;
+        /* Color del texto */
+        font-weight: bold;
+        /* Negrita */
+        padding: 8px;
+        /* Espaciado interno */
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        top: 6px;
+        /* Centrar la flecha */
+        color: #6E8E59;
+        /* Color de la flecha */
+    }
+
+    .select2-results__option {
+        color: black;
+        /* Color de las opciones */
+    }
+
+    .select2-results__option--highlighted {
+        background-color: #CAE0BC;
+        /* Color de fondo al pasar el mouse */
+        color: black;
+        /* Color del texto al resaltar */
+    }
+</style>
+
+<!-- Estilos adicionales -->
+<style>
+    .select2-container--default .select2-selection--single {
+        height: 45px;
+        /* Altura del select */
+        display: flex;
+        /* Para centrar el contenido */
+        align-items: center;
+        /* Centrar verticalmente */
+
+        border: 2px solid #d9d9d9;
+        /* Bordes */
+        border-radius: 5px;
+        /* Bordes redondeados */
+        background-color: #fff;
+        /* Fondo blanco */
+        font-size: 16px;
+        /* Tamaño de texto */
+        color: #333;
+        /* Color del texto */
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 100%;
+        /* Flecha centrada */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
 
 @stop

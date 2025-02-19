@@ -8,6 +8,19 @@
 
 @section('content')
 <div class="container">
+
+    <!--  AQUÍ colocamos el código para mostrar los errores -->
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+    <!--  FIN DEL CÓDIGO PARA MOSTRAR ERRORES -->
+
     <form action="{{ route('elderly_adults.store') }}" method="POST">
         @csrf
 
@@ -215,7 +228,6 @@
                     </select>
                 </div>
 
-
                 <!-- Atención Permanente -->
                 <div class="form-group">
                     <label for="permanent_attention" class="form-label fw-bold" style="font-size: 1.2rem;">Requiere Atención Permanente</label>
@@ -228,8 +240,6 @@
                         </div>
                     </div>
                 </div>
-
-
 
                 <!-- Seguro Público -->
                 <div class="form-group">
@@ -250,13 +260,14 @@
                 <!-- Programas Sociales -->
                 <div class="form-group">
                     <label>Programas Sociales</label>
-                    @foreach(['Pensión 65', 'Qali Warma'] as $program)
+                    @foreach(['Pensión 65', 'Qali Warma', 'FOCAM'] as $program)
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="social_programs[]" value="{{ $program }}">
-                        <label class="form-check-label">{{ $program }}</label>
+                        <input class="form-check-input" type="checkbox" name="social_program[]" id="program_{{ $loop->index }}" value="{{ $program }}">
+                        <label class="form-check-label" for="program_{{ $loop->index }}">{{ $program }}</label>
                     </div>
                     @endforeach
                 </div>
+
 
                 <!-- Estado -->
                 <div class="form-group">
@@ -280,8 +291,6 @@
                     </div>
                 </div>
 
-
-
                 <!-- Observaciones -->
                 <div class="form-group">
                     <label for="observation">Observaciones</label>
@@ -299,6 +308,9 @@
     </form>
 </div>
 @stop
+
+
+<!-- JAVA SECTION-->
 
 @section('js')
 
@@ -486,6 +498,8 @@
 
 @stop
 
+
+<!-- CSS SECTION-->
 
 @section('css')
 
