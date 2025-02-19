@@ -53,6 +53,13 @@
             padding: 10px;
             font-size: 13px !important; /* Tamaño de fuente */
         }
+
+        .editable-field-minor {
+            background-color: white !important; /* Fondo blanco */
+            border: 1px solid #B8B8B8 !important; /* Borde con color */
+            padding: 10px;
+            font-size: 13px !important; /* Tamaño de fuente */
+        }
     </style>
 @stop
 
@@ -87,7 +94,6 @@
                     <h3 class="card-title">Formulario para agregar miembro al comité</h3>
                 </div>
                 <div class="card-body">
-
                     <!-- Campo oculto para el ID del comité -->
                     <input type="hidden" name="committee_id" id="committee_id" value="{{ $committee->id }}">
 
@@ -115,7 +121,7 @@
                                     data-given-name="{{ $member->given_name }}"
                                     data-paternal="{{ $member->paternal_last_name }}"
                                     data-maternal="{{ $member->maternal_last_name }}"
-                                    data-minors='@json($member->vlMinors)'
+                                    data-minors="{{ json_encode($member->vlMinors) }}"
                                     {{ old('vl_family_member_id') == $member->id ? 'selected' : '' }}>
                                     {{ $member->id }}
                                 </option>
@@ -126,7 +132,7 @@
                         @enderror
                     </div>
                     
-                    <!-- Card Principal - Oculto por Defecto -->
+                    <!-- Card Principal para Familiar - Oculto por Defecto -->
                     <div id="family-member-details" class="card" 
                         style="display: none; background-color: #D4BEE4; border: none; border-radius: 12px; 
                             padding: 25px; box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.08); max-width: 600px; 
@@ -190,20 +196,6 @@
                                         font-weight: bold; color: #3B1E54;">
                             </div>
 
-                            <!-- Título y Botón de Editar -->
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5 class="card-title text-center" 
-                                    style="color: #3B1E54; font-weight: bold; font-size: 20px; margin-bottom: 0;">
-                                    🟣 Detalles de Menor(es) de Edad asociado(s)
-                                </h5>
-                            </div>
-
-                            <div id="children-list" class="mt-3"
-                                style="background: white; border-radius: 10px; padding: 15px 20px;
-                                    border-left: 4px solid #9B7EBD; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.05);">
-                                <ul id="childrenList" class="list-group" style="border-radius: 8px;"></ul>
-                            </div>
-
                             <!-- Botones (solo visibles si los campos son editables) -->
                             <div id="saveCancelButtons" class="text-center mt-4" style="display: none;">
                                 <button type="button" class="btn btn-success" id="saveFamilyMemberBtn" style="background-color: #9B7EBD; color: white; border: #9B7EBD;">Actualizar datos</button>
@@ -211,6 +203,9 @@
                             </div>   
                         </div>
                     </div>
+
+                    <!-- Contenedor para mostrar menores de edad -->
+                    <div id="minor-details-container"></div>
 
                     <!-- Descripción -->
                     <div class="form-group">
@@ -220,8 +215,8 @@
                             <span class="invalid-feedback">{{ $message }}</span>
                         @enderror
                     </div>
-
                 </div>
+
                 <div class="card-footer">
                     <button type="submit" class="btn btn-success" style="background-color: #9B7EBD; color: white; border: #9B7EBD;">Guardar Miembro</button>
                     <a href="{{ route('committee_vl_family_members.index', ['committee_id' => $committee->id]) }}" class="btn btn-secondary">Cancelar</a>
@@ -319,6 +314,12 @@
             $('#vl_family_member_id').on('change', function() {
                 const selected = $(this).find(':selected');
 
+                // Si no hay selección, ocultar la tarjeta de datos del familiar
+                if (!selected.val()) {
+                    $('#family-member-details').hide();
+                    return;
+                }
+                
                 // Guardar valores originales correctamente
                 originalValues = {
                     id: selected.attr('data-id') || '',
@@ -345,97 +346,6 @@
 
                 // Mostrar la tarjeta con los datos
                 $('#family-member-details').show();
-
-                // Limpiar la lista de menores antes de hacer la solicitud AJAX
-                $('#childrenList').empty();
-
-                // Mostrar los menores si existen
-                if (originalValues.minors.length > 0) {
-                    originalValues.minors.forEach(function(minor) {
-                        // Calcular la edad a partir de la fecha de nacimiento
-                        let birthDate = new Date(minor.birth_date);
-                        let today = new Date();
-                        let age = today.getFullYear() - birthDate.getFullYear();
-                        let monthDiff = today.getMonth() - birthDate.getMonth();
-
-                        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-                            age--;
-                        }
-
-                        // Iconos personalizados con color #9B7EBD
-                        let idIcon = '<i class="fas fa-id-card" style="color: #9B7EBD;"></i>';
-                        let birthIcon = '<i class="fas fa-birthday-cake" style="color: #9B7EBD;"></i>';
-                        let locationIcon = '<i class="fas fa-map-marker-alt" style="color: #9B7EBD;"></i>';
-                        let kinshipIcon = '<i class="fas fa-users" style="color: #9B7EBD;"></i>';
-
-                        // Icono de sexo con colores específicos
-                        let sexIcon = minor.sex_type 
-                            ? '<i class="fas fa-mars" style="color: #007bff;"></i>'   // Azul para masculino
-                            : '<i class="fas fa-venus" style="color: #ff69b4;"></i>'; // Rosa para femenino
-
-                        // Estilo para resaltar nombres de mayores de 7 años con advertencia
-                        let warningBox = age >= 7 ? `
-                        <div class="alert alert-danger text-center" style="border-radius: 10px; font-weight: bold; margin-bottom: 10px;">
-                            <i class="fas fa-exclamation-triangle warning-icon"></i> 
-                            <span style="font-size: 16px;">${minor.given_name} tiene más de 7 años</span>
-                        </div>` 
-                        : '';
-
-                        // Estilos de animación para la advertencia
-                        let animationStyle = `
-                            <style>
-                                .warning-icon {
-                                    font-size: 24px;
-                                    animation: pulse 1s infinite;
-                                }
-
-                                @keyframes pulse {
-                                    0% { transform: scale(1); }
-                                    50% { transform: scale(1.3); }
-                                    100% { transform: scale(1); }
-                                }
-                            </style>`;
-
-                        // Presentación de información de menor de edad
-                        let minorHTML = `
-                            ${animationStyle}
-                            <div class="card mt-3" style="border: none; border-radius: 12px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
-                                <div class="card-header" style="background-color: #9B7EBD; color: white; border-top-left-radius: 12px; border-top-right-radius: 12px;">
-                                    <h6 class="card-title text-center mb-0">
-                                        ${minor.given_name} ${minor.paternal_last_name} ${minor.maternal_last_name}
-                                    </h6>
-                                </div>
-                                <div class="card-body" style="padding: 15px; background-color: #f9f9f9; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;">
-                                    ${warningBox}
-                                    <table class="table table-borderless" style="font-size: 14px; margin-bottom: 0;">
-                                        <tr>
-                                            <td>${idIcon} <strong>Documento:</strong></td>
-                                            <td>${minor.identity_document} N° ${minor.id}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>${birthIcon} <strong>Edad:</strong></td>
-                                            <td>${age} años</td>
-                                        </tr>
-                                        <tr>
-                                            <td>${sexIcon} <strong>Sexo:</strong></td>
-                                            <td>${minor.sex_type ? 'Masculino' : 'Femenino'}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>${locationIcon} <strong>Dirección:</strong></td>
-                                            <td>${minor.address}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>${kinshipIcon} <strong>Relación:</strong></td>
-                                            <td>${minor.kinship}</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>`;
-                        $('#childrenList').append(minorHTML);
-                    });
-                } else {
-                    $('#childrenList').append(`<li class="text-muted text-center">No hay menores asociados</li>`);
-                }
             });
 
             // Al hacer clic en "Editar"
@@ -534,6 +444,392 @@
                     }
                 });
             });
+        });
+    </script>
+
+    <!-- Script para mostrar datos del menor de edad -->
+    <script>
+        // Función para convertir fechas a formato YYYY-MM-DD
+        function formatDate(inputDate) {
+            const date = new Date(inputDate);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');  // Asegura que el mes tenga 2 dígitos
+            const day = String(date.getDate()).padStart(2, '0');  // Asegura que el día tenga 2 dígitos
+            return `${year}-${month}-${day}`;
+        }
+
+        $(document).ready(function() {
+            let originalMinorValues = {}; // Objeto para almacenar los valores originales del menor
+        
+            $('#vl_family_member_id').on('change', function() {
+                const selected = $(this).find(':selected');
+                const minorsData = JSON.parse(selected.attr('data-minors') || '[]'); // Obtener los menores asociados
+        
+                // Limpiar los detalles de los menores previos
+                $('#minor-details-container').empty(); // Limpiar todos los cards existentes
+        
+                if (minorsData.length > 0) {
+                    // Crear una fila (row) para los cards, ahora con dos columnas por fila
+                    const rowHTML = $('<div class="row row-cols-1 row-cols-md-2 g-4"></div>'); // row-cols-md-2 para 2 cards por fila
+        
+                    minorsData.forEach(function(minor) {
+                        originalMinorValues[minor.id] = { ...minor }; // Guardar valores originales
+
+                        // Validar si birth_date está definido y tiene formato correcto
+                        let age = 0;
+                        if (minor.birth_date) {
+                            let birthDate = new Date(minor.birth_date);
+                            
+                            if (!isNaN(birthDate.getTime())) { // Asegura que la fecha sea válida
+                                const today = new Date();
+                                age = today.getFullYear() - birthDate.getFullYear();
+                                const monthDiff = today.getMonth() - birthDate.getMonth();
+                                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                                    age--; // Ajustar si aún no ha cumplido años este año
+                                }
+                            } else {
+                                console.warn(`Fecha inválida para el menor ID: ${minor.id} - Fecha recibida: ${minor.birth_date}`);
+                            }
+                        } else {
+                            console.warn(`El menor con ID ${minor.id} no tiene fecha de nacimiento.`);
+                        }
+
+                        // Generar alerta si el menor tiene más de 7 años
+                        const ageAlert = age > 7 ? `
+                            <div class="d-flex align-items-center justify-content-center p-3" 
+                                style="background: #FFE5E5; 
+                                    color: #B71C1C; 
+                                    border-left: 5px solid #B71C1C; 
+                                    border-radius: 10px; 
+                                    box-shadow: 0px 4px 10px rgba(183, 28, 28, 0.2); 
+                                    font-weight: 600; 
+                                    font-size: 16px; 
+                                    padding: 15px; 
+                                    margin-bottom: 15px;">
+                                <i class="fas fa-exclamation-circle fa-lg me-2"></i>
+                                <span>Advertencia: Este menor tiene <strong>${age}</strong> años.</span>
+                            </div>
+
+
+                        ` : '';
+
+                        const cardHTML = `
+                            <div id="minor-details-${minor.id}" class="col-12" style="padding: 25px">
+                                <div class="card" style="background-color: #EEEEEE; border: none; border-radius: 12px;
+                                    padding: 25px; box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.08); transition: all 0.3s ease; width: 100%;">
+                                    
+                                    <div class="card-body">
+                                        ${ageAlert} <!-- Alerta si el menor tiene más de 7 años -->
+
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h5 class="card-title text-center" style="color: #3B1E54; font-weight: bold; font-size: 20px; margin-bottom: 0;">
+                                                ⚫ Detalles del Menor
+                                            </h5>
+                                            <button type="button" class="btn btn-warning btn-sm editMinorBtn" style="background-color: #3B1E54; color: #FFFFFF" data-id="${minor.id}">
+                                                <i class="fas fa-pencil-alt"></i> Editar
+                                            </button>
+                                        </div>
+
+                                        <!-- Contenedor para las dos columnas -->
+                                        <div class="row">
+                                            <!-- Columna 1: Información básica + Apellidos y nombres -->
+                                            <div class="col-12">
+                                                <!-- Información básica -->
+                                                <div class="info-box d-flex justify-content-between align-items-center" style="background: white; border-radius: 10px; padding: 15px 20px; border-left: 4px solid #B8B8B8; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.05);">
+                                                    <div>
+                                                        <label style="color: #3B1E54; font-weight: 600; font-size: 14px;">
+                                                            <i class="fas fa-id-card"></i> ID
+                                                        </label>
+                                                        <input type="text" class="form-control" id="minor_id_${minor.id}" disabled value="${minor.id}" style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
+                                                    </div>
+                                                    <div>
+                                                        <label style="color: #3B1E54; font-weight: 600; font-size: 14px;">
+                                                            <i class="fas fa-file-alt"></i> Documento
+                                                        </label>
+                                                        <input type="text" class="form-control" id="identity_document_${minor.id}" disabled value="${minor.identity_document}" style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
+                                                    </div>
+                                                </div>
+
+                                                <!-- Apellidos y nombres -->
+                                                <div class="info-box d-flex flex-column mt-3" style="background: white; border-radius: 10px; padding: 15px 20px; border-left: 4px solid #B8B8B8; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.05);">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div>
+                                                            <label style="color: #3B1E54; font-weight: 600; font-size: 14px;">
+                                                                Apellido Paterno
+                                                            </label>
+                                                            <input type="text" class="form-control" id="paternal_last_name_${minor.id}" disabled value="${minor.paternal_last_name}" style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
+                                                        </div>
+                                                        <div>
+                                                            <label style="color: #3B1E54; font-weight: 600; font-size: 14px;">
+                                                                Apellido Materno
+                                                            </label>
+                                                            <input type="text" class="form-control" id="maternal_last_name_${minor.id}" disabled value="${minor.maternal_last_name}" style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
+                                                        </div>
+                                                    </div>
+
+                                                    <label style="color: #3B1E54; font-weight: 600; font-size: 14px; padding-top: 15px;">
+                                                        Nombres
+                                                    </label>
+                                                    <input type="text" class="form-control" id="given_name_${minor.id}" disabled value="${minor.given_name}" style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
+                                                </div>
+                                            </div>
+
+                                            <!-- Columna 2: Información adicional -->
+                                            <div class="col-12">
+                                                <div class="info-box d-flex flex-column mt-3" style="background: white; border-radius: 10px; padding: 15px 20px; border-left: 4px solid #B8B8B8; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.05);">
+                                                    
+                                                    <div style="display: flex; justify-content: space-between; gap: 20px;">
+                                                        <div>
+                                                            <label style="color: #3B1E54; font-weight: 600; font-size: 14px;">
+                                                                <i class="fas fa-calendar-alt"></i> Fecha de Nacimiento
+                                                            </label>
+                                                            <input type="date" class="form-control" id="birth_date_${minor.id}" disabled value="${formatDate(minor.birth_date)}" style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
+                                                        </div>
+                                                        <div>
+                                                            <label style="color: #3B1E54; font-weight: 600; font-size: 14px;">
+                                                                <i class="fas fa-venus-mars"></i> Sexo
+                                                            </label>
+                                                            <select class="form-control" id="sex_type_${minor.id}" disabled 
+                                                                style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
+                                                                ${Object.entries(@json($sexTypes)).map(([sex, value]) => 
+                                                                    `<option value="${sex}" ${minor.sex_type == sex ? 'selected' : ''}>${value}</option>`
+                                                                ).join('')}
+                                                            </select>                                                   
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <label style="color: #3B1E54; font-weight: 600; font-size: 14px; padding-top: 15px;">
+                                                            <i class="fas fa-map-marker-alt"></i> Dirección
+                                                        </label>
+                                                        <input type="text" class="form-control" id="address_${minor.id}" disabled value="${minor.address}" style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
+                                                    </div>
+                                                    <div>
+                                                        <label style="color: #3B1E54; font-weight: 600; font-size: 14px; padding-top: 15px;">
+                                                            <i class="fas fa-home"></i> Tipo de Vivienda
+                                                        </label>
+                                                        <select class="form-control" id="dwelling_type_${minor.id}" disabled 
+                                                            style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
+                                                            ${@json($dwellingTypes).map(dwelling => 
+                                                                `<option value="${dwelling}" ${minor.dwelling_type === dwelling ? 'selected' : ''}>${dwelling}</option>`
+                                                            ).join('')}
+                                                        </select>
+
+                                                    </div>
+                                                    <div>
+                                                        <label style="color: #3B1E54; font-weight: 600; font-size: 14px; padding-top: 15px;">
+                                                            <i class="fas fa-graduation-cap"></i> Nivel de Educación
+                                                        </label>
+                                                        <select class="form-control" id="education_level_${minor.id}" disabled 
+                                                            style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
+                                                            ${@json($educationLevels).map(level => 
+                                                                `<option value="${level}" ${minor.education_level === level ? 'selected' : ''}>${level}</option>`
+                                                            ).join('')}
+                                                        </select>
+
+                                                    </div>
+                                                    <div>
+                                                        <label style="color: #3B1E54; font-weight: 600; font-size: 14px; padding-top: 15px;">
+                                                            <i class="fas fa-clipboard-list"></i> Condición
+                                                        </label>
+                                                        <select class="form-control" id="condition_${minor.id}" disabled 
+                                                            style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
+                                                            ${@json($conditions).map(condition => 
+                                                                `<option value="${condition}" ${minor.condition === condition ? 'selected' : ''}>${condition}</option>`
+                                                            ).join('')}
+                                                        </select>
+                                                    </div>
+                                                    <div>
+                                                        <label style="color: #3B1E54; font-weight: 600; font-size: 14px; padding-top: 15px;">
+                                                            <i class="fas fa-users"></i> Relación
+                                                        </label>
+                                                        <select class="form-control" id="kinship_${minor.id}" disabled 
+                                                            style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
+                                                            ${@json($kinships).map(kinship => 
+                                                                `<option value="${kinship}" ${minor.kinship === kinship ? 'selected' : ''}>${kinship}</option>`
+                                                            ).join('')}
+                                                        </select>
+
+                                                    </div>
+                                                    <div>
+                                                        <label style="color: #3B1E54; font-weight: 600; font-size: 14px; padding-top: 15px;">
+                                                            <i class="fas fa-wheelchair"></i> Discapacidad
+                                                        </label>
+                                                        <select class="form-control" id="disability_${minor.id}" disabled 
+                                                            style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
+                                                            ${Object.entries(@json($disabilities)).map(([disability, value]) => 
+                                                                `<option value="${disability}" ${minor.disability == disability ? 'selected' : ''}>${value}</option>`
+                                                            ).join('')}
+                                                        </select>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="saveCancelButtons_${minor.id}" class="text-center mt-4" style="display: none;">
+                                            <button type="button" class="btn btn-success" id="saveMinorBtn_${minor.id}" data-id="${minor.id}" style="background-color: #9B7EBD; color: white; border: #9B7EBD;">
+                                                <i class="fas fa-save"></i> Actualizar datos
+                                            </button>
+                                            <button type="button" class="btn btn-secondary" id="cancelEditBtn_${minor.id}">
+                                                <i class="fas fa-times-circle"></i> Cancelar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        
+                        // Añadir el card al contenedor de la fila
+                        rowHTML.append(cardHTML);
+                    });
+        
+                    // Añadir la fila completa al contenedor principal
+                    $('#minor-details-container').append(rowHTML);
+        
+                    // Mostrar la sección de detalles
+                    $('#minor-details-container').show();
+                } else {
+                    $('#minor-details-container').html("<p>No hay menores asociados.</p>").show();
+                }
+            });
+
+            // Evento para editar los datos del menor
+            $(document).on('click', '.editMinorBtn', function() {
+                const minorId = $(this).data('id');
+
+                // Habilitar todos los campos EXCEPTO ID y Documento de Identidad
+                $(`#given_name_${minorId}, #paternal_last_name_${minorId}, #maternal_last_name_${minorId}, 
+                #birth_date_${minorId}, #sex_type_${minorId}, #address_${minorId}, 
+                #dwelling_type_${minorId}, #education_level_${minorId}, #condition_${minorId}, #kinship_${minorId}, #disability_${minorId}`)
+                    .prop('disabled', false)
+                    .css('background-color', 'white')
+                    .addClass('editable-field-minor');
+
+                $(`#minor_id_${minorId}, #identity_document_${minorId}`)
+                    .css('background-color', '#e9ecef');
+
+                // Mostrar los botones de guardar y cancelar
+                $(`#saveCancelButtons_${minorId}`).show();
+                
+                // Ocultar el botón de edición
+                $(this).hide();
+            });
+
+            // Al hacer clic en "Cancelar"
+            $(document).on('click', '[id^="cancelEditBtn_"]', function() {
+                const minorId = $(this).attr('id').split('_')[1]; // Extraer el ID del menor a partir del id del botón
+
+                // Restaurar los valores originales para este menor
+                $(`#minor_id_${minorId}, #identity_document_${minorId}`)
+                    .css('background-color', 'transparent');
+
+                if (originalMinorValues[minorId]) {
+                    $(`#given_name_${minorId}`).val(originalMinorValues[minorId].given_name).prop('disabled', true).css('background-color', 'transparent').removeClass('editable-field-minor');
+                    $(`#paternal_last_name_${minorId}`).val(originalMinorValues[minorId].paternal_last_name).prop('disabled', true).css('background-color', 'transparent').removeClass('editable-field-minor');
+                    $(`#maternal_last_name_${minorId}`).val(originalMinorValues[minorId].maternal_last_name).prop('disabled', true).css('background-color', 'transparent').removeClass('editable-field-minor');
+                    $(`#birth_date_${minorId}`).val(formatDate(originalMinorValues[minorId].birth_date)).prop('disabled', true).css('background-color', 'transparent').removeClass('editable-field-minor');
+                    
+                    // Restaurar el valor de sexo con formato correcto
+                    const sexValue = originalMinorValues[minorId].sex_type ? '1' : '0';
+                    $(`#sex_type_${minorId}`).val(sexValue).prop('disabled', true).css('background-color', 'transparent').removeClass('editable-field-minor');
+                    
+                    $(`#address_${minorId}`).val(originalMinorValues[minorId].address).prop('disabled', true).css('background-color', 'transparent').removeClass('editable-field-minor');
+                    $(`#dwelling_type_${minorId}`).val(originalMinorValues[minorId].dwelling_type).prop('disabled', true).css('background-color', 'transparent').removeClass('editable-field-minor');
+                    $(`#education_level_${minorId}`).val(originalMinorValues[minorId].education_level).prop('disabled', true).css('background-color', 'transparent').removeClass('editable-field-minor');
+                    $(`#condition_${minorId}`).val(originalMinorValues[minorId].condition).prop('disabled', true).css('background-color', 'transparent').removeClass('editable-field-minor');
+                    $(`#kinship_${minorId}`).val(originalMinorValues[minorId].kinship).prop('disabled', true).css('background-color', 'transparent').removeClass('editable-field-minor');
+                    
+                    // Restaurar el valor de discapacidad con formato correcto
+                    const disabilityValue = originalMinorValues[minorId].disability ? '1' : '0';
+                    $(`#disability_${minorId}`).val(disabilityValue).prop('disabled', true).css('background-color', 'transparent').removeClass('editable-field-minor');
+                    
+                } else {
+                    console.log("No se encontraron valores originales para este menor.");
+                }
+
+                // Ocultar botones de guardar/cancelar y mostrar el de editar
+                $(`#saveCancelButtons_${minorId}`).fadeOut();
+                $(`.editMinorBtn[data-id="${minorId}"]`).fadeIn();
+
+                // Restablecer los estilos y elementos que estaban modificados
+                $('.invalid-feedback').remove();
+                $('.is-invalid').removeClass('is-invalid');
+            });
+
+            // Evento para guardar los cambios
+            $(document).on('click', '[id^="saveMinorBtn_"]', function() {
+                const minorId = $(this).data('id');
+
+                const updateUrl = `{{ url('vl_minors') }}/${minorId}`;
+
+                const updatedData = {
+                    _token: "{{ csrf_token() }}",
+                    _method: "PUT",
+                    id: String(minorId), // Convertir a string porque en la BD es VARCHAR
+                    identity_document: $(`#identity_document_${minorId}`).val() || originalMinorValues[minorId]?.identity_document || "",
+                    given_name: $(`#given_name_${minorId}`).val() || originalMinorValues[minorId]?.given_name || "",
+                    paternal_last_name: $(`#paternal_last_name_${minorId}`).val() || originalMinorValues[minorId]?.paternal_last_name || "",
+                    maternal_last_name: $(`#maternal_last_name_${minorId}`).val() || originalMinorValues[minorId]?.maternal_last_name || "",
+                    birth_date: formatDate($(`#birth_date_${minorId}`).val() || originalMinorValues[minorId]?.birth_date),
+                    sex_type: $(`#sex_type_${minorId}`).val() !== undefined ? parseInt($(`#sex_type_${minorId}`).val()) : (originalMinorValues[minorId]?.sex_type ? 1 : 0),
+                    registration_date: formatDate($(`#registration_date_${minorId}`).val() || originalMinorValues[minorId]?.registration_date),
+                    withdrawal_date: formatDate($(`#withdrawal_date_${minorId}`).val() || originalMinorValues[minorId]?.withdrawal_date),
+                    address: $(`#address_${minorId}`).val() || originalMinorValues[minorId]?.address || "",
+                    dwelling_type: $(`#dwelling_type_${minorId}`).val() || originalMinorValues[minorId]?.dwelling_type || "Propio",
+                    education_level: $(`#education_level_${minorId}`).val() || originalMinorValues[minorId]?.education_level || "Ninguno",
+                    condition: $(`#condition_${minorId}`).val() || originalMinorValues[minorId]?.condition || "Lact.",
+                    disability: $(`#disability_${minorId}`).val() !== undefined ? parseInt($(`#disability_${minorId}`).val()) : (originalMinorValues[minorId]?.disability ? 1 : 0),
+                    kinship: $(`#kinship_${minorId}`).val() || originalMinorValues[minorId]?.kinship || "Hijo(a)",
+                    vl_family_member_id: $(`#vl_family_member_id_${minorId}`).val() || originalMinorValues[minorId]?.vl_family_member_id || "",
+                };
+
+                // Función para formatear fechas correctamente
+                function formatDate(date) {
+                    if (!date) return null;
+                    return date.split("T")[0]; // Extraer solo la parte "YYYY-MM-DD"
+                }
+
+                // Verificar los datos antes de enviarlos
+                console.log("Datos a enviar:", updatedData);
+
+                $.ajax({
+                    url: updateUrl,
+                    type: "POST",
+                    data: updatedData,
+                    success: function(response) {
+                        alert('Datos del menor actualizados correctamente');
+
+                        // Deshabilitar los campos nuevamente
+                        $(`#given_name_${minorId}, #paternal_last_name_${minorId}, #maternal_last_name_${minorId}, 
+                        #birth_date_${minorId}, #sex_type_${minorId}, #address_${minorId}, 
+                        #dwelling_type_${minorId}, #education_level_${minorId}, #condition_${minorId}, #kinship_${minorId}, #disability_${minorId}`)
+                            .prop('disabled', true)
+                            .removeClass('editable-field-minor')
+                            .css('background-color', 'transparent');
+
+                        // Ocultar botones de guardar/cancelar y mostrar el de editar
+                        $(`#saveCancelButtons_${minorId}`).hide();
+                        $(`.editMinorBtn[data-id="${minorId}"]`).show();
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
+                            $('.invalid-feedback').remove();
+                            $('.is-invalid').removeClass('is-invalid');
+
+                            $.each(errors, function(key, messages) {
+                                let inputField = $(`#${key}_${minorId}`);
+                                inputField.addClass('is-invalid');
+                                inputField.after(`<div class="invalid-feedback">${messages[0]}</div>`);
+                            });
+                        } else {
+                            console.log(xhr.responseText);
+                            alert('Error al actualizar los datos: ' + xhr.responseText);
+                        }
+                    }
+                });
+            });
+
         });
     </script>
 @stop
