@@ -626,8 +626,8 @@ return [
 
         /* Área CIAM */
         [
-            'text' => 'CIAM',
-            'icon' => 'fa-solid fa-person-cane',
+            'text' => 'Área CIAM',
+            'icon' => 'fas fa-blind', // Persona con bastón (disponible en FontAwesome 5)
             'submenu' => [
                 [
                     'text' => 'Menú Principal',

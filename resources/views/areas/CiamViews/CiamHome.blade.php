@@ -15,13 +15,14 @@
 <!-- Panel de Control del CIAM -->
 <div class="d-flex align-items-center justify-content-between" style="height: 50vh; padding: 0;">
 
-    <!-- Contenedor de Texto -->
+    <!-- Contenedor de Texto Mejorado -->
     <div
-        style="flex: 1; text-align: center; color: #6E8E59; z-index: 1; padding: 40px; display: flex; justify-content: center; align-items: center; height: 100%; background: #f8b195;">
-        <h1 style="font-family: 'Raleway', serif; font-size: 3rem; font-weight: 300; margin: 0; letter-spacing: 1px;">
-            PANEL DE CONTROL DE CIAM
+        style="flex: 1; text-align: center; color: #6E8E59; z-index: 1; padding: 50px; display: flex; justify-content: center; align-items: center; height: 100%; background: #CAE0BC;">
+        <h1 style="font-family: 'Raleway', sans-serif; font-size: 3.5rem; font-weight: 700; margin: 0; letter-spacing: 2px; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
+            BIENVENIDO A CIAM
         </h1>
     </div>
+
 
     <!-- Contenedor Multimedia (imagen) -->
     <div
