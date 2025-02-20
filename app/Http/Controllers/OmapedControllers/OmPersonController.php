@@ -19,7 +19,7 @@ class OmPersonController extends Controller
     public function index()
     {
         // Obtener todas las personas con sus relaciones (si es necesario)
-        $people = OmPerson::with(['dwelling', 'disability', 'caregiver'])->get();
+        $people = OmPerson::with(['dwelling', 'disability', 'caregiver'])->paginate(10);
         return view('areas.OmapedViews.OmPeople.index', compact('people'));
     }
 
