@@ -91,12 +91,23 @@ class UpdateElderlyAdultRequest extends FormRequest
 
             'household_members' => ['nullable', 'integer', 'min:1'],
 
-            'guardian_id' => ['sometimes', 'nullable', 'exists:guardians,id'],
-            'type_of_disability' => ['sometimes', 'nullable', 'string'],
-            'permanent_attention' => ['sometimes', 'nullable', 'boolean'],
-            'public_insurance' => ['sometimes', 'nullable', 'string'],
-            'private_insurance' => ['sometimes', 'nullable', 'string'],
-            'social_program' => ['sometimes', 'nullable', 'array'],
+            'guardian_id' => [
+                'nullable',
+                'exists:guardians,id', // Asegura que el ID exista en la tabla de guardians
+            ],
+
+            'type_of_disability' => ['nullable', Rule::in(['Visual', 'Motriz', 'Mental'])],
+
+            'permanent_attention' => ['nullable', 'boolean'],
+
+            'public_insurance' => ['nullable', 'string', Rule::in(['SIS', 'ESSALUD'])],
+
+            'private_insurance' => 'nullable|string|max:100',
+
+            // **Lista de programas sociales (array de strings)**
+            'social_program' => 'nullable|array',
+            'social_program.*' => 'string|max:255',
+
             'state' => ['sometimes', 'nullable', 'in:0,1'],
             'observation' => ['sometimes', 'nullable', 'string'],
         ];
@@ -129,7 +140,7 @@ class UpdateElderlyAdultRequest extends FormRequest
             'household_members.integer' => 'El número de miembros del hogar debe ser un número entero.',
             'household_members.min' => 'Debe haber al menos 1 miembro en el hogar.',
 
-            'type_of_disability.in' => 'Debe ser Visual, Motriz o Mental.',
+            'type_of_disability.in' => 'El tipo de discapacidad seleccionado no es válido.',
 
             'permanent_attention.boolean' => 'Debe ser verdadero o falso.',
             'state.required' => 'Debe indicar si está activo en CIAM.',
@@ -140,16 +151,17 @@ class UpdateElderlyAdultRequest extends FormRequest
             'district.required' => 'El distrito es obligatorio.',
 
             // **Errores de seguros**
-            'public_insurance.max' => 'Máximo 100 caracteres.',
+            'public_insurance.in' => 'El seguro público seleccionado no es válido.',
             'private_insurance.max' => 'Máximo 100 caracteres.',
 
             // **Errores de guardianes**
-            'guardian_id.exists' => 'El guardián seleccionado no existe.',
+            'guardian_id.integer' => 'El guardián seleccionado no es válido.',
+            'guardian_id.exists' => 'El guardián seleccionado no existe en el sistema.',
 
             // **Errores de programas sociales**
-            'social_programs.array' => 'Debe ser una lista de valores válidos.',
-            'social_programs.*.string' => 'Cada programa social debe ser un texto.',
-            'social_programs.*.max' => 'El nombre del programa social no debe exceder los 100 caracteres.',
+            'social_program.array' => 'Debe ser una lista de valores válidos.',
+            'social_program.*.string' => 'Cada programa social debe ser un texto.',
+            'social_program.*.max' => 'El nombre del programa social no debe exceder los 100 caracteres.',
         ];
     }
 
@@ -180,7 +192,7 @@ class UpdateElderlyAdultRequest extends FormRequest
             'public_insurance' => 'seguro público',
             'private_insurance' => 'seguro privado',
             'guardian_id' => 'guardia',
-            'social_programs' => 'programas sociales',
+            'social_program' => 'programas sociales',
         ];
     }
 }

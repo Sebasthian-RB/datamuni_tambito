@@ -36,13 +36,13 @@ class VlMinorController extends Controller
      */
     public function create(CreateVlMinorRequest $request)
     {
-        // Aquí se definen las opciones disponibles para los selects
-        $documentTypes = ['DNI', 'Pasaporte', 'Cédula de Extranjería'];  
+        // Definir las opciones disponibles para los selects
+        $documentTypes = ['DNI', 'Pasaporte', 'Cédula de Extranjería'];  //Para el menor de edad
         $identityDocumentTypes = [
             'DNI' => 'DNI',
             'Carnet de Extranjería' => 'Carnet de Extranjería',
             'Otro' => 'Otro',
-        ];
+        ]; // Para el familiar (agregar)
         $sexTypes = [
             0 => 'Femenino',
             1 => 'Masculino',
@@ -111,12 +111,12 @@ class VlMinorController extends Controller
     public function edit(EditVlMinorRequest $request, VlMinor $vlMinor)
     {
         // Aquí se definen las opciones disponibles para los selects
-        $documentTypes = ['DNI', 'Pasaporte', 'Cédula de Extranjería'];  
+        $documentTypes = ['DNI', 'Pasaporte', 'Cédula de Extranjería'];  //Para el menor de edad
         $identityDocumentTypes = [
             'DNI' => 'DNI',
             'Carnet de Extranjería' => 'Carnet de Extranjería',
             'Otro' => 'Otro',
-        ];
+        ]; // Para el familiar (agregar)
         $sexTypes = [
             0 => 'Femenino',
             1 => 'Masculino',
