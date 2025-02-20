@@ -13,8 +13,8 @@
         <a href="{{ route('elderly_adults.create') }}" class="btn" style="background-color: #6E8E59; color: white;">
             <i class="fas fa-user-plus"></i> Agregar Adulto Mayor
         </a>
-        <a href="{{ route('ciamdashboard') }}" class="btn btn-secondary" style="background-color: #CAE0BC; color: black;">
-            <i class="fas fa-arrow-left"></i> Volver
+        <a href="{{ route('CiamHome') }}" class="btn btn-secondary" style="background-color: #CAE0BC; color: black;">
+            <i class="fas fa-arrow-left"></i> Volver a la Pagina de Inicio
         </a>
     </div>
 

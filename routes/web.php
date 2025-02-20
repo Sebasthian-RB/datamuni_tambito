@@ -50,7 +50,9 @@ use App\Http\Controllers\CiamControllers\PrivateInsuranceController;
 use App\Http\Controllers\CiamControllers\PublicInsuranceController;
 use App\Http\Controllers\CiamControllers\SocialProgramController;
 
+use App\Http\Controllers\CiamControllers\CiamHomeController; //dashboard de CIAM
 use App\Http\Controllers\CiamControllers\CiamDashboardController; //dashboard de CIAM
+
 
 //Controladores deL Área: OMAPED
 use App\Http\Controllers\OmapedControllers\CaregiverController;
@@ -119,6 +121,7 @@ Route::middleware([
     Route::resource('elderly_adults', ElderlyAdultController::class);
     Route::resource('guardians', GuardianController::class);
 
+    Route::get('/ciam_home', [CiamHomeController::class, 'index'])->name('CiamHome');
     Route::get('/ciam_dashboard', [CiamDashboardController::class, 'index'])->name('ciamdashboard');
 
     // Rutas de los controladores de OMAPED dentro del grupo de autenticación
