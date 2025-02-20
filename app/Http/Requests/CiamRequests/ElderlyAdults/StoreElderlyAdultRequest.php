@@ -103,7 +103,7 @@ class StoreElderlyAdultRequest extends FormRequest
             'state' => 'required|boolean', // Activo o no en CIAM
 
             // **Lista de programas sociales (array de strings)**
-            'social_program' => 'nullable|array',
+            'social_program' => 'nullable|array', // Permite enviar un array de opciones
             'social_program.*' => 'string|max:255',
         ];
     }

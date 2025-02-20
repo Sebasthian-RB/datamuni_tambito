@@ -121,10 +121,10 @@
                     <tr>
                         <th style="background-color: #9cbf5c; color: white;">Programas Sociales</th>
                         <td>
-                            @if($elderlyAdult->social_programs)
-                            {{ implode(', ', json_decode($elderlyAdult->social_programs, true)) }}
+                            @if (!empty($elderlyAdult->social_program))
+                            <p>{{ $elderlyAdult->social_program }}</p>
                             @else
-                            No pertenece a ningún programa social.
+                            <p>No pertenece a ningún programa social.</p>
                             @endif
                         </td>
                     </tr>
