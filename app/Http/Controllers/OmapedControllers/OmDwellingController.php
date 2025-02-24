@@ -16,7 +16,7 @@ class OmDwellingController extends Controller
     public function index()
     {
         // Obtener todas las viviendas
-        $dwellings = OmDwelling::all();
+        $dwellings = OmDwelling::paginate(10);
         return view('areas.OmapedViews.OmDwellings.index', compact('dwellings'));
     }
 

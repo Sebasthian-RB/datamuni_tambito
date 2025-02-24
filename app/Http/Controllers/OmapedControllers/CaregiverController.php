@@ -16,7 +16,7 @@ class CaregiverController extends Controller
     public function index()
     {
         // Obtener todos los cuidadores
-        $caregivers = Caregiver::all(); // Aquí puedes optimizar según lo necesites
+        $caregivers = Caregiver::paginate(10); // Aquí puedes optimizar según lo necesites
         return view('areas.OmapedViews.Caregivers.index', compact('caregivers'));
     }
 

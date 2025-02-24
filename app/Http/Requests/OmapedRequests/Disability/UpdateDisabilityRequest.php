@@ -3,6 +3,7 @@
 namespace App\Http\Requests\OmapedRequests\Disability;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateDisabilityRequest extends FormRequest
 {
@@ -22,7 +23,12 @@ class UpdateDisabilityRequest extends FormRequest
     public function rules()
     {
         return [
-            'certificate_number' => 'required|string|max:100|unique:disabilities,certificate_number,' . $this->route('disability'), // Asegura que el certificate_number no esté duplicado para otro registro
+            'certificate_number' => [
+                'required',
+                'string',
+                'max:100',
+                Rule::unique('disabilities', 'certificate_number')->ignore($this->route('disability')->id),
+            ],
             'certificate_issue_date' => 'required|date',
             'certificate_expiry_date' => 'nullable|date|after_or_equal:certificate_issue_date',
             'organization_name' => 'required|string|max:255',
@@ -34,7 +40,7 @@ class UpdateDisabilityRequest extends FormRequest
         ];
     }
 
-     /**
+    /**
      * Get the custom messages for validation errors.
      *
      * @return array

@@ -16,7 +16,7 @@ class DisabilityController extends Controller
     public function index()
     {
         // Obtener todas las discapacidades
-        $disabilities = Disability::all();
+        $disabilities = Disability::paginate(10);
         return view('areas.OmapedViews.Disabilities.index', compact('disabilities'));
     }
 

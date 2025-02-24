@@ -3,80 +3,142 @@
 @section('title', 'Editar Cuidador')
 
 @section('content_header')
-    <h1>Editar Cuidador</h1>
+    <div class="d-flex justify-content-center align-items-center py-3" 
+         style="background: #930813; border-radius: 0 0 15px 15px;">
+        <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" 
+             alt="Escudo El Tambo" class="img-fluid" 
+             style="max-height: 80px;">
+    </div>
 @stop
 
 @section('content')
-<div class="card">
-    <div class="card-body">
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+    <div class="card shadow-lg" 
+         style="border-radius: 15px; max-width: 800px; margin: 2rem auto; border-left: 5px solid #99050f;">
+        
+        <!-- Encabezado -->
+        <div class="card-header text-center" 
+             style="background: #f00e1c; color: white; border-radius: 15px 15px 0 0;">
+            <h3 class="card-title mb-0">Editar Cuidador</h3>
+        </div>
 
-        <form action="{{ route('caregivers.update', $caregiver) }}" method="POST">
-            @csrf
-            @method('PUT')
+        <!-- Cuerpo -->
+        <div class="card-body" 
+             style="background: linear-gradient(135deg, #f8b19550 0%, #f6728050 100%); padding: 2rem;">
+            
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
-            <!-- Nombre Completo (Transforma a Título) -->
-            <div class="form-group">
-                <label for="full_name">Nombre Completo</label>
-                <input type="text" class="form-control" id="full_name" name="full_name" 
-                    value="{{ old('full_name', $caregiver->full_name) }}" required 
-                    oninput="formatName(this)">
-            </div>
+            <form action="{{ route('caregivers.update', $caregiver) }}" method="POST">
+                @csrf
+                @method('PUT')
 
-            <!-- Relación (Opciones Predefinidas) -->
-            <div class="form-group">
-                <label for="relationship">Relación</label>
-                <select class="form-control" id="relationship" name="relationship" required>
-                    <option value="">Seleccione...</option>
-                    <option value="Padre" {{ old('relationship', $caregiver->relationship) == 'Padre' ? 'selected' : '' }}>Padre</option>
-                    <option value="Madre" {{ old('relationship', $caregiver->relationship) == 'Madre' ? 'selected' : '' }}>Madre</option>
-                    <option value="Hermano/a" {{ old('relationship', $caregiver->relationship) == 'Hermano/a' ? 'selected' : '' }}>Hermano/a</option>
-                    <option value="Tío/a" {{ old('relationship', $caregiver->relationship) == 'Tío/a' ? 'selected' : '' }}>Tío/a</option>
-                    <option value="Abuelo/a" {{ old('relationship', $caregiver->relationship) == 'Abuelo/a' ? 'selected' : '' }}>Abuelo/a</option>
-                    <option value="Tutor/a" {{ old('relationship', $caregiver->relationship) == 'Tutor/a' ? 'selected' : '' }}>Tutor/a</option>
-                    <option value="Otro" {{ old('relationship', $caregiver->relationship) == 'Otro' ? 'selected' : '' }}>Otro</option>
-                </select>
-            </div>
+                <div class="row">
+                    <!-- Nombre Completo -->
+                    <div class="col-md-6 form-group">
+                        <label for="full_name"><strong>Nombre Completo</strong></label>
+                        <input type="text" name="full_name" id="full_name" 
+                               class="form-control @error('full_name') is-invalid @enderror" 
+                               value="{{ old('full_name', $caregiver->full_name) }}" required 
+                               oninput="formatName(this)">
+                        @error('full_name')
+                            <span class="invalid-feedback">{{ $message }}</span>
+                        @enderror
+                    </div>
 
-            <!-- DNI (Solo Números, Máximo 8 Dígitos) -->
-            <div class="form-group">
-                <label for="dni">DNI</label>
-                <input type="text" class="form-control" id="dni" name="dni" 
-                    value="{{ old('dni', $caregiver->dni) }}" maxlength="8" required 
-                    pattern="\d{8}" title="Debe contener exactamente 8 dígitos"
-                    onkeypress="return soloNumeros(event)">
-            </div>
+                    <!-- Relación -->
+                    <div class="col-md-6 form-group">
+                        <label for="relationship"><strong>Relación</strong></label>
+                        <select name="relationship" id="relationship" 
+                                class="form-control @error('relationship') is-invalid @enderror" required>
+                            <option value="">Seleccione...</option>
+                            <option value="Padre" {{ old('relationship', $caregiver->relationship) == 'Padre' ? 'selected' : '' }}>Padre</option>
+                            <option value="Madre" {{ old('relationship', $caregiver->relationship) == 'Madre' ? 'selected' : '' }}>Madre</option>
+                            <option value="Hermano/a" {{ old('relationship', $caregiver->relationship) == 'Hermano/a' ? 'selected' : '' }}>Hermano/a</option>
+                            <option value="Tío/a" {{ old('relationship', $caregiver->relationship) == 'Tío/a' ? 'selected' : '' }}>Tío/a</option>
+                            <option value="Abuelo/a" {{ old('relationship', $caregiver->relationship) == 'Abuelo/a' ? 'selected' : '' }}>Abuelo/a</option>
+                            <option value="Tutor/a" {{ old('relationship', $caregiver->relationship) == 'Tutor/a' ? 'selected' : '' }}>Tutor/a</option>
+                            <option value="Otro" {{ old('relationship', $caregiver->relationship) == 'Otro' ? 'selected' : '' }}>Otro</option>
+                        </select>
+                        @error('relationship')
+                            <span class="invalid-feedback">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
 
-            <!-- Teléfono (Solo Números, Exactamente 9 Dígitos) -->
-            <div class="form-group">
-                <label for="phone">Teléfono</label>
-                <input type="text" class="form-control" id="phone" name="phone" 
-                    value="{{ old('phone', $caregiver->phone) }}" maxlength="9" required
-                    pattern="\d{9}" title="Debe contener exactamente 9 dígitos"
-                    onkeypress="return soloNumeros(event)">
-            </div>
+                <div class="row">
+                    <!-- DNI -->
+                    <div class="col-md-6 form-group">
+                        <label for="dni"><strong>DNI</strong></label>
+                        <input type="text" name="dni" id="dni" 
+                               class="form-control @error('dni') is-invalid @enderror" 
+                               value="{{ old('dni', $caregiver->dni) }}" maxlength="8" required 
+                               pattern="\d{8}" title="Debe contener exactamente 8 dígitos"
+                               onkeypress="return soloNumeros(event)">
+                        @error('dni')
+                            <span class="invalid-feedback">{{ $message }}</span>
+                        @enderror
+                    </div>
 
-            <button type="submit" class="btn btn-success">
-                <i class="fas fa-save"></i> Guardar Cambios
-            </button>
-            <a href="{{ route('caregivers.index') }}" class="btn btn-secondary">
-                <i class="fas fa-arrow-left"></i> Regresar
-            </a>
-        </form>
+                    <!-- Teléfono -->
+                    <div class="col-md-6 form-group">
+                        <label for="phone"><strong>Teléfono</strong></label>
+                        <input type="text" name="phone" id="phone" 
+                               class="form-control @error('phone') is-invalid @enderror" 
+                               value="{{ old('phone', $caregiver->phone) }}" maxlength="9" required
+                               pattern="\d{9}" title="Debe contener exactamente 9 dígitos"
+                               onkeypress="return soloNumeros(event)">
+                        @error('phone')
+                            <span class="invalid-feedback">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- Botones -->
+                <div class="text-center mt-4">
+                    <a href="javascript:history.back()" class="btn btn-custom">
+                        <i class="fas fa-arrow-left"></i> Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-custom">
+                        <i class="fas fa-save"></i> Guardar
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 @stop
 
 @section('css')
-    <link rel="stylesheet" href="/vendor/adminlte/dist/css/adminlte.min.css">
+    <style>
+        .btn-custom {
+            background-color: #930813;
+            border: 1px solid #930813;
+            color: white;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+
+        .btn-custom:hover {
+            background-color: #50030a;
+            color: #fff;
+        }
+
+        .card {
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
 @stop
 
 @section('js')

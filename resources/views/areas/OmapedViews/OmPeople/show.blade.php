@@ -14,7 +14,7 @@
     <div class="container-fluid">
         <div class="card shadow-lg" style="border-radius: 15px;">
             <div class="card-header" style="background: #B20A16; color: white; border-radius: 15px 15px 0 0;">
-                <h3 class="card-title mb-0"><i class="fas fa-id-card mr-2"></i>Información Completa</h3>
+                <h3 class="card-title mb-0"><i class="fas fa-user-tag mr-2"></i>Información Completa</h3>
             </div>
             <div class="card-body" style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
                 <div class="row">
@@ -23,7 +23,7 @@
                         <!-- Datos Generales -->
                         <div class="card mb-4 shadow-sm">
                             <div class="card-header" style="background: #18bc9c; color: white;">
-                                <h5 class="mb-0"><i class="fas fa-user-tag mr-2"></i>Datos Generales</h5>
+                                <h5 class="mb-0"><i class="fas fa-id-card mr-2"></i>Datos Generales</h5>
                             </div>
                             <div class="card-body">
                                 <div class="form-group">
@@ -157,13 +157,6 @@
                                 <h5 class="mb-0"><i class="fas fa-heartbeat mr-2"></i>Salud</h5>
                             </div>
                             <div class="card-body">
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Seguro de Salud</label>
-                                    <div class="form-control-static"
-                                        style="border: 2px solid #F00E1C; border-radius: 8px; padding: 8px;">
-                                        {{ $omPerson->health_insurance }}
-                                    </div>
-                                </div>
 
                                 <!-- Discapacidad -->
                                 <div class="form-group">
@@ -199,7 +192,32 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="font-weight-bold">Asistencia Requerida</label>
+                                    <label class="font-weight-bold">Seguro de Salud</label>
+                                    <div class="form-control-static"
+                                        style="border: 2px solid #F00E1C; border-radius: 8px; padding: 8px;">
+                                        {{ $omPerson->health_insurance }}
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="font-weight-bold">SISFOH</label>
+                                    <div class="form-control-static"
+                                        style="border: 2px solid #F00E1C; border-radius: 8px; padding: 8px;">
+                                        {{ $omPerson->sisfoh ? 'Sí' : 'No' }}
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="font-weight-bold">Estado de Pensión</label>
+                                    <div class="form-control-static"
+                                        style="border: 2px solid #F00E1C; border-radius: 8px; padding: 8px;">
+                                        {{ $omPerson->pension_status }}
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="font-weight-bold">Necesidad de Asistencia Personal</label>
                                     <div class="form-control-static"
                                         style="border: 2px solid #F00E1C; border-radius: 8px; padding: 8px;">
                                         {{ $omPerson->personal_assistance_need ?? 'N/A' }}
@@ -207,7 +225,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="font-weight-bold">Autonomía</label>
+                                    <label class="font-weight-bold">Notas sobre </label>
                                     <div class="form-control-static"
                                         style="border: 2px solid #F00E1C; border-radius: 8px; padding: 8px;">
                                         {{ $omPerson->autonomy_notes ?? 'N/A' }}
@@ -248,27 +266,6 @@
                                     <div class="form-control-static"
                                         style="border: 2px solid #9b59b6; border-radius: 8px; padding: 8px;">
                                         {{ $omPerson->employment_status }}
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="font-weight-bold">SISFOH</label>
-                                            <div class="form-control-static"
-                                                style="border: 2px solid #9b59b6; border-radius: 8px; padding: 8px;">
-                                                {{ $omPerson->sisfoh ? 'Sí' : 'No' }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="font-weight-bold">Pensión</label>
-                                            <div class="form-control-static"
-                                                style="border: 2px solid #9b59b6; border-radius: 8px; padding: 8px;">
-                                                {{ $omPerson->pension_status }}
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>

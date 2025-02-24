@@ -138,10 +138,13 @@
                                 </h6>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <input type="date" class="form-control shadow-sm" name="birth_date"
+                                        <input type="date" class="form-control shadow-sm @error('birth_date') is-invalid @enderror"
+                                            name="birth_date"
                                             style="border: 2px solid #18bc9c; border-radius: 8px;"
-                                            value="{{ old('birth_date', $omPerson->birth_date) }}" required id="birth_date"
-                                            onchange="calcularEdad()">
+                                            id="birth_date"
+                                            value="{{ old('birth_date', isset($omPerson) ? $omPerson->birth_date->format('Y-m-d') : '') }}"
+                                            required onchange="calcularEdad()">
+                                    
                                         @error('birth_date')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror

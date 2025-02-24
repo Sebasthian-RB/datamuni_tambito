@@ -16,7 +16,7 @@
             @csrf
 
             <div class="card-header" style="background: #B20A16; color: white; border-radius: 15px 15px 0 0;">
-                <h3 class="card-title mb-0">Registro de Nueva Persona</h3>
+                <h3 class="card-title mb-0"><i class="fas fa-user-tag mr-2"></i>Registro de Nueva Persona</h3>
             </div>
 
             <div class="card-body" style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
@@ -63,29 +63,30 @@
                                     <h6 class="text-muted mb-3"><i class="fas fa-user-tag mr-2"></i>Nombres Completos</h6>
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <input type="text" class="form-control shadow-sm" name="paternal_last_name"
-                                                placeholder="Apellido Paterno"
+                                            <input type="text" class="form-control shadow-sm text-capitalize"
+                                                name="paternal_last_name" placeholder="Apellido Paterno"
                                                 style="border: 2px solid #18bc9c; border-radius: 8px;"
-                                                value="{{ old('paternal_last_name') }}" required>
+                                                value="{{ old('paternal_last_name') }}" required oninput="formatName(this)">
                                             @error('paternal_last_name')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
 
                                         <div class="col-md-4">
-                                            <input type="text" class="form-control shadow-sm" name="maternal_last_name"
-                                                placeholder="Apellido Materno"
+                                            <input type="text" class="form-control shadow-sm text-capitalize"
+                                                name="maternal_last_name" placeholder="Apellido Materno"
                                                 style="border: 2px solid #18bc9c; border-radius: 8px;"
-                                                value="{{ old('maternal_last_name') }}" required>
+                                                value="{{ old('maternal_last_name') }}" required oninput="formatName(this)">
                                             @error('maternal_last_name')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
 
                                         <div class="col-md-4">
-                                            <input type="text" class="form-control shadow-sm" name="given_name"
-                                                placeholder="Nombres" style="border: 2px solid #18bc9c; border-radius: 8px;"
-                                                value="{{ old('given_name') }}" required>
+                                            <input type="text" class="form-control shadow-sm text-capitalize"
+                                                name="given_name" placeholder="Nombres"
+                                                style="border: 2px solid #18bc9c; border-radius: 8px;"
+                                                value="{{ old('given_name') }}" required oninput="formatName(this)">
                                             @error('given_name')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -196,7 +197,8 @@
                                 <div class="form-group">
                                     <h6 class="text-muted mb-3"><i class="fas fa-map-marker mr-2"></i>Vivienda</h5>
                                         <div class="input-group mb-3">
-                                            <select class="form-control @error('om_dwelling_id') is-invalid @enderror"
+                                            <select
+                                                class="form-control select2 @error('om_dwelling_id') is-invalid @enderror"
                                                 style="border: 2px solid #18bc9c; border-radius: 8px;"
                                                 name="disability_id" name="om_dwelling_id" id="om_dwelling_id" required>
                                                 <option value="">Seleccione Vivienda</option>
@@ -233,7 +235,7 @@
                                 <!-- Formulario de Salud -->
                                 <form>
                                     <div class="form-group">
-                                        <label for="disability_id">Discapacidad</label>
+                                        <label for="disability_id">Certificado de Discapacidad</label>
                                         <div class="input-group">
                                             <select
                                                 class="form-control select2 @error('disability_id') is-invalid @enderror"
@@ -263,10 +265,10 @@
                                     <div class="form-group">
                                         <label for="caregiver_id">Cuidador</label>
                                         <div class="input-group">
-                                            <select class="form-control @error('caregiver_id') is-invalid @enderror"
-                                                    id="caregiver_id"
-                                                    name="caregiver_id"
-                                                    style="border: 2px solid #18bc9c; border-radius: 8px;">
+                                            <select
+                                                class="form-control select2 @error('caregiver_id') is-invalid @enderror"
+                                                id="caregiver_id" name="caregiver_id"
+                                                style="border: 2px solid #18bc9c; border-radius: 8px;">
                                                 <option value="">Seleccione Cuidador</option>
                                                 @foreach ($caregivers as $caregiver)
                                                     <option value="{{ $caregiver->id }}"
@@ -276,7 +278,8 @@
                                                 @endforeach
                                             </select>
                                             <div class="input-group-append">
-                                                <button type="button" class="btn btn-circle btn-red" data-toggle="modal" data-target="#caregiverModal">
+                                                <button type="button" class="btn btn-circle btn-red" data-toggle="modal"
+                                                    data-target="#caregiverModal">
                                                     <i class="fas fa-plus"></i>
                                                 </button>
                                             </div>
@@ -284,7 +287,7 @@
                                         @error('caregiver_id')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
-                                    </div>                                    
+                                    </div>
 
                                     <div class="form-group">
                                         <label for="health_insurance">Seguro de Salud</label>
@@ -648,7 +651,28 @@
                                         <div class="form-group">
                                             <label for="full_name">Nombre Completo</label>
                                             <input type="text" class="form-control" id="full_name" name="full_name"
-                                                required>
+                                                required oninput="formatName(this)">
+                                            <span class="error-message text-danger"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="dni">DNI</label>
+                                            <input type="text" class="form-control" id="dni" name="dni"
+                                                maxlength="8" required oninput="validateDNI(this)">
+                                            <span class="error-message text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Segunda Columna -->
+                            <div class="col-md-6">
+                                <div class="card shadow-sm border-0 mb-3">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="phone">Teléfono</label>
+                                            <input type="text" class="form-control" id="phone" name="phone"
+                                                maxlength="9" required oninput="validatePhone(this)">
                                             <span class="error-message text-danger"></span>
                                         </div>
 
@@ -663,38 +687,6 @@
                                                 <option value="Abuelo/a">Abuelo/a</option>
                                                 <option value="Tutor/a">Tutor/a</option>
                                                 <option value="Otro">Otro</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="dni">DNI</label>
-                                            <input type="text" class="form-control" id="dni" name="dni"
-                                                maxlength="8" required>
-                                            <span class="error-message text-danger"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Segunda Columna -->
-                            <div class="col-md-6">
-                                <div class="card shadow-sm border-0 mb-3">
-                                    <div class="card-body">
-                                        <div class="form-group">
-                                            <label for="phone">Teléfono</label>
-                                            <input type="text" class="form-control" id="phone" name="phone">
-                                            <span class="error-message text-danger"></span>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="caregiver_id">Cuidador</label>
-                                            <select class="form-control" id="caregiver_id" name="caregiver_id"
-                                                style="border: 2px solid #18bc9c; border-radius: 8px;">
-                                                <option value="">Seleccione Cuidador</option>
-                                                @foreach ($caregivers as $caregiver)
-                                                    <option value="{{ $caregiver->id }}">{{ $caregiver->full_name }}
-                                                    </option>
-                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -825,6 +817,31 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+    <!-- Validar nombres -->
+    <script>
+        // Función para formatear nombres con la primera letra en mayúscula
+        function formatName(input) {
+            input.value = input.value.toLowerCase().replace(/\b\w/g, char => char.toUpperCase());
+        }
+
+        // Función para validar el DNI (solo números y 8 dígitos)
+        function validateDNI(input) {
+            input.value = input.value.replace(/\D/g, ''); // Elimina cualquier carácter que no sea número
+            if (input.value.length > 8) {
+                input.value = input.value.slice(0, 8); // Limita a 8 caracteres
+            }
+        }
+
+        // Función para validar el Teléfono (solo números y 9 dígitos)
+        function validatePhone(input) {
+            input.value = input.value.replace(/\D/g, ''); // Elimina cualquier carácter que no sea número
+            if (input.value.length > 9) {
+                input.value = input.value.slice(0, 9); // Limita a 9 caracteres
+            }
+        }
+    </script>
+    <!-- Select 2-->
     <script>
         $(document).ready(function() {
             $('.select2').select2({
@@ -833,6 +850,32 @@
             });
         });
     </script>
+    <script>
+        $(document).ready(function() {
+            $('#disability_id').select2({
+                placeholder: "Seleccione Discapacidad",
+                allowClear: true
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#caregiver_id').select2({
+                placeholder: "Seleccione Cuidador",
+                allowClear: true
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#om_dwelling_id').select2({
+                placeholder: "Seleccione una Vivienda",
+                allowClear: true
+            });
+        });
+    </script>
+
     <script>
         toastr.options = {
             "closeButton": true,
@@ -1057,13 +1100,4 @@
         });
     </script>
 
-    <script>
-        // En tu sección JS
-        $(document).ready(function() {
-            $('#disability_id').select2({
-                placeholder: "Seleccione Discapacidad",
-                allowClear: true
-            });
-        });
-    </script>
 @stop
