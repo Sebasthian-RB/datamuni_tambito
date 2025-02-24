@@ -72,10 +72,11 @@ class StoreElderlyAdultRequest extends FormRequest
                 'after_or_equal:' . now()->subYears(120)->format('Y-m-d'), // No debe tener más de 120 años
             ],
 
-            // **Ubicación (departamento, provincia, distrito)**
+            /*Ubicación (departamento, provincia, distrito)**
             'department' => 'required|string|max:100',
             'province' => 'required|string|max:100',
             'district' => 'required|string|max:100',
+            */
 
             'address' => 'nullable|string|max:255',
             'reference' => 'nullable|string|max:255',
@@ -85,7 +86,7 @@ class StoreElderlyAdultRequest extends FormRequest
                 'regex:/^\d{9}$/',
             ],
 
-            'household_members' => ['nullable', 'integer', 'min:1'],
+            'household_members' => ['nullable', 'integer', 'min:1', 'max:20'],
 
             // **Guardian opcional**
             'guardian_id' => 'nullable|integer|exists:guardians,id',
@@ -134,14 +135,16 @@ class StoreElderlyAdultRequest extends FormRequest
 
             'household_members.integer' => 'El número de miembros del hogar debe ser un número entero.',
             'household_members.min' => 'Debe haber al menos 1 miembro en el hogar.',
+            'household_members.max' => 'El limite de miembros del hogar es de 20',
             'type_of_disability.in' => 'El tipo de discapacidad seleccionado no es válido.',
             'permanent_attention.boolean' => 'Debe ser verdadero o falso.',
             'state.required' => 'Debe indicar si está activo en CIAM.',
 
-            // **Errores de ubicación**
+            /*Errores de ubicación**
             'department.required' => 'El departamento es obligatorio.',
             'province.required' => 'La provincia es obligatoria.',
             'district.required' => 'El distrito es obligatorio.',
+            */
 
             // **Errores de seguros**
             'public_insurance.in' => 'El seguro público seleccionado no es válido.',
