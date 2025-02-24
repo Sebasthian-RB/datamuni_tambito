@@ -565,7 +565,7 @@ return [
                 ],
             ],
         ],
-            
+
         /*SISFOH*/
         [
             'text' => 'SISFOH',
@@ -619,6 +619,41 @@ return [
                             'icon_color' => 'yellow',
                         ],
                     ],
+                ],
+            ],
+        ],
+
+
+        /* Área CIAM */
+        [
+            'text' => 'Área CIAM',
+            'icon' => 'fas fa-blind', // Persona con bastón (disponible en FontAwesome 5)
+            'submenu' => [
+                [
+                    'text' => 'Menú Principal',
+                    'url' => 'ciam_home',
+                    'icon' => 'fas fa-fw fa-home',
+                ],
+                [
+                    'text' => 'Gestión',
+                    'icon' => 'fas fa-fw fa-cogs',
+                    'submenu' => [
+                        [
+                            'text' => 'Adultos Mayores',
+                            'url' => 'elderly_adults',
+                            'icon' => 'fas fa-fw fa-user-plus',
+                        ],
+                        [
+                            'text' => 'Guardianes',
+                            'url' => 'guardians',
+                            'icon' => 'fas fa-fw fa-user-shield',
+                        ],
+                    ],
+                ],
+                [
+                    'text' => 'Dashboard',
+                    'url' => 'ciam_dashboard',
+                    'icon' => 'fas fa-fw fa-chart-line',
                 ],
             ],
         ],

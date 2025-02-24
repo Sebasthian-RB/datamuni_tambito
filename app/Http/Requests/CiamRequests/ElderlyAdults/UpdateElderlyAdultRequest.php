@@ -105,8 +105,8 @@ class UpdateElderlyAdultRequest extends FormRequest
             'private_insurance' => 'nullable|string|max:100',
 
             // **Lista de programas sociales (array de strings)**
-            'social_program' => 'nullable|array',
-            'social_program.*' => 'string|max:255',
+            'social_program' => 'nullable|array', // Permite enviar un array de opciones
+            'social_program.*' => 'string|max:100', // Cada opción debe ser un string válido
 
             'state' => ['sometimes', 'nullable', 'in:0,1'],
             'observation' => ['sometimes', 'nullable', 'string'],

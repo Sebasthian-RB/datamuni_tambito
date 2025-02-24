@@ -5,6 +5,19 @@
 @section('css')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
     <style>
+        /* Estilo para el contenedor principal */
+        .bg-light {
+            background-color: #f8f9fa !important; /* Fondo claro */
+        }
+
+        .rounded-lg {
+            border-radius: 15px !important; /* Bordes más redondeados */
+        }
+
+        .shadow-sm {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important; /* Sombra suave */
+        }
+    
         /* Aplica un estilo personalizado para la caja de selección de Select2 */
         .select2-container--default .select2-selection--single {
             height: 45px !important; /* Ajusta la altura del select */
@@ -60,6 +73,183 @@
             padding: 10px;
             font-size: 13px !important; /* Tamaño de fuente */
         }
+
+        /*Estilos para el boton de agregar familiar*/
+        .btn-purple {
+            background-color: #9B7EBD !important; /* Color morado */
+            border: none !important;
+            color: white !important;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-purple:hover {
+            background-color: #7B5E9D !important; /* Color morado más oscuro al pasar el mouse */
+        }
+
+        .btn-lg {
+            padding: 10px 20px !important; /* Botón más grande */
+            font-size: 16px !important;
+        }
+
+        /* Estilo para el separador visual */
+        .text-muted {
+            font-size: 18px !important;
+            color: #6c757d !important; /* Color gris */
+        }
+
+        /* Estilo para el texto descriptivo */
+        .text-dark {
+            color: #3B1E54 !important; /* Color morado oscuro */
+        }
+
+        .font-weight-medium {
+            font-weight: 500 !important; /* Texto semi-negrita */
+        }
+
+
+
+        /* Estilos para el modal de creación de nuevo familiar */
+        .family-modal-card {
+            border-radius: 12px;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            background-color: #FFFFFF; /* Fondo blanco */
+        }
+
+        /* Encabezado del modal */
+        .family-modal-header-card {
+            background-color: #3c3a3a; /* Morado oscuro */
+            border-bottom: none;
+            padding: 20px;
+            display: flex;
+            justify-content: center; 
+            align-items: center; 
+        }
+
+        .modal-title {
+            display: flex;
+            justify-content: center; /* Centra la imagen dentro del título */
+            align-items: center; /* Alinea la imagen verticalmente */
+            flex-grow: 1; /* Asegura que el título tome el máximo espacio disponible */
+        }
+
+        .family-modal-header-card .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .family-close-card {
+            position: absolute; 
+            right: 20px;
+            top: 20px;
+            background: none;
+            border: none;
+            color: white;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .family-close-card:hover {
+            opacity: 1;
+            color: #d3d3d3;
+        }
+
+        /* Cuerpo del modal */
+        .family-modal-body-card {
+            background-color: #FFFFFF; /* Fondo blanco */
+            padding: 25px;
+        }
+
+        /* Card para Datos del Miembro de Familia */
+        .family-card {
+            border: 1px solid #D4BEE4; /* Morado claro */
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .family-card-header {
+            background-color: #9B7EBD; /* Morado intermedio */
+            color: #EEEEEE; /* Texto claro */
+            font-weight: 500;
+            font-size: 1.1rem;
+            padding: 15px;
+            border-bottom: 1px solid #D4BEE4; /* Morado claro */
+        }
+
+        /* Estilos para las secciones dentro de la card */
+        .family-section {
+            margin-bottom: 20px;
+        }
+
+        .family-section-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #3B1E54; /* Morado oscuro */
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #D4BEE4; /* Morado claro */
+        }
+
+        /* Estilos para las etiquetas y campos de entrada */
+        .family-label-card {
+            font-weight: 500;
+            color: #3B1E54; /* Morado oscuro */
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .family-input-card {
+            border: 1px solid #D4BEE4; /* Morado claro */
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 14px;
+            background-color: #FFFFFF; /* Fondo blanco */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .family-input-card:focus {
+            border-color: #9B7EBD; /* Morado intermedio */
+            box-shadow: 0 0 8px rgba(155, 126, 189, 0.2);
+            outline: none;
+        }
+
+        /* Pie del modal */
+        .family-modal-footer-card {
+            background-color: #EEEEEE; /* Fondo claro */
+            border-top: 1px solid #D4BEE4; /* Borde morado claro */
+            padding: 15px 25px;
+            text-align: right;
+        }
+
+        .family-btn-cancel-card {
+            background-color: transparent;
+            color: #3B1E54; /* Morado oscuro */
+            border: 1px solid #3B1E54; /* Borde morado oscuro */
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 14px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .family-btn-cancel-card:hover {
+            background-color: #3B1E54; /* Morado oscuro */
+            color: #EEEEEE; /* Texto claro */
+        }
+
+        .family-btn-save-card {
+            background-color: #9B7EBD; /* Morado intermedio */
+            color: #EEEEEE; /* Texto claro */
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .family-btn-save-card:hover {
+            background-color: #7B5E9D; /* Morado intermedio más oscuro */
+        }
     </style>
 @stop
 
@@ -112,21 +302,38 @@
                     <!-- Selección del Miembro de Familia -->
                     <div class="form-group">
                         <label for="vl_family_member_id">Miembro de Familia</label>
-                        <select class="form-control select2 @error('vl_family_member_id') is-invalid @enderror" id="vl_family_member_id" name="vl_family_member_id" required>
-                            <option value="" disabled selected>Seleccione un miembro de familia</option>
-                            @foreach($vlFamilyMembers as $member)
-                                <option value="{{ $member->id }}" 
-                                    data-id="{{ $member->id }}"
-                                    data-identity="{{ $member->identity_document }}"
-                                    data-given-name="{{ $member->given_name }}"
-                                    data-paternal="{{ $member->paternal_last_name }}"
-                                    data-maternal="{{ $member->maternal_last_name }}"
-                                    data-minors="{{ json_encode($member->vlMinors) }}"
-                                    {{ old('vl_family_member_id') == $member->id ? 'selected' : '' }}>
-                                    {{ $member->id }}
-                                </option>
-                            @endforeach
-                        </select>
+                        <div class="d-flex justify-content-center align-items-center bg-light p-4 rounded-lg shadow-sm">
+                            <!-- Opción: Crear uno nuevo -->
+                            <div class="d-flex flex-column align-items-center text-center mx-2 mx-md-5">
+                                <span class="mb-2 text-dark font-weight-medium">Crear uno nuevo:</span>
+                                <button type="button" class="btn btn-purple btn-lg" data-toggle="modal" data-target="#addFamilyMemberModal">
+                                    <i class="fas fa-plus"></i> Agregar Nuevo Familiar
+                                </button>
+                            </div>
+                    
+                            <!-- Separador visual con menos espacio -->
+                            <div class="text-muted mx-3">o</div>
+                    
+                            <!-- Opción: Agregar familiar existente -->
+                            <div class="d-flex flex-column align-items-center text-center mx-2 mx-md-5">
+                                <span class="mb-2 text-dark font-weight-medium">Agregar familiar existente:</span>
+                                <select class="form-control select2 @error('vl_family_member_id') is-invalid @enderror" id="vl_family_member_id" name="vl_family_member_id" required>
+                                    <option value="" disabled selected>Seleccione un miembro de familia</option>
+                                    @foreach($vlFamilyMembers as $member)
+                                        <option value="{{ $member->id }}" 
+                                            data-id="{{ $member->id }}"
+                                            data-identity="{{ $member->identity_document }}"
+                                            data-given-name="{{ $member->given_name }}"
+                                            data-paternal="{{ $member->paternal_last_name }}"
+                                            data-maternal="{{ $member->maternal_last_name }}"
+                                            data-minors="{{ json_encode($member->vlMinors) }}"
+                                            {{ old('vl_family_member_id') == $member->id ? 'selected' : '' }}>
+                                            {{ $member->id }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                         @error('vl_family_member_id')
                             <span class="invalid-feedback">{{ $message }}</span>
                         @enderror
@@ -267,6 +474,110 @@
             </div>
         </div>
     @endif
+
+    <!-- Modal para agregar un nuevo miembro de familia -->
+    <div class="modal fade" id="addFamilyMemberModal" tabindex="-1" role="dialog" aria-labelledby="addFamilyMemberModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content family-modal-card">
+                <!-- Encabezado del Modal -->
+                <div class="modal-header family-modal-header-card">
+                    <h5 class="modal-title" id="addFamilyMemberModalLabel">
+                        <img src="http://localhost/datamuni_tambito/public/Images/Logomunicipalidad_tambo.png" alt="Escudo El Tambo" class="img-fluid" style="height: 40px; width: auto;">
+                    </h5>
+                    <button type="button" class="close family-close-card" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                
+                <!-- Formulario -->
+                <form action="{{ route('vl_family_members.store') }}" method="POST">
+                    @csrf
+                    <!-- Cuerpo del Modal -->
+                    <div class="modal-body family-modal-body-card">
+                        <!-- Card para Datos del Miembro de Familia -->
+                        <div class="card family-card">
+                            <div class="card-header family-card-header">
+                                <i class="fas fa-user mr-2"></i>Datos del Miembro de Familia
+                            </div>
+                            <div class="card-body">
+                                <!-- Sección 2: Documento de Identidad -->
+                                <div class="family-section mt-4">
+                                    <h6 class="family-section-title">
+                                        🟣 Documento de Identidad
+                                    </h6>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="new_family_member_identity_type" class="family-label-card">
+                                                    <i class="fas fa-id-card mr-2"></i>Tipo de Documento
+                                                </label>
+                                                <select class="form-control family-input-card" id="new_family_member_identity_type" name="new_family_member_identity_type" required>
+                                                    @foreach($identityDocumentTypes as $identityDocumentType)
+                                                        <option value="{{ $identityDocumentType }}">{{ $identityDocumentType }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="new_family_member_identity_document" class="family-label-card">
+                                                    <i class="fas fa-id-card mr-2"></i>Número de Documento
+                                                </label>
+                                                <input type="text" class="form-control family-input-card" id="new_family_member_identity_document" name="new_family_member_identity_document" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Sección 2: Nombres y Apellidos -->
+                                <div class="family-section">
+                                    <h6 class="family-section-title">
+                                        🟣 Apellidos y Nombres
+                                    </h6>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="new_family_member_given_name" class="family-label-card">
+                                                    <i class="fas fa-signature mr-2"></i>Nombre
+                                                </label>
+                                                <input type="text" class="form-control family-input-card" id="new_family_member_given_name" name="new_family_member_given_name" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="new_family_member_paternal_last_name" class="family-label-card">
+                                                    <i class="fas fa-signature mr-2"></i>Apellido Paterno
+                                                </label>
+                                                <input type="text" class="form-control family-input-card" id="new_family_member_paternal_last_name" name="new_family_member_paternal_last_name" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="new_family_member_maternal_last_name" class="family-label-card">
+                                                    <i class="fas fa-signature mr-2"></i>Apellido Materno
+                                                </label>
+                                                <input type="text" class="form-control family-input-card" id="new_family_member_maternal_last_name" name="new_family_member_maternal_last_name" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pie del Modal -->
+                    <div class="modal-footer family-modal-footer-card">
+                        <button type="button" class="btn family-btn-cancel-card" data-dismiss="modal">
+                            <i class="fas fa-times mr-2"></i>Cerrar
+                        </button>
+                        <button type="submit" class="btn family-btn-save-card">
+                            <i class="fas fa-save mr-2"></i>Guardar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @stop
 
 @section('js')
@@ -278,15 +589,39 @@
     <!-- Inicialización de Select2 -->
     <script>
         $(document).ready(function() {
-            // Inicializa Select2 en el select con id vl_family_member_id
+            // Inicializa Select2
             $('#vl_family_member_id').select2({
                 placeholder: "Selecciona un miembro de familia",
-                allowClear: true // Permite borrar la selección
+                allowClear: true,
+                minimumResultsForSearch: Infinity // Evita la barra de búsqueda
             });
 
-            // Depura el valor seleccionado en la consola
-            $('#vl_family_member_id').on('change', function() {
-                console.log("Valor seleccionado:", $(this).val());
+            // Capturar el evento cuando se borra la selección
+            $('#vl_family_member_id').on('select2:clear', function(e) {
+                // Forzar el cierre del dropdown
+                $(this).select2('close');
+
+                // Ocultar la card de detalles del familiar
+                $('#family-member-details').fadeOut();
+
+                // Ocultar y limpiar los detalles de menores
+                $('#minor-details-container').fadeOut(function() {
+                    $(this).empty();
+                });
+            });
+
+            // Prevenir que el dropdown se abra después de limpiar la selección
+            let preventOpening = false;
+
+            $('#vl_family_member_id').on('select2:unselecting', function(e) {
+                preventOpening = true; // Bandera para evitar apertura
+            });
+
+            $('#vl_family_member_id').on('select2:opening', function(e) {
+                if (preventOpening) {
+                    e.preventDefault(); // Evita que se abra si se acaba de limpiar
+                    preventOpening = false; // Restablece la bandera
+                }
             });
         });
     </script>
@@ -316,7 +651,10 @@
 
                 // Si no hay selección, ocultar la tarjeta de datos del familiar
                 if (!selected.val()) {
-                    $('#family-member-details').hide();
+                    $('#family-member-details').fadeOut();
+                    $('#minor-details-container').fadeOut(function() {
+                        $(this).empty(); // Limpia completamente el contenido
+                    });
                     return;
                 }
                 
@@ -689,7 +1027,21 @@
                     // Mostrar la sección de detalles
                     $('#minor-details-container').show();
                 } else {
-                    $('#minor-details-container').html("<p>No hay menores asociados.</p>").show();
+                    $('#minor-details-container').html(`
+                        <div class="d-flex flex-column align-items-center justify-content-center p-4"
+                            style="background: #f5f5f5; 
+                                color: #4a4a4a; 
+                                border-radius: 10px; 
+                                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
+                                font-weight: 600; 
+                                font-size: 16px; 
+                                text-align: center; 
+                                max-width: 400px; 
+                                margin: 20px auto;">
+                            <i class="fas fa-user-slash fa-2x mb-2"></i>
+                            <span>No hay menores asociados a este familiar.</span>
+                        </div>
+                    `).fadeIn();
                 }
             });
 

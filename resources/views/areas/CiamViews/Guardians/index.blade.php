@@ -12,8 +12,8 @@
         <a href="{{ route('guardians.create') }}" class="btn" style="background-color: #6E8E59; color: white;">
             <i class="fas fa-plus-circle"></i> Agregar Nuevo Guardián
         </a>
-        <a href="{{ route('ciamdashboard') }}" class="btn btn-secondary" style="background-color: #CAE0BC; color: black;">
-            <i class="fas fa-arrow-left"></i> Volver al Dashboard
+        <a href="{{ route('CiamHome') }}" class="btn btn-secondary" style="background-color: #CAE0BC; color: black;">
+            <i class="fas fa-arrow-left"></i> Volver a la Pagina de Inicio
         </a>
     </div>
 

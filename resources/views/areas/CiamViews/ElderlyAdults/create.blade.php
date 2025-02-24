@@ -268,7 +268,6 @@
                     @endforeach
                 </div>
 
-
                 <!-- Estado -->
                 <div class="form-group">
                     <label class="form-label fw-bold" style="font-size: 1.2rem;">Estado</label>

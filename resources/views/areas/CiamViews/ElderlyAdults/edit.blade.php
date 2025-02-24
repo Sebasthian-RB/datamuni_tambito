@@ -273,15 +273,26 @@
 
                 <!-- Programas Sociales -->
                 <div class="form-group">
-                    <label>Programas Sociales</label>
+                    <label class="form-label fw-bold">Programas Sociales</label>
+
+                    @php
+                    // Convertir la cadena guardada en un array (sin cambiar en la BD)
+                    $selectedPrograms = explode(', ', $elderlyAdult->social_program ?? '');
+                    @endphp
+
                     @foreach(['Pensión 65', 'Qali Warma', 'FOCAM'] as $program)
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="social_program[]" id="program_{{ $loop->index }}" value="{{ $program }}"
-                            {{ in_array($program, explode(', ', $elderlyAdult->social_program ?? '')) ? 'checked' : '' }}>
-                        <label class="form-check-label" for="program_{{ $loop->index }}">{{ $program }}</label>
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            name="social_program[]"
+                            value="{{ $program }}"
+                            {{ in_array($program, $selectedPrograms) ? 'checked' : '' }}>
+                        <label class="form-check-label">{{ $program }}</label>
                     </div>
                     @endforeach
                 </div>
+
 
             </div>
             <div class="card-footer" style="background-color: #9cbf5c;">

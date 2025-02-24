@@ -89,15 +89,17 @@ class ElderlyAdultController extends Controller
      */
     public function update(UpdateElderlyAdultRequest $request, ElderlyAdult $elderlyAdult): RedirectResponse
     {
-
-        $data = $request->all();
-        $data['social_program'] = isset($request->social_program) ? implode(', ', $request->social_program) : null;
-        $elderlyAdult->update($data);
-
         try {
             DB::beginTransaction();
 
-            $elderlyAdult->update($request->validated());
+            // Obtener todos los datos
+            $data = $request->all();
+
+            // Convertir el array de checkboxes en un string separado por comas
+            $data['social_program'] = isset($data['social_program']) ? implode(', ', $data['social_program']) : null;
+
+            // Actualizar los datos en la BD
+            $elderlyAdult->update($data);
 
             DB::commit();
             return redirect()->route('elderly_adults.index')->with('success', 'Adulto mayor actualizado exitosamente.');
