@@ -35,9 +35,9 @@ class ElderlyAdult extends Model
         'permanent_attention',
         'observation',
         'guardian_id', // Relación con Guardian
-        'department', // Nuevo: Departamento
-        'province', // Nuevo: Provincia
-        'district', // Nuevo: Distrito
+        //'department', // Nuevo: Departamento
+        //'province', // Nuevo: Provincia
+        //'district', // Nuevo: Distrito
         'public_insurance', // Nuevo: Seguro público
         'private_insurance', // Nuevo: Seguro privado
         'social_program', // Nuevo: Programa social
@@ -63,9 +63,9 @@ class ElderlyAdult extends Model
         'permanent_attention' => 'boolean',
         'observation' => 'string',
         'guardian_id' => 'string',
-        'department' => 'string',
-        'province' => 'string',
-        'district' => 'string',
+        // 'department' => 'string',
+        // 'province' => 'string',
+        // 'district' => 'string',
         'public_insurance' => 'string',
         'private_insurance' => 'string',
         'social_program' => 'string',
@@ -141,9 +141,9 @@ class ElderlyAdult extends Model
         return $query->where('sex_type', $sex);
     }
 
-    /**
-     * Scope: Filtrar por ubicación (departamento, provincia, distrito).
-     */
+    /*
+     Scope: Filtrar por ubicación (departamento, provincia, distrito).
+     
     public function scopeByLocation($query, $department, $province = null, $district = null)
     {
         $query->where('department', $department);
@@ -158,6 +158,7 @@ class ElderlyAdult extends Model
 
         return $query;
     }
+        */
 
     /**
      * Scope: Filtrar por estado (activo o inactivo).

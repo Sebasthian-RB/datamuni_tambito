@@ -124,7 +124,7 @@
                     @enderror
                 </div>
 
-                <!-- Departamento -->
+                <!-- Departamento 
                 <div class="form-group">
                     <label for="department">Departamento</label>
                     <select id="department" class="form-control @error('department') is-invalid @enderror" name="department" required>
@@ -135,9 +135,9 @@
                     @error('department')
                     <span class="text-danger d-block mt-2">{{ $message }}</span>
                     @enderror
-                </div>
+                </div> -->
 
-                <!-- Provincia -->
+                <!-- Provincia
                 <div class="form-group">
                     <label for="province">Provincia</label>
                     <select id="province" class="form-control @error('province') is-invalid @enderror" name="province" required>
@@ -147,9 +147,9 @@
                     @error('province')
                     <span class="text-danger d-block mt-2">{{ $message }}</span>
                     @enderror
-                </div>
+                </div> -->
 
-                <!-- Distrito -->
+                <!-- Distrito 
                 <div class="form-group">
                     <label for="district">Distrito</label>
                     <select id="district" class="form-control @error('district') is-invalid @enderror" name="district" required>
@@ -159,7 +159,7 @@
                     @error('district')
                     <span class="text-danger d-block mt-2">{{ $message }}</span>
                     @enderror
-                </div>
+                </div> -->
 
                 <!-- Dirección -->
                 <div class="form-group">
@@ -199,7 +199,8 @@
                     <input type="number" class="form-control @error('household_members') is-invalid @enderror"
                         id="household_members" name="household_members"
                         value="{{ old('household_members', $elderlyAdult->household_members) }}"
-                        min="1">
+                        min="1"
+                        max="20">
                     @error('household_members') <span class="invalid-feedback">{{ $message }}</span> @enderror
                 </div>
 
@@ -388,7 +389,7 @@
     });
 </script>
 
-<!-- PARA LA UBICACION , DEPARTAMENTO, PROVINCIA, DISTRITO -->
+<!-- PARA LA UBICACION , DEPARTAMENTO, PROVINCIA, DISTRITO 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const locations = {
@@ -447,7 +448,7 @@
             districtSelect.value = "{{ $elderlyAdult->district }}";
         }
     });
-</script>
+</script> -->
 
 <!-- PARA EL TELEFONO -->
 <script>

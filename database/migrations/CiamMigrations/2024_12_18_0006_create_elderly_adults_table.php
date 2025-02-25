@@ -31,11 +31,6 @@ return new class extends Migration
             $table->uuid('guardian_id')->nullable();
             $table->foreign('guardian_id')->references('id')->on('guardians')->onDelete('set null');
 
-            // Ubicación (dependiente: departamento -> provincia -> distrito)
-            $table->string('department', 100); // Departamento
-            $table->string('province', 100); // Provincia
-            $table->string('district', 100); // Distrito
-
             // Seguro público
             $table->enum('public_insurance', ['SIS', 'ESSALUD'])->nullable(); // Seguro público (opcional)
 
