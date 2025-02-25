@@ -8,9 +8,21 @@
         <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="img-fluid"
             style="max-height: 60px;">
     </div>
+
 @stop
 
 @section('content')
+
+    <!-- Barra de búsqueda -->
+    <div class="mb-3 d-flex justify-content-center">
+        <form action="{{ route('om-dwellings.index') }}" method="GET" class="d-flex">
+            <input type="text" name="search" class="form-control me-2"
+                placeholder="Buscar por localización o referencia..." value="{{ request('search') }}">
+            <button type="submit" class="btn btn-custom">
+                <i class="fas fa-search"></i>
+            </button>
+        </form>
+    </div>
     <div class="card shadow-lg" style="border-radius: 15px; border-left: 5px solid #99050f;">
 
         <!-- Encabezado de la tarjeta con botón al lado del título -->
@@ -134,6 +146,18 @@
         .page-link:hover {
             background-color: #930813;
             color: white;
+        }
+        /* Estilizar el campo de búsqueda */
+        .form-control {
+            border: 1px solid #930813;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .form-control:focus {
+            border-color: #f00e1c;
+            box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
         }
     </style>
 @stop

@@ -34,6 +34,18 @@
                 <i class="fas fa-user-plus mr-2"></i>
                 <span class="btn-gradient-text">Nueva Persona</span>
             </a>
+            <a href="{{ route('omdashboard') }}" class="neo-btn">
+                <i class="fas fa-arrow-left mr-2"></i>
+                <span class="btn-gradient-text">Volver</span>
+            </a>
+        </div>
+        <br>
+        <!-- Barra de búsqueda -->
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Buscar por Nombre o DNI..." class="search-input">
+            <button class="search-btn">
+                <i class="fas fa-search"></i>
+            </button>
         </div>
         <br>
         <!-- Grid de tarjetas -->
@@ -126,6 +138,14 @@
             --accent-color: #FF9F0A;
             --text-light: #F5F5F7;
             --gradient-red: linear-gradient(135deg, #FF3B30 0%, #930813 100%);
+        }
+
+        .action-bar {
+            display: flex;
+            gap: 15px;
+            /* Ajusta la separación entre los botones */
+            justify-content: center;
+            /* Centra los botones */
         }
 
         /* Estilos del banner */
@@ -366,23 +386,61 @@
         .card-header {
             padding: 0.5rem 1rem;
         }
+
         .address-item {
-        display: flex;
-        align-items: center;
-        gap: 0rem;
-        color: #444;
-    }
+            display: flex;
+            align-items: center;
+            gap: 0rem;
+            color: #444;
+        }
 
-    .address-icon {
-        color: var(--primary-color);
-        font-size: 1.1rem;
-        min-width: 20px;
-    }
+        .address-icon {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            min-width: 20px;
+        }
 
-    .address-text {
-        font-size: 0.85rem;
-        line-height: 1.4;
-    }
+        .address-text {
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .search-input {
+            width: 300px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #007AFF;
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 122, 255, 0.2);
+        }
+
+        .search-btn {
+            background: #007AFF;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .search-btn:hover {
+            background: #005EC2;
+        }
     </style>
 @stop
 
@@ -454,6 +512,26 @@
                 animation: 'scale',
                 arrow: true,
                 delay: [100, 50],
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const searchInput = document.getElementById("searchInput");
+            const gridItems = document.querySelectorAll(".grid-item");
+
+            searchInput.addEventListener("input", function() {
+                const query = this.value.toLowerCase();
+
+                gridItems.forEach(item => {
+                    const name = item.querySelector(".person-name").textContent.toLowerCase();
+                    const dni = item.querySelector(".dni-code").textContent.toLowerCase();
+
+                    if (name.includes(query) || dni.includes(query)) {
+                        item.style.display = "block";
+                    } else {
+                        item.style.display = "none";
+                    }
+                });
             });
         });
     </script>

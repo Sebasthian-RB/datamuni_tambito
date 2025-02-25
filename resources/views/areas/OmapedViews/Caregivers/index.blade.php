@@ -12,8 +12,20 @@
 @stop
 
 @section('content')
+<br>
+    <!-- Formulario de búsqueda -->
+    <div class="d-flex justify-content-center mb-3">
+        <form action="{{ route('caregivers.index') }}" method="GET" class="d-flex">
+            <input type="text" name="search" class="form-control me-2" placeholder="Buscar por nombre o DNI"
+                value="{{ request('search') }}" style="border-radius: 8px; border: 1px solid #930813; max-width: 250px;">
+            <button type="submit" class="btn btn-custom">
+                <i class="fas fa-search"></i> Buscar
+            </button>
+        </form>
+    </div>
     <div class="card shadow-lg"
         style="border-radius: 15px; max-width: 1100px; margin: 2rem auto; border-left: 5px solid #99050f;">
+
         <!-- Cabecera con diseño -->
         <div class="card-header d-flex justify-content-between align-items-center"
             style="background: #f00e1c; color: white; border-radius: 15px 15px 0 0;">
@@ -101,6 +113,20 @@
             border-color: #ffffff;
             color: rgb(0, 0, 0);
         }
+
+        /* Estilizar el campo de búsqueda */
+        .form-control {
+            border: 1px solid #930813;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .form-control:focus {
+            border-color: #f00e1c;
+            box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+        }
+
         .btn-custom {
             background-color: #930813;
             border: 1px solid #930813;

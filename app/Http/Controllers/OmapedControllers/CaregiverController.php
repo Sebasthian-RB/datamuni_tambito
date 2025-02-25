@@ -13,10 +13,17 @@ class CaregiverController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Obtener todos los cuidadores
-        $caregivers = Caregiver::paginate(10); // Aquí puedes optimizar según lo necesites
+        // Obtener el valor de búsqueda
+        $search = $request->input('search');
+
+        // Consultar cuidadores con filtro opcional por nombre o DNI
+        $caregivers = Caregiver::when($search, function ($query) use ($search) {
+            $query->where('full_name', 'LIKE', "%{$search}%")
+                ->orWhere('dni', 'LIKE', "%{$search}%");
+        })->paginate(10); // Manteniendo la paginación de 10 registros
+
         return view('areas.OmapedViews.Caregivers.index', compact('caregivers'));
     }
 

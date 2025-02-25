@@ -13,10 +13,17 @@ class OmDwellingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Obtener todas las viviendas
-        $dwellings = OmDwelling::paginate(10);
+        // Obtener el valor de búsqueda
+        $search = $request->input('search');
+
+        // Consultar viviendas con filtro opcional por localización o referencia
+        $dwellings = OmDwelling::when($search, function ($query) use ($search) {
+            $query->where('exact_location', 'LIKE', "%{$search}%")
+                ->orWhere('reference', 'LIKE', "%{$search}%");
+        })->paginate(10); // Manteniendo la paginación
+
         return view('areas.OmapedViews.OmDwellings.index', compact('dwellings'));
     }
 
@@ -35,14 +42,14 @@ class OmDwellingController extends Controller
     public function store(StoreOmDwellingRequest $request)
     {
         $dwelling = OmDwelling::create($request->validated());
-    
+
         if ($request->ajax()) { // Cambiar de wantsJson() a ajax()
             return response()->json([
                 'success' => true,
                 'dwelling' => $dwelling
             ]);
         }
-    
+
         return redirect()->route('om-dwellings.index')
             ->with('success', '¡Vivienda creada exitosamente!');
     }

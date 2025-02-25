@@ -13,13 +13,20 @@ class DisabilityController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        // Obtener todas las discapacidades
-        $disabilities = Disability::paginate(10);
-        return view('areas.OmapedViews.Disabilities.index', compact('disabilities'));
-    }
+    public function index(Request $request)
+{
+    // Obtener el valor de búsqueda
+    $search = $request->input('search');
 
+    // Consultar discapacidades con filtro opcional por N° de certificado, diagnóstico o tipo de discapacidad
+    $disabilities = Disability::when($search, function ($query) use ($search) {
+        $query->where('certificate_number', 'LIKE', "%{$search}%")
+              ->orWhere('diagnosis', 'LIKE', "%{$search}%")
+              ->orWhere('disability_type', 'LIKE', "%{$search}%");
+    })->paginate(10); // Manteniendo la paginación
+
+    return view('areas.OmapedViews.Disabilities.index', compact('disabilities'));
+}
     /**
      * Show the form for creating a new resource.
      */
