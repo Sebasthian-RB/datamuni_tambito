@@ -71,6 +71,14 @@
 
                     <!-- Botones de Gestión -->
                     <div class="row g-3 text-center">
+                        <!-- Personas y Casos -->
+                        <div class="col-lg-4 col-md-6">
+                            <a href="{{ route('am_person_violences.index') }}"
+                                class="btn btn-lg btn-gradient w-100 shadow-sm"
+                                style="background: linear-gradient(to right, #f27a70, #d94c50); color: #fff; font-weight: bold; border-radius: 8px;">
+                                <i class="fas fa-user-shield"></i> Personas y Casos
+                            </a>
+                        </div>
                         <!-- Gestión de Personas -->
                         <div class="col-lg-4 col-md-6">
                             <a href="{{ route('am_people.index') }}" class="btn btn-lg btn-gradient w-100 shadow-sm"
@@ -83,14 +91,6 @@
                             <a href="{{ route('violences.index') }}" class="btn btn-lg btn-gradient w-100 shadow-sm"
                                 style="background: linear-gradient(to right, #f76c5e, #d8474d); color: #fff; font-weight: bold; border-radius: 8px;">
                                 <i class="fas fa-exclamation-circle"></i> Gestión de Casos
-                            </a>
-                        </div>
-                        <!-- Personas y Casos -->
-                        <div class="col-lg-4 col-md-6">
-                            <a href="{{ route('am_person_violences.index') }}"
-                                class="btn btn-lg btn-gradient w-100 shadow-sm"
-                                style="background: linear-gradient(to right, #f27a70, #d94c50); color: #fff; font-weight: bold; border-radius: 8px;">
-                                <i class="fas fa-user-shield"></i> Personas y Casos
                             </a>
                         </div>
                     </div>
@@ -188,19 +188,19 @@
                         intervenciones.</p>
                     <!-- Botones de intervenciones -->
                     <div class="row text-center">
-                        <!-- Botón: Gestión de Intervenciones -->
-                        <div class="col-lg-4 col-md-6 mb-3">
-                            <a href="{{ route('interventions.index') }}" class="btn btn-lg w-100 shadow-sm"
-                                style="background: linear-gradient(to right, #f76c5e, #d8474d); color: white; font-weight: bold; border-radius: 8px;">
-                                <i class="fas fa-handshake"></i> Gestión de Intervenciones
-                            </a>
-                        </div>
                         <!-- Botón: Personas e Intervenciones -->
                         <div class="col-lg-4 col-md-6 mb-3">
                             <a href="{{ route('am_person_interventions.index') }}"
                                 class="btn btn-lg w-100 shadow-sm"
                                 style="background: linear-gradient(to right, #f27a70, #d94c50); color: white; font-weight: bold; border-radius: 8px;">
                                 <i class="fas fa-user-friends"></i> Personas e Intervenciones
+                            </a>
+                        </div>
+                        <!-- Botón: Gestión de Intervenciones -->
+                        <div class="col-lg-4 col-md-6 mb-3">
+                            <a href="{{ route('interventions.index') }}" class="btn btn-lg w-100 shadow-sm"
+                                style="background: linear-gradient(to right, #f76c5e, #d8474d); color: white; font-weight: bold; border-radius: 8px;">
+                                <i class="fas fa-handshake"></i> Gestión de Intervenciones
                             </a>
                         </div>
                     </div>
@@ -317,6 +317,13 @@
 
                     <div class="row text-center">
                         <div class="col-lg-4 col-md-6 mb-3">
+                            <a href="{{ route('am_person_events.index') }}"
+                                class="btn btn-lg btn-gradient w-100 shadow-sm"
+                                style="background: linear-gradient(to right, #f27a70, #d94c50); color: white; font-weight: bold; border-radius: 8px;">
+                                <i class="fas fa-user-clock"></i> Personas y Eventos
+                            </a>
+                        </div>
+                        <div class="col-lg-4 col-md-6 mb-3">
                             <a href="{{ route('programs.index') }}"
                                 class="btn btn-lg btn-gradient w-100 shadow-sm"
                                 style="background: linear-gradient(to right, #ff6f61, #de6262); color: white; font-weight: bold; border-radius: 8px;">
@@ -327,13 +334,6 @@
                             <a href="{{ route('events.index') }}" class="btn btn-lg btn-gradient w-100 shadow-sm"
                                 style="background: linear-gradient(to right, #f76c5e, #d8474d); color: white; font-weight: bold; border-radius: 8px;">
                                 <i class="fas fa-calendar-alt"></i> Gestión de Eventos
-                            </a>
-                        </div>
-                        <div class="col-lg-4 col-md-6 mb-3">
-                            <a href="{{ route('am_person_events.index') }}"
-                                class="btn btn-lg btn-gradient w-100 shadow-sm"
-                                style="background: linear-gradient(to right, #f27a70, #d94c50); color: white; font-weight: bold; border-radius: 8px;">
-                                <i class="fas fa-user-clock"></i> Personas y Eventos
                             </a>
                         </div>
                     </div>
