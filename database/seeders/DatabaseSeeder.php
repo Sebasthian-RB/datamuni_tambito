@@ -20,8 +20,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'password' => 'adminadmin'
         ]);
-
-        $this->call(VasoDeLecheSeeder::class);
         $this->call(AreaDeLaMujerSeeder::class);
+        $this->call(VasoDeLecheSeeder::class);
     }
 }
