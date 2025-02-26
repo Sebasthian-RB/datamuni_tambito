@@ -31,9 +31,7 @@ class Committee extends Model
     protected $fillable = [
         'id',                           // ID personalizado de comité 
         'name',                         // Nombre del comité
-        'president_paternal_surname',   // Apellido paterno del presidente
-        'president_maternal_surname',   // Apellido materno del presidente
-        'president_given_name',         // Nombres del presidente
+        'president',                    // Nombre completo de presidente(a)
         'urban_core',                   // Núcleo urbano
         'sector_id',                    // Clave foránea del sector
     ];
@@ -46,9 +44,7 @@ class Committee extends Model
     protected $casts = [
         'id' => 'string',
         'name' => 'string',
-        'president_paternal_surname' => 'string',
-        'president_maternal_surname' => 'string',
-        'president_given_name' => 'string',
+        'president' => 'string',
         'urban_core' => 'string',
         'sector_id' => 'integer',
     ];
@@ -75,68 +71,21 @@ class Committee extends Model
 
 
     /**
-     * Mutador para el apellido paterno del presidente.
+     * Mutador: Guardar el presidente con letras mayúsculas.
      */
-    public function setPresidentPaternalSurnameAttribute($value)
+    public function setPresidentAttribute($value)
     {
-        $this->attributes['president_paternal_surname'] = strtoupper(trim($value));
+        $this->attributes['president'] = strtoupper(trim($value));
     }
 
     /**
-     * Mutador para el apellido materno del presidente.
-     */
-    public function setPresidentMaternalSurnameAttribute($value)
-    {
-        $this->attributes['president_maternal_surname'] = strtoupper(trim($value));
-    }
-
-    /**
-     * Mutador para el nombre del presidente.
-     */
-    public function setPresidentGivenNameAttribute($value)
-    {
-        $this->attributes['president_given_name'] = strtoupper(trim($value));
-    }
-
-    /**
-     * Accesor: Obtener el apellido paterno del presidente con la primera letra mayúscula.
-     *
-     * @return string
-     */
-    public function getPresidentPaternalSurnameAttribute()
-    {
-        return ucwords(strtolower($this->attributes['president_paternal_surname']));
-    }
-
-    /**
-     * Accesor: Obtener el apellido materno del presidente con la primera letra mayúscula.
-     *
-     * @return string
-     */
-    public function getPresidentMaternalSurnameAttribute()
-    {
-        return ucwords(strtolower($this->attributes['president_maternal_surname']));
-    }
-
-    /**
-     * Accesor: Obtener el nombre del presidente con la primera letra mayúscula.
-     *
-     * @return string
-     */
-    public function getPresidentGivenNameAttribute()
-    {
-        return ucwords(strtolower($this->attributes['president_given_name']));
-    }
-
-    /**
-     * Accesor: Obtener el nombre completo del presidente con la primera letra en mayúscula para cada parte.
+     * Accesor: Obtener el presidente con la primera letra mayúscula.
      *
      * @return string
      */
     public function getPresidentAttribute()
     {
-        // Concatenamos y formateamos los tres atributos
-        return $this->president_paternal_surname . ' ' . $this->president_maternal_surname . ' ' . $this->president_given_name;
+        return ucwords(strtolower($this->attributes['president']));
     }
 
     /**

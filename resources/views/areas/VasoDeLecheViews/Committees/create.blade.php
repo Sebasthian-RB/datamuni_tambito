@@ -6,46 +6,228 @@
     <h1>Agregar Comité</h1>
 @stop
 
+@section('css')
+    <!-- Estilos personalizados -->
+    <style>
+        /* Colores de la paleta */
+        :root {
+            --color-primary: #3B1E54;
+            --color-secondary: #9B7EBD;
+            --color-accent: #D4BEE4;
+            --color-background: #EEEEEE;
+        }
+    
+        /* Estilos generales */
+        .card {
+            border: 1px solid var(--color-accent);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+    
+        /* Header */
+        .card-header {
+            background-color: var(--color-primary);
+            color: #FFFFFF;
+            padding: 15px 20px;
+        }
+    
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    
+        .card-title {
+            font-size: 1.30rem;
+            margin: 0;
+            font-weight: 600;
+        }
+    
+        .header-logo {
+            height: 50px;
+            width: auto;
+        }
+    
+        /* Estilos para las etiquetas */
+        label {
+            color: var(--color-primary);
+            font-weight: bold;
+        }
+    
+        /* Estilos para los campos de formulario */
+        .form-control {
+            border: 1px solid var(--color-accent);
+            border-radius: 6px;
+            padding: 10px;
+            font-size: 14px;
+            color: var(--color-primary);
+        }
+    
+        .form-control::placeholder {
+            color: #999;
+            font-style: italic;
+        }
+    
+        .form-control:focus {
+            border-color: var(--color-secondary);
+            box-shadow: 0 0 5px rgba(155, 126, 189, 0.5);
+        }
+    
+        /* Estilos para los select */
+        .form-control option {
+            color: var(--color-primary);
+        }
+    
+        .form-control option.placeholder-option {
+            color: #999;
+            font-style: italic;
+        }
+    
+        /* Estilos para los íconos */
+        .fas {
+            color: var(--color-secondary);
+        }
+    
+        /* Estilos para los mensajes de error */
+        .invalid-feedback {
+            color: #dc3545;
+            font-size: 12px;
+        }
+    
+        /* Estilos personalizados para el botón "Guardar Comité" */
+        .btn-custom {
+            background-color: #9B7EBD;
+            border-color: #9B7EBD;
+            color: white;
+        }
+
+        .btn-custom:hover {
+            background-color: #7B5E9D; /* Un tono más oscuro para el hover */
+            border-color: #7B5E9D;
+        }
+
+        /* Línea divisoria vertical */
+        .vertical-divider {
+            width: 1px;
+            height: 100%;
+            background-color: var(--color-accent);
+        }
+    
+        /* Estilos responsivos */
+        @media (max-width: 768px) {
+            .col-md-6, .col-md-4, .col-md-8, .col-md-5, .col-md-1 {
+                width: 100%;
+            }
+    
+            .vertical-divider {
+                display: none; /* Ocultar la línea divisoria en pantallas pequeñas */
+            }
+    
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+    
+            .header-logo {
+                margin-top: 10px;
+            }
+    
+            .card-footer {
+                text-align: center;
+            }
+    
+            .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .btn-custom, .btn-danger {
+                width: 100%; /* Botones ocupan el 100% del ancho en móviles */
+                margin-bottom: 10px; /* Espacio entre botones */
+            }
+
+            .btn-danger {
+                margin-left: 0 !important; /* Eliminar margen izquierdo en móviles */
+            }
+        }
+    </style>
+@stop
+
 @section('content')
 <div class="container">
     <form action="{{ route('committees.store') }}" method="POST">
         @csrf
         <div class="card">
             <!-- Card Header con título más grande -->
-            <div class="card-header p-0 d-flex align-items-center" style="background-color: #3B1E54; color: #FFFFFF; height: 60px;">
-                <h3 class="card-title mb-0" style="margin-left: 20px; font-size: 1.30rem;">Formulario para agregar nuevo Comité</h3>
-                <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="img-fluid" style="height: 50px; width: auto; margin-left: auto; margin-right: 20px;">
+            <div class="card-header">
+                <div class="header-content">
+                    <h3 class="card-title">Formulario para agregar nuevo Comité</h3>
+                    <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="header-logo">
+                </div>
             </div>
             
             <div class="card-body">
                 <div class="row">
-                    <!-- Sección del Comité (Columna izquierda) -->
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-header" style="background-color: #9B7EBD; color: #FFFFFF;">
-                                <h4 style="font-size: 1.20rem;">Datos del Comité</h4>
+                    <!-- Sección del Comité -->
+                    <div class="col-md-12">
+                        <div class="row">
+                            <!-- Columna izquierda -->
+                            <div class="col-md-6">
+                                <!-- Fila para Número y Nombre -->
+                                <div class="row">
+                                    <!-- Columna para Número de comité (más pequeño) -->
+                                    <div class="col-md-4">
+                                        <div class="form-group mb-4">
+                                            <label for="id" class="font-weight-bold">
+                                                <i class="fas fa-hashtag mr-2"></i>Número de comité
+                                            </label>
+                                            <input type="text" class="form-control @error('id') is-invalid @enderror" id="id" name="id" value="{{ old('id') }}" placeholder="Ej: 1234" required>
+                                            @error('id')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+        
+                                    <!-- Columna para Nombre (más grande) -->
+                                    <div class="col-md-8">
+                                        <div class="form-group mb-4">
+                                            <label for="name" class="font-weight-bold">
+                                                <i class="fas fa-file-signature mr-2"></i>Nombre
+                                            </label>
+                                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" placeholder="Ej: Comité de Desarrollo Local" required>
+                                            @error('name')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+        
+                                <!-- Campo: Presidente(a) -->
+                                <div class="form-group mb-4">
+                                    <label for="president" class="font-weight-bold">
+                                        <i class="fas fa-user-tie mr-2"></i>Presidente(a)
+                                    </label>
+                                    <input type="text" class="form-control @error('president') is-invalid @enderror" id="president" name="president" value="{{ old('president') }}" placeholder="Ej: Perez Gomez Juan Carlos" required>
+                                    @error('president')
+                                        <span class="invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                </div>
                             </div>
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label for="id">Número de comité</label>
-                                    <input type="text" class="form-control @error('id') is-invalid @enderror" id="id" name="id" value="{{ old('id') }}" required>
-                                    @error('id')
-                                        <span class="invalid-feedback">{{ $message }}</span>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="name">Nombre</label>
-                                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" required>
-                                    @error('name')
-                                        <span class="invalid-feedback">{{ $message }}</span>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="urban_core">Núcleo Urbano</label>
+        
+                            <!-- Línea divisoria -->
+                            <div class="col-md-1 d-flex justify-content-center align-items-center">
+                                <div class="vertical-divider"></div>
+                            </div>
+        
+                            <!-- Columna derecha -->
+                            <div class="col-md-5">
+                                <!-- Campo: Núcleo Urbano -->
+                                <div class="form-group mb-4">
+                                    <label for="urban_core" class="font-weight-bold">
+                                        <i class="fas fa-map-marker-alt mr-2"></i>Núcleo Urbano
+                                    </label>
                                     <select class="form-control @error('urban_core') is-invalid @enderror" id="urban_core" name="urban_core" required>
-                                        <option value="" disabled selected>Seleccione un Núcleo Urbano</option>
+                                        <option value="" disabled selected class="placeholder-option">Seleccione un Núcleo Urbano</option>
                                         @foreach ($urbanCores as $core)
                                             <option value="{{ $core }}" {{ old('urban_core') == $core ? 'selected' : '' }}>{{ $core }}</option>
                                         @endforeach
@@ -54,14 +236,17 @@
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
                                 </div>
-
-                                <div class="form-group">
-                                    <label for="sector_id">Sector</label> 
+        
+                                <!-- Campo: Sector -->
+                                <div class="form-group mb-4">
+                                    <label for="sector_id" class="font-weight-bold">
+                                        <i class="fas fa-map mr-2"></i>Sector
+                                    </label>
                                     @if($sectors->isEmpty())
-                                        <p>No hay sectores disponibles.</p>
+                                        <p class="text-muted">No hay sectores disponibles.</p>
                                     @else
                                         <select name="sector_id" id="sector_id" class="form-control @error('sector_id') is-invalid @enderror" required>
-                                            <option value="" disabled selected>Seleccione un Sector</option>
+                                            <option value="" disabled selected class="placeholder-option">Seleccione un Sector</option>
                                             @foreach($sectors as $sector)
                                                 <option value="{{ $sector->id }}" {{ old('sector_id') == $sector->id ? 'selected' : '' }}>{{ $sector->name }}</option>
                                             @endforeach
@@ -74,46 +259,13 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Sección del Presidente (Columna derecha) -->
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-header" style="background-color: #9B7EBD; color: #FFFFFF;">
-                                <h4 style="font-size: 1.20rem;">Datos del Presidente(a)</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label for="president_paternal_surname">Apellido Paterno</label>
-                                    <input type="text" class="form-control @error('president_paternal_surname') is-invalid @enderror" id="president_paternal_surname" name="president_paternal_surname" value="{{ old('president_paternal_surname') }}" required>
-                                    @error('president_paternal_surname')
-                                        <span class="invalid-feedback">{{ $message }}</span>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="president_maternal_surname">Apellido Materno</label>
-                                    <input type="text" class="form-control @error('president_maternal_surname') is-invalid @enderror" id="president_maternal_surname" name="president_maternal_surname" value="{{ old('president_maternal_surname') }}">
-                                    @error('president_maternal_surname')
-                                        <span class="invalid-feedback">{{ $message }}</span>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="president_given_name">Nombres</label>
-                                    <input type="text" class="form-control @error('president_given_name') is-invalid @enderror" id="president_given_name" name="president_given_name" value="{{ old('president_given_name') }}" required>
-                                    @error('president_given_name')
-                                        <span class="invalid-feedback">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> <!-- Fin de la fila para los dos formularios -->
+                </div>
             </div>
-
-            <div class="card-footer">
-                <button type="submit" class="btn btn-success" style="background-color: #9B7EBD; color: white; border: #9B7EBD;">Guardar Comité</button>
-                <a href="{{ route('committees.index') }}" class="btn btn-danger">Cancelar</a>
+        
+            <!-- Card Footer -->
+            <div class="card-footer text-right">
+                <button type="submit" class="btn btn-custom">Guardar Comité</button>
+                <a href="{{ route('committees.index') }}" class="btn btn-danger ml-2">Cancelar</a>
             </div>
         </div>
     </form>

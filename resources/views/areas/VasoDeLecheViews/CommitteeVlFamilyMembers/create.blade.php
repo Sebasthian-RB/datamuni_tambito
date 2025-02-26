@@ -490,8 +490,7 @@
                 </div>
                 
                 <!-- Formulario -->
-                <form action="{{ route('vl_family_members.store') }}" method="POST">
-                    @csrf
+                <form id="addFamilyMemberForm" action="{{ route('vl_family_members.store') }}" method="POST" onsubmit="handleFormSubmit(event)">                    @csrf
                     <!-- Cuerpo del Modal -->
                     <div class="modal-body family-modal-body-card">
                         <!-- Card para Datos del Miembro de Familia -->
@@ -511,7 +510,7 @@
                                                 <label for="new_family_member_identity_type" class="family-label-card">
                                                     <i class="fas fa-id-card mr-2"></i>Tipo de Documento
                                                 </label>
-                                                <select class="form-control family-input-card" id="new_family_member_identity_type" name="new_family_member_identity_type" required>
+                                                <select class="form-control family-input-card" id="new_family_member_identity_type" name="identity_document" required>
                                                     @foreach($identityDocumentTypes as $identityDocumentType)
                                                         <option value="{{ $identityDocumentType }}">{{ $identityDocumentType }}</option>
                                                     @endforeach
@@ -523,7 +522,7 @@
                                                 <label for="new_family_member_identity_document" class="family-label-card">
                                                     <i class="fas fa-id-card mr-2"></i>Número de Documento
                                                 </label>
-                                                <input type="text" class="form-control family-input-card" id="new_family_member_identity_document" name="new_family_member_identity_document" required>
+                                                <input type="text" class="form-control family-input-card" id="new_family_member_identity_document" name="id" required>
                                             </div>
                                         </div>
                                     </div>
@@ -540,7 +539,7 @@
                                                 <label for="new_family_member_given_name" class="family-label-card">
                                                     <i class="fas fa-signature mr-2"></i>Nombre
                                                 </label>
-                                                <input type="text" class="form-control family-input-card" id="new_family_member_given_name" name="new_family_member_given_name" required>
+                                                <input type="text" class="form-control family-input-card" id="new_family_member_given_name" name="given_name" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -548,7 +547,7 @@
                                                 <label for="new_family_member_paternal_last_name" class="family-label-card">
                                                     <i class="fas fa-signature mr-2"></i>Apellido Paterno
                                                 </label>
-                                                <input type="text" class="form-control family-input-card" id="new_family_member_paternal_last_name" name="new_family_member_paternal_last_name" required>
+                                                <input type="text" class="form-control family-input-card" id="new_family_member_paternal_last_name" name="paternal_last_name" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -556,7 +555,7 @@
                                                 <label for="new_family_member_maternal_last_name" class="family-label-card">
                                                     <i class="fas fa-signature mr-2"></i>Apellido Materno
                                                 </label>
-                                                <input type="text" class="form-control family-input-card" id="new_family_member_maternal_last_name" name="new_family_member_maternal_last_name" required>
+                                                <input type="text" class="form-control family-input-card" id="new_family_member_maternal_last_name" name="maternal_last_name" required>
                                             </div>
                                         </div>
                                     </div>
@@ -1183,5 +1182,54 @@
             });
 
         });
+    </script>
+
+    <!-- Script para el modal de creación de familiar y menores de edad asociados -->
+    <script>
+    $(document).ready(function() {
+        // Manejar el envío del formulario
+        $('#addFamilyMemberForm').on('submit', function(e) {
+            e.preventDefault(); // Evitar el envío tradicional
+
+            // Obtener los valores del formulario
+            const memberId = $('#new_family_member_id').val();
+            const identityDocument = $('#new_family_member_identity_type').val();
+            const givenName = $('#new_family_member_given_name').val();
+            const paternalLastName = $('#new_family_member_paternal_last_name').val();
+            const maternalLastName = $('#new_family_member_maternal_last_name').val();
+
+            // Validar que el ID no esté vacío
+            if (!memberId) {
+                alert('Por favor, ingrese un ID válido.');
+                return;
+            }
+
+            // Crear la nueva opción para el select
+            const newOption = new Option(
+                `${givenName} ${paternalLastName} ${maternalLastName}`, // Texto visible
+                memberId, // Valor
+                true, // Seleccionar la opción
+                true // Marcar como seleccionada
+            );
+
+            // Agregar los datos adicionales como atributos data-*
+            $(newOption).attr('data-id', memberId)
+                    .attr('data-identity', identityDocument)
+                    .attr('data-given-name', givenName)
+                    .attr('data-paternal', paternalLastName)
+                    .attr('data-maternal', maternalLastName)
+                    .attr('data-minors', JSON.stringify([])); // Sin menores asociados
+
+            // Agregar la nueva opción al select
+            $('#vl_family_member_id').append(newOption).trigger('change');
+
+            // Cerrar el modal
+            $('#addFamilyMemberModal').modal('hide');
+            $('.modal-backdrop').remove();
+
+            // Limpiar el formulario (opcional)
+            $('#addFamilyMemberForm')[0].reset();
+        });
+    });
     </script>
 @stop
