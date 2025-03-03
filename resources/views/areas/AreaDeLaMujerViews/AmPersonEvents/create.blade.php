@@ -4,8 +4,10 @@
 
 @section('content_header')
     <!-- Imagen superior -->
-    <div class="d-flex justify-content-center align-items-center py-3" style="background: #c06c84; border-radius: 0 0 15px 15px;">
-        <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="img-fluid" style="max-height: 80px;">
+    <div class="d-flex justify-content-center align-items-center py-3"
+        style="background: #c06c84; border-radius: 0 0 15px 15px;">
+        <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="img-fluid"
+            style="max-height: 80px;">
     </div>
 @stop
 
@@ -16,10 +18,10 @@
         </div>
 
         <div class="card-body" style="background: linear-gradient(135deg, #f8b19550 0%, #f6728050 100%);">
-            @if($errors->any())
+            @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>
-                        @foreach($errors->all() as $error)
+                        @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
                     </ul>
@@ -34,15 +36,16 @@
                     <div class="d-flex">
                         <select name="am_person_id" id="am_person_id" class="form-control select2" required>
                             <option value="">Seleccione una persona</option>
-                            @foreach($people as $person)
-                                <option value="{{ $person->id }}">{{ $person->given_name }} {{ $person->paternal_last_name }}</option>
+                            @foreach ($people as $person)
+                                <option value="{{ $person->id }}">{{ $person->given_name }}
+                                    {{ $person->paternal_last_name }}</option>
                             @endforeach
                         </select>
-                        <button type="button" class="btn btn-primary" 
-                                        style="background: #f67280; border-color: #f67280; border-radius: 0 8px 8px 0;"
-                                        data-toggle="modal" data-target="#addPersonModal">
-                                    <i class="fas fa-plus-circle"></i>
-                                </button>
+                        <button type="button" class="btn btn-primary"
+                            style="background: #f67280; border-color: #f67280; border-radius: 0 8px 8px 0;"
+                            data-toggle="modal" data-target="#addPersonModal">
+                            <i class="fas fa-plus-circle"></i>
+                        </button>
                     </div>
                 </div>
 
@@ -50,7 +53,7 @@
                     <label for="event_id" class="font-weight-bold" style="color: #355c7d;">Evento</label>
                     <select name="event_id" id="event_id" class="form-control select2" required>
                         <option value="">Seleccione un evento</option>
-                        @foreach($events as $event)
+                        @foreach ($events as $event)
                             <option value="{{ $event->id }}">{{ $event->name }}</option>
                         @endforeach
                     </select>
@@ -68,15 +71,18 @@
 
                 <div class="form-group mb-4">
                     <label for="attendance_datetime" class="font-weight-bold" style="color: #355c7d;">Fecha y Hora</label>
-                    <input type="datetime-local" name="attendance_datetime" id="attendance_datetime" class="form-control" required value="{{ old('attendance_datetime') }}">
+                    <input type="datetime-local" name="attendance_datetime" id="attendance_datetime" class="form-control"
+                        required value="{{ old('attendance_datetime') }}">
                 </div>
 
                 <!-- Botones de Acción -->
                 <div class="text-right mt-4">
-                    <button type="submit" class="btn btn-lg shadow-sm" style="background: #f67280; border-color: #f67280; color: white; border-radius: 8px;">
+                    <button type="submit" class="btn btn-lg shadow-sm"
+                        style="background: #f67280; border-color: #f67280; color: white; border-radius: 8px;">
                         <i class="fas fa-save"></i> Guardar
                     </button>
-                    <a href="{{ route('am_person_events.index') }}" class="btn btn-lg btn-secondary shadow-sm" style="border-radius: 8px;">
+                    <a href="{{ route('am_person_events.index') }}" class="btn btn-lg btn-secondary shadow-sm"
+                        style="border-radius: 8px;">
                         <i class="fas fa-times"></i> Cancelar
                     </a>
                 </div>
@@ -105,8 +111,7 @@
                                 <div class="form-group mb-4">
                                     <label for="identity_document" class="font-weight-bold"
                                         style="color: #355c7d;">Documento de Identidad</label>
-                                    <select class="form-control select2" id="identity_document" name="identity_document"
-                                        required>
+                                    <select class="form-control" id="identity_document" name="identity_document" required>
                                         <option value="DNI">DNI</option>
                                         <option value="Pasaporte">Pasaporte</option>
                                         <option value="Carnet">Carnet</option>
@@ -348,9 +353,9 @@
                             // Mostrar errores en los campos correspondientes
                             $.each(errors, function(field, messages) {
                                 $('#' + field).addClass(
-                                'is-invalid'); // Resaltar el campo en rojo
+                                    'is-invalid'); // Resaltar el campo en rojo
                                 $('.' + field + '_error').text(messages[
-                                0]); // Mostrar el mensaje de error
+                                    0]); // Mostrar el mensaje de error
                             });
 
                             Swal.fire('Error', 'Corrige los errores antes de continuar',
@@ -377,5 +382,124 @@
             });
         });
     </script>
+    <!-- Validadciones para persona -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const docType = document.getElementById('identity_document');
+            const docNumber = document.getElementById('id');
+            const errorSpan = document.querySelector('.id_error');
 
+            // Configurar validación inicial
+            setValidationRules(docType.value);
+
+            docType.addEventListener('change', function() {
+                setValidationRules(this.value);
+                docNumber.value = '';
+                validateDocument();
+                docNumber.focus(); // Mejorar UX en modales
+            });
+
+            docNumber.addEventListener('input', function(e) {
+                this.value = sanitizeInput(this.value, docType.value);
+                validateDocument();
+            });
+
+            function sanitizeInput(value, type) {
+                switch (type) {
+                    case 'DNI':
+                    case 'Cedula':
+                    case 'Carnet':
+                        return value.replace(/\D/g, ''); // Solo números
+                    case 'Pasaporte':
+                        return value.replace(/[^A-Za-z0-9]/g, ''); // Alfanumérico
+                    default:
+                        return value;
+                }
+            }
+
+            function setValidationRules(type) {
+                docNumber.classList.remove('is-invalid');
+                errorSpan.textContent = '';
+
+                switch (type) {
+                    case 'DNI':
+                    case 'Cedula':
+                        docNumber.maxLength = 8;
+                        docNumber.pattern = '^[0-9]{8}$';
+                        docNumber.placeholder = 'Ingrese 8 dígitos';
+                        docNumber.inputMode = 'numeric';
+                        break;
+                    case 'Pasaporte':
+                        docNumber.maxLength = 12;
+                        docNumber.pattern = '^[A-Za-z0-9]{6,12}$';
+                        docNumber.placeholder = 'Mínimo 6 caracteres alfanuméricos';
+                        docNumber.inputMode = 'text';
+                        break;
+                    case 'Carnet':
+                        docNumber.maxLength = 10;
+                        docNumber.pattern = '^[0-9]{6,10}$';
+                        docNumber.placeholder = 'Entre 6 y 10 dígitos';
+                        docNumber.inputMode = 'numeric';
+                        break;
+                }
+            }
+
+            function validateDocument() {
+                const value = docNumber.value.trim();
+                errorSpan.textContent = '';
+                let isValid = true;
+
+                if (!value) {
+                    errorSpan.textContent = 'Este campo es obligatorio';
+                    docNumber.classList.add('is-invalid');
+                    return false;
+                }
+
+                switch (docType.value) {
+                    case 'DNI':
+                    case 'Cedula':
+                        isValid = /^[0-9]{8}$/.test(value);
+                        errorSpan.textContent = isValid ? '' : 'Debe contener 8 dígitos exactos';
+                        break;
+                    case 'Pasaporte':
+                        isValid = /^[A-Za-z0-9]{6,12}$/.test(value);
+                        errorSpan.textContent = isValid ? '' : 'Entre 6-12 caracteres alfanuméricos';
+                        break;
+                    case 'Carnet':
+                        isValid = /^[0-9]{6,10}$/.test(value);
+                        errorSpan.textContent = isValid ? '' : 'Entre 6-10 dígitos numéricos';
+                        break;
+                }
+
+                docNumber.classList.toggle('is-invalid', !isValid);
+                return isValid;
+            }
+
+            // Manejar submit del formulario en Laravel
+            document.querySelector('form').addEventListener('submit', function(e) {
+                if (!validateDocument()) {
+                    e.preventDefault();
+                    // Enfocar el campo en modales
+                    const invalidField = document.querySelector('.is-invalid');
+                    if (invalidField) {
+                        invalidField.focus();
+                        if (invalidField.scrollIntoView) {
+                            invalidField.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'center'
+                            });
+                        }
+                    }
+                }
+            });
+
+            // Reiniciar validación al abrir el modal (si usas Bootstrap)
+            $('#yourModalId').on('shown.bs.modal', function() {
+                docNumber.value = '';
+                setValidationRules(docType.value);
+                docNumber.classList.remove('is-invalid');
+                errorSpan.textContent = '';
+            });
+        });
+    </script>
 @stop

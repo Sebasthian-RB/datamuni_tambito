@@ -3,99 +3,101 @@
 @section('title', 'Crear Relación Persona-Intervención')
 
 @section('content_header')
-<!-- Imagen superior -->
-<div class="d-flex justify-content-center align-items-center py-3" style="background: #c06c84; border-radius: 0 0 15px 15px;">
-    <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="img-fluid" style="max-height: 80px;">
-</div>
+    <!-- Imagen superior -->
+    <div class="d-flex justify-content-center align-items-center py-3"
+        style="background: #c06c84; border-radius: 0 0 15px 15px;">
+        <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="img-fluid"
+            style="max-height: 80px;">
+    </div>
 @stop
 
 @section('content')
 
-<div class="card shadow-lg" style="border-radius: 15px; max-width: 800px; margin: 2rem auto;">
-    <div class="card-header" style="background: #355c7d; color: white; border-radius: 15px 15px 0 0;">
-        <h3 class="card-title mb-0">Registro de Intervenciones</h3>
-    </div>
-    
-    <div class="card-body" style="background: linear-gradient(135deg, #f8b19550 0%, #f6728050 100%);">
-        <form action="{{ route('am_person_interventions.store') }}" method="POST">
-            @csrf
-            <div class="row">
-                <!-- Columna Izquierda -->
-                <div class="col-md-6">
-                    <div class="form-group mb-4">
-                        <label for="am_person_id" class="font-weight-bold" style="color: #355c7d;">Seleccionar Persona</label>
-                        <div class="input-group">
-                            <select name="am_person_id" id="am_person_id" 
-                                    class="form-control select2 shadow-sm" 
+    <div class="card shadow-lg" style="border-radius: 15px; max-width: 800px; margin: 2rem auto;">
+        <div class="card-header" style="background: #355c7d; color: white; border-radius: 15px 15px 0 0;">
+            <h3 class="card-title mb-0">Registro de Intervenciones</h3>
+        </div>
+
+        <div class="card-body" style="background: linear-gradient(135deg, #f8b19550 0%, #f6728050 100%);">
+            <form action="{{ route('am_person_interventions.store') }}" method="POST">
+                @csrf
+                <div class="row">
+                    <!-- Columna Izquierda -->
+                    <div class="col-md-6">
+                        <div class="form-group mb-4">
+                            <label for="am_person_id" class="font-weight-bold" style="color: #355c7d;">Seleccionar
+                                Persona</label>
+                            <div class="input-group">
+                                <select name="am_person_id" id="am_person_id" class="form-control select2 shadow-sm"
                                     style="border: 2px solid #c06c84; border-radius: 8px;" required>
-                                <option value="">Buscar persona...</option>
-                                @foreach ($amPersons as $person)
-                                    <option value="{{ $person->id }}">
-                                        {{ $person->given_name }} {{ $person->paternal_last_name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            <div class="input-group-append">
-                                <button type="button" class="btn btn-primary" 
+                                    <option value="">Buscar persona...</option>
+                                    @foreach ($amPersons as $person)
+                                        <option value="{{ $person->id }}">
+                                            {{ $person->given_name }} {{ $person->paternal_last_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-primary"
                                         style="background: #f67280; border-color: #f67280; border-radius: 0 8px 8px 0;"
                                         data-toggle="modal" data-target="#addPersonModal">
-                                    <i class="fas fa-plus-circle"></i>
-                                </button>
+                                        <i class="fas fa-plus-circle"></i>
+                                    </button>
+                                </div>
                             </div>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label for="status" class="font-weight-bold" style="color: #355c7d;">Estado de la
+                                Intervención</label>
+                            <select name="status" id="status" class="form-control shadow-sm"
+                                style="border: 2px solid #c06c84; border-radius: 8px;" required>
+                                <option value="En progreso" style="color: #355c7d;">🟡 En progreso</option>
+                                <option value="Completado" style="color: #355c7d;">🟢 Completado</option>
+                                <option value="Cancelado" style="color: #355c7d;">🔴 Cancelado</option>
+                            </select>
                         </div>
                     </div>
 
-                    <div class="form-group mb-4">
-                        <label for="status" class="font-weight-bold" style="color: #355c7d;">Estado de la Intervención</label>
-                        <select name="status" id="status" 
-                                class="form-control shadow-sm" 
-                                style="border: 2px solid #c06c84; border-radius: 8px;" required>
-                            <option value="En progreso" style="color: #355c7d;">🟡 En progreso</option>
-                            <option value="Completado" style="color: #355c7d;">🟢 Completado</option>
-                            <option value="Cancelado" style="color: #355c7d;">🔴 Cancelado</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Columna Derecha -->
-                <div class="col-md-6">
-                    <div class="form-group mb-4">
-                        <label for="intervention_id" class="font-weight-bold" style="color: #355c7d;">Tipo de Intervención</label>
-                        <div class="input-group">
-                            <select name="intervention_id" id="intervention_id" 
-                                    class="form-control select2 shadow-sm" 
+                    <!-- Columna Derecha -->
+                    <div class="col-md-6">
+                        <div class="form-group mb-4">
+                            <label for="intervention_id" class="font-weight-bold" style="color: #355c7d;">Tipo de
+                                Intervención</label>
+                            <div class="input-group">
+                                <select name="intervention_id" id="intervention_id" class="form-control select2 shadow-sm"
                                     style="border: 2px solid #c06c84; border-radius: 8px;" required>
-                                <option value="">Seleccionar intervención...</option>
-                                @foreach ($interventions as $intervention)
-                                    <option value="{{ $intervention->id }}">{{ $intervention->appointment }}</option>
-                                @endforeach
-                            </select>
-                            <div class="input-group-append">
-                                <button type="button" class="btn btn-info" 
+                                    <option value="">Seleccionar intervención...</option>
+                                    @foreach ($interventions as $intervention)
+                                        <option value="{{ $intervention->id }}">{{ $intervention->appointment }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-info"
                                         style="background: #c06c84; border-color: #c06c84; border-radius: 0 8px 8px 0;"
                                         data-toggle="modal" data-target="#addInterventionModal">
-                                    <i class="fas fa-plus-circle"></i>
-                                </button>
+                                        <i class="fas fa-plus-circle"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Botones de Acción -->
-            <div class="text-right mt-4">
-                <button type="submit" class="btn btn-lg shadow-sm" 
+                <!-- Botones de Acción -->
+                <div class="text-right mt-4">
+                    <button type="submit" class="btn btn-lg shadow-sm"
                         style="background: #f67280; border-color: #f67280; color: white; border-radius: 8px;">
-                    <i class="fas fa-save"></i> Guardar
-                </button>
-                <a href="{{ route('am_person_interventions.index') }}" class="btn btn-lg btn-secondary shadow-sm" 
-                   style="border-radius: 8px;">
-                    <i class="fas fa-times"></i> Cancelar
-                </a>
-            </div>
-        </form>
+                        <i class="fas fa-save"></i> Guardar
+                    </button>
+                    <a href="{{ route('am_person_interventions.index') }}" class="btn btn-lg btn-secondary shadow-sm"
+                        style="border-radius: 8px;">
+                        <i class="fas fa-times"></i> Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
     <!-- Modal para agregar persona -->
     <div class="modal fade" id="addPersonModal" tabindex="-1" aria-labelledby="addPersonModalLabel" aria-hidden="true">
@@ -118,7 +120,7 @@
                                 <div class="form-group mb-4">
                                     <label for="identity_document" class="font-weight-bold"
                                         style="color: #355c7d;">Documento de Identidad</label>
-                                    <select class="form-control select2" id="identity_document" name="identity_document"
+                                    <select class="form-control" id="identity_document" name="identity_document"
                                         required>
                                         <option value="DNI">DNI</option>
                                         <option value="Pasaporte">Pasaporte</option>
@@ -255,7 +257,7 @@
 
 @section('css')
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-  
+
     <style>
         /* Ajustes visuales del modal */
         .modal-content {
@@ -307,7 +309,7 @@
 
 @section('js')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js"></script>
-    
+
     <script>
         $(document).ready(function() {
             $('.select2').select2({
@@ -397,9 +399,9 @@
                             // Mostrar errores en los campos correspondientes
                             $.each(errors, function(field, messages) {
                                 $('#' + field).addClass(
-                                'is-invalid'); // Resaltar el campo en rojo
+                                    'is-invalid'); // Resaltar el campo en rojo
                                 $('.' + field + '_error').text(messages[
-                                0]); // Mostrar el mensaje de error
+                                    0]); // Mostrar el mensaje de error
                             });
 
                             Swal.fire('Error', 'Corrige los errores antes de continuar',
@@ -429,37 +431,159 @@
 
     <!-- Modal para intervención -->
 
-   <script>
-    $(document).ready(function() {
-        // Guardar intervención con AJAX
-        $('#saveIntervention').on('click', function() {
-            const formData = $('#addInterventionForm').serialize();
+    <script>
+        $(document).ready(function() {
+            // Guardar intervención con AJAX
+            $('#saveIntervention').on('click', function() {
+                const formData = $('#addInterventionForm').serialize();
 
-            $.ajax({
-                url: "{{ route('interventions.store') }}",
-                method: "POST",
-                data: formData,
-                success: function(response) {
-                    if (response.success) {
-                        // Agregar la nueva intervención al select
-                        const newOption = new Option(response.data.appointment, response.data.id, true, true);
-                        $('#intervention_id').append(newOption).trigger('change');
+                $.ajax({
+                    url: "{{ route('interventions.store') }}",
+                    method: "POST",
+                    data: formData,
+                    success: function(response) {
+                        if (response.success) {
+                            // Agregar la nueva intervención al select
+                            const newOption = new Option(response.data.appointment, response
+                                .data.id, true, true);
+                            $('#intervention_id').append(newOption).trigger('change');
 
-                        // Cerrar el modal
-                        $('#addInterventionModal').modal('hide');
+                            // Cerrar el modal
+                            $('#addInterventionModal').modal('hide');
 
-                        // Resetear el formulario
-                        $('#addInterventionForm')[0].reset();
+                            // Resetear el formulario
+                            $('#addInterventionForm')[0].reset();
 
-                        // Mensaje de éxito
-                        alert(response.message);
+                            // Mensaje de éxito
+                            alert(response.message);
+                        }
+                    },
+                    error: function(xhr) {
+                        alert('Error al agregar intervención. Por favor, verifica los datos.');
                     }
-                },
-                error: function(xhr) {
-                    alert('Error al agregar intervención. Por favor, verifica los datos.');
-                }
+                });
             });
         });
-    });
-</script>
+    </script>
+
+    <!-- Validadciones para persona -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const docType = document.getElementById('identity_document');
+            const docNumber = document.getElementById('id');
+            const errorSpan = document.querySelector('.id_error');
+
+            // Configurar validación inicial
+            setValidationRules(docType.value);
+
+            docType.addEventListener('change', function() {
+                setValidationRules(this.value);
+                docNumber.value = '';
+                validateDocument();
+                docNumber.focus(); // Mejorar UX en modales
+            });
+
+            docNumber.addEventListener('input', function(e) {
+                this.value = sanitizeInput(this.value, docType.value);
+                validateDocument();
+            });
+
+            function sanitizeInput(value, type) {
+                switch (type) {
+                    case 'DNI':
+                    case 'Cedula':
+                    case 'Carnet':
+                        return value.replace(/\D/g, ''); // Solo números
+                    case 'Pasaporte':
+                        return value.replace(/[^A-Za-z0-9]/g, ''); // Alfanumérico
+                    default:
+                        return value;
+                }
+            }
+
+            function setValidationRules(type) {
+                docNumber.classList.remove('is-invalid');
+                errorSpan.textContent = '';
+
+                switch (type) {
+                    case 'DNI':
+                    case 'Cedula':
+                        docNumber.maxLength = 8;
+                        docNumber.pattern = '^[0-9]{8}$';
+                        docNumber.placeholder = 'Ingrese 8 dígitos';
+                        docNumber.inputMode = 'numeric';
+                        break;
+                    case 'Pasaporte':
+                        docNumber.maxLength = 12;
+                        docNumber.pattern = '^[A-Za-z0-9]{6,12}$';
+                        docNumber.placeholder = 'Mínimo 6 caracteres alfanuméricos';
+                        docNumber.inputMode = 'text';
+                        break;
+                    case 'Carnet':
+                        docNumber.maxLength = 10;
+                        docNumber.pattern = '^[0-9]{6,10}$';
+                        docNumber.placeholder = 'Entre 6 y 10 dígitos';
+                        docNumber.inputMode = 'numeric';
+                        break;
+                }
+            }
+
+            function validateDocument() {
+                const value = docNumber.value.trim();
+                errorSpan.textContent = '';
+                let isValid = true;
+
+                if (!value) {
+                    errorSpan.textContent = 'Este campo es obligatorio';
+                    docNumber.classList.add('is-invalid');
+                    return false;
+                }
+
+                switch (docType.value) {
+                    case 'DNI':
+                    case 'Cedula':
+                        isValid = /^[0-9]{8}$/.test(value);
+                        errorSpan.textContent = isValid ? '' : 'Debe contener 8 dígitos exactos';
+                        break;
+                    case 'Pasaporte':
+                        isValid = /^[A-Za-z0-9]{6,12}$/.test(value);
+                        errorSpan.textContent = isValid ? '' : 'Entre 6-12 caracteres alfanuméricos';
+                        break;
+                    case 'Carnet':
+                        isValid = /^[0-9]{6,10}$/.test(value);
+                        errorSpan.textContent = isValid ? '' : 'Entre 6-10 dígitos numéricos';
+                        break;
+                }
+
+                docNumber.classList.toggle('is-invalid', !isValid);
+                return isValid;
+            }
+
+            // Manejar submit del formulario en Laravel
+            document.querySelector('form').addEventListener('submit', function(e) {
+                if (!validateDocument()) {
+                    e.preventDefault();
+                    // Enfocar el campo en modales
+                    const invalidField = document.querySelector('.is-invalid');
+                    if (invalidField) {
+                        invalidField.focus();
+                        if (invalidField.scrollIntoView) {
+                            invalidField.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'center'
+                            });
+                        }
+                    }
+                }
+            });
+
+            // Reiniciar validación al abrir el modal (si usas Bootstrap)
+            $('#yourModalId').on('shown.bs.modal', function() {
+                docNumber.value = '';
+                setValidationRules(docType.value);
+                docNumber.classList.remove('is-invalid');
+                errorSpan.textContent = '';
+            });
+        });
+    </script>
 @stop
