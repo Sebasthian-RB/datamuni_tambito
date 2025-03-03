@@ -40,13 +40,9 @@ class VasoDeLecheController extends Controller
             });
         }
 
-        // Realizar la búsqueda parcial del presidente en los tres campos concatenados
-        $committees->where(function($query) use ($president) {
-            $query->whereRaw("CONCAT(
-                    IFNULL(president_paternal_surname, ''), ' ', 
-                    IFNULL(president_maternal_surname, ''), ' ', 
-                    IFNULL(president_given_name, '')
-                ) LIKE ?", ["%$president%"]);
+        // Filtrar por presidente de comité
+        $committees->where(function ($query) use ($president) {
+            $query->where('president', 'like', "%$president%");
         });
 
 

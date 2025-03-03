@@ -292,9 +292,7 @@
                                     <div>
                                         <p style="font-size: 0.8rem; font-weight: 400; color: #3B1E54; margin-bottom: 0;">Presidente(a)</p>
                                         <h5 style="font-size: 1rem; font-weight: 500; color: #3B1E54; margin-top: 2px;">
-                                            {{ $committee->president_paternal_surname }} 
-                                            @if($committee->president_maternal_surname) {{ $committee->president_maternal_surname }} @endif,
-                                            {{ $committee->president_given_name }}
+                                            {{ $committee->president }} 
                                         </h5>
                                     </div>
                                 </div>

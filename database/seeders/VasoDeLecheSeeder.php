@@ -62,9 +62,7 @@ class VasoDeLecheSeeder extends Seeder
             DB::table('committees')->insert([
                 'id' => $faker->uuid, // Generar un UUID aleatorio para 'id'
                 'name' => $faker->company, // Generar un nombre de comité como nombre de empresa
-                'president_paternal_surname' => $faker->lastName, // Generar apellido paterno del presidente
-                'president_maternal_surname' => $faker->lastName, // Generar apellido materno (puede ser nulo)
-                'president_given_name' => $faker->firstName, // Generar nombre del presidente
+                'president' => $faker->lastName, // Generar apellido paterno del presidente
                 'urban_core' => $faker->word, // Generar un nombre de núcleo urbano
                 'sector_id' => $faker->numberBetween(1, 4), // Generar un ID de sector aleatorio (asumimos que hay sectores con ID entre 1 y 10)
                 'created_at' => now(),
