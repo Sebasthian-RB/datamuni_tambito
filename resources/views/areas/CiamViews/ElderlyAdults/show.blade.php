@@ -9,6 +9,7 @@
 @section('content')
 <div class="container">
     <div class="card">
+
         <!-- Encabezado con logotipo y título -->
         <div class="card-header text-center" style="background-color: #6E8E59; color: white;">
             <h3 class="card-title">
@@ -92,16 +93,6 @@
                             @else
                             No tiene guardián registrado.
                             @endif
-                        </td>
-                    </tr>
-
-                    <!-- Ubicación -->
-                    <tr>
-                        <th style="background-color: #9cbf5c; color: white;">Ubicación</th>
-                        <td>
-                            {{ $elderlyAdult->department ?? 'No registrado' }},
-                            {{ $elderlyAdult->province ?? 'No registrado' }},
-                            {{ $elderlyAdult->district ?? 'No registrado' }}
                         </td>
                     </tr>
 
