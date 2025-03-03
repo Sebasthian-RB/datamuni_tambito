@@ -23,6 +23,10 @@
             overflow: hidden;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
+
+        .container {
+            padding-top: 20px;
+        }
     
         /* Header */
         .card-header {
@@ -180,11 +184,11 @@
     <form action="{{ route('products.store') }}" method="POST">
         @csrf
         <div class="card">
-            <!-- Card Header con título más grande -->
+            <!-- Card Header -->
             <div class="card-header">
                 <div class="header-content">
                     <div>
-                        <h3 class="card-title">Formulario para agregar nuevo Producto</h3>
+                        <h1 class="card-title">Formulario para agregar nuevo Producto</h1>
                         <p class="card-subtitle">Complete los campos para registrar un nuevo producto.</p>
                     </div>
                     <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="header-logo">
@@ -197,7 +201,7 @@
                     <div class="col-md-12">
                         <div class="row">
                             <!-- Columna izquierda -->
-                            <div class="col-md-6">
+                            <div class="col-md-5">
                                 <!-- Campo: Nombre -->
                                 <div class="form-group mb-4">
                                     <label for="name" class="font-weight-bold">
@@ -216,7 +220,7 @@
                             </div>
         
                             <!-- Columna derecha -->
-                            <div class="col-md-5">
+                            <div class="col-md-6">
                                 <!-- Campo: Descripción -->
                                 <div class="form-group mb-4">
                                     <label for="description" class="font-weight-bold">

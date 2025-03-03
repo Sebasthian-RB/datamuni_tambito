@@ -30,13 +30,13 @@ class StoreProductRequest extends FormRequest
                 'required',
                 'string',
                 'max:50',
-                'regex:/^[a-zA-Z0-9\s]+$/', // Solo letras, números y espacios
+                'regex:/^[a-zA-Z0-9\sáéíóúÁÉÍÓÚñÑüÜ]+$/', // Solo letras, números y espacios
             ],
             'description' => [
                 'nullable',
                 'string',
                 'max:1000',
-                'regex:/^[a-zA-Z0-9\s.,;:"\'()-]+$/', // Caracteres básicos permitidos
+                'regex:/^[a-zA-Z0-9\s.,;:"\'()-áéíóúÁÉÍÓÚñÑüÜ]+$/', // Caracteres básicos permitidos
             ],
         ];
     }
@@ -49,12 +49,19 @@ class StoreProductRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'El nombre del producto es obligatorio.',
-            'name.max' => 'El nombre no debe exceder los 50 caracteres.',
-            'name.regex' => 'El nombre solo puede contener letras, números y espacios.',
-            'description.max' => 'La descripción no debe exceder los 1000 caracteres.',
-            'description.regex' => 'La descripción contiene caracteres no permitidos.',
-        ];
+            'name' => [
+                'required' => 'El nombre es obligatorio.',
+                'string' => 'El nombre debe ser una cadena de texto.',
+                'max' => 'El nombre no puede tener más de 50 caracteres.',
+                'regex' => 'El nombre solo puede contener letras, números, espacios y caracteres especiales del alfabeto español (como ñ, á, é, í, ó, ú, ü).',
+            ],
+            'description' => [
+                'nullable' => 'La descripción puede estar vacía.',
+                'string' => 'La descripción debe ser una cadena de texto.',
+                'max' => 'La descripción no puede tener más de 1000 caracteres.',
+                'regex' => 'La descripción solo puede contener letras, números, espacios, comas, puntos, puntos y coma, comillas, paréntesis y caracteres del alfabeto español (como ñ, á, é, í, ó, ú, ü).',
+            ],
+        ];        
     }
 
      /**

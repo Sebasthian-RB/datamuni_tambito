@@ -3,7 +3,6 @@
 @section('title', 'Agregar Comité')
 
 @section('content_header')
-    <h1>Agregar Comité</h1>
 @stop
 
 @section('css')
@@ -22,13 +21,19 @@
             border: 1px solid var(--color-accent);
             border-radius: 8px;
             overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            padding-top: 20px;
         }
     
         /* Header */
         .card-header {
-            background-color: var(--color-primary);
+            background: linear-gradient(135deg, var(--color-primary), #5A2E7A);
             color: #FFFFFF;
-            padding: 15px 20px;
+            padding: 25px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
     
         .header-content {
@@ -36,16 +41,29 @@
             align-items: center;
             justify-content: space-between;
         }
-    
+
         .card-title {
-            font-size: 1.30rem;
+            font-size: 1.75rem;
             margin: 0;
-            font-weight: 600;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+    
+        .card-subtitle {
+            font-size: 1rem;
+            color: var(--color-accent);
+            margin-top: 5px;
+            font-weight: 400;
         }
     
         .header-logo {
             height: 50px;
             width: auto;
+            transition: opacity 0.3s ease;
+        }
+
+        .header-logo:hover {
+            opacity: 0.8;
         }
     
         /* Estilos para las etiquetas */
@@ -131,6 +149,14 @@
             .header-logo {
                 margin-top: 10px;
             }
+
+            .card-title {
+                font-size: 1.5rem;
+            }
+
+            .card-subtitle {
+                font-size: 0.9rem;
+            }
     
             .card-footer {
                 text-align: center;
@@ -158,10 +184,13 @@
     <form action="{{ route('committees.store') }}" method="POST">
         @csrf
         <div class="card">
-            <!-- Card Header con título más grande -->
+            <!-- Card Header -->
             <div class="card-header">
                 <div class="header-content">
-                    <h3 class="card-title">Formulario para agregar nuevo Comité</h3>
+                    <div>
+                        <h1 class="card-title">Formulario para agregar nuevo Comité</h1>
+                        <p class="card-subtitle">Complete los campos para registrar un nuevo comité.</p>
+                    </div>
                     <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="header-logo">
                 </div>
             </div>
