@@ -119,9 +119,12 @@
             color: white;
         }
 
-        .btn-custom:hover {
-            background-color: #7B5E9D; /* Un tono más oscuro para el hover */
-            border-color: #7B5E9D;
+        .btn-custom:hover,
+        .btn-danger:hover {
+            background-color: var(--color-primary); /* Mismo color para todos los hovers */
+            border-color: var(--color-primary);
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra suave */
         }
 
         /* Línea divisoria vertical */

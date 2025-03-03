@@ -82,7 +82,18 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        $product->update($request->validated());
+        // Validar los datos de la solicitud
+        $data = $request->validated();
+
+        // Verificar si el producto tiene cambios antes de actualizar
+        if (!$product->isDirty($data)) {
+            return redirect()->route('products.index')->with('info', 'No se realizaron cambios.');
+        }
+
+        // Actualizar el producto con los nuevos datos
+        $product->update($data);
+
+        // Redirigir al índice con un mensaje de éxito
         return redirect()->route('products.index')->with('success', 'Producto actualizado correctamente.');
     }
 
