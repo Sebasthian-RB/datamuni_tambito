@@ -50,7 +50,7 @@
                             <tr>
                                 <th>Fecha de Visita</th>
                                 <th>Estado</th>
-                                <th>Enumerador</th>
+                                <th>Encuestador(a)</th>
                                 <th>Solicitud</th>
                                 <th>Observaciones</th>
                                 <th class="no-export">Acciones</th>
