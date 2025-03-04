@@ -77,7 +77,7 @@ class EnumeratorController extends Controller
         $enumerator->update($data);  // Actualiza el encuestador
 
         // Redirige a la vista de detalles con un mensaje de éxito
-        return redirect()->route('enumerators.show', $enumerator)->with('success', 'Encuestador actualizado con éxito.');
+        return redirect()->route('enumerators.index', $enumerator)->with('success', 'Encuestador actualizado con éxito.');
     }
 
     /**

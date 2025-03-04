@@ -186,7 +186,7 @@
         $(document).ready(function () {
             $('#enumerators-table').DataTable({
                 "language": {
-                    url: "//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json", // Archivo de idioma español
+                    url: "//cdn.datatables.net/plug-ins/1.13.5/i18n/es-ES.json", // Archivo de idioma español
                 },
                 dom: 'Bfrtip', // B = Botones, f = Filtro, r = Información, t = Tabla, i = Info, p = Paginación
                 buttons: [
