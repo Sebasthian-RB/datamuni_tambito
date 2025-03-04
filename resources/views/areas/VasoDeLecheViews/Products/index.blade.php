@@ -96,22 +96,26 @@
             color: white;
         }
 
-        .btn-custom:hover {
-            background-color: var(--color-primary); /* Tono más oscuro para el hover */
-            color: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra suave */
-        }
-
         .btn-secondary {
             background-color: var(--color-gray); /* Color gris para el botón de Volver */
             color: white;
         }
 
-        .btn-secondary:hover {
-            background-color: #474c4f; /* Tono más oscuro para el hover */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra suave */
+        .btn-view {
+            background-color: var(--color-secondary);
+            color: white;
         }
 
+        .btn-edit {
+            background-color: var(--color-accent);
+            color: var(--color-primary);
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+        
         /* Estilos para los botones de acción */
         .btn-action {
             display: inline-flex;
@@ -129,37 +133,23 @@
             margin-bottom: 5px; /* Separa los botones verticalmente */
         }
 
-        .btn-view {
-            background-color: var(--color-secondary);
-            color: white;
-        }
-
-        .btn-view:hover {
-            background-color: var(--color-primary); /* Tono más oscuro para el hover */
+        /* Estilos de hover para todos los botones */
+        .btn-main:hover,
+        .btn-action:hover {
+            background-color: var(--color-primary); /* Mismo color para todos los hovers */
             color: white;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra suave */
         }
 
-        .btn-edit {
-            background-color: var(--color-accent);
-            color: var(--color-primary);
-        }
-
-        .btn-edit:hover {
-            background-color: #acacac; /* Tono más oscuro para el hover */
-            color: white; 
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra suave */
-        }
-
-        .btn-delete {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        .btn-delete:hover {
-            background-color: #b11111; /* Tono más oscuro para el hover */
-            color: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra suave */
+        /* Estilos para el botón flotante */
+        .floating-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         /* Estilos para la tabla */
@@ -196,6 +186,40 @@
             background-color: #cfcfcf;
         }
 
+        /* Ajustar ancho de columnas */
+        .table tbody td:nth-child(1) {
+            width: 10%; /* Ajustar ancho de la columna ID */
+        }
+
+        .table tbody td:nth-child(2) {
+            width: 25%; /* Ajustar ancho de la columna Nombre */
+        }
+
+        .table tbody td:nth-child(3) {
+            width: 40%; /* Ajustar ancho de la columna Descripción */
+        }
+
+        .table tbody td:nth-child(4) {
+            width: 25%; /* Ajustar ancho de la columna Acciones */
+        }
+
+        /* Estilos para los mensajes cuando no hay datos */
+        .no-data-message {
+            background-color: var(--color-accent); /* Fondo con el color de acento */
+            color: var(--color-primary); /* Texto con el color primario */
+            border: 2px; 
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .no-data-message i {
+            color: var(--color-primary); /* Ícono con el color primario */
+            font-size: 1.2rem;
+        }
+
         /* Estilos responsivos */
         @media (min-width: 768px) {
             .btn-main {
@@ -230,24 +254,12 @@
 
 @section('content')
 <div class="container">
-    <!-- Header con título y logo -->
-    <div class="card-header mb-4">
-        <div class="header-content">
-            <div class="header-text"> <!-- Contenedor para el título y subtítulo -->
-                <h1 class="card-title">Lista de Productos</h1>
-                <p class="card-subtitle">Gestión de productos registrados en el sistema.</p>
-            </div>
-            <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="header-logo">
-        </div>
-    </div>
 
-    <!-- Botones principales -->
-    <div class="d-flex flex-column flex-md-row gap-3 mb-4">
-        <a href="{{ route('products.create') }}" class="btn btn-custom btn-main">
-            <i class="fas fa-plus"></i> Agregar Producto
-        </a>
+    <!-- Botón "Volver" -->
+    <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3 mb-4">
         <a href="{{ route('vaso-de-leche.index') }}" class="btn btn-secondary btn-main">
-            <i class="fas fa-arrow-left"></i> Volver
+            <i class="fas fa-arrow-left me-2"></i> <!-- Ícono más grande y descriptivo -->
+            <span>Volver</span>
         </a>
     </div>
 
@@ -258,52 +270,82 @@
         </div>
     @endif
 
-    <!-- Tabla de productos -->
-    <div class="card">
-        <div class="card-body table-responsive">
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($products as $product)
-                        <tr>
-                            <td>{{ $product->id }}</td>
-                            <td>{{ $product->name }}</td>
-                            <td>
-                                @if($product->description)
-                                    {{ $product->description }}
-                                @else
-                                    <span class="text-secondary"> (Sin descripción)</span>
-                                @endif
-                            </td>
-                            <td>
-                                <div class="d-flex flex-column flex-md-row gap-2">
-                                    <a href="{{ route('products.show', $product->id) }}" class="btn btn-view btn-action">
-                                        <i class="fas fa-eye"></i> Ver
-                                    </a>
-                                    <a href="{{ route('products.edit', $product->id) }}" class="btn btn-edit btn-action">
-                                        <i class="fas fa-edit"></i> Editar
-                                    </a>
-                                    <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline-block;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-delete btn-action" onclick="return confirm('¿Está seguro de eliminar este producto?')">
-                                            <i class="fas fa-trash"></i> Eliminar
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+    @if(session('info'))
+        <div class="alert alert-warning">{{ session('info') }}</div>
+    @endif
+    
+    <!-- Header con título y logo -->
+    <div class="card-header mb-4">
+        <div class="header-content">
+            <div class="header-text">
+                <h1 class="card-title">Lista de Productos</h1>
+                <p class="card-subtitle">Gestión de productos registrados en el sistema.</p>
+            </div>
+            <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="header-logo">
         </div>
     </div>
+
+    <!-- Verificar si hay datos -->
+    @if($products->isEmpty())
+        <!-- Mensaje cuando no hay datos -->
+        <div class="no-data-message text-center p-4 rounded">
+            <i class="fas fa-info-circle me-2"></i>
+            No hay productos registrados en el sistema.
+        </div>
+    @else
+        <!-- Tabla de productos -->
+        <div class="card">
+            <div class="card-body table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($products as $product)
+                            <tr>
+                                <td>{{ $product->id }}</td>
+                                <td>{{ $product->name }}</td>
+                                <td>
+                                    @if($product->description)
+                                        {{ $product->description }}
+                                    @else
+                                        <span class="text-secondary"> (Sin descripción)</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <div class="d-flex flex-column flex-md-row gap-2">
+                                        <a href="{{ route('products.show', $product->id) }}" class="btn btn-view btn-action">
+                                            <i class="fas fa-eye me-1"></i> Ver
+                                        </a>
+                                        <a href="{{ route('products.edit', $product->id) }}" class="btn btn-edit btn-action">
+                                            <i class="fas fa-edit me-1"></i> Editar
+                                        </a>
+                                        <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline-block;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-delete btn-action" onclick="return confirm('¿Está seguro de eliminar este producto?')">
+                                                <i class="fas fa-trash me-1"></i> Eliminar
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    @endif
+
+    <!-- Botón flotante "Agregar Producto" -->
+    <a href="{{ route('products.create') }}" class="btn btn-custom btn-main floating-btn">
+        <i class="fas fa-plus-circle me-2"></i>
+        <span>Agregar Producto</span>
+    </a>
 </div>
 @stop

@@ -124,6 +124,18 @@
                     @enderror
                 </div>
 
+                <!-- Teléfono -->
+                <div class="form-group">
+                    <label for="phone_number">Teléfono</label>
+                    <input type="text" class="form-control @error('phone_number') is-invalid @enderror"
+                        id="phone_number" name="phone_number"
+                        value="{{ old('phone_number', $elderlyAdult->phone_number ?? '') }}"
+                        maxlength="9" placeholder="Ingrese 9 dígitos">
+                    @error('phone_number')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+                </div>
+
                 <!-- Departamento 
                 <div class="form-group">
                     <label for="department">Departamento</label>
@@ -178,18 +190,6 @@
                         value="{{ old('reference', $elderlyAdult->reference) }}" maxlength="255">
                     @error('reference')
                     <span class="text-danger d-block mt-2">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <!-- Teléfono -->
-                <div class="form-group">
-                    <label for="phone_number">Teléfono</label>
-                    <input type="text" class="form-control @error('phone_number') is-invalid @enderror"
-                        id="phone_number" name="phone_number"
-                        value="{{ old('phone_number', $elderlyAdult->phone_number ?? '') }}"
-                        maxlength="9" placeholder="Ingrese 9 dígitos">
-                    @error('phone_number')
-                    <span class="invalid-feedback">{{ $message }}</span>
                     @enderror
                 </div>
 
@@ -294,6 +294,31 @@
                     @endforeach
                 </div>
 
+                <!-- Estado -->
+                <div class="form-group">
+                    <label class="form-label fw-bold" style="font-size: 1.2rem;">Estado</label>
+                    <div class="d-flex justify-content-start align-items-center mt-3" style="gap: 20px;">
+                        <!-- Botón Activo -->
+                        <div class="form-check" style="border: 2px solid #6E8E59; border-radius: 10px; padding: 10px 15px; background-color: #E6FFCC;">
+                            <input class="form-check-input" type="radio" name="state" id="state_active" value="1" style="transform: scale(1.5); margin-right: 10px;"
+                                {{ $elderlyAdult->state == 1 ? 'checked' : '' }} required>
+                            <label class="form-check-label fw-bold d-flex align-items-center" for="state_active" style="color: #333;">
+                                <i class="fas fa-smile" style="color: #6E8E59; font-size: 1.5rem; margin-right: 10px;"></i> Activo
+                            </label>
+                        </div>
+
+                        <!-- Botón Inactivo -->
+                        <div class="form-check" style="border: 2px solid #780C28; border-radius: 10px; padding: 10px 15px; background-color: #FFCCCC;">
+                            <input class="form-check-input" type="radio" name="state" id="state_inactive" value="0" style="transform: scale(1.5); margin-right: 10px;"
+                                {{ $elderlyAdult->state == 0 ? 'checked' : '' }} required>
+                            <label class="form-check-label fw-bold d-flex align-items-center" for="state_inactive" style="color: #333;">
+                                <i class="fas fa-frown" style="color: #780C28; font-size: 1.5rem; margin-right: 10px;"></i> Inactivo
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+
 
             </div>
             <div class="card-footer" style="background-color: #9cbf5c;">
@@ -389,67 +414,6 @@
     });
 </script>
 
-<!-- PARA LA UBICACION , DEPARTAMENTO, PROVINCIA, DISTRITO 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const locations = {
-            Junin: {
-                Huancayo: ["El Tambo", "Chilca", "Sapallanga", "San Jerónimo"],
-                Concepción: ["Aco", "Chambara", "Chupaca"],
-                Tarma: ["Huaricolca", "Acobamba", "Palca"],
-            },
-            Otro: {
-                Otro: ["Otro Distrito"]
-            }
-        };
-
-        const departmentSelect = document.getElementById("department");
-        const provinceSelect = document.getElementById("province");
-        const districtSelect = document.getElementById("district");
-
-        function loadProvinces() {
-            const department = departmentSelect.value;
-            provinceSelect.innerHTML = '<option value="" disabled selected>Seleccione una provincia</option>';
-            districtSelect.innerHTML = '<option value="" disabled selected>Seleccione un distrito</option>';
-
-            if (locations[department]) {
-                Object.keys(locations[department]).forEach(province => {
-                    let option = document.createElement("option");
-                    option.value = province;
-                    option.textContent = province;
-                    provinceSelect.appendChild(option);
-                });
-            }
-        }
-
-        function loadDistricts() {
-            const department = departmentSelect.value;
-            const province = provinceSelect.value;
-            districtSelect.innerHTML = '<option value="" disabled selected>Seleccione un distrito</option>';
-
-            if (locations[department] && locations[department][province]) {
-                locations[department][province].forEach(district => {
-                    let option = document.createElement("option");
-                    option.value = district;
-                    option.textContent = district;
-                    districtSelect.appendChild(option);
-                });
-            }
-        }
-
-        departmentSelect.addEventListener("change", loadProvinces);
-        provinceSelect.addEventListener("change", loadDistricts);
-
-        // Cargar provincias y distritos si ya hay un valor guardado
-        if (departmentSelect.value) {
-            loadProvinces();
-            provinceSelect.value = "{{ $elderlyAdult->province }}";
-            loadDistricts();
-            districtSelect.value = "{{ $elderlyAdult->district }}";
-        }
-    });
-</script> -->
-
 <!-- PARA EL TELEFONO -->
 <script>
     document.getElementById("phone_number").addEventListener("input", function(e) {
@@ -467,7 +431,6 @@
 <!-- PARA EL GUARDIAN -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-<!-- PARA GUARDIAN -->
 <script>
     $(document).ready(function() {
         $('#guardian_id').select2({

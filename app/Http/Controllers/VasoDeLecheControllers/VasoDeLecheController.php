@@ -71,7 +71,7 @@ class VasoDeLecheController extends Controller
         }
 
         // Paginamos los resultados
-        $committees = $committees->paginate(12);
+        $committees = $committees->paginate(10);
 
         // Agregar la cantidad de menores de edad a cada comité
         foreach ($committees as $committee) {

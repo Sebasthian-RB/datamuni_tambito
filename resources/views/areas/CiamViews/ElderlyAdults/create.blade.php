@@ -19,6 +19,7 @@
         </ul>
     </div>
     @endif
+
     <!--  FIN DEL CÓDIGO PARA MOSTRAR ERRORES -->
 
     <form action="{{ route('elderly_adults.store') }}" method="POST">
@@ -29,7 +30,6 @@
                 <h3 class="card-title">Formulario para agregar adulto mayor</h3>
             </div>
             <div class="card-body">
-
 
                 <!-- Tipo de Documento -->
                 <div class="form-group">
@@ -64,6 +64,7 @@
                     <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
+
                 <!-- Apellido Paterno -->
                 <div class="form-group">
                     <label for="paternal_last_name">Apellido Paterno</label>
@@ -123,41 +124,17 @@
                     @enderror
                 </div>
 
-                <!-- Departamento 
+                <!-- Teléfono -->
                 <div class="form-group">
-                    <label for="department">Departamento</label>
-                    <select id="department" class="form-control" name="department" required>
-                        <option value="" disabled selected>Seleccione</option>
-                        <option value="Junin">Junín</option>
-                        <option value="Otro">Otro</option>
-                    </select>
-                    @error('department')
-                    <span class="text-danger d-block mt-2">{{ $message }}</span>
+                    <label for="phone_number">Teléfono</label>
+                    <input type="text" class="form-control @error('phone_number') is-invalid @enderror"
+                        id="phone_number" name="phone_number"
+                        value="{{ old('phone_number', $elderlyAdult->phone_number ?? '') }}"
+                        maxlength="9" placeholder="Ingrese 9 dígitos">
+                    @error('phone_number')
+                    <span class="invalid-feedback">{{ $message }}</span>
                     @enderror
-                </div> -->
-
-
-                <!-- Provincia
-                <div class="form-group">
-                    <label for="province">Provincia</label>
-                    <select id="province" class="form-control" name="province" required>
-                        <option value="" disabled selected>Seleccione una provincia</option>
-                    </select>
-                    @error('province')
-                    <span class="text-danger d-block mt-2">{{ $message }}</span>
-                    @enderror
-                </div> -->
-
-                <!-- Distrito
-                <div class="form-group">
-                    <label for="district">Distrito</label>
-                    <select id="district" class="form-control" name="district" required>
-                        <option value="" disabled selected>Seleccione un distrito</option>
-                    </select>
-                    @error('district')
-                    <span class="text-danger d-block mt-2">{{ $message }}</span>
-                    @enderror
-                </div> -->
+                </div>
 
                 <!-- Dirección -->
                 <div class="form-group">
@@ -176,19 +153,6 @@
                         value="{{ old('reference') }}" maxlength="255">
                     @error('reference')
                     <span class="text-danger d-block mt-2">{{ $message }}</span>
-                    @enderror
-                </div>
-
-
-                <!-- Teléfono -->
-                <div class="form-group">
-                    <label for="phone_number">Teléfono</label>
-                    <input type="text" class="form-control @error('phone_number') is-invalid @enderror"
-                        id="phone_number" name="phone_number"
-                        value="{{ old('phone_number', $elderlyAdult->phone_number ?? '') }}"
-                        maxlength="9" placeholder="Ingrese 9 dígitos">
-                    @error('phone_number')
-                    <span class="invalid-feedback">{{ $message }}</span>
                     @enderror
                 </div>
 
@@ -428,61 +392,6 @@
         }
     });
 </script>
-
-<!-- PARA LA UBICACION , DEPARTAMENTO, PROVINCIA, DISTRITO
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Objeto con las provincias y distritos de Junín
-        const locations = {
-            Junin: {
-                Huancayo: ["El Tambo", "Chilca", "Sapallanga", "San Jerónimo"],
-                Concepción: ["Aco", "Chambara", "Chupaca"],
-                Tarma: ["Huaricolca", "Acobamba", "Palca"],
-            },
-            Otro: {
-                Otro: ["Otro Distrito"]
-            }
-        };
-
-        // Referencias a los elementos
-        const departmentSelect = document.getElementById("department");
-        const provinceSelect = document.getElementById("province");
-        const districtSelect = document.getElementById("district");
-
-        // Al cambiar el departamento
-        departmentSelect.addEventListener("change", function() {
-            const department = this.value;
-            const provinces = locations[department] || {};
-
-            // Limpiar y rellenar provincias
-            provinceSelect.innerHTML = '<option value="" disabled selected>Seleccione una provincia</option>';
-            districtSelect.innerHTML = '<option value="" disabled selected>Seleccione un distrito</option>'; // Limpiar distritos
-
-            Object.keys(provinces).forEach(province => {
-                const option = document.createElement("option");
-                option.value = province;
-                option.textContent = province;
-                provinceSelect.appendChild(option);
-            });
-        });
-
-        // Al cambiar la provincia
-        provinceSelect.addEventListener("change", function() {
-            const department = departmentSelect.value;
-            const province = this.value;
-            const districts = locations[department]?.[province] || [];
-
-            // Limpiar y rellenar distritos
-            districtSelect.innerHTML = '<option value="" disabled selected>Seleccione un distrito</option>';
-            districts.forEach(district => {
-                const option = document.createElement("option");
-                option.value = district;
-                option.textContent = district;
-                districtSelect.appendChild(option);
-            });
-        });
-    });
-</script> -->
 
 <!-- PARA EL TELEFONO -->
 <script>
