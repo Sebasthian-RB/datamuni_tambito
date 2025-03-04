@@ -101,13 +101,9 @@
                             style="background: linear-gradient(to right, #b23a48, #8a2a37); border-radius: 12px 12px 0 0;">
                             <h3 class="mb-0 d-flex justify-content-between align-items-center">
                                 Estadísticas de Casos
-                                <button class="btn btn-light btn-sm float-right custom-btn" data-toggle="collapse"
-                                    data-target="#dashboardStats" aria-expanded="false" aria-controls="dashboardStats">
-                                    <i class="fas fa-chart-bar"></i> Ver Estadísticas
-                                </button>
                             </h3>
                         </div>
-                        <div class="collapse" id="dashboardStats">
+                        <div class="card shadow-sm" id="dashboardStats">
                             <div class="card-body">
                                 <div class="row g-3">
                                     <!-- Total de Personas Registradas -->
@@ -204,19 +200,16 @@
                             </a>
                         </div>
                     </div>
+                    
                     <!-- Tarjeta: Estadísticas de Intervenciones -->
                     <div class="card mb-4 shadow-sm">
                         <div class="card-header"
                             style="background: linear-gradient(to right, #b23a48, #8a2a37); color: white;">
-                            <h3>
+                            <h3 class="mb-0 d-flex justify-content-between align-items-center">
                                 Estadísticas de Intervenciones
-                                <button class="btn btn-light btn-sm float-right custom-btn" data-toggle="collapse"
-                                    data-target="#dashboardStatsIn" aria-expanded="false" aria-controls="dashboardStatsIn">
-                                    <i class="fas fa-chart-bar"></i> Ver Estadísticas
-                                </button>
                             </h3>
                         </div>
-                        <div class="collapse" id="dashboardStatsIn">
+                        <div class="card shadow-sm" id="dashboardStatsIn">
                             <div class="card-body">
                                 <div class="row g-3">
                                     <!-- Card: Total de Intervenciones -->
@@ -342,13 +335,9 @@
                         <div class="card-header"
                             style="background: linear-gradient(to right, #b23a48, #8a2a37); color: white;">
                             <h3>Estadísticas de Eventos
-                                <button class="btn btn-light btn-sm float-right custom-btn" data-toggle="collapse"
-                                    data-target="#dashboardStatsEv" aria-expanded="false" aria-controls="dashboardStatsEv">
-                                    <i class="fas fa-chart-bar"></i> Ver Estadísticas
-                                </button>
                             </h3>
                         </div>
-                        <div class="collapse" id="dashboardStatsEv">
+                        <div class="card shadow-sm" id="dashboardStatsEv">
                             <div class="card-body">
                                 <div class="row mb-4">
                                     <!-- Total de Eventos -->

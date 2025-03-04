@@ -56,17 +56,6 @@
                 <p>{{ $amPerson->attendance_date->format('d/m/Y H:i') }}</p>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col-md-6">
-                <h5 class="font-weight-bold" style="color: #355c7d;">Fecha de Creación:</h5>
-                <p>{{ $amPerson->created_at->format('d/m/Y H:i') }}</p>
-            </div>
-            <div class="col-md-6">
-                <h5 class="font-weight-bold" style="color: #355c7d;">Fecha de Actualización:</h5>
-                <p>{{ $amPerson->updated_at->format('d/m/Y H:i') }}</p>
-            </div>
-        </div>
     </div>
 
     <!-- Pie de página con el botón de volver -->

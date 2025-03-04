@@ -32,7 +32,8 @@
                                     <option value="">Buscar persona...</option>
                                     @foreach ($amPersons as $person)
                                         <option value="{{ $person->id }}">
-                                            {{ $person->given_name }} {{ $person->paternal_last_name }} {{ $person->maternal_last_name }}
+                                            {{ $person->given_name }} {{ $person->paternal_last_name }}
+                                            {{ $person->maternal_last_name }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -112,8 +113,7 @@
                                 <div class="form-group mb-4">
                                     <label for="identity_document" class="font-weight-bold"
                                         style="color: #355c7d;">Documento de Identidad</label>
-                                    <select class="form-control" id="identity_document" name="identity_document"
-                                        required>
+                                    <select class="form-control" id="identity_document" name="identity_document" required>
                                         <option value="DNI">DNI</option>
                                         <option value="Pasaporte">Pasaporte</option>
                                         <option value="Carnet">Carnet</option>
@@ -266,7 +266,26 @@
 
 @section('js')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Función para obtener la fecha/hora actual en GMT-5
+            function getCurrentGMT5DateTime() {
+                const now = new Date();
+                // Ajustar a GMT-5 (5 horas de diferencia)
+                const offset = 5 * 60 * 60 * 1000; // 5 horas en milisegundos
+                const gmt5Time = new Date(now.getTime() - offset);
 
+                // Formatear a YYYY-MM-DDTHH:mm (formato de datetime-local)
+                return gmt5Time.toISOString().slice(0, 16);
+            }
+
+            // Cuando se abre el modal
+            $('#addPersonModal').on('shown.bs.modal', function() {
+                // Establecer la fecha/hora actual en GMT-5
+                document.getElementById('attendance_date').value = getCurrentGMT5DateTime();
+            });
+        });
+    </script>
     <script>
         $(document).ready(function() {
             $('.select2').select2({
@@ -356,9 +375,9 @@
                             // Mostrar errores en los campos correspondientes
                             $.each(errors, function(field, messages) {
                                 $('#' + field).addClass(
-                                'is-invalid'); // Resaltar el campo en rojo
+                                    'is-invalid'); // Resaltar el campo en rojo
                                 $('.' + field + '_error').text(messages[
-                                0]); // Mostrar el mensaje de error
+                                    0]); // Mostrar el mensaje de error
                             });
 
                             Swal.fire('Error', 'Corrige los errores antes de continuar',
@@ -385,7 +404,16 @@
             });
         });
     </script>
-
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Usando 'sv-SE' para obtener un formato compatible con ISO sin segundos
+            const nowInBogota = new Date().toLocaleString("sv-SE", {
+                timeZone: "America/Bogota",
+                hour12: false
+            }).replace(" ", "T").slice(0, 16);
+            document.getElementById('registration_date').value = nowInBogota;
+        });
+    </script>
     <!-- Validadciones para persona -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
