@@ -572,10 +572,10 @@ return [
             'icon' => 'fas fa-fw fa-users',
             'submenu' => [
                 [
-                    'text' => 'Panel SISFOH',
-                    'url' => 'sisfoh_dashboard',
-                    'icon' => 'fas fa-chart-line',
-                    'icon_color' => 'orange',
+                    'text' => 'Menú Principal',
+                    'url' => 'sisfoh_home',
+                    'icon' => 'fas fa-fw fa-home',
+                    'icon_color' => 'green',
                 ],
                 [
                     'text' => 'Gestión Principal',
@@ -619,6 +619,12 @@ return [
                             'icon_color' => 'yellow',
                         ],
                     ],
+                ],
+                [
+                    'text' => 'Panel SISFOH',
+                    'url' => 'sisfoh_dashboard',
+                    'icon' => 'fas fa-chart-line',
+                    'icon_color' => 'orange',
                 ],
             ],
         ],
