@@ -22,7 +22,7 @@ class VlFamilyMemberController extends Controller
      */
     public function index(IndexVlFamilyMemberRequest $request)
     {
-        $vlFamilyMembers = VlFamilyMember::all();
+        $vlFamilyMembers = VlFamilyMember::paginate(15);
 
         return view('areas.VasoDeLecheViews.VlFamilyMembers.index', compact('vlFamilyMembers'));
     }

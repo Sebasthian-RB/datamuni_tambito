@@ -22,7 +22,7 @@ class ProductController extends Controller
      */
     public function index(IndexProductRequest $request)
     {
-        $products = Product::all();
+        $products = Product::paginate(10);
         return view('areas.VasoDeLecheViews.Products.index', compact('products'));
     }
 
@@ -84,18 +84,27 @@ class ProductController extends Controller
     {
         // Validar los datos de la solicitud
         $data = $request->validated();
-
-        // Verificar si el producto tiene cambios antes de actualizar
-        if (!$product->isDirty($data)) {
+    
+        // Verificar si los datos realmente han cambiado
+        $isDirty = false;
+        foreach ($data as $key => $value) {
+            if ($product->$key !== $value) {
+                $isDirty = true;
+                break;
+            }
+        }
+    
+        // Si no hay cambios, redirigir con el mensaje de "No se realizaron cambios"
+        if (!$isDirty) {
             return redirect()->route('products.index')->with('info', 'No se realizaron cambios.');
         }
-
-        // Actualizar el producto con los nuevos datos
+    
+        // Actualizar el producto solo si los datos han cambiado
         $product->update($data);
-
-        // Redirigir al índice con un mensaje de éxito
+    
+        // Redirigir con el mensaje de éxito
         return redirect()->route('products.index')->with('success', 'Producto actualizado correctamente.');
-    }
+    }    
 
     /**
      * Elimina un producto de la base de datos.

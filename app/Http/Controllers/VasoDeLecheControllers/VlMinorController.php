@@ -24,7 +24,7 @@ class VlMinorController extends Controller
      */
     public function index(IndexVlMinorRequest $request)
     {
-        $vlMinors = VlMinor::all();
+        $vlMinors = VlMinor::paginate(15);
         return view('areas.VasoDeLecheViews.VlMinors.index', compact('vlMinors'));
     }
 

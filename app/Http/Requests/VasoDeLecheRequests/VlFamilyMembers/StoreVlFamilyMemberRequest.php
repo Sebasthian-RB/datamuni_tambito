@@ -51,21 +51,25 @@ class StoreVlFamilyMemberRequest extends FormRequest
                 'required',
                 'string',
                 'max:80',
+                'in:DNI,Carnet de Extranjería,Otro',
             ],
             'given_name' => [
                 'required',
                 'string',
                 'max:80',
+                'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/', // Permite letras, espacios, acentos, ñ y diéresis
             ],
             'paternal_last_name' => [
                 'required',
                 'string',
                 'max:50',
+                'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/', // Permite letras, espacios, acentos, ñ y diéresis
             ],
             'maternal_last_name' => [
-                'required',
+                'nullable',
                 'string',
                 'max:50',
+                'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/', // Permite letras, espacios, acentos, ñ y diéresis
             ],
         ];
     }
@@ -78,18 +82,42 @@ class StoreVlFamilyMemberRequest extends FormRequest
     public function messages()
     {
         return [
-            'id.required' => 'El número de documento de identidad es obligatorio.',
-            'id.unique' => 'El número de documento de identidad ya está registrado.',
-            'id.max' => "El número de documento de identidad no debe exceder los {$this->maxIdLength} caracteres.",
-            'identity_document.required' => 'El tipo de documento de identidad es obligatorio.',
-            'identity_document.max' => 'El tipo de documento de identidad no debe exceder los 80 caracteres.',
-            'given_name.required' => 'El nombre es obligatorio.',
-            'given_name.max' => 'El nombre no debe exceder los 80 caracteres.',
-            'paternal_last_name.required' => 'El apellido paterno es obligatorio.',
-            'paternal_last_name.max' => 'El apellido paterno no debe exceder los 50 caracteres.',
-            'maternal_last_name.required' => 'El apellido materno es obligatorio.',
-            'maternal_last_name.max' => 'El apellido materno no debe exceder los 50 caracteres.',
-        ];
+            'id' => [
+                'required' => 'El campo ID es obligatorio.',
+                'string' => 'El ID debe ser una cadena de texto.',
+                'max' => 'El ID no debe exceder los ' . $this->maxIdLength . ' caracteres.',
+                'unique' => 'El ID ya ha sido registrado, debe ser único.',
+                'regex' => 'El ID debe contener solo números.',
+            ],
+            
+            'identity_document' => [
+                'required' => 'El tipo de documento de identidad es obligatorio.',
+                'string' => 'El tipo de documento de identidad debe ser una cadena de texto.',
+                'max' => 'El tipo de documento de identidad no debe exceder los 80 caracteres.',
+                'in' => 'El tipo de documento de identidad debe ser uno de los siguientes: DNI, Carnet de Extranjería, Otro.',
+            ],
+        
+            'given_name' => [
+                'required' => 'El nombre es obligatorio.',
+                'string' => 'El nombre debe ser una cadena de texto.',
+                'max' => 'El nombre no debe exceder los 80 caracteres.',
+                'regex' => 'El nombre solo puede contener letras, espacios, acentos, ñ y diéresis.',
+            ],
+        
+            'paternal_last_name' => [
+                'required' => 'El apellido paterno es obligatorio.',
+                'string' => 'El apellido paterno debe ser una cadena de texto.',
+                'max' => 'El apellido paterno no debe exceder los 50 caracteres.',
+                'regex' => 'El apellido paterno solo puede contener letras, espacios, acentos, ñ y diéresis.',
+            ],
+        
+            'maternal_last_name' => [
+                'nullable' => 'El apellido materno es opcional.',
+                'string' => 'El apellido materno debe ser una cadena de texto.',
+                'max' => 'El apellido materno no debe exceder los 50 caracteres.',
+                'regex' => 'El apellido materno solo puede contener letras, espacios, acentos, ñ y diéresis.',
+            ],
+        ];        
     }
 
     /**

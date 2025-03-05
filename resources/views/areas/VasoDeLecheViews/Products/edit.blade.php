@@ -211,6 +211,7 @@
                                     <label for="name" class="font-weight-bold">
                                         <i class="fas fa-file-signature mr-2"></i>Nombre
                                     </label>
+                                    <span class="text-danger">*</span>
                                     <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $product->name) }}" placeholder="Ej: Producto Ejemplo" required>
                                     @error('name')
                                         <span class="invalid-feedback">{{ $message }}</span>
