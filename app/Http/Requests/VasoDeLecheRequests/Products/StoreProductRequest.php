@@ -37,6 +37,7 @@ class StoreProductRequest extends FormRequest
                 'string',
                 'max:1000',
                 'regex:/^[a-zA-Z0-9\s.,;:"\'()-áéíóúÁÉÍÓÚñÑüÜ]+$/', // Caracteres básicos permitidos
+                'not_regex:/<script.*?>.*?<\/script>/i', // Protege contra inyección de scripts
             ],
         ];
     }
@@ -60,6 +61,7 @@ class StoreProductRequest extends FormRequest
                 'string' => 'La descripción debe ser una cadena de texto.',
                 'max' => 'La descripción no puede tener más de 1000 caracteres.',
                 'regex' => 'La descripción solo puede contener letras, números, espacios, comas, puntos, puntos y coma, comillas, paréntesis y caracteres del alfabeto español (como ñ, á, é, í, ó, ú, ü).',
+                'not_regex' => 'La descripción no puede contener scripts.',
             ],
         ];        
     }

@@ -19,6 +19,24 @@ class StoreCommitteeRequest extends FormRequest
     }
 
     /**
+     * Prepara los datos de entrada antes de realizar la validación.
+     * En este caso, se normaliza el campo 'id' eliminando los ceros a la izquierda.
+     *
+     * Este método se ejecuta antes de que se realicen las reglas de validación.
+     * Usamos este método para asegurar que el campo 'id' se procese adecuadamente
+     * (en este caso, eliminando ceros a la izquierda) antes de la validación y almacenamiento en la base de datos.
+     *
+     * @return void
+     */
+    public function prepareForValidation()
+    {
+        // Normalizar el ID eliminando ceros a la izquierda
+        $this->merge([
+            'id' => ltrim($this->input('id'), '0') // 'ltrim' elimina los ceros a la izquierda del ID
+        ]);
+    }
+
+    /**
      * Obtiene las reglas de validación que se aplican a la solicitud.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
@@ -29,7 +47,7 @@ class StoreCommitteeRequest extends FormRequest
             'id' => [
                 'required',
                 'string',
-                'unique:committees,id', //El id debe ser unico 
+                'unique:committees,id', // Validación única del ID
                 'regex:/^\d+$/', // El id debe ser un número entero
             ],
 
@@ -38,35 +56,21 @@ class StoreCommitteeRequest extends FormRequest
                 'string',
                 'min:3',
                 'max:150',
-                'regex:/^[a-zA-Z0-9\s\-\.,!?\(\)áéíóúÁÉÍÓÚüÜ]+$/', // Permite letras, números, espacios, guiones, comas, puntos, signos de exclamación, preguntas y paréntesis
+                'regex:/^[a-zA-Z0-9\s\-\_\.\',:áéíóúÁÉÍÓÚüÜ]+$/', // Permite letras, números, espacios, guiones, subguiones, comillas simples, dobles, comas, puntos y dos puntos
             ],
 
-            'president_paternal_surname' => [
+            'president' => [
                 'required',
                 'string',
-                'max:50',
-                'regex:/^[a-zA-Z\s]+$/', // Solo letras y espacios
-            ],
-
-            'president_maternal_surname' => [
-                'nullable',
-                'string',
-                'max:50',
-                'regex:/^[a-zA-Z\s]+$/', // Solo letras y espacios
-            ],
-
-            'president_given_name' => [
-                'required',
-                'string',
-                'max:80',
-                'regex:/^[a-zA-Z\s]+$/', // Solo letras y espacios
+                'max:255',
+                'regex:/^[a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ]+$/', // Solo letras del alfabeto español y espacios
             ],
 
             'urban_core' => [
                 'required',
                 'string',
                 'max:100',
-                'regex:/^[a-zA-Z0-9\s]+$/', // Solo letras, números y espacios
+                'regex:/^[a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ]+$/', // Solo letras del alfabeto español y espacios
             ],
             
             'sector_id' => [
@@ -84,32 +88,39 @@ class StoreCommitteeRequest extends FormRequest
     public function messages()
     {
         return [
-            'id.required' => 'El número de comité es obligatorio.',
-            'id.unique' => 'El número de comité ya está en uso.',
-            'id.regex' => 'El número de comité debe ser un número entero.',
-            'name.required' => 'El nombre es obligatorio.',
-            'name.string' => 'El nombre debe ser una cadena de texto válida.',
-            'name.min' => 'El nombre debe tener al menos 3 caracteres.',
-            'name.max' => 'El nombre no puede tener más de 150 caracteres.',
-            'name.regex' => 'El nombre contiene caracteres no permitidos. Solo se permiten letras, números, espacios, guiones, comas, puntos, signos de exclamación, signos de interrogación y paréntesis.',
-            'president_paternal_surname.required' => 'El apellido paterno del presidente(a) es obligatorio.',
-            'president_paternal_surname.string' => 'El apellido paterno debe ser una cadena de texto válida.',
-            'president_paternal_surname.max' => 'El apellido paterno no debe exceder los 50 caracteres.',
-            'president_paternal_surname.regex' => 'El apellido paterno solo puede contener letras y espacios.',
-            'president_maternal_surname.nullable' => 'El apellido materno es opcional.',
-            'president_maternal_surname.string' => 'El apellido materno debe ser una cadena de texto válida.',
-            'president_maternal_surname.max' => 'El apellido materno no debe exceder los 50 caracteres.',
-            'president_maternal_surname.regex' => 'El apellido materno solo puede contener letras y espacios.',
-            'president_given_name.required' => 'El nombre del presidente(a) es obligatorio.',
-            'president_given_name.string' => 'El nombre del presidente(a) debe ser una cadena de texto válida.',
-            'president_given_name.max' => 'El nombre del presidente(a) no debe exceder los 80 caracteres.',
-            'president_given_name.regex' => 'El nombre del presidente(a) solo puede contener letras y espacios.',
-            'urban_core.required' => 'El núcleo urbano es obligatorio.',
-            'urban_core.max' => 'El núcleo urbano no debe exceder los 100 caracteres.',
-            'urban_core.regex' => 'El núcleo urbano solo puede contener letras, números y espacios.',
-            'sector_id.required' => 'El sector es obligatorio.',
-            'sector_id.exists' => 'El sector seleccionado no es válido.',
-        ];
+            'id' => [
+                'required' => 'El campo ID es obligatorio.',
+                'string' => 'El ID debe ser una cadena de texto.',
+                'unique' => 'El ID debe ser único. Este ya está en uso.',
+                'regex' => 'El ID solo puede contener números enteros.',
+            ],
+        
+            'name' => [
+                'required' => 'El nombre es obligatorio.',
+                'string' => 'El nombre debe ser una cadena de texto.',
+                'min' => 'El nombre debe tener al menos 3 caracteres.',
+                'max' => 'El nombre no puede tener más de 150 caracteres.',
+                'regex' => 'El nombre del comité solo puede contener letras, números, espacios, guiones, subguiones, comillas simples, dobles, comas, puntos y dos puntos.',            ],
+        
+            'president' => [
+                'required' => 'El nombre del presidente es obligatorio.',
+                'string' => 'El nombre del presidente debe ser una cadena de texto.',
+                'max' => 'El nombre del presidente no puede tener más de 255 caracteres.',
+                'regex' => 'El nombre del presidente solo puede contener letras y espacios.',
+            ],
+        
+            'urban_core' => [
+                'required' => 'El núcleo urbano es obligatorio.',
+                'string' => 'El núcleo urbano debe ser una cadena de texto.',
+                'max' => 'El núcleo urbano no puede tener más de 100 caracteres.',
+                'regex' => 'El núcleo urbano solo puede contener letras y espacios.',
+            ],
+        
+            'sector_id' => [
+                'required' => 'El sector es obligatorio.',
+                'exists' => 'El sector seleccionado no existe.',
+            ],
+        ];        
     }
 
     /**
@@ -122,9 +133,7 @@ class StoreCommitteeRequest extends FormRequest
         return [
             'id' => 'Número de comité',
             'name' => 'nombre del comité',
-            'president_paternal_surname' => 'apellido paterno del presidente(a)',
-            'president_maternal_surname' => 'apellido materno del presidente(a)',
-            'president_given_name' => 'nombres del presidente(a)',
+            'president' => 'nombre completo del presidente(a)',
             'urban_core' => 'núcleo urbano',
             'sector_id' => 'sector',
         ];

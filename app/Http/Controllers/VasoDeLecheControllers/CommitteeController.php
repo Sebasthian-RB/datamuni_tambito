@@ -25,7 +25,8 @@ class CommitteeController extends Controller
     public function index(IndexCommitteeRequest $request)
     {
         // Obtener todos los comités con los sectores relacionados
-        $committees = Committee::with('sector')->get();
+        $committees = Committee::with('sector')->paginate(15);
+
 
         return view('areas.VasoDeLecheViews.Committees.index', compact('committees'));
     }
@@ -104,9 +105,21 @@ class CommitteeController extends Controller
      */
     public function update(UpdateCommitteeRequest $request, Committee $committee)
     {
-        // Actualizar solo los campos permitidos
-        $committee->update($request->validated());
-        
+        // Validar los datos de la solicitud
+        $data = $request->validated();
+
+        // Actualizar el comité con los nuevos datos (sin ejecutar todavía)
+        $committee->fill($data); // Llenamos los datos pero no lo actualizamos aún
+
+        // Verificar si hay cambios antes de proceder
+        if (!$committee->isDirty()) {
+            return redirect()->route('committees.index')->with('info', 'No se realizaron cambios.');
+        }
+
+        // Si hay cambios, actualizamos el comité
+        $committee->save();
+
+        // Redirigir con el mensaje de éxito
         return redirect()->route('committees.index')->with('success', 'Comité actualizado correctamente.');
     }
 

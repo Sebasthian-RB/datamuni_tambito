@@ -41,7 +41,7 @@
             align-items: center;
             justify-content: space-between;
         }
-
+    
         .card-title {
             font-size: 1.75rem;
             margin: 0;
@@ -61,7 +61,7 @@
             width: auto;
             transition: opacity 0.3s ease;
         }
-
+    
         .header-logo:hover {
             opacity: 0.8;
         }
@@ -119,9 +119,12 @@
             color: white;
         }
 
-        .btn-custom:hover {
-            background-color: #7B5E9D; /* Un tono más oscuro para el hover */
-            border-color: #7B5E9D;
+        .btn-custom:hover,
+        .btn-danger:hover {
+            background-color: var(--color-primary); /* Mismo color para todos los hovers */
+            border-color: var(--color-primary);
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra suave */
         }
 
         /* Línea divisoria vertical */
@@ -210,6 +213,7 @@
                                             <label for="id" class="font-weight-bold">
                                                 <i class="fas fa-hashtag mr-2"></i>Número de comité
                                             </label>
+                                            <span class="text-danger">*</span>
                                             <input type="text" class="form-control @error('id') is-invalid @enderror" id="id" name="id" value="{{ old('id') }}" placeholder="Ej: 1234" required>
                                             @error('id')
                                                 <span class="invalid-feedback">{{ $message }}</span>
@@ -223,6 +227,7 @@
                                             <label for="name" class="font-weight-bold">
                                                 <i class="fas fa-file-signature mr-2"></i>Nombre
                                             </label>
+                                            <span class="text-danger">*</span>
                                             <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" placeholder="Ej: Comité de Desarrollo Local" required>
                                             @error('name')
                                                 <span class="invalid-feedback">{{ $message }}</span>
@@ -236,7 +241,8 @@
                                     <label for="president" class="font-weight-bold">
                                         <i class="fas fa-user-tie mr-2"></i>Presidente(a)
                                     </label>
-                                    <input type="text" class="form-control @error('president') is-invalid @enderror" id="president" name="president" value="{{ old('president') }}" placeholder="Ej: Perez Gomez Juan Carlos" required>
+                                    <span class="text-danger">*</span>
+                                    <input type="text" class="form-control @error('president') is-invalid @enderror" id="president" name="president" value="{{ old('president') }}" placeholder="Ej: Apellidos y Nombres" required>
                                     @error('president')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
@@ -255,6 +261,7 @@
                                     <label for="urban_core" class="font-weight-bold">
                                         <i class="fas fa-map-marker-alt mr-2"></i>Núcleo Urbano
                                     </label>
+                                    <span class="text-danger">*</span>
                                     <select class="form-control @error('urban_core') is-invalid @enderror" id="urban_core" name="urban_core" required>
                                         <option value="" disabled selected class="placeholder-option">Seleccione un Núcleo Urbano</option>
                                         @foreach ($urbanCores as $core)
@@ -271,6 +278,7 @@
                                     <label for="sector_id" class="font-weight-bold">
                                         <i class="fas fa-map mr-2"></i>Sector
                                     </label>
+                                    <span class="text-danger">*</span>
                                     @if($sectors->isEmpty())
                                         <p class="text-muted">No hay sectores disponibles.</p>
                                     @else

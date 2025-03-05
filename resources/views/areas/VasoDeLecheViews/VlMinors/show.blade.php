@@ -2,37 +2,118 @@
 
 @section('title', 'Detalle del Menor')
 
-@section('content_header')
-    <h1>Detalle del Menor</h1>
+@section('css')
+    <!-- Estilos personalizados -->
+    <style>
+        /* Colores de la paleta */
+        :root {
+            --color-primary: #3B1E54;
+            --color-secondary: #9B7EBD;
+            --color-accent: #D4BEE4;
+            --color-background: #EEEEEE;
+        }
+
+        /* Estilos generales */
+        .card {
+            border: 1px solid var(--color-accent);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            padding-top: 20px;
+        }
+
+        /* Header */
+        .card-header {
+            background: var(--color-primary);
+            padding: 15px;
+            text-align: center;
+        }
+
+        .header-logo {
+            height: 50px;
+            width: auto;
+            transition: opacity 0.3s ease;
+        }
+
+        .header-logo:hover {
+            opacity: 0.8;
+        }
+
+        /* Estilos de texto */
+        .detail-label {
+            font-weight: bold;
+            color: var(--color-primary);
+        }
+
+        .detail-value {
+            color: #333;
+        }
+
+        .no-description {
+            color: #999;
+            font-style: italic;
+        }
+
+        /* Botones */
+        .btn-custom {
+            background-color: var(--color-secondary);
+            border-color: var(--color-secondary);
+            color: white;
+        }
+
+        .btn-custom:hover,
+        .btn-secondary:hover {
+            background-color: var(--color-primary);
+            border-color: var(--color-primary);
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Estilos responsivos */
+        @media (max-width: 768px) {
+            .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
 @stop
 
 @section('content')
 <div class="container">
     <div class="card">
-        <div class="card-header p-0 d-flex justify-content-center align-items-center" style="background-color: #3B1E54; height: 60px;">
-            <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="img-fluid" style="height: 80%; width: auto;">
+        <!-- Card Header -->
+        <div class="card-header">
+            <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="header-logo">
         </div>
+
+        <!-- Card Body -->
         <div class="card-body">
-            <p><strong>Número de Identidad:</strong> {{ $vlMinor->id }}</p>
-            <p><strong>Tipo de Documento:</strong> {{ $vlMinor->identity_document }}</p>
-            <p><strong>Nombre:</strong> {{ $vlMinor->given_name }}</p>
-            <p><strong>Apellido Paterno:</strong> {{ $vlMinor->paternal_last_name }}</p>
-            <p><strong>Apellido Materno:</strong> {{ $vlMinor->maternal_last_name }}</p>
-            <p><strong>Fecha de Nacimiento:</strong> {{ $vlMinor->birth_date->format('d/m/Y') }}</p>
-            <p><strong>Edad:</strong> {{ $vlMinor->birth_date->age }} años</p>
-            <p><strong>Sexo:</strong> {{ $vlMinor->sex_type == 0 ? 'Femenino' : 'Masculino' }}</p>
-            <p><strong>Fecha de Empadronamiento:</strong> {{ $vlMinor->registration_date->format('d/m/Y') }}</p>
-            <p><strong>Fecha de Retiro:</strong> {{ $vlMinor->withdrawal_date->format('d/m/Y') }}</p>
-            <p><strong>Domicilio:</strong> {{ $vlMinor->address }}</p>
-            <p><strong>Tipo de Vivienda:</strong> {{ $vlMinor->dwelling_type }}</p>
-            <p><strong>Nivel Educativo:</strong> {{ $vlMinor->education_level }}</p>
-            <p><strong>Condición:</strong> {{ $vlMinor->condition }}</p>
-            <p><strong>Discapacidad:</strong> {{ $vlMinor->disability ? 'Sí' : 'No' }}</p>
-            <p><strong>Familiar:</strong> {{ $vlMinor->vlFamilyMember->given_name }} {{ $vlMinor->vlFamilyMember->paternal_last_name }} {{ $vlMinor->vlFamilyMember->maternal_last_name }}</p>
-            <p><strong>Parentesco:</strong> {{ $vlMinor->kinship }}</p>
+            <p><span class="detail-label">Número de Identidad:</span> <span class="detail-value">{{ $vlMinor->id }}</span></p>
+            <p><span class="detail-label">Tipo de Documento:</span> <span class="detail-value">{{ $vlMinor->identity_document }}</span></p>
+            <p><span class="detail-label">Nombre:</span> <span class="detail-value">{{ $vlMinor->given_name }}</span></p>
+            <p><span class="detail-label">Apellido Paterno:</span> <span class="detail-value">{{ $vlMinor->paternal_last_name }}</span></p>
+            <p><span class="detail-label">Apellido Materno:</span> <span class="detail-value">{{ $vlMinor->maternal_last_name }}</span></p>
+            <p><span class="detail-label">Fecha de Nacimiento:</span> <span class="detail-value">{{ $vlMinor->birth_date->format('d/m/Y') }}</span></p>
+            <p><span class="detail-label">Edad:</span> <span class="detail-value">{{ $vlMinor->birth_date->age }} años</span></p>
+            <p><span class="detail-label">Sexo:</span> <span class="detail-value">{{ $vlMinor->sex_type == 0 ? 'Femenino' : 'Masculino' }}</span></p>
+            <p><span class="detail-label">Fecha de Empadronamiento:</span> <span class="detail-value">{{ $vlMinor->registration_date->format('d/m/Y') }}</span></p>
+            <p><span class="detail-label">Fecha de Retiro:</span> <span class="detail-value">{{ $vlMinor->withdrawal_date->format('d/m/Y') }}</span></p>
+            <p><span class="detail-label">Domicilio:</span> <span class="detail-value">{{ $vlMinor->address }}</span></p>
+            <p><span class="detail-label">Tipo de Vivienda:</span> <span class="detail-value">{{ $vlMinor->dwelling_type }}</span></p>
+            <p><span class="detail-label">Nivel Educativo:</span> <span class="detail-value">{{ $vlMinor->education_level }}</span></p>
+            <p><span class="detail-label">Condición:</span> <span class="detail-value">{{ $vlMinor->condition }}</span></p>
+            <p><span class="detail-label">Discapacidad:</span> <span class="detail-value">{{ $vlMinor->disability ? 'Sí' : 'No' }}</span></p>
+            <p><span class="detail-label">Familiar:</span> <span class="detail-value">{{ $vlMinor->vlFamilyMember->given_name }} {{ $vlMinor->vlFamilyMember->paternal_last_name }} {{ $vlMinor->vlFamilyMember->maternal_last_name }}</span></p>
+            <p><span class="detail-label">Parentesco:</span> <span class="detail-value">{{ $vlMinor->kinship }}</span></p>
         </div>
-        <div class="card-footer">
-            <a href="{{ route('vl_minors.edit', $vlMinor->id) }}" class="btn btn-secondary" style="background-color: #9B7EBD; color: white; border: #9B7EBD;">Editar</a>
+
+        <!-- Card Footer -->
+        <div class="card-footer text-right">
+            <a href="{{ route('vl_minors.edit', $vlMinor->id) }}" class="btn btn-custom">Editar</a>
             <a href="{{ route('vl_minors.index') }}" class="btn btn-secondary">Volver</a>
         </div>
     </div>

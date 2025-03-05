@@ -30,21 +30,22 @@ class StoreSectorRequest extends FormRequest
                 'required',
                 'string',
                 'max:30',
-                'regex:/^[a-zA-Z0-9\s]+$/', // Solo letras, números y espacios
+                'regex:/^[a-zA-Z0-9\sáéíóúÁÉÍÓÚñÑüÜ]+$/', // Permite letras, números, espacios, acentos y diéresis
             ],
             'description' => [
                 'nullable',
                 'string',
                 'max:1000',
-                'regex:/^[a-zA-Z0-9\s.,;:"\'()-]+$/', // Caracteres básicos permitidos
+                'regex:/^[a-zA-Z0-9\s.,;:"\'()-áéíóúÁÉÍÓÚñÑüÜ]+$/', // Permite caracteres básicos, acentos, diéresis y otros caracteres especiales
+                'not_regex:/<script.*?>.*?<\/script>/i', // Protege contra inyección de scripts
             ],
             'responsible_person' => [
                 'required',
                 'string',
                 'max:50',
-                'regex:/^[a-zA-Z\s]+$/', // Solo letras y espacios
+                'regex:/^[a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ]+$/', // Permite letras, espacios, acentos, diéresis
             ],
-        ];
+        ];        
     }
 
     /**
@@ -55,18 +56,26 @@ class StoreSectorRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'El nombre del sector es obligatorio.',
-            'name.string' => 'El nombre debe ser una cadena de texto.',
-            'name.max' => 'El nombre no debe exceder los 30 caracteres.',
-            'name.regex' => 'El nombre solo puede contener letras, números y espacios.',
-            'description.string' => 'La descripción debe ser una cadena de texto.',
-            'description.max' => 'La descripción no debe exceder los 1000 caracteres.',
-            'description.regex' => 'La descripción contiene caracteres no permitidos.',
-            'responsible_person.required' => 'El nombre del responsable es obligatorio.',
-            'responsible_person.string' => 'El responsable debe ser una cadena de texto.',
-            'responsible_person.max' => 'El nombre del responsable no debe exceder los 50 caracteres.',
-            'responsible_person.regex' => 'El nombre del responsable solo puede contener letras y espacios.',
-        ];
+            'name' => [
+                'required' => 'El nombre es obligatorio.',
+                'string' => 'El nombre debe ser una cadena de texto.',
+                'max' => 'El nombre no puede tener más de 30 caracteres.',
+                'regex' => 'El nombre solo puede contener letras, números, espacios y caracteres especiales como acentos (á, é, í, ó, ú), diéresis (ü) y la ñ.',
+            ],
+            'description' => [
+                'nullable' => 'La descripción es opcional, puede dejarse vacía.',
+                'string' => 'La descripción debe ser una cadena de texto.',
+                'max' => 'La descripción no puede tener más de 1000 caracteres.',
+                'regex' => 'La descripción solo puede contener letras, números, espacios, caracteres especiales como comas, puntos, comillas, paréntesis y acentos (á, é, í, ó, ú), diéresis (ü) y la ñ.',
+                'not_regex' => 'La descripción no puede contener código o scripts (por ejemplo, <script>...</script>).',
+            ],
+            'responsible_person' => [
+                'required' => 'El nombre de la persona responsable es obligatorio.',
+                'string' => 'El nombre de la persona responsable debe ser una cadena de texto.',
+                'max' => 'El nombre de la persona responsable no puede tener más de 50 caracteres.',
+                'regex' => 'El nombre de la persona responsable solo puede contener letras, espacios y caracteres especiales como acentos (á, é, í, ó, ú), diéresis (ü) y la ñ.',
+            ],
+        ];        
     }
 
     /**

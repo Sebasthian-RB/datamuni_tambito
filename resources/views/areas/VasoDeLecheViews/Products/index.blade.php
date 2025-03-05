@@ -220,6 +220,53 @@
             font-size: 1.2rem;
         }
 
+        /* Estilos para la paginación */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            list-style: none;
+            padding: 0;
+            margin: 20px 0; /* Margen superior e inferior */
+        }
+
+        .pagination .page-item {
+            margin: 0 4px; /* Espaciado entre los elementos de la paginación */
+        }
+
+        .pagination .page-link {
+            color: #3B1E54; /* Color del texto */
+            background-color: #D4BEE4; /* Fondo */
+            border: 1px solid #9B7EBD; /* Borde con el color principal */
+            border-radius: 6px; /* Bordes redondeados */
+            padding: 8px 16px; /* Espaciado interno */
+            font-size: 0.875rem; /* Tamaño de fuente */
+            text-decoration: none; /* Sin subrayado */
+            transition: all 0.3s ease; /* Transición suave */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+        }
+
+        .pagination .page-item.active .page-link {
+            color: white; /* Color del texto cuando está activo */
+            background-color: #9B7EBD; /* Fondo cuando está activo */
+            border-color: #9B7EBD; /* Borde cuando está activo */
+        }
+
+        .pagination .page-link:hover {
+            background-color: #9B7EBD; /* Fondo al pasar el cursor */
+            color: white; /* Color del texto al pasar el cursor */
+            transform: translateY(-2px); /* Efecto de elevación */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+        }
+
+        .pagination .page-item.disabled .page-link {
+            color: #9B7EBD; /* Color del texto deshabilitado */
+            background-color: #EEEEEE; /* Fondo deshabilitado */
+            border-color: #9B7EBD; /* Borde deshabilitado */
+            opacity: 0.6; /* Opacidad reducida */
+            cursor: not-allowed; /* Cursor no permitido */
+        }
+
         /* Estilos responsivos */
         @media (min-width: 768px) {
             .btn-main {
@@ -247,6 +294,21 @@
 
             .header-logo {
                 margin-top: 15px; /* Separa el logo del texto */
+            }
+
+            .pagination .page-item:not(.previous):not(.next) {
+                display: inline-block; /* Muestra los números de página */
+            }
+
+            .pagination .page-link {
+                padding: 6px 12px; /* Espaciado más pequeño */
+                font-size: 0.75rem; /* Tamaño de fuente más pequeño */
+            }
+
+            .pagination .page-item.previous .page-link,
+            .pagination .page-item.next .page-link {
+                padding: 8px 14px; /* Espaciado reducido */
+                font-size: 0.8rem; /* Tamaño de fuente más pequeño */
             }
         }
     </style>
@@ -338,6 +400,44 @@
                         @endforeach
                     </tbody>
                 </table>
+            </div>
+
+            <!-- Paginación -->
+            <div class="d-flex justify-content-center mt-4">
+                @if ($products->hasPages())
+                    <ul class="pagination">
+                        <!-- Página anterior -->
+                        @if ($products->onFirstPage())
+                            <li class="page-item disabled">
+                                <span class="page-link">Anterior</span>
+                            </li>
+                        @else
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $products->previousPageUrl() }}" rel="prev">Anterior</a>
+                            </li>
+                        @endif
+
+                        <!-- Páginas numeradas -->
+                        @foreach ($products->getUrlRange(1, $products->lastPage()) as $page => $url)
+                            <li class="page-item {{ $page == $products->currentPage() ? 'active' : '' }}">
+                                <a class="page-link" href="{{ $url }}">
+                                    {{ $page }}
+                                </a>
+                            </li>
+                        @endforeach
+
+                        <!-- Página siguiente -->
+                        @if ($products->hasMorePages())
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $products->nextPageUrl() }}" rel="next">Siguiente</a>
+                            </li>
+                        @else
+                            <li class="page-item disabled">
+                                <span class="page-link">Siguiente</span>
+                            </li>
+                        @endif
+                    </ul>
+                @endif
             </div>
         </div>
     @endif
