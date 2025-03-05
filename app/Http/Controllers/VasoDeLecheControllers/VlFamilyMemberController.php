@@ -108,11 +108,22 @@ class VlFamilyMemberController extends Controller
      */
     public function update(UpdateVlFamilyMemberRequest $request, VlFamilyMember $vlFamilyMember)
     {
-        $vlFamilyMember->update($request->validated());
+        // Validar los datos de la solicitud
+        $data = $request->validated();
 
-        return redirect()
-            ->route('vl_family_members.index')
-            ->with('success', 'Miembro familiar actualizado correctamente.');
+        // Actualizar el miembro de la familia con los nuevos datos (sin ejecutar todavía)
+        $vlFamilyMember->fill($data); // Llenamos los datos pero no lo actualizamos aún
+
+        // Verificar si hay cambios antes de proceder
+        if (!$vlFamilyMember->isDirty()) {
+            return redirect()->route('vl_family_members.index')->with('info', 'No se realizaron cambios.');
+        }
+
+        // Si hay cambios, actualizamos el miembro de la familia
+        $vlFamilyMember->save();
+
+        // Redirigir con el mensaje de éxito
+        return redirect()->route('vl_family_members.index')->with('success', 'Miembro de familia actualizado correctamente.');
     }
 
     /**

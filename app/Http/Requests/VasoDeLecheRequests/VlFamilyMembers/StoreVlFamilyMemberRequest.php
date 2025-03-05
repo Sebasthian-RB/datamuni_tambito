@@ -43,8 +43,8 @@ class StoreVlFamilyMemberRequest extends FormRequest
             'id' => [
                 'required',
                 'string',
-                'max:' . $this->maxIdLength, // Aplica la longitud dinámica para el id
-                'unique:vl_family_members,id', //El id debe ser único
+                'min:' . $this->maxIdLength,  // Aplica la longitud mínima
+                'max:' . $this->maxIdLength,  // Aplica la longitud máxima                'unique:vl_family_members,id', //El id debe ser único
                 'regex:/^\d+$/', // El id debe ser un número entero
             ],
             'identity_document' => [
@@ -85,6 +85,7 @@ class StoreVlFamilyMemberRequest extends FormRequest
             'id' => [
                 'required' => 'El campo ID es obligatorio.',
                 'string' => 'El ID debe ser una cadena de texto.',
+                'min' => 'El ID debe tener ' . $this->maxIdLength . ' caracteres.',
                 'max' => 'El ID no debe exceder los ' . $this->maxIdLength . ' caracteres.',
                 'unique' => 'El ID ya ha sido registrado, debe ser único.',
                 'regex' => 'El ID debe contener solo números.',
@@ -101,21 +102,21 @@ class StoreVlFamilyMemberRequest extends FormRequest
                 'required' => 'El nombre es obligatorio.',
                 'string' => 'El nombre debe ser una cadena de texto.',
                 'max' => 'El nombre no debe exceder los 80 caracteres.',
-                'regex' => 'El nombre solo puede contener letras, espacios, acentos, ñ y diéresis.',
+                'regex' => 'El nombre solo puede contener letras y espacios.',
             ],
         
             'paternal_last_name' => [
                 'required' => 'El apellido paterno es obligatorio.',
                 'string' => 'El apellido paterno debe ser una cadena de texto.',
                 'max' => 'El apellido paterno no debe exceder los 50 caracteres.',
-                'regex' => 'El apellido paterno solo puede contener letras, espacios, acentos, ñ y diéresis.',
+                'regex' => 'El apellido paterno solo puede contener letras y espacios.',
             ],
         
             'maternal_last_name' => [
                 'nullable' => 'El apellido materno es opcional.',
                 'string' => 'El apellido materno debe ser una cadena de texto.',
                 'max' => 'El apellido materno no debe exceder los 50 caracteres.',
-                'regex' => 'El apellido materno solo puede contener letras, espacios, acentos, ñ y diéresis.',
+                'regex' => 'El apellido materno solo puede contener letras y espacios.',
             ],
         ];        
     }
