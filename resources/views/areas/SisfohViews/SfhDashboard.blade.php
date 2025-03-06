@@ -4,13 +4,13 @@
 
 @section('content_header')
     <!-- Header con la imagen grande -->
-    <div class="mb-4 card">
-        <div class="p-0 card-header d-flex justify-content-center align-items-center"
-            style="background-color: #F57C00; height: 60px;">
-            <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="img-fluid"
-                style="height: 100%; width: auto;">
-        </div>
+    @section('content_header')
+    <!-- Texto e imagen superior -->
+    <div class="px-4 py-3 d-flex justify-content-between align-items-center" style="background: #028a0f; border-radius: 0 0 0px 0px;">
+        <h3 style="color: gold; font-weight: bold; margin: 0;">Dashboard SISFOH</h3>
+        <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Logo Visita" class="img-fluid" style="max-height: 80px;">
     </div>
+    @stop
 
     <!-- Panel de Control de SISFOH -->
     <div class="d-flex align-items-center justify-content-between" style="height: 50vh; padding: 0;">

@@ -31,7 +31,7 @@
                         <a href="{{ route('sfh_people.create') }}" class="btn btn-primary btn-sm btn-with-border btn-primary-custom">
                             <i class="fas fa-plus"></i> Crear Persona
                         </a>
-                        <a href="{{ route('sfhdashboard') }}" class="btn btn-secondary btn-sm btn-with-border btn-secondary-custom" style="margin-left: 10px;">
+                        <a href="{{ route('sisfohHome') }}" class="btn btn-secondary btn-sm btn-with-border btn-secondary-custom" style="margin-left: 10px;">
                             <i class="fas fa-arrow-left"></i> Volver
                         </a>
                     </div>
@@ -190,7 +190,7 @@
     $(document).ready(function () {
         $('#people-table').DataTable({
             "language": {
-                url: "//cdn.datatables.net/plug-ins/1.13.5/i18n/es-ES.json", // Archivo de idioma español
+                url: '//cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json' // Archivo de idioma español
             },
             dom: 'Bfrtip', // B = Botones, f = Filtro, r = Información, t = Tabla, i = Info, p = Paginación
             buttons: [
@@ -214,33 +214,45 @@
                     extend: 'pdfHtml5',
                     text: 'Exportar a PDF',
                     className: 'btn btn-danger',
-                    orientation: 'portrait',  // PDF en orientación vertical
+                    orientation: 'landscape',  // PDF en orientación horizontal
                     pageSize: 'A4',  // Tamaño de la página
                     exportOptions: {
                         columns: ':not(.no-export)',
                     },
-                    customize: function(doc) {
-                        // Centrando todas las celdas
-                        doc.content[1].table.body.forEach(function(row) {
-                            row.forEach(function(cell) {
+                    customize: function (doc) {
+                        // Reducir el tamaño de fuente
+                        doc.defaultStyle.fontSize = 6.8; // Tamaño de fuente reducido
+
+                        // Ajustar márgenes
+                        doc.pageMargins = [7, 10, 7, 10]; // Márgenes: [izquierda, arriba, derecha, abajo]
+
+                        // Centrar todas las celdas
+                        doc.content[1].table.body.forEach(function (row) {
+                            row.forEach(function (cell) {
                                 cell.alignment = 'center';  // Centra el contenido de cada celda
                             });
                         });
+
                         // Agregar bordes a la tabla
                         doc.content[1].layout = {
-                            hLineWidth: function(i, node) { return 0.5; },  // Grosor de línea horizontal
-                            vLineWidth: function(i, node) { return 0.5; },  // Grosor de línea vertical
-                            hLineColor: function(i, node) { return '#000000'; },  // Color negro para líneas horizontales
-                            vLineColor: function(i, node) { return '#000000'; }   // Color negro para líneas verticales
+                            hLineWidth: function (i, node) { return 0.5; },  // Grosor de línea horizontal
+                            vLineWidth: function (i, node) { return 0.5; },  // Grosor de línea vertical
+                            hLineColor: function (i, node) { return '#000000'; },  // Color negro para líneas horizontales
+                            vLineColor: function (i, node) { return '#000000'; }   // Color negro para líneas verticales
                         };
+
                         // Estilos de encabezado
                         doc.styles.tableHeader = {
                             alignment: 'center',
                             bold: true,
-                            fontSize: 12,
+                            fontSize: 9,
                             fillColor: [52, 152, 219], // Color azul en encabezados
                             color: 'white' // Texto en blanco
                         };
+
+                        // Dividir la tabla en varias páginas si es necesario
+                        doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+                        doc.content[1].table.overflow = 'linebreak'; // Dividir la tabla en varias páginas
                     }
                 },
                 {
@@ -253,7 +265,14 @@
                 }
             ],
             pageLength: 4,
-            lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"] ]
+            lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"] ],
+            columnDefs: [
+                {
+                    targets: [5, 7, 9], // Índices de las columnas "Estado Civil", "Sexo" y "Nacionalidad"
+                    visible: false, // Ocultar estas columnas en la visualización
+                    searchable: true // Mantenerlas disponibles para búsquedas
+                }
+            ]
         });
     });
 </script>

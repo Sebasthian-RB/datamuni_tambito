@@ -23,7 +23,7 @@ class SectorController extends Controller
      */
     public function index(IndexSectorRequest $request)
     {
-        $sectors = Sector::all();
+        $sectors = Sector::paginate(10);
         return view('areas.VasoDeLecheViews.Sectors.index', compact('sectors'));
     }
 
@@ -83,7 +83,27 @@ class SectorController extends Controller
      */
     public function update(UpdateSectorRequest $request, Sector $sector)
     {
-        $sector->update($request->validated());
+        // Validar los datos de la solicitud
+        $data = $request->validated();
+
+        // Verificar si los datos realmente han cambiado
+        $isDirty = false;
+        foreach ($data as $key => $value) {
+            if ($sector->$key !== $value) {
+                $isDirty = true;
+                break;
+            }
+        }
+
+        // Si no hay cambios, redirigir con el mensaje de "No se realizaron cambios"
+        if (!$isDirty) {
+            return redirect()->route('sectors.index')->with('info', 'No se realizaron cambios.');
+        }
+
+        // Actualizar el sector solo si los datos han cambiado
+        $sector->update($data);
+
+        // Redirigir con el mensaje de éxito
         return redirect()->route('sectors.index')->with('success', 'Sector actualizado correctamente.');
     }
 

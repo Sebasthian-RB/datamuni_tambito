@@ -31,7 +31,7 @@
                         <a href="{{ route('visits.create') }}" class="btn btn-primary btn-sm btn-with-border btn-primary-custom">
                             <i class="fas fa-plus"></i> Crear Nueva Visita
                         </a>
-                        <a href="{{ route('sfhdashboard') }}" class="btn btn-secondary btn-sm btn-with-border btn-secondary-custom" style="margin-left: 10px;">
+                        <a href="{{ route('sisfohHome') }}" class="btn btn-secondary btn-sm btn-with-border btn-secondary-custom" style="margin-left: 10px;">
                             <i class="fas fa-arrow-left"></i> Volver
                         </a>
                     </div>
@@ -50,7 +50,7 @@
                             <tr>
                                 <th>Fecha de Visita</th>
                                 <th>Estado</th>
-                                <th>Enumerador</th>
+                                <th>Encuestador(a)</th>
                                 <th>Solicitud</th>
                                 <th>Observaciones</th>
                                 <th class="no-export">Acciones</th>
@@ -178,7 +178,7 @@
     $(document).ready(function () {
         $('#visits-table').DataTable({
             "language": {
-                url: "//cdn.datatables.net/plug-ins/1.13.5/i18n/es-ES.json", // Archivo de idioma español
+                url: '//cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json' // Archivo de idioma español
             },
             dom: 'Bfrtip', // B = Botones, f = Filtro, r = Información, t = Tabla, i = Info, p = Paginación
             buttons: [
