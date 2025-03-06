@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 //Controladores del área: VASO DE LECHE
@@ -60,6 +61,8 @@ use App\Http\Controllers\OmapedControllers\DisabilityController;
 use App\Http\Controllers\OmapedControllers\OmDashboardController; //Dashboard de OMAPED
 use App\Http\Controllers\OmapedControllers\OmDwellingController;
 use App\Http\Controllers\OmapedControllers\OmPersonController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\RoleController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -72,6 +75,14 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+    // Rutas de las vista para el administrador
+    Route::resource('users', UserController::class);
+    Route::resource('roles', RoleController::class);
+    Route::resource('permissions', PermissionController::class);
+    Route::get('/users/{user}/assign-role', [UserController::class, 'assignRoleForm'])->name('users.assignRoleForm');
+    Route::post('/users/{user}/assign-role', [UserController::class, 'assignRole'])->name('users.assignRole');
+
 
     // Rutas de los controladores de Área de la Mujer dentro del grupo de autenticación
     Route::resource('am_people', AmPersonController::class);
