@@ -219,6 +219,7 @@
 
     <div class="background-image"></div> <!-- Imagen de fondo con desenfoque -->
     <div class="overlay"></div> <!-- Capa oscurecedora -->
+    @include('layouts.logins.logins')
 
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
         <header class="mb-auto header">
@@ -238,10 +239,7 @@
                                 aria-label="Dashboard">Dashboard</a>
                         @else
                             <a class="menu__link fw-bold py-1 px-4" href="{{ route('login') }}" aria-label="Login">Login</a>
-                            @if (Route::has('register'))
-                                <a class="menu__link fw-bold py-1 px-4" href="{{ route('register') }}"
-                                    aria-label="Register">Register</a>
-                            @endif
+
                         @endauth
                     @endif
                 </nav>
@@ -269,12 +267,11 @@
             </div>
         </main>
 
-
         <footer class="mt-auto text-white-50">
             <p>© 2024 Municipalidad Tambo. Todos los derechos reservados</p>
         </footer>
+        
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

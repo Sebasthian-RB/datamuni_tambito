@@ -19,7 +19,8 @@ class UserController extends Controller
 
     public function create()
     {
-        return view('users.create');
+        $roles = Role::pluck('name', 'id'); // Obtener los roles disponibles
+        return view('users.create', compact('roles'));
     }
 
     public function store(Request $request)
@@ -34,6 +35,7 @@ class UserController extends Controller
                 'regex:/[0-9]/', // Al menos un número
                 'regex:/[@$!%*?&]/' // Al menos un carácter especial opcional
             ],
+            'role' => 'required|exists:roles,name',
         ], [
             'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
             'password.regex' => 'La contraseña debe incluir al menos una mayúscula, un número y un carácter especial (@$!%*?&).',
@@ -51,8 +53,10 @@ class UserController extends Controller
 
     public function show(User $user)
     {
+        $user->load('roles'); // Cargar roles para evitar consultas innecesarias
         return view('users.show', compact('user'));
     }
+
 
     public function edit(User $user)
     {

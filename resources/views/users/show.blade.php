@@ -44,6 +44,18 @@
                             </td>
                             <td>{{ $user->created_at->format('d/m/Y H:i') }}</td>
                         </tr>
+                        <tr>
+                            <td class="font-weight-bold">
+                                <i class="fas fa-user-shield text-primary"></i> Rol Asignado
+                            </td>
+                            <td>
+                                @if($user->roles->isNotEmpty())
+                                    <span class="badge badge-success">{{ $user->roles->pluck('name')->join(', ') }}</span>
+                                @else
+                                    <span class="badge badge-secondary">Sin Rol</span>
+                                @endif
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

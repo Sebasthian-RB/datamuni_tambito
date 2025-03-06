@@ -65,6 +65,15 @@
                         </ul>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label>Seleccionar Rol</label>
+                    <select name="role" class="form-control select2" required>
+                        <option value="">-- Selecciona un Rol --</option>
+                        @foreach ($roles as $id => $name)
+                            <option value="{{ $name }}">{{ $name }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
             <div class="card-footer bg-white">
                 <button type="submit" class="btn btn-lg btn-primary">
