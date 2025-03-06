@@ -3,275 +3,186 @@
 @section('title', 'Agregar Menor')
 
 @section('content_header')
-    <h1>Agregar Menor</h1>
 @stop
-
-@section('content')
-<div class="container">
-    <form action="{{ route('vl_minors.store') }}" method="POST">
-        @csrf
-
-        <div class="card">
-            <div class="card-header" style="background-color: #3B1E54; color: #FFFFFF;">
-                <h3 class="card-title">Formulario para agregar menor</h3>
-            </div>
-            <div class="card-body">
-                <div class="form-group">
-                    <label for="id">Número de Documento</label>
-                    <input type="text" class="form-control @error('id') is-invalid @enderror" id="id" name="id" value="{{ old('id') }}" required>
-                    @error('id')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="identity_document">Tipo de Documento</label>
-                    <select class="form-control @error('identity_document') is-invalid @enderror" id="identity_document" name="identity_document" required>
-                        <option value="" disabled selected>Seleccione un documento</option>
-                        @foreach($documentTypes as $type)
-                            <option value="{{ $type }}" {{ old('identity_document') == $type ? 'selected' : '' }}>{{ $type }}</option>
-                        @endforeach
-                    </select>
-                    @error('identity_document')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="given_name">Nombre</label>
-                    <input type="text" class="form-control @error('given_name') is-invalid @enderror" id="given_name" name="given_name" value="{{ old('given_name') }}" required>
-                    @error('given_name')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="paternal_last_name">Apellido Paterno</label>
-                    <input type="text" class="form-control @error('paternal_last_name') is-invalid @enderror" id="paternal_last_name" name="paternal_last_name" value="{{ old('paternal_last_name') }}" required>
-                    @error('paternal_last_name')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="maternal_last_name">Apellido Materno</label>
-                    <input type="text" class="form-control @error('maternal_last_name') is-invalid @enderror" id="maternal_last_name" name="maternal_last_name" value="{{ old('maternal_last_name') }}" required>
-                    @error('maternal_last_name')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="birth_date">Fecha de Nacimiento</label>
-                    <input type="date" class="form-control @error('birth_date') is-invalid @enderror" id="birth_date" name="birth_date" value="{{ old('birth_date') }}" required>
-                    @error('birth_date')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="sex_type">Sexo</label>
-                    <select class="form-control @error('sex_type') is-invalid @enderror" id="sex_type" name="sex_type" required>
-                        <option value="" disabled selected>Seleccione el sexo</option>
-                        @foreach($sexTypes as $key => $value)
-                            <option value="{{ $key }}" {{ old('sex_type') === (string) $key ? 'selected' : '' }}>{{ $value }}</option>
-                        @endforeach
-                    </select>
-                    @error('sex_type')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="registration_date">Fecha de Registro</label>
-                    <input type="date" class="form-control @error('registration_date') is-invalid @enderror" id="registration_date" name="registration_date" value="{{ old('registration_date') }}" required>
-                    @error('registration_date')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="withdrawal_date">Fecha de Retiro</label>
-                    <input type="date" class="form-control @error('withdrawal_date') is-invalid @enderror" id="withdrawal_date" name="withdrawal_date" value="{{ old('withdrawal_date') }}">
-                    @error('withdrawal_date')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="address">Dirección</label>
-                    <input type="text" class="form-control @error('address') is-invalid @enderror" id="address" name="address" value="{{ old('address') }}" required>
-                    @error('address')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="dwelling_type">Tipo de Vivienda</label>
-                    <select class="form-control @error('dwelling_type') is-invalid @enderror" id="dwelling_type" name="dwelling_type" required>
-                        <option value="" disabled selected>Seleccione el tipo de vivienda</option>
-                        @foreach($dwellingTypes as $type)
-                            <option value="{{ $type }}" {{ old('dwelling_type') == $type ? 'selected' : '' }}>{{ $type }}</option>
-                        @endforeach
-                    </select>
-                    @error('dwelling_type')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="education_level">Nivel Educativo</label>
-                    <select class="form-control @error('education_level') is-invalid @enderror" id="education_level" name="education_level" required>
-                        <option value="" disabled selected>Seleccione el nivel educativo</option>
-                        @foreach($educationLevels as $level)
-                            <option value="{{ $level }}" {{ old('education_level') == $level ? 'selected' : '' }}>{{ $level }}</option>
-                        @endforeach
-                    </select>
-                    @error('education_level')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="condition">Condición</label>
-                    <select class="form-control @error('condition') is-invalid @enderror" id="condition" name="condition" required>
-                        <option value="" disabled selected>Seleccione la condición</option>
-                        @foreach($conditions as $condition)
-                            <option value="{{ $condition }}" {{ old('condition') == $condition ? 'selected' : '' }}>{{ $condition }}</option>
-                        @endforeach
-                    </select>
-                    @error('condition')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="disability">Discapacidad</label>
-                    <select class="form-control @error('disability') is-invalid @enderror" id="disability" name="disability" required>
-                        <option value="" disabled {{ old('disability') === null ? 'selected' : '' }}>Seleccione si tiene discapacidad</option>
-                        @foreach($disabilities as $key => $value)
-                            <option value="{{ $key }}" {{ old('disability') === (string)$key ? 'selected' : '' }}>{{ $value }}</option>
-                        @endforeach
-                    </select>
-                    @error('disability')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-                </div>                                              
-
-                <div class="form-group">
-                    <!-- Primera fila: Título Familiar -->
-                    <div class="row mb-3">
-                        <label for="vl_family_member_id" class="col-sm-2 col-form-label">Familiar</label>
-                    </div>
-                
-                    <!-- Segunda fila: Campos y botones en el orden solicitado -->
-                    <div class="row">
-                        <!-- Campo para ingresar el ID del Familiar -->
-                        <div class="col-sm-3 col-12 mb-2 pr-1">
-                            <select name="vl_family_member_id" id="vl_family_member_id" class="form-control select2 @error('vl_family_member_id') is-invalid @enderror" required>
-                                <option value="">Seleccione un miembro de la familia</option>
-                                @foreach($vlFamilyMembers as $member)
-                                    <option value="{{ $member->id }}" 
-                                        @if(old('vl_family_member_id') == $member->id) selected @endif>
-                                        {{ $member->id }}  <!-- Mostrar solo el ID del miembro -->
-                                    </option>
-                                @endforeach
-                            </select>                             
-                            @error('vl_family_member_id')
-                                <span class="invalid-feedback">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <!-- Botón de Agregar con icono -->
-                        <div class="col-2 mb-2 pl-1">
-                            <button type="button" class="btn btn-sm" style="background-color: #9B7EBD; color: white; height: 38px; width: 38px; padding: 0;" data-bs-toggle="modal" data-bs-target="#addFamilyMemberModal">
-                                <i class="fas fa-plus"></i> <!-- Icono de agregar -->
-                            </button>
-                        </div>
-                
-                        <!-- Relación y su campo select en la misma fila -->
-                        <div class="col-sm-4 col-12 d-flex align-items-center mb-2">
-                            <label for="kinship" class="col-form-label mr-2">Relación:</label>
-                        <select name="kinship" id="kinship" class="form-control @error('kinship') is-invalid @enderror" required>
-                            <option value="" disabled selected>Seleccione una relación</option>
-                            @foreach($kinships as $kinship)
-                                <option value="{{ $kinship }}" {{ old('kinship') == $kinship ? 'selected' : '' }}>
-                                    {{ $kinship }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('kinship')
-                            <span class="invalid-feedback">{{ $message }}</span>
-                        @enderror
-
-                        </div>
-                    </div>
-                </div>                                                
-            </div>
-            <div class="card-footer">
-                <button type="submit" class="btn btn-success" style="background-color: #9B7EBD; color: white; border: #9B7EBD;">Guardar Menor</button>
-                <a href="{{ route('vl_minors.index') }}" class="btn btn-danger">Cancelar</a>
-            </div>
-        </div>
-    </form>
-</div>
-@stop
-
-@push('js')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-@endpush
-
-<!-- Modal para Agregar Familiar -->
-<div class="modal fade" id="addFamilyMemberModal" tabindex="-1" aria-labelledby="addFamilyMemberModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #3B1E54; color: #FFFFFF;">
-                <h5 class="modal-title" id="addFamilyMemberModalLabel">Formulario para agregar miembro de familia</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="addFamilyMemberForm">
-                    @csrf
-                    <div class="form-group">
-                        <label for="id">Número de Documento</label>
-                        <input type="text" class="form-control" id="id" name="id" value="{{ old('id') }}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="identity_document">Tipo de Documento</label>
-                        <select class="form-control" id="identity_document" name="identity_document" required>
-                            <option value="" disabled selected>Seleccione un tipo de documento</option>
-                            @foreach($identityDocumentTypes as $key => $label)
-                                <option value="{{ $key }}" {{ old('identity_document') == $key ? 'selected' : '' }}>{{ $label }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="given_name">Nombres</label>
-                        <input type="text" class="form-control" id="given_name" name="given_name" value="{{ old('given_name') }}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="paternal_last_name">Apellido Paterno</label>
-                        <input type="text" class="form-control" id="paternal_last_name" name="paternal_last_name" value="{{ old('paternal_last_name') }}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="maternal_last_name">Apellido Materno</label>
-                        <input type="text" class="form-control" id="maternal_last_name" name="maternal_last_name" value="{{ old('maternal_last_name') }}" required>
-                    </div>
-                </form>
-            </div>
-            <div class="card-footer">
-                <!-- El botón de enviar ahora debe activar el evento submit -->
-                <button type="button" class="btn btn-success" style="background-color: #9B7EBD; color: white; border: #9B7EBD;" id="submitFormBtn">Guardar Miembro</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 @section('css')
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
+    <!-- Estilos personalizados -->
     <style>
+        /* Colores de la paleta */
+        :root {
+            --color-primary: #3B1E54;
+            --color-secondary: #9B7EBD;
+            --color-accent: #D4BEE4;
+            --color-background: #EEEEEE;
+        }
+    
+        /* Estilos generales */
+        .card {
+            border: 1px solid var(--color-accent);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            padding-top: 20px;
+        }
+    
+        /* Header */
+        .card-header {
+            background: linear-gradient(135deg, var(--color-primary), #5A2E7A);
+            color: #FFFFFF;
+            padding: 25px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    
+        .card-title {
+            font-size: 1.75rem;
+            margin: 0;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+    
+        .card-subtitle {
+            font-size: 1rem;
+            color: var(--color-accent);
+            margin-top: 5px;
+            font-weight: 400;
+        }
+    
+        .header-logo {
+            height: 50px;
+            width: auto;
+            transition: opacity 0.3s ease;
+        }
+    
+        .header-logo:hover {
+            opacity: 0.8;
+        }
+    
+        /* Estilos para las etiquetas */
+        label {
+            color: var(--color-primary);
+            font-weight: bold;
+        }
+    
+        /* Estilos para los campos de formulario */
+        .form-control {
+            border: 1px solid var(--color-accent);
+            border-radius: 6px;
+            padding: 10px;
+            font-size: 14px;
+            color: var(--color-primary);
+        }
+    
+        .form-control::placeholder {
+            color: #999;
+            font-style: italic;
+        }
+    
+        .form-control:focus {
+            border-color: var(--color-secondary);
+            box-shadow: 0 0 5px rgba(155, 126, 189, 0.5);
+        }
+    
+        /* Estilos para los select */
+        .form-control option {
+            color: var(--color-primary);
+        }
+    
+        .form-control option.placeholder-option {
+            color: #999;
+            font-style: italic;
+        }
+    
+        /* Estilos para los íconos */
+        .fas {
+            color: var(--color-secondary);
+        }
+    
+        /* Estilos para los mensajes de error */
+        .invalid-feedback {
+            color: #dc3545;
+            font-size: 12px;
+        }
+    
+        /* Estilos personalizados para el botón "Guardar Menor" */
+        .btn-custom {
+            background-color: #9B7EBD;
+            border-color: #9B7EBD;
+            color: white;
+        }
+
+        .btn-custom:hover,
+        .btn-danger:hover {
+            background-color: var(--color-primary); /* Mismo color para todos los hovers */
+            border-color: var(--color-primary);
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra suave */
+        }
+
+        /* Línea divisoria vertical */
+        .vertical-divider {
+            width: 1px;
+            height: 100%;
+            background-color: var(--color-accent);
+        }
+    
+        /* Estilos responsivos */
+        @media (max-width: 768px) {
+            .col-md-6, .col-md-4, .col-md-8, .col-md-5, .col-md-1 {
+                width: 100%;
+            }
+    
+            .vertical-divider {
+                display: none; /* Ocultar la línea divisoria en pantallas pequeñas */
+            }
+    
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+    
+            .header-logo {
+                margin-top: 10px;
+            }
+
+            .card-title {
+                font-size: 1.5rem;
+            }
+
+            .card-subtitle {
+                font-size: 0.9rem;
+            }
+    
+            .card-footer {
+                text-align: center;
+            }
+    
+            .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .btn-custom, .btn-danger {
+                width: 100%; /* Botones ocupan el 100% del ancho en móviles */
+                margin-bottom: 10px; /* Espacio entre botones */
+            }
+
+            .btn-danger {
+                margin-left: 0 !important; /* Eliminar margen izquierdo en móviles */
+            }
+        }
+
+        /* Estilos para select 2 */
         .select2-container .select2-selection--single {
             height: 36px; /* Ajusta la altura según tus necesidades */
             padding: 10px;
@@ -286,109 +197,326 @@
     </style>
 @stop
 
-@section('js')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Convertimos los miembros familiares a formato JSON y los pasamos a una variable JS
-            var vlFamilyMembers = @json($vlFamilyMembers);  // Convertimos la colección de miembros a un array de JavaScript
-
-            // Inicializar Select2 con búsqueda local por ID
-            $('#vl_family_member_id').select2({
-                width: '100%',  // Asegura que ocupa el 100% del ancho del contenedor
-                placeholder: 'Seleccione un miembro de la familia',  // Placeholder
-                allowClear: true,  // Permitir limpiar la selección
-                minimumInputLength: 1,  // Empieza la búsqueda después de 1 carácter
-                data: function (params) {
-                    var query = params.term.toLowerCase(); // Convertimos el término de búsqueda a minúsculas
-
-                    // Filtramos los miembros cuya ID empieza con el término ingresado
-                    var filteredMembers = vlFamilyMembers.filter(function (member) {
-                        return member.id.toString().startsWith(query);  // Compara solo con el ID
-                    });
-
-                    // Verificamos si hay coincidencias y, en caso contrario, no devolver resultados
-                    if (filteredMembers.length === 0) {
-                        return { results: [{ id: '', text: 'No hay coincidencias' }] };
-                    }
-
-                    // Formateamos los resultados para que solo se muestre el ID
-                    var results = filteredMembers.map(function (member) {
-                        return {
-                            id: member.id,
-                            text: 'ID: ' + member.id  // Mostrar solo el ID en los resultados
-                        };
-                    });
-
-                    return {
-                        results: results
-                    };
-                },
-                // Mostrar solo el ID en los resultados
-                templateResult: function(data) {
-                    return 'ID: ' + data.id;
-                },
-                // Mostrar solo el ID cuando se selecciona
-                templateSelection: function(data) {
-                    return 'ID: ' + data.id;
-                }
-            });
-        });
-    </script>
-    <script>
-        document.getElementById('submitFormBtn').addEventListener('click', function() {
-            // Prevenir el envío normal del formulario
-            var form = document.getElementById('addFamilyMemberForm');
+@section('content')
+<div class="container">
+    <form action="{{ route('vl_minors.store') }}" method="POST">
+        @csrf
+        <div class="card">
+            <!-- Card Header -->
+            <div class="card-header">
+                <div class="header-content">
+                    <div>
+                        <h1 class="card-title">Formulario para agregar nuevo Menor</h1>
+                        <p class="card-subtitle">Complete los campos para registrar un nuevo menor.</p>
+                    </div>
+                    <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="header-logo">
+                </div>
+            </div>
             
-            var formData = new FormData(form);
-            var url = "{{ route('vl_family_members.store') }}"; // Ruta a la que se enviará la solicitud
-    
-            fetch(url, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
-            })
-            .then(response => response.json())  // Convertir la respuesta en formato JSON
-            .then(data => {
-                if (data.success) {
-                    // Si la respuesta es exitosa, cerrar el modal y mostrar un mensaje
-                    $('#addFamilyMemberModal').modal('hide');
-    
-                    // Obtener el select de los miembros familiares
-                    var select = document.getElementById('vl_family_member_id');
-    
-                    // Crear un nuevo option con el ID del miembro agregado
-                    var newOption = document.createElement('option');
-                    newOption.value = data.id;  // El ID del nuevo miembro
-                    newOption.textContent = 'ID: ' + data.id;  // Mostrar el ID en el texto de la opción
-    
-                    // Insertar la nueva opción en el select
-                    select.appendChild(newOption);
-    
-                    // Establecer la opción recién agregada como seleccionada
-                    select.value = data.id;
-    
-                    // Mostrar un mensaje de éxito
-                    alert("Miembro de familia agregado exitosamente.");
-                } else {
-                    // Si hubo un error, mostrar el mensaje de error
-                    alert("Hubo un error al guardar el miembro.");
-                }
-            })
-            .catch(error => {
-                // En caso de error, mostrar un mensaje
-                console.error('Error:', error);
-                alert('Hubo un problema al guardar el miembro.');
-            });
-        });
-    
-        // Este script se activará cuando se haga clic en el botón "Cancelar", cerrando el modal sin hacer nada
-        document.querySelector('.btn-secondary').addEventListener('click', function() {
-            $('#addFamilyMemberModal').modal('hide');
-        });
-    </script>    
+            <div class="card-body">
+                <div class="row">
+                    <!-- Sección del Menor -->
+                    <div class="col-md-12">
+                        <div class="row">
+                            <!-- Columna izquierda -->
+                            <div class="col-md-5">
+                                <div class="row">
+                                    <!-- Campo: Número de Documento -->
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-4">
+                                            <label for="id" class="font-weight-bold">
+                                                <i class="fas fa-id-card mr-2"></i>Número de Documento
+                                            </label>
+                                            <span class="text-danger">*</span>
+                                            <input type="text" class="form-control @error('id') is-invalid @enderror" id="id" name="id" value="{{ old('id') }}" placeholder="Ej: 12345678" required>
+                                            @error('id')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <!-- Campo: Tipo de Documento -->
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-4">
+                                            <label for="identity_document" class="font-weight-bold">
+                                                <i class="fas fa-file-alt mr-2"></i>Tipo de Documento
+                                            </label>
+                                            <span class="text-danger">*</span>
+                                            <select class="form-control @error('identity_document') is-invalid @enderror" id="identity_document" name="identity_document" required>
+                                                <option value="" disabled selected>Seleccione un documento</option>
+                                                @foreach($documentTypes as $type)
+                                                    <option value="{{ $type }}" {{ old('identity_document') == $type ? 'selected' : '' }}>{{ $type }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('identity_document')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Campo: Apellido Paterno -->
+                                <div class="form-group mb-4">
+                                    <label for="paternal_last_name" class="font-weight-bold">
+                                        <i class="fas fa-user mr-2"></i>Apellido Paterno
+                                    </label>
+                                    <span class="text-danger">*</span>
+                                    <input type="text" class="form-control @error('paternal_last_name') is-invalid @enderror" id="paternal_last_name" name="paternal_last_name" value="{{ old('paternal_last_name') }}" placeholder="Ej: Pérez" required>
+                                    @error('paternal_last_name')
+                                        <span class="invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <!-- Campo: Apellido Materno -->
+                                <div class="form-group mb-4">
+                                    <label for="maternal_last_name" class="font-weight-bold">
+                                        <i class="fas fa-user mr-2"></i>Apellido Materno
+                                    </label>
+                                    <input type="text" class="form-control @error('maternal_last_name') is-invalid @enderror" id="maternal_last_name" name="maternal_last_name" value="{{ old('maternal_last_name') }}" placeholder="Ej: Gómez">
+                                    @error('maternal_last_name')
+                                        <span class="invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <!-- Campo: Nombre -->
+                                <div class="form-group mb-4">
+                                    <label for="given_name" class="font-weight-bold">
+                                        <i class="fas fa-user mr-2"></i>Nombre
+                                    </label>
+                                    <span class="text-danger">*</span>
+                                    <input type="text" class="form-control @error('given_name') is-invalid @enderror" id="given_name" name="given_name" value="{{ old('given_name') }}" placeholder="Ej: Juan" required>
+                                    @error('given_name')
+                                        <span class="invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="row">
+                                    <!-- Campo: Fecha de Nacimiento -->
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-4">
+                                            <label for="birth_date" class="font-weight-bold">
+                                                <i class="fas fa-calendar-alt mr-2"></i>Fecha de Nacimiento
+                                            </label>
+                                            <span class="text-danger">*</span>
+                                            <input type="date" class="form-control @error('birth_date') is-invalid @enderror" id="birth_date" name="birth_date" value="{{ old('birth_date') }}" required>
+                                            @error('birth_date')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <!-- Campo: Sexo -->
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-4">
+                                            <label for="sex_type" class="font-weight-bold">
+                                                <i class="fas fa-venus-mars mr-2"></i>Sexo
+                                            </label>
+                                            <span class="text-danger">*</span>
+                                            <select class="form-control @error('sex_type') is-invalid @enderror" id="sex_type" name="sex_type" required>
+                                                <option value="" disabled selected>Seleccione el sexo</option>
+                                                <option value="0" {{ old('sex_type') == '0' ? 'selected' : '' }}>Femenino</option>
+                                                <option value="1" {{ old('sex_type') == '1' ? 'selected' : '' }}>Masculino</option>
+                                            </select>
+                                            @error('sex_type')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <!-- Campo: Condición -->
+                                    <div class="col-md-6"> 
+                                        <div class="form-group mb-4">
+                                            <label for="condition" class="font-weight-bold">
+                                                <i class="fas fa-heartbeat mr-2"></i>Condición
+                                            </label>
+                                            <span class="text-danger">*</span>
+                                            <select class="form-control @error('condition') is-invalid @enderror" id="condition" name="condition" required>
+                                                <option value="" disabled selected>Seleccione la condición</option>
+                                                <option value="Gest." {{ old('condition') == 'Gest.' ? 'selected' : '' }}>Gestante</option>
+                                                <option value="Lact." {{ old('condition') == 'Lact.' ? 'selected' : '' }}>Lactante</option>
+                                                <option value="Anc." {{ old('condition') == 'Anc.' ? 'selected' : '' }}>Anciano</option>
+                                            </select>
+                                            @error('condition')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <!-- Campo: Discapacidad -->
+                                    <div class="col-md-6"> 
+                                        <div class="form-group mb-4">
+                                            <label for="disability" class="font-weight-bold">
+                                                <i class="fas fa-wheelchair mr-2"></i>Discapacidad
+                                            </label>
+                                            <select class="form-control @error('disability') is-invalid @enderror" id="disability" name="disability">
+                                                <option value="" disabled selected>Seleccione si tiene discapacidad</option>
+                                                <option value="0" {{ old('disability') == '0' ? 'selected' : '' }}>No</option>
+                                                <option value="1" {{ old('disability') == '1' ? 'selected' : '' }}>Sí</option>
+                                            </select>
+                                            @error('disability')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <!-- Línea divisoria -->
+                            <div class="col-md-1 d-flex justify-content-center align-items-center">
+                                <div class="vertical-divider"></div>
+                            </div>
+        
+                            <!-- Columna derecha -->
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <!-- Campo: Fecha de Registro -->
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-4">
+                                            <label for="registration_date" class="font-weight-bold">
+                                                <i class="fas fa-calendar-alt mr-2"></i>Fecha de Registro
+                                            </label>
+                                            <span class="text-danger">*</span>
+                                            <input type="date" class="form-control @error('registration_date') is-invalid @enderror" id="registration_date" name="registration_date" value="{{ old('registration_date') }}" required>
+                                            @error('registration_date')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <!-- Campo: Fecha de Retiro -->
+                                    <div class="col-md-6">                                        
+                                        <div class="form-group mb-4">
+                                            <label for="withdrawal_date" class="font-weight-bold">
+                                                <i class="fas fa-calendar-alt mr-2"></i>Fecha de Retiro
+                                            </label>
+                                            <input type="date" class="form-control @error('withdrawal_date') is-invalid @enderror" id="withdrawal_date" name="withdrawal_date" value="{{ old('withdrawal_date') }}">
+                                            @error('withdrawal_date')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>   
+                                </div>
+
+                                <!-- Campo: Dirección -->
+                                <div class="form-group mb-4">
+                                    <label for="address" class="font-weight-bold">
+                                        <i class="fas fa-map-marker-alt mr-2"></i>Dirección
+                                    </label>
+                                    <input type="text" class="form-control @error('address') is-invalid @enderror" id="address" name="address" value="{{ old('address') }}" placeholder="Ej: Av. Principal 123">
+                                    @error('address')
+                                        <span class="invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <!-- Campo: Tipo de Vivienda -->
+                                <div class="form-group mb-4">
+                                    <label for="dwelling_type" class="font-weight-bold">
+                                        <i class="fas fa-home mr-2"></i>Tipo de Vivienda
+                                    </label>
+                                    <select class="form-control @error('dwelling_type') is-invalid @enderror" id="dwelling_type" name="dwelling_type">
+                                        <option value="" disabled selected>Seleccione el tipo de vivienda</option>
+                                        <option value="Propio" {{ old('dwelling_type') == 'Propio' ? 'selected' : '' }}>Propio</option>
+                                        <option value="Alquilado" {{ old('dwelling_type') == 'Alquilado' ? 'selected' : '' }}>Alquilado</option>
+                                    </select>
+                                    @error('dwelling_type')
+                                        <span class="invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <!-- Campo: Nivel Educativo -->
+                                <div class="form-group mb-4">
+                                    <label for="education_level" class="font-weight-bold">
+                                        <i class="fas fa-graduation-cap mr-2"></i>Nivel Educativo
+                                    </label>
+                                    <select class="form-control @error('education_level') is-invalid @enderror" id="education_level" name="education_level">
+                                        <option value="" disabled selected>Seleccione el nivel educativo</option>
+                                        <option value="Ninguno" {{ old('education_level') == 'Ninguno' ? 'selected' : '' }}>Ninguno</option>
+                                        <option value="Inicial" {{ old('education_level') == 'Inicial' ? 'selected' : '' }}>Inicial</option>
+                                        <option value="Primaria" {{ old('education_level') == 'Primaria' ? 'selected' : '' }}>Primaria</option>
+                                        <option value="Secundaria" {{ old('education_level') == 'Secundaria' ? 'selected' : '' }}>Secundaria</option>
+                                        <option value="Técnico" {{ old('education_level') == 'Técnico' ? 'selected' : '' }}>Técnico</option>
+                                        <option value="Superior" {{ old('education_level') == 'Superior' ? 'selected' : '' }}>Superior</option>
+                                    </select>
+                                    @error('education_level')
+                                        <span class="invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                                               
+                                <div class="row">
+                                    <!-- Campo: Miembro de Familia -->
+                                    <div class="col-md-6"> 
+                                        <div class="form-group mb-4">
+                                            <label for="vl_family_member_id" class="font-weight-bold">
+                                                <i class="fas fa-users mr-2"></i>Miembro de Familia
+                                            </label>
+                                            <span class="text-danger">*</span>
+                                            <select name="vl_family_member_id" id="vl_family_member_id" class="form-control select2 @error('vl_family_member_id') is-invalid @enderror" required>
+                                                <option value="">Seleccione un miembro de la familia</option>
+                                                @foreach($vlFamilyMembers as $member)
+                                                    <option value="{{ $member->id }}" 
+                                                        @if(old('vl_family_member_id') == $member->id) selected @endif>
+                                                        {{ $member->id }}  <!-- Mostrar solo el ID del miembro -->
+                                                    </option>
+                                                @endforeach
+                                            </select>                             
+                                            @error('vl_family_member_id')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <!-- Campo: Parentesco -->
+                                    <div class="col-md-6"> 
+                                        <div class="form-group mb-4">
+                                            <label for="kinship" class="font-weight-bold">
+                                                <i class="fas fa-handshake mr-2"></i>Parentesco
+                                            </label>
+                                            <span class="text-danger">*</span>
+                                            <select name="kinship" id="kinship" class="form-control @error('kinship') is-invalid @enderror" required>
+                                                <option value="" disabled selected>Seleccione una relación</option>
+                                                <option value="Hijo(a)" {{ old('kinship') == 'Hijo(a)' ? 'selected' : '' }}>Hijo(a)</option>
+                                                <option value="Socio(a)" {{ old('kinship') == 'Socio(a)' ? 'selected' : '' }}>Socio(a)</option>
+                                            </select>
+                                            @error('kinship')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Campo: Estado -->
+                                <div class="form-group mb-4">
+                                    <label for="status" class="font-weight-bold">
+                                        <i class="fas fa-check-circle mr-2"></i>Estado
+                                    </label>
+                                    <span class="text-danger">*</span>
+                                    <select class="form-control @error('status') is-invalid @enderror" id="status" name="status" required>
+                                        <option value="" disabled selected>Seleccione el estado</option>
+                                        <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Activo</option>
+                                        <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Inactivo</option>
+                                    </select>
+                                    @error('status')
+                                        <span class="invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Card Footer -->
+            <div class="card-footer text-right">
+                <button type="submit" class="btn btn-custom">Guardar Menor</button>
+                <a href="{{ route('vl_minors.index') }}" class="btn btn-danger ml-2">Cancelar</a>
+            </div>
+        </div>
+    </form>
+</div>
 @stop
+
+@push('js')
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+@endpush

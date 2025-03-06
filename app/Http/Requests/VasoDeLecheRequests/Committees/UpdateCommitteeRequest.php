@@ -65,7 +65,7 @@ class UpdateCommitteeRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                'regex:/^[a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ]+$/', // Solo letras del alfabeto español y espacios
+                'regex:/^[a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ\'-]+$/', // Solo letras del alfabeto español y espacios
             ],
 
             'urban_core' => [

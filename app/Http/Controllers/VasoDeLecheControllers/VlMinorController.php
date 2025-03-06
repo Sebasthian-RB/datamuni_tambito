@@ -57,6 +57,11 @@ class VlMinorController extends Controller
 
         $kinships = ['Hijo(a)', 'Socio(a)'];
 
+        $status = [
+            0 => 'No',
+            1 => 'Sí',
+        ];
+
         // Obtener los miembros familiares
         $vlFamilyMembers = VlFamilyMember::all();
 
@@ -69,7 +74,8 @@ class VlMinorController extends Controller
             'disabilities',
             'dwellingTypes',
             'vlFamilyMembers',
-            'kinships',
+            'kinships', 
+            'status',
             'identityDocumentTypes'
         ));
     }
@@ -131,6 +137,11 @@ class VlMinorController extends Controller
 
         $kinships = ['Hijo(a)', 'Socio(a)'];
 
+        $status = [
+            0 => 'No',
+            1 => 'Sí',
+        ];
+
         // Obtener los miembros familiares
         $vlFamilyMembers = VlFamilyMember::all();
 
@@ -149,10 +160,11 @@ class VlMinorController extends Controller
             'dwellingTypes',
             'vlFamilyMembers',
             'kinships',
+            'status',
             'identityDocumentTypes',
             'vlMinor'
         ));
-    }
+    } 
 
     /**
      * Actualiza un menor existente en la base de datos.
@@ -163,10 +175,21 @@ class VlMinorController extends Controller
      */
     public function update(UpdateVlMinorRequest $request, VlMinor $vlMinor)
     {
-        // Validación de datos y actualización del registro
-        $vlMinor->update($request->validated());
+        // Validar los datos de la solicitud
+        $data = $request->validated();
 
-        // Redirección con mensaje de éxito
+        // Actualizar el menor con los nuevos datos (sin ejecutar todavía)
+        $vlMinor->fill($data); // Llenamos los datos pero no lo actualizamos aún
+
+        // Verificar si hay cambios antes de proceder
+        if (!$vlMinor->isDirty()) {
+            return redirect()->route('vl_minors.index')->with('info', 'No se realizaron cambios.');
+        }
+
+        // Si hay cambios, actualizamos los datos del menor
+        $vlMinor->save();
+
+        // Redirigir con el mensaje de éxito
         return redirect()->route('vl_minors.index')->with('success', 'Datos del menor actualizados correctamente.');
     }
 

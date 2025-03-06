@@ -43,6 +43,7 @@ class VlMinor extends Model
         'education_level',  // Grado de Instrucción del menor
         'condition', // Condición del menor (GEST. | LACT. | ANC.)
         'disability',// Discapacidad del menor
+        'status',// Estado (activo o inactivo) del menor
         'vl_family_member_id', // Id del familiar
         'kinship', //Parentesco con familiar
     ];
@@ -67,6 +68,7 @@ class VlMinor extends Model
         'education_level' => 'string',
         'condition' => 'string',
         'disability' => 'boolean',
+        'status' => 'boolean',
         'vl_family_member_id' => 'string',
         'kinship' => 'string',
     ];
