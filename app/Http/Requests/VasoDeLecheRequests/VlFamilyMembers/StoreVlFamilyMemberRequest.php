@@ -57,19 +57,19 @@ class StoreVlFamilyMemberRequest extends FormRequest
                 'required',
                 'string',
                 'max:80',
-                'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/', // Permite letras, espacios, acentos, ñ y diéresis
+                'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s\'-]+$/', // Permite letras, espacios, acentos, ñ y diéresis
             ],
             'paternal_last_name' => [
                 'required',
                 'string',
                 'max:50',
-                'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/', // Permite letras, espacios, acentos, ñ y diéresis
+                'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s\'-]+$/', // Permite letras, espacios, acentos, ñ y diéresis
             ],
             'maternal_last_name' => [
                 'nullable',
                 'string',
                 'max:50',
-                'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/', // Permite letras, espacios, acentos, ñ y diéresis
+                'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s\'-]+$/', // Permite letras, espacios, acentos, ñ y diéresis
             ],
         ];
     }

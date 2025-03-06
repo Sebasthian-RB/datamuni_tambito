@@ -52,7 +52,7 @@
             color: #333;
         }
 
-        .no-description {
+        .no-data {
             color: #999;
             font-style: italic;
         }
@@ -92,23 +92,105 @@
 
         <!-- Card Body -->
         <div class="card-body">
-            <p><span class="detail-label">Número de Identidad:</span> <span class="detail-value">{{ $vlMinor->id }}</span></p>
-            <p><span class="detail-label">Tipo de Documento:</span> <span class="detail-value">{{ $vlMinor->identity_document }}</span></p>
-            <p><span class="detail-label">Nombre:</span> <span class="detail-value">{{ $vlMinor->given_name }}</span></p>
-            <p><span class="detail-label">Apellido Paterno:</span> <span class="detail-value">{{ $vlMinor->paternal_last_name }}</span></p>
-            <p><span class="detail-label">Apellido Materno:</span> <span class="detail-value">{{ $vlMinor->maternal_last_name }}</span></p>
-            <p><span class="detail-label">Fecha de Nacimiento:</span> <span class="detail-value">{{ $vlMinor->birth_date->format('d/m/Y') }}</span></p>
-            <p><span class="detail-label">Edad:</span> <span class="detail-value">{{ $vlMinor->birth_date->age }} años</span></p>
-            <p><span class="detail-label">Sexo:</span> <span class="detail-value">{{ $vlMinor->sex_type == 0 ? 'Femenino' : 'Masculino' }}</span></p>
-            <p><span class="detail-label">Fecha de Empadronamiento:</span> <span class="detail-value">{{ $vlMinor->registration_date->format('d/m/Y') }}</span></p>
-            <p><span class="detail-label">Fecha de Retiro:</span> <span class="detail-value">{{ $vlMinor->withdrawal_date->format('d/m/Y') }}</span></p>
-            <p><span class="detail-label">Domicilio:</span> <span class="detail-value">{{ $vlMinor->address }}</span></p>
-            <p><span class="detail-label">Tipo de Vivienda:</span> <span class="detail-value">{{ $vlMinor->dwelling_type }}</span></p>
-            <p><span class="detail-label">Nivel Educativo:</span> <span class="detail-value">{{ $vlMinor->education_level }}</span></p>
-            <p><span class="detail-label">Condición:</span> <span class="detail-value">{{ $vlMinor->condition }}</span></p>
-            <p><span class="detail-label">Discapacidad:</span> <span class="detail-value">{{ $vlMinor->disability ? 'Sí' : 'No' }}</span></p>
-            <p><span class="detail-label">Familiar:</span> <span class="detail-value">{{ $vlMinor->vlFamilyMember->given_name }} {{ $vlMinor->vlFamilyMember->paternal_last_name }} {{ $vlMinor->vlFamilyMember->maternal_last_name }}</span></p>
-            <p><span class="detail-label">Parentesco:</span> <span class="detail-value">{{ $vlMinor->kinship }}</span></p>
+            <p><span class="detail-label">Número de Identidad:</span> 
+                <span class="detail-value">
+                    {!! $vlMinor->id ?? '<span class="no-data">No disponible</span>' !!}
+                </span>
+            </p>
+            <p><span class="detail-label">Tipo de Documento:</span> 
+                <span class="detail-value">
+                    {!! $vlMinor->identity_document ?? '<span class="no-data">No disponible</span>' !!}
+                </span>
+            </p>
+            <p><span class="detail-label">Nombre:</span> 
+                <span class="detail-value">
+                    {!! $vlMinor->given_name ?? '<span class="no-data">No disponible</span>' !!}
+                </span>
+            </p>
+            <p><span class="detail-label">Apellido Paterno:</span> 
+                <span class="detail-value">
+                    {!! $vlMinor->paternal_last_name ?? '<span class="no-data">No disponible</span>' !!}
+                </span>
+            </p>
+            <p><span class="detail-label">Apellido Materno:</span> 
+                <span class="detail-value">
+                    {!! $vlMinor->maternal_last_name ?? '<span class="no-data">No disponible</span>' !!}
+                </span>
+            </p>
+            <p><span class="detail-label">Fecha de Nacimiento:</span> 
+                <span class="detail-value">
+                    {!! $vlMinor->birth_date ? $vlMinor->birth_date->format('d/m/Y') : '<span class="no-data">No disponible</span>' !!}
+                </span>
+            </p>
+            <p><span class="detail-label">Edad:</span> 
+                <span class="detail-value">
+                    {!! $vlMinor->birth_date ? $vlMinor->birth_date->age . ' años' : '<span class="no-data">No disponible</span>' !!}
+                </span>
+            </p>
+            <p><span class="detail-label">Sexo:</span> 
+                <span class="detail-value">
+                    @if($vlMinor->sex_type === 0)
+                        Femenino
+                    @elseif($vlMinor->sex_type === 1)
+                        Masculino
+                    @else
+                        <span class="no-data">No disponible</span>
+                    @endif
+                </span>
+            </p>
+            <p><span class="detail-label">Fecha de Empadronamiento:</span> 
+                <span class="detail-value">
+                    {!! $vlMinor->registration_date ? $vlMinor->registration_date->format('d/m/Y') : '<span class="no-data">No disponible</span>' !!}
+                </span>
+            </p>
+            <p><span class="detail-label">Fecha de Retiro:</span> 
+                <span class="detail-value">
+                    {!! $vlMinor->withdrawal_date ? $vlMinor->withdrawal_date->format('d/m/Y') : '<span class="no-data">No disponible</span>' !!}
+                </span>
+            </p>
+            <p><span class="detail-label">Domicilio:</span> 
+                <span class="detail-value">
+                    {!! $vlMinor->address ?? '<span class="no-data">No disponible</span>' !!}
+                </span>
+            </p>
+            <p><span class="detail-label">Tipo de Vivienda:</span> 
+                <span class="detail-value">
+                    {!! $vlMinor->dwelling_type ?? '<span class="no-data">No disponible</span>' !!}
+                </span>
+            </p>
+            <p><span class="detail-label">Nivel Educativo:</span> 
+                <span class="detail-value">
+                    {!! $vlMinor->education_level ?? '<span class="no-data">No disponible</span>' !!}
+                </span>
+            </p>
+            <p><span class="detail-label">Condición:</span> 
+                <span class="detail-value">
+                    {!! $vlMinor->condition ?? '<span class="no-data">No disponible</span>' !!}
+                </span>
+            </p>
+            <p><span class="detail-label">Discapacidad:</span> 
+                <span class="detail-value">
+                    @if($vlMinor->disability !== null)
+                        {{ $vlMinor->disability ? 'Sí' : 'No' }}
+                    @else
+                        <span class="no-data">No disponible</span>
+                    @endif
+                </span>
+            </p>
+            <p><span class="detail-label">Familiar:</span> 
+                <span class="detail-value">
+                    @if($vlMinor->vlFamilyMember)
+                        {{ $vlMinor->vlFamilyMember->given_name . ' ' . $vlMinor->vlFamilyMember->paternal_last_name . ' ' . $vlMinor->vlFamilyMember->maternal_last_name }}
+                    @else
+                        <span class="no-data">No disponible</span>
+                    @endif
+                </span>
+            </p>
+            <p><span class="detail-label">Parentesco:</span> 
+                <span class="detail-value">
+                    {!! $vlMinor->kinship ?? '<span class="no-data">No disponible</span>' !!}
+                </span>
+            </p>
         </div>
 
         <!-- Card Footer -->

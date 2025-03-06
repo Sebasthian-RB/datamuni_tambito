@@ -103,6 +103,7 @@ class VasoDeLecheSeeder extends Seeder
                 'education_level' => $faker->randomElement(['Ninguno', 'Inicial', 'Primaria', 'Secundaria', 'Técnico', 'Superior']),
                 'condition' => $faker->randomElement(['Gest.', 'Lact.', 'Anc.']),
                 'disability' => $faker->boolean(),
+                'status' => $faker->boolean(),
                 'vl_family_member_id' => $faker->randomElement($familyMemberIds),  // Asociar un ID de familiar existente
                 'kinship' => $faker->randomElement(['Hijo(a)', 'Socio(a)']),
                 'created_at' => now(),
