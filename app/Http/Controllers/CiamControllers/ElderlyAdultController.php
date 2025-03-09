@@ -80,7 +80,9 @@ class ElderlyAdultController extends Controller
      */
     public function edit(EditElderlyAdultRequest $request, ElderlyAdult $elderlyAdult): View
     {
+
         $guardians = Guardian::all();
+
         return view('areas.CiamViews.ElderlyAdults.edit', compact('elderlyAdult', 'guardians'));
     }
 
@@ -110,7 +112,7 @@ class ElderlyAdultController extends Controller
     }
 
     /**
-     * Elimina un adulto mayor de la base de datos.
+     * Elimina un adulto mayor de la base de datos. 
      */
     public function destroy(DestroyElderlyAdultRequest $request, ElderlyAdult $elderlyAdult): RedirectResponse
     {

@@ -85,6 +85,17 @@
                     @enderror
                 </div>
 
+                <!-- Fecha de Nacimiento -->
+                <div class="form-group">
+                    <label for="birth_date">Fecha de Nacimiento</label>
+                    <input type="date" class="form-control" id="birth_date" name="birth_date"
+                        value="{{ old('birth_date', $elderlyAdult->birth_date ? $elderlyAdult->birth_date->format('Y-m-d') : '') }}"
+                        required>
+                    @error('birth_date')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+
                 <!-- SEXO -->
                 <div class="form-group">
                     <label class="form-label fw-bold" style="font-size: 1.2rem;">Sexo</label>
@@ -113,15 +124,31 @@
                     @enderror
                 </div>
 
-                <!-- Fecha de Nacimiento -->
+                <!-- Idioma(s) -->
                 <div class="form-group">
-                    <label for="birth_date">Fecha de Nacimiento</label>
-                    <input type="date" class="form-control" id="birth_date" name="birth_date"
-                        value="{{ old('birth_date', $elderlyAdult->birth_date ? $elderlyAdult->birth_date->format('Y-m-d') : '') }}"
-                        required>
-                    @error('birth_date')
-                    <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror
+                    <label>Idioma(s)</label>
+                    <div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="language[]" id="language_es" value="Español"
+                                {{ in_array('Español', old('language', $elderlyAdult->language ?? [])) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="language_es">Español</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="language[]" id="language_qu" value="Quechua"
+                                {{ in_array('Quechua', old('language', $elderlyAdult->language ?? [])) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="language_qu">Quechua</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="language[]" id="language_ay" value="Aimara"
+                                {{ in_array('Aimara', old('language', $elderlyAdult->language ?? [])) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="language_ay">Aimara</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="language[]" id="language_otro" value="Otro"
+                                {{ in_array('Otro', old('language', $elderlyAdult->language ?? [])) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="language_otro">Otro</label>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Teléfono -->
@@ -135,43 +162,6 @@
                     <span class="invalid-feedback">{{ $message }}</span>
                     @enderror
                 </div>
-
-                <!-- Departamento 
-                <div class="form-group">
-                    <label for="department">Departamento</label>
-                    <select id="department" class="form-control @error('department') is-invalid @enderror" name="department" required>
-                        <option value="" disabled>Seleccione</option>
-                        <option value="Junin" {{ old('department', $elderlyAdult->department) == 'Junin' ? 'selected' : '' }}>Junín</option>
-                        <option value="Otro" {{ old('department', $elderlyAdult->department) == 'Otro' ? 'selected' : '' }}>Otro</option>
-                    </select>
-                    @error('department')
-                    <span class="text-danger d-block mt-2">{{ $message }}</span>
-                    @enderror
-                </div> -->
-
-                <!-- Provincia
-                <div class="form-group">
-                    <label for="province">Provincia</label>
-                    <select id="province" class="form-control @error('province') is-invalid @enderror" name="province" required>
-                        <option value="" disabled>Seleccione una provincia</option>
-                        <option value="{{ old('province', $elderlyAdult->province) }}" selected>{{ old('province', $elderlyAdult->province) }}</option>
-                    </select>
-                    @error('province')
-                    <span class="text-danger d-block mt-2">{{ $message }}</span>
-                    @enderror
-                </div> -->
-
-                <!-- Distrito 
-                <div class="form-group">
-                    <label for="district">Distrito</label>
-                    <select id="district" class="form-control @error('district') is-invalid @enderror" name="district" required>
-                        <option value="" disabled>Seleccione un distrito</option>
-                        <option value="{{ old('district', $elderlyAdult->district) }}" selected>{{ old('district', $elderlyAdult->district) }}</option>
-                    </select>
-                    @error('district')
-                    <span class="text-danger d-block mt-2">{{ $message }}</span>
-                    @enderror
-                </div> -->
 
                 <!-- Dirección -->
                 <div class="form-group">
@@ -300,8 +290,8 @@
                     <div class="d-flex justify-content-start align-items-center mt-3" style="gap: 20px;">
                         <!-- Botón Activo -->
                         <div class="form-check" style="border: 2px solid #6E8E59; border-radius: 10px; padding: 10px 15px; background-color: #E6FFCC;">
-                            <input class="form-check-input" type="radio" name="state" id="state_active" value="1" style="transform: scale(1.5); margin-right: 10px;"
-                                {{ $elderlyAdult->state == 1 ? 'checked' : '' }} required>
+                            <input class="form-check-input" type="radio" name="state" id="state_active" value="1" style="transform: scale(1.5); margin-right: 10px;" required
+                                {{ $elderlyAdult->state ? 'checked' : '' }}>
                             <label class="form-check-label fw-bold d-flex align-items-center" for="state_active" style="color: #333;">
                                 <i class="fas fa-smile" style="color: #6E8E59; font-size: 1.5rem; margin-right: 10px;"></i> Activo
                             </label>
@@ -309,8 +299,8 @@
 
                         <!-- Botón Inactivo -->
                         <div class="form-check" style="border: 2px solid #780C28; border-radius: 10px; padding: 10px 15px; background-color: #FFCCCC;">
-                            <input class="form-check-input" type="radio" name="state" id="state_inactive" value="0" style="transform: scale(1.5); margin-right: 10px;"
-                                {{ $elderlyAdult->state == 0 ? 'checked' : '' }} required>
+                            <input class="form-check-input" type="radio" name="state" id="state_inactive" value="0" style="transform: scale(1.5); margin-right: 10px;" required
+                                {{ !$elderlyAdult->state ? 'checked' : '' }}>
                             <label class="form-check-label fw-bold d-flex align-items-center" for="state_inactive" style="color: #333;">
                                 <i class="fas fa-frown" style="color: #780C28; font-size: 1.5rem; margin-right: 10px;"></i> Inactivo
                             </label>
@@ -318,7 +308,11 @@
                     </div>
                 </div>
 
-
+                <!-- Observaciones -->
+                <div class="form-group">
+                    <label for="observation">Observaciones</label>
+                    <textarea class="form-control" name="observation">{{ old('observation', $elderlyAdult->observation) }}</textarea>
+                </div>
 
             </div>
             <div class="card-footer" style="background-color: #9cbf5c;">
@@ -473,9 +467,7 @@
 @stop
 
 
-
 <!-- CSS SECTION-->
-
 @section('css')
 
 <!-- Select2 CSS -->

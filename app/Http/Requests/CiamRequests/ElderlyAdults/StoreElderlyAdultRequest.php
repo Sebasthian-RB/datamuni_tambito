@@ -65,18 +65,15 @@ class StoreElderlyAdultRequest extends FormRequest
 
             'sex_type' => ['required', Rule::in(['0', '1'])],
 
+            'language' => 'nullable|array',
+            'language.*' => 'in:Español,Quechua,Aimara,Otro',
+
             'birth_date' => [
                 'required',
                 'date',
                 'before_or_equal:today', // No puede ser una fecha futura
                 'after_or_equal:' . now()->subYears(120)->format('Y-m-d'), // No debe tener más de 120 años
             ],
-
-            /*Ubicación (departamento, provincia, distrito)**
-            'department' => 'required|string|max:100',
-            'province' => 'required|string|max:100',
-            'district' => 'required|string|max:100',
-            */
 
             'address' => 'nullable|string|max:255',
             'reference' => 'nullable|string|max:255',
@@ -101,6 +98,7 @@ class StoreElderlyAdultRequest extends FormRequest
             'private_insurance' => 'nullable|string|max:100',
 
             'observation' => 'nullable|string|max:500',
+
             'state' => 'required|boolean', // Activo o no en CIAM
 
             // **Lista de programas sociales (array de strings)**
@@ -131,6 +129,7 @@ class StoreElderlyAdultRequest extends FormRequest
             'reference.max' => 'Máximo 255 caracteres.',
             'sex_type.required' => 'El sexo es obligatorio.',
             'sex_type.in' => 'El valor seleccionado para el sexo no es válido.',
+            'language.*.in' => 'El idioma seleccionado no es válido.',
             'phone_number.regex' => 'El número de teléfono debe contener exactamente 9 dígitos numéricos.',
 
             'household_members.integer' => 'El número de miembros del hogar debe ser un número entero.',
@@ -138,13 +137,7 @@ class StoreElderlyAdultRequest extends FormRequest
             'household_members.max' => 'El limite de miembros del hogar es de 20',
             'type_of_disability.in' => 'El tipo de discapacidad seleccionado no es válido.',
             'permanent_attention.boolean' => 'Debe ser verdadero o falso.',
-            'state.required' => 'Debe indicar si está activo en CIAM.',
-
-            /*Errores de ubicación**
-            'department.required' => 'El departamento es obligatorio.',
-            'province.required' => 'La provincia es obligatoria.',
-            'district.required' => 'El distrito es obligatorio.',
-            */
+            'state.required' => 'Debe indicar si está activo o inactivo en CIAM.',
 
             // **Errores de seguros**
             'public_insurance.in' => 'El seguro público seleccionado no es válido.',

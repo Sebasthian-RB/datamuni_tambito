@@ -39,6 +39,18 @@
                         <td>{{ $elderlyAdult->sex_type == 0 ? 'Femenino' : 'Masculino' }}</td>
                     </tr>
                     <tr>
+                        <th style="background-color: #CAE0BC;">Idioma(s)</th>
+                        <td>
+                            @if ($elderlyAdult->language && count($elderlyAdult->language) > 0)
+                            @foreach ($elderlyAdult->language as $lang)
+                            <span class="badge bg-info">{{ $lang }}</span>
+                            @endforeach
+                            @else
+                            <span class="text-muted">No especificado</span>
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
                         <th style="background-color: #CAE0BC;">Estado</th>
                         <td>
                             @if ($elderlyAdult->state)

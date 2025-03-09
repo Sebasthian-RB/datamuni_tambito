@@ -21,13 +21,14 @@ return new class extends Migration
             $table->string('address', 255)->nullable(); // Dirección
             $table->string('reference', 255)->nullable(); // Referencia
             $table->boolean('sex_type'); // Sexo (0: femenino, 1: masculino)
+            $table->json('language'); // Lengua (Español, Quechua, Aimara, Otro)
             $table->string('phone_number', 50)->nullable(); // Teléfono
             $table->enum('type_of_disability', ['Visual', 'Motriz', 'Mental'])->nullable(); // Tipo de discapacidad
             $table->integer('household_members')->nullable(); // Miembros del hogar
             $table->boolean('permanent_attention')->nullable(); // Atención permanente
-            $table->text('observation')->nullable(); // Observaciones generales
+            $table->text('observation')->nullable(); // Observaciones generales 
 
-            // Relación opcional con Guardian
+            // Relación opcional con Guardian 
             $table->uuid('guardian_id')->nullable();
             $table->foreign('guardian_id')->references('id')->on('guardians')->onDelete('set null');
 
@@ -41,7 +42,7 @@ return new class extends Migration
             $table->string('social_program', 255)->nullable(); // Programa social al que pertenece (opcional)
 
             // Estado del adulto mayor en el CIAM
-            $table->enum('state', ['Activo', 'Inactivo'])->default('Activo'); // Estado (activo/inactivo)
+            $table->boolean('state')->default(true);
 
             // Timestamps
             $table->timestamps();

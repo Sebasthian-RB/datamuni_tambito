@@ -84,6 +84,16 @@
                     @enderror
                 </div>
 
+                <!-- Fecha de Nacimiento -->
+                <div class="form-group">
+                    <label for="birth_date">Fecha de Nacimiento</label>
+                    <input type="date" class="form-control" id="birth_date" name="birth_date"
+                        value="{{ old('birth_date') }}" required>
+                    @error('birth_date')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+
                 <!-- Sexo -->
                 <div class="form-group">
                     <label class="form-label fw-bold" style="font-size: 1.2rem;">Sexo</label>
@@ -113,15 +123,31 @@
                     @enderror
                 </div>
 
-
-                <!-- Fecha de Nacimiento -->
+                <!-- Idioma(s) -->
                 <div class="form-group">
-                    <label for="birth_date">Fecha de Nacimiento</label>
-                    <input type="date" class="form-control" id="birth_date" name="birth_date"
-                        value="{{ old('birth_date') }}" required>
-                    @error('birth_date')
-                    <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror
+                    <label>Idioma(s)</label>
+                    <div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="language[]" id="language_es" value="Español"
+                                {{ in_array('Español', old('language', $elderlyAdult->language ?? [])) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="language_es">Español</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="language[]" id="language_qu" value="Quechua"
+                                {{ in_array('Quechua', old('language', $elderlyAdult->language ?? [])) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="language_qu">Quechua</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="language[]" id="language_ay" value="Aimara"
+                                {{ in_array('Aimara', old('language', $elderlyAdult->language ?? [])) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="language_ay">Aimara</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="language[]" id="language_otro" value="Otro"
+                                {{ in_array('Otro', old('language', $elderlyAdult->language ?? [])) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="language_otro">Otro</label>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Teléfono -->
@@ -181,7 +207,6 @@
                         @endforeach
                     </select>
                 </div>
-
 
                 <!-- Tipo de Discapacidad -->
                 <div class="form-group">
