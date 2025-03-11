@@ -48,9 +48,6 @@ class CommitteeVlFamilyMemberController extends Controller
         // Obtener el comité específico
         $committee = Committee::findOrFail($committee_id);
 
-        // Obtener los comités desde el modelo Committee
-        $committees = Committee::all();
-
         // Obtener los miembros de la familia desde el modelo VlFamilyMember
         $vlFamilyMembers = VlFamilyMember::with('vlMinors')->get();        
 
@@ -67,31 +64,24 @@ class CommitteeVlFamilyMemberController extends Controller
             'Carnet de Extranjería' => 'Carnet de Extranjería',
             'Otro' => 'Otro',
         ]; // Para el familiar (agregar)
-        $sexTypes = [
-            0 => 'Femenino',
-            1 => 'Masculino',
-        ];
+        
+        
         $educationLevels = ['Ninguno', 'Inicial', 'Primaria', 'Secundaria', 'Técnico', 'Superior'];
+        
         $conditions = ['Gest.', 'Lact.', 'Anc.'];
-        $disabilities = [
-            0 => 'No',
-            1 => 'Sí',
-        ];
+        
         $dwellingTypes = ['Propio', 'Alquilado'];
 
         $kinships = ['Hijo(a)', 'Socio(a)'];
 
         return view('areas.VasoDeLecheViews.CommitteeVlFamilyMembers.create', compact(
             'committee', 
-            'committees', 
             'vlFamilyMembers', 
             'statusOptions', 
             'documentTypes',
             'identityDocumentTypes',
-            'sexTypes',
             'educationLevels',
             'conditions',
-            'disabilities',
             'dwellingTypes',
             'kinships'
         ));

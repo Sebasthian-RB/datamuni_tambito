@@ -7,29 +7,120 @@
     <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 @endpush
 
-@section('content_header')
-    <div class="d-flex align-items-center justify-content-between" style="height: 50vh; padding: 0;">
+@section('css')
+    <style>
+        /* Contenedor principal */
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 50vh;
+            padding: 0;
+        }
 
+        /* Contenedor del texto de bienvenida */
+        .text-container {
+            flex: 1;
+            text-align: center;
+            color: #3B1E54;
+            z-index: 1;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            background: #D4BEE4;
+        }
+
+        /* Texto de bienvenida */
+        .welcome-text {
+            font-family: 'raleway', serif;
+            font-size: 4rem !important;
+            font-weight: 300;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        /* Contenedor del video */
+        .video-container {
+            flex: 1;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Video */
+        .video {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+        }
+
+        /* Filtro oscuro sobre el video */
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        /* Responsividad */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .text-container {
+                padding: 20px;
+            }
+
+            .welcome-text {
+                font-size: 3rem; /* Reduce el tamaño en pantallas pequeñas */
+            }
+
+            .video-container {
+                height: 300px; /* Altura fija para evitar que se reduzca demasiado */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .welcome-text {
+                font-size: 2.5rem; /* Más pequeño para pantallas móviles */
+            }
+
+            .video-container {
+                height: 250px;
+            }
+        }
+
+    </style>
+@stop
+
+@section('content_header')
+    <div class="header-container">
         <!-- Contenedor de Texto -->
-        <div style="flex: 1; text-align: center; color: #3B1E54; z-index: 1; padding: 40px; display: flex; justify-content: center; align-items: center; height: 100%; background: #D4BEE4;">
-            <h1 style="font-family: 'raleway', serif; font-size: 4rem; font-weight: 300; margin: 0; letter-spacing: 1px;">
+        <div class="text-container">
+            <h1 class="welcome-text">
                 BIENVENIDO A VASO DE LECHE
             </h1>
         </div>
 
-        <!-- Video -->
-        <div style="flex: 1; height: 100%; overflow: hidden; position: relative;">
-            <video autoplay loop muted style="object-fit: cover; width: 100%; height: 100%; position: absolute;">
+        <!-- Contenedor del Video -->
+        <div class="video-container">
+            <video autoplay loop muted class="video">
                 <source src="{{ asset('videos/vaso-de-leche-01.mp4') }}" type="video/mp4">
                 Tu navegador no soporta el elemento de video.
             </video>
 
             <!-- Filtro oscuro sobre el video -->
-            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4);"></div>
+            <div class="video-overlay"></div>
         </div>
     </div>
 @stop
-
 
 @section('content')
 <div class="wrapper">
@@ -395,4 +486,3 @@
         });
     </script>
 @stop
-
