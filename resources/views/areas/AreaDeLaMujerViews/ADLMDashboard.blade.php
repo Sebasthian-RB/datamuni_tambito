@@ -62,6 +62,8 @@
         <div class="card-body" style="background-color: #ffffff; color: #000000; font-family: 'Playfair Display', serif;">
             <div class="tab-content" id="tabContent">
                 <!-- Gestión de Casos -->
+                
+                
                 <div class="tab-pane fade show active" id="casos" role="tabpanel" aria-labelledby="casos-tab"
                     style="background-color: #ffe5d9; padding: 20px; border-radius: 12px; font-family: 'Poppins', sans-serif; color: #6b4226;">
                     <h2 style="font-family: 'Playfair Display', serif; color: #b23a48; font-weight: bold;">Gestión de Casos

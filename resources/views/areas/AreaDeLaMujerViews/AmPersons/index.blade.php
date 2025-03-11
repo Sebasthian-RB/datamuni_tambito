@@ -200,6 +200,7 @@
                             <span class="text-danger error-text attendance_date_error"></span>
                         </div>
 
+                        
                         <!-- Botones -->
                         <div class="text-right mt-4">
                             <button type="button" class="btn btn-lg shadow-sm" id="savePerson"

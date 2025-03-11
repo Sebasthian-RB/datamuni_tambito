@@ -19,7 +19,7 @@ class UserController extends Controller
 
     public function create()
     {
-        $roles = Role::pluck('name', 'id'); // Obtener los roles disponibles
+        $roles = Role::all(); // Obtener todos los roles como objetos
         $permissions = Permission::all(); // Obtener todos los permisos con su información
         return view('users.create', compact('roles', 'permissions'));
     }
@@ -69,7 +69,8 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $roles = Role::all();
-        return view('users.edit', compact('user', 'roles'));
+        $permissions = Permission::all(); // Obtener todos los permisos con su información
+        return view('users.edit', compact('user', 'roles', 'permissions'));
     }
 
     public function update(Request $request, User $user)
@@ -78,11 +79,11 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'password' => [
-                'nullable', // No es obligatorio cambiar la contraseña
+                'nullable',
                 'min:8',
                 'regex:/[A-Z]/',
                 'regex:/[0-9]/',
-                'regex:/[@@$!%*?&]/'
+                'regex:/[@$!%*?&]/'
             ],
             'role' => 'required|exists:roles,name',
         ], [
@@ -90,18 +91,24 @@ class UserController extends Controller
             'password.regex' => 'La contraseña debe incluir al menos una mayúscula, un número y un carácter especial (@$!%*?&).',
         ]);
 
+        // Actualizar datos del usuario
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
         ]);
 
+        // Si hay contraseña, actualizarla
         if ($request->filled('password')) {
             $user->update(['password' => Hash::make($request->password)]);
         }
 
-        $user->syncRoles($request->role);
+        // Actualizar Rol
+        $user->syncRoles([$request->role]); // syncRoles elimina y asigna el nuevo rol
 
-        return redirect()->route('users.index')->with('success', 'Usuario actualizado.');
+        // Actualizar Permisos
+        $user->syncPermissions($request->permissions ?? []); // Si no hay permisos, los limpia
+
+        return redirect()->route('users.index')->with('success', 'Usuario actualizado correctamente.');
     }
 
 
