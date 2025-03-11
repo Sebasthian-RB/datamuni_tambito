@@ -227,7 +227,7 @@
                 <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Logo" class="logo">
             </div>
             <nav class="nav nav-masthead justify-content-center nav-center">
-                <a class="menu__link fw-bold py-1 px-4" href="#" aria-label="Ayuda">Ayuda</a>
+                <a class="menu__link fw-bold py-1 px-4" href="{{ url('/help') }}" aria-label="Ayuda">Ayuda</a>
                 <a class="menu__link fw-bold py-1 px-4" href="#" aria-label="Avisos">Avisos</a>
                 <a class="menu__link fw-bold py-1 px-4" href="#" aria-label="Contacto">Contacto</a>
             </nav>
