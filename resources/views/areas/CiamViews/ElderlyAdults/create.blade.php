@@ -210,13 +210,13 @@
 
                 <!-- Tipo de Discapacidad -->
                 <div class="form-group">
-                    <label for="type_of_disability">Tipo de Discapacidad</label>
-                    <select class="form-control" name="type_of_disability">
-                        <option value="">Ninguna</option>
-                        <option value="Visual">Visual</option>
-                        <option value="Motriz">Motriz</option>
-                        <option value="Mental">Mental</option>
-                    </select>
+                    <label>Tipo de Discapacidad</label>
+                    <div class="btn-group" role="group" aria-label="Discapacidades">
+                        <button type="button" class="btn btn-outline-primary toggle-button" data-value="Visual">Visual</button>
+                        <button type="button" class="btn btn-outline-primary toggle-button" data-value="Motriz">Motriz</button>
+                        <button type="button" class="btn btn-outline-primary toggle-button" data-value="Mental">Mental</button>
+                    </div>
+                    <input type="hidden" name="type_of_disability" id="type_of_disability" value="{{ old('type_of_disability', '[]') }}">
                 </div>
 
                 <!-- Atención Permanente -->
@@ -460,6 +460,28 @@
     });
 </script>
 
+<!-- PARA LOS TIPOS DE DISCAPACIDADES -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const buttons = document.querySelectorAll('.toggle-button');
+        const hiddenInput = document.getElementById('type_of_disability');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', function() {
+                this.classList.toggle('active');
+                updateHiddenInput();
+            });
+        });
+
+        function updateHiddenInput() {
+            const selectedValues = Array.from(buttons)
+                .filter(button => button.classList.contains('active'))
+                .map(button => button.getAttribute('data-value'));
+            hiddenInput.value = JSON.stringify(selectedValues);
+        }
+    });
+</script>
+
 @stop
 
 
@@ -561,6 +583,14 @@
 
     .form-check:hover {
         transform: scale(1.05);
+    }
+</style>
+
+<!-- Estilo adicional para campo de tipo de discapacidad-->
+<style>
+    .btn-group .btn.active {
+        background-color: #007bff;
+        color: white;
     }
 </style>
 
