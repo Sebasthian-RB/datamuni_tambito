@@ -390,8 +390,8 @@
                     @csrf <!-- Token CSRF para protección -->
 
                     <!-- Campos del formulario -->
-                    <div class="row mt-4">
-                        <div class="col-md-12 card-body">
+                    <div class="row mt-4 card-body">
+                        <div class="col-md-12">
                             <h4 class="font-weight-bold">Crear Nuevo Miembro de Familia</h4>
                             <hr>
 
