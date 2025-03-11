@@ -156,6 +156,18 @@
                             <span class="invalid-feedback">{{ $message }}</span>
                         @enderror
                     </div>
+                    <div class="form-group">
+                        <label for="sfh_consultation" class="font-weight-bold">Categoría SISFOH</label>
+                        <select id="sfh_consultation" name="sfh_consultation" class="form-control @error('sfh_consultation') is-invalid @enderror" required>
+                            <option value="" disabled selected>Seleccione una consulta...</option>
+                            <option value="Atendido" {{ old('sfh_consultation') == 'Atendido' ? 'selected' : '' }}>Atendido</option>
+                            <option value="Empadronado" {{ old('sfh_consultation') == 'Empadronado' ? 'selected' : '' }}>Empadronado</option>
+                            <option value="No empadronado" {{ old('sfh_consultation') == 'No empadronado' ? 'selected' : '' }}>No empadronado</option>
+                        </select>
+                        @error('sfh_consultation')
+                            <span class="invalid-feedback">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </div>
             </div>
             <!-- Botones de Acción -->

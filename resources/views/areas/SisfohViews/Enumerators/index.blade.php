@@ -12,7 +12,7 @@
             </div>
             <div class="col-md-9 d-flex align-items-center justify-content-end">
                 <h1 class="perpetua-titling text-dorado" style="background: green; padding: 10px; border-radius: 0;">
-                    Registro de Encuestadores
+                    Registro de Empadronadores
                 </h1>
             </div>
         </div>
@@ -27,10 +27,10 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header" style="background-color: #228B22; color:white;">
-                    <h3 class="card-title">Lista de Encuestadores</h3>
+                    <h3 class="card-title">Lista de Empadronadores</h3>
                     <div class="card-tools">
                         <a href="{{ route('enumerators.create') }}" class="btn btn-primary btn-sm btn-with-border btn-primary-custom">
-                            <i class="fas fa-plus"></i> Nuevo Encuestador
+                            <i class="fas fa-plus"></i> Nuevo Empadronador
                         </a>
                         <a href="{{ route('sisfohHome') }}" class="btn btn-secondary btn-sm btn-with-border btn-secondary-custom" style="margin-left: 10px;">
                             <i class="fas fa-arrow-left"></i> Volver

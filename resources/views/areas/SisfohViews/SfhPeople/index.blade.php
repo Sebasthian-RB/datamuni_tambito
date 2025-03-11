@@ -11,7 +11,7 @@
             </div>
             <div class="col-md-9 d-flex align-items-center justify-content-end">
                 <h1 class="perpetua-titling text-dorado" style="background: green; padding: 10px; border-radius: 0;">
-                    Registro de Personas
+                    Registro de atencion al ciudadano
                 </h1>
             </div>
         </div>
@@ -61,6 +61,7 @@
                                 <th>Grado Académico</th>
                                 <th>Ocupación</th>
                                 <th>Categoría SISFOH</th>
+                                <th>Consulta SISFOH</th>
                                 <th class="no-export">Acciones</th>
                             </tr>
                         </thead>
@@ -80,6 +81,7 @@
                                     <td>{{ $person->degree }}</td>
                                     <td>{{ $person->occupation }}</td>
                                     <td>{{ $person->sfh_category }}</td>
+                                    <td>{{ $person->sfh_consultation }}</td>
                                     <td>
                                         <a href="{{ route('sfh_people.show', $person) }}" class="btn btn-info btn-sm">
                                             <i class="fas fa-eye"></i> Ver
@@ -268,7 +270,7 @@
             lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"] ],
             columnDefs: [
                 {
-                    targets: [5, 7, 9], // Índices de las columnas "Estado Civil", "Sexo" y "Nacionalidad"
+                    targets: [5, 7, 9, 10], // Índices de las columnas "Estado Civil", "Sexo" y "Nacionalidad"
                     visible: false, // Ocultar estas columnas en la visualización
                     searchable: true // Mantenerlas disponibles para búsquedas
                 }

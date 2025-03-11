@@ -69,7 +69,7 @@
                             <!-- Barrio -->
                             <div class="row">
                                 <div class="col-md-12 form-group">
-                                    <label for="neighborhood"><strong>Barrio</strong></label>
+                                    <label for="neighborhood"><strong>Zona/Lugares de empadronamiento</strong></label>
                                     <input type="text" id="neighborhood" name="neighborhood" 
                                             class="form-control @error('neighborhood') is-invalid @enderror" 
                                             value="{{ old('neighborhood', $sfhDwelling->neighborhood) }}">

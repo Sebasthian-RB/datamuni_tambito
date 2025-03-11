@@ -56,7 +56,7 @@
                             <!-- Descripción -->
                             <div class="row">
                                 <div class="col-md-12 form-group">
-                                    <label for="description"><strong>Descripción</strong></label>
+                                    <label for="description"><strong>Motivo</strong></label>
                                     <textarea id="description" name="description" rows="4"
                                                 class="form-control @error('description') is-invalid @enderror" required>{{ old('description', $sfhRequest->description) }}</textarea>
                                     @error('description')
@@ -68,7 +68,7 @@
                             <!-- Persona relacionada -->
                             <div class="row">
                                 <div class="col-md-12 form-group">
-                                    <label for="sfh_person_id"><strong>Persona Relacionada</strong></label>
+                                    <label for="sfh_person_id"><strong>Ciudadano Relacionado</strong></label>
                                     <select id="sfh_person_id" name="sfh_person_id" 
                                             class="form-control @error('sfh_person_id') is-invalid @enderror" required>
                                         <option value="" disabled>Selecciona una persona</option>

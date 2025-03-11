@@ -31,11 +31,18 @@
                     <div class="form-group">
                         <label for="type_instruments" class="font-weight-bold">Tipo de Instrumento</label>
                         <select id="type_instruments" name="type_instruments" class="form-control @error('type_instruments') is-invalid @enderror" required>
-                            <option value="Medición" @selected(old('type_instruments') == 'Medición')>Medición</option>
-                            <option value="Prueba" @selected(old('type_instruments') == 'Prueba')>Prueba</option>
-                            <option value="Calibración" @selected(old('type_instruments') == 'Calibración')>Calibración</option>
+                            <option value="Solicitud S100" @selected(old('type_instruments') == 'Solicitud S100')>Solicitud S100</option>
+                            <option value="Formato FSU" @selected(old('type_instruments') == 'Formato FSU')>Formato FSU</option>
+                            <option value="Notificación NV100" @selected(old('type_instruments') == 'Notificación NV100')>Notificación NV100</option>
                         </select>
                         @error('type_instruments')
+                            <span class="invalid-feedback">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="number_instruments" class="font-weight-bold">Numero del Instrumento</label>
+                        <input type="text" id="number_instruments" name="number_instruments" class="form-control @error('number_instruments') is-invalid @enderror" value="{{ old('number_instruments') }}" required placeholder="Ejemplo: 0000345454553">
+                        @error('number_instruments')
                             <span class="invalid-feedback">{{ $message }}</span>
                         @enderror
                     </div>
@@ -43,7 +50,7 @@
                 <!-- Columna Derecha -->
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="description" class="font-weight-bold">Descripción</label>
+                        <label for="description" class="font-weight-bold">Motivo</label>
                         <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror" rows="4" placeholder="Ingrese detalles adicionales sobre el instrumento">{{ old('description') }}</textarea>
                         @error('description')
                             <span class="invalid-feedback">{{ $message }}</span>

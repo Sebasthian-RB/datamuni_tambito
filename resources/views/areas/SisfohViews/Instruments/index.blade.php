@@ -51,7 +51,8 @@
                                 <th>ID</th>
                                 <th>Nombre</th>
                                 <th>Tipo</th>
-                                <th>Descripción</th>
+                                <th>N° Instrumento</th>
+                                <th>Motivo</th>
                                 <th class="no-export">Acciones</th>
                             </tr>
                         </thead>
@@ -61,6 +62,7 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $instrument->name_instruments }}</td>
                                     <td>{{ $instrument->type_instruments }}</td>
+                                    <td>{{ $instrument->number_instruments }}</td>
                                     <td>{{ $instrument->description }}</td>
                                     <td>
                                         <a href="{{ route('instruments.show', $instrument) }}" class="btn btn-info btn-sm">

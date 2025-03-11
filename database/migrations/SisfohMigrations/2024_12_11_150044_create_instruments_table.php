@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name_instruments', 100); // Nombre del instrumento
             $table->string('type_instruments', 50); // Tipo de instrumento
+            $table->string('number_instruments', 50)->nullable(); // Numero de instrumento
             $table->text('description')->nullable(); // Descripción del instrumento
             $table->timestamps();
         });

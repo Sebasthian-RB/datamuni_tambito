@@ -66,9 +66,21 @@
 
                             <div class="row">
                                 <div class="col-md-12 form-group">
-                                    <label for="description"><strong>Descripción</strong></label>
+                                    <label for="type_instruments"><strong>Numero de Instrumento</strong></label>
+                                    <input type="text" name="number_instruments" id="number_instruments" 
+                                            class="form-control @error('number_instruments') is-invalid @enderror" 
+                                            value="{{ old('number_instruments', $instrument->number_instruments) }}" required>
+                                    @error('number_instruments')
+                                        <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label for="description"><strong>Motivo</strong></label>
                                     <textarea name="description" id="description" rows="4"
-                                              class="form-control @error('description') is-invalid @enderror">{{ old('description', $instrument->description) }}</textarea>
+                                                class="form-control @error('description') is-invalid @enderror">{{ old('description', $instrument->description) }}</textarea>
                                     @error('description')
                                         <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                     @enderror

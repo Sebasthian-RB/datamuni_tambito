@@ -39,7 +39,7 @@
                 <div class="mb-4 row">
                     <!-- Descripción -->
                     <div class="col-md-12">
-                        <h5 class="font-weight-bold" style="color: #028a0f;">Descripción:</h5>
+                        <h5 class="font-weight-bold" style="color: #028a0f;">Motivo:</h5>
                         <p>{{ $sfhRequest->description ?? 'Sin descripción disponible.' }}</p>
                     </div>
                 </div>
@@ -47,7 +47,7 @@
                 <div class="mb-4 row">
                     <!-- Persona Relacionada -->
                     <div class="col-md-12">
-                        <h5 class="font-weight-bold" style="color: #028a0f;">Persona Relacionada:</h5>
+                        <h5 class="font-weight-bold" style="color: #028a0f;">Ciudadano Relacionado:</h5>
                         <p>
                             {{ $sfhRequest->sfhPerson->given_name ?? 'N/A' }} 
                             {{ $sfhRequest->sfhPerson->paternal_last_name ?? '' }} 

@@ -17,6 +17,7 @@ class Instrument extends Model
         'id',
         'name_instruments',    // Nombre del instrumento
         'type_instruments',    // Tipo de instrumento
+        'number_instruments',  // Numero de instrumento
         'description',         // Descripción del instrumento
     ];
 
@@ -24,6 +25,7 @@ class Instrument extends Model
 
         'name_instruments' => 'string',    // Nombre del instrumento como string  
         'type_instruments' => 'string',    // Tipo de instrumento como string 
+        'number_instruments',              // Numero de instrumento como string
         'description' => 'string',         // Descripción del instrumento como string
         'created_at' => 'datetime',        // Convertir la fecha de creación a objeto Carbon
         'updated_at' => 'datetime',        // Convertir la fecha de actualización a objeto Carbon

@@ -38,6 +38,7 @@ class StoreSfhPersonRequest extends FormRequest
             'nationality' => 'nullable|string|max:100', // La nacionalidad no puede exceder los 100 caracteres
             'degree' => 'required|in:INICIAL,NINGUNO_NIVEL_LETRADO,PRIMARIA COMPLETA,PRIMARIA-1ER GRADO,PRIMARIA-2DO GRADO,PRIMARIA-3ER GRADO,PRIMARIA-4TO GRADO,PRIMARIA-5TO GRADO,PRIMARIA-6TO GRADO,PRIMARIA INCOMPLETA,SECUNDARIA COMPLETA,SECUNDARIA-1ER AÑO,SECUNDARIA-2DO AÑO,SECUNDARIA-3ER AÑO,SECUNDARIA-4TO AÑO,SECUNDARIA-5TO AÑO,SECUNDARIA INCOMPLETA,SUPERIOR COMPLETA,SUPERIOR-1ER AÑO,SUPERIOR-2DO AÑO,SUPERIOR-3ER AÑO,SUPERIOR-4TO AÑO,SUPERIOR-5TO AÑO,SUPERIOR-6TO AÑO,SUPERIOR-7MO AÑO,SUPERIOR-8VO AÑO,SUPERIOR INCOMPLETA,ILETRADO/SIN INSTRUCCION,TECNICA COMPLETA,TECNICA-1ER AÑO,TECNICA-2DO AÑO,TECNICA-3ER AÑO,TECNICA-4TO AÑO,TECNICA-5TO AÑO,TECNICA IMCOMPLETA,EDUCACION ESPECIAL', // Grado académico con valores posibles
             'occupation' => 'nullable|string|max:100', // Ocupación con longitud máxima de 100 caracteres
+            'sfh_consultation' => 'required|in:Atendido,Empadronado,No empadronado', // Categoría SISFOH, valores permitidos
             'sfh_category' => 'required|in:No pobre,Pobre,Pobre extremo', // Categoría SISFOH, valores permitidos
         ];
 
@@ -83,6 +84,7 @@ class StoreSfhPersonRequest extends FormRequest
             'nationality' => 'nacionalidad',
             'degree' => 'grado académico',
             'occupation' => 'ocupación',
+            'sfh_consultation' => 'consulta SISFOH',
             'sfh_category' => 'categoría SISFOH',
         ];
     }
@@ -114,6 +116,8 @@ class StoreSfhPersonRequest extends FormRequest
             'phone_number.regex' => 'El :attribute debe contener exactamente 9 dígitos.',
             'degree.required' => 'El :attribute es obligatorio.',
             'degree.in' => 'El :attribute no es válido.',
+            'sfh_consultation.required' => 'La :attribute es obligatoria.',
+            'sfh_consultation.in' => 'La :attribute debe ser uno de los siguientes valores: Atendido, Empadronado, No Empadronado.',
             'sfh_category.required' => 'La :attribute es obligatoria.',
             'sfh_category.in' => 'La :attribute debe ser uno de los siguientes valores: No pobre, Pobre, Pobre extremo.',
         ];

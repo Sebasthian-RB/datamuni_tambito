@@ -47,7 +47,7 @@
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label for="neighborhood" class="font-weight-bold">Vecindario</label>
+                        <label for="neighborhood" class="font-weight-bold">Zona/Lugares de empadronamiento</label>
                         <input type="text" id="neighborhood" name="neighborhood" class="form-control @error('neighborhood') is-invalid @enderror" value="{{ old('neighborhood') }}" placeholder="Ejemplo: Urbanización San Martín">
                         @error('neighborhood')
                             <span class="invalid-feedback">{{ $message }}</span>

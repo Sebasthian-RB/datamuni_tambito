@@ -50,9 +50,9 @@
                             <tr>
                                 <th>Fecha de Visita</th>
                                 <th>Estado</th>
-                                <th>Encuestador(a)</th>
+                                <th>Empadronador(a)</th>
                                 <th>Solicitud</th>
-                                <th>Observaciones</th>
+                                <th>Lugar de empadronamiento</th>
                                 <th class="no-export">Acciones</th>
                             </tr>
                         </thead>

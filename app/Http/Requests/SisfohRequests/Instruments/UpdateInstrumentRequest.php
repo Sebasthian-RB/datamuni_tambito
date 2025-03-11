@@ -32,9 +32,14 @@ class UpdateInstrumentRequest extends FormRequest
                 'required',
                 'string',
                 'max:100',
-                Rule::unique('instruments', 'name_instruments')->ignore($this->route('instrument')), // Ignora el nombre actual al verificar unicidad
+                //Rule::unique('instruments', 'name_instruments')->ignore($this->route('instrument')), // Ignora el nombre actual al verificar unicidad
             ],
             'type_instruments' => [
+                'required',
+                'string',
+                'max:50',
+            ],
+            'number_instruments' => [
                 'required',
                 'string',
                 'max:50',
@@ -58,10 +63,14 @@ class UpdateInstrumentRequest extends FormRequest
             'name_instruments.required' => 'El nombre del instrumento es obligatorio.',
             'name_instruments.string' => 'El nombre del instrumento debe ser una cadena de texto.',
             'name_instruments.max' => 'El nombre del instrumento no debe exceder los 100 caracteres.',
-            'name_instruments.unique' => 'El nombre del instrumento ya está en uso.',
+            //'name_instruments.unique' => 'El nombre del instrumento ya está en uso.',
             'type_instruments.required' => 'El tipo de instrumento es obligatorio.',
             'type_instruments.string' => 'El tipo de instrumento debe ser una cadena de texto.',
             'type_instruments.max' => 'El tipo de instrumento no debe exceder los 50 caracteres.',
+            'number_instruments.required' => 'El numero de instrumento es obligatorio.',
+            'number_instruments.string' => 'El numero de instrumento debe ser una cadena de texto.',
+            'number_instruments.max' => 'El numero de instrumento no debe exceder los 50 caracteres.',
+            'number_instruments.unique' => 'El numero del instrumento ya está en uso.',
             'description.string' => 'La descripción debe ser una cadena de texto.',
             'description.max' => 'La descripción no debe exceder los 1000 caracteres.',
         ];
@@ -77,6 +86,7 @@ class UpdateInstrumentRequest extends FormRequest
         return [
             'name_instruments' => 'nombre del instrumento',
             'type_instruments' => 'tipo de instrumento',
+            'number_instruments' => 'numero de instrumento',
             'description' => 'descripción',
         ];
     }

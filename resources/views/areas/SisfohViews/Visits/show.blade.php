@@ -39,7 +39,7 @@
                 <div class="mb-4 row">
                     <!-- Enumerador -->
                     <div class="col-md-12">
-                        <h5 class="font-weight-bold" style="color: #028a0f;">Encuestador(a):</h5>
+                        <h5 class="font-weight-bold" style="color: #028a0f;">Empadronador(a):</h5>
                         <p>
                             {{ $visit->enumerator->given_name ?? 'N/A' }} 
                             {{ $visit->enumerator->paternal_last_name ?? '' }} 
@@ -57,7 +57,7 @@
 
                     <!-- Observaciones -->
                     <div class="col-md-6">
-                        <h5 class="font-weight-bold" style="color: #028a0f;">Observaciones:</h5>
+                        <h5 class="font-weight-bold" style="color: #028a0f;">Lugar de empadronamiento:</h5>
                         <p>{{ $visit->observations ?? 'Sin observaciones disponibles.' }}</p>
                     </div>
                 </div>

@@ -98,7 +98,13 @@
                         <h5 class="font-weight-bold" style="color: #028a0f;">Categoría SISFOH:</h5>
                         <p>{{ $sfhPerson->sfh_category }}</p>
                     </div>
+                    <!-- Consulta SISFOH -->
+                    <div class="col-md-6">
+                        <h5 class="font-weight-bold" style="color: #028a0f;">Consulta SISFOH:</h5>
+                        <p>{{ $sfhPerson->sfh_consultation }}</p>
+                    </div>
                 </div>
+                
             </div>
 
             <!-- Pie de página con los botones -->

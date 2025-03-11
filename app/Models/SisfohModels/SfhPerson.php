@@ -30,6 +30,7 @@ class SfhPerson extends Model
         'nationality',       // Nacionalidad
         'degree',            // Nivel de grado académico
         'occupation',        // Ocupación
+        'sfh_consultation',  // Consulta sisfoh
         'sfh_category',      // Categoría sisfoh
     ];
 
@@ -51,6 +52,7 @@ class SfhPerson extends Model
         'nationality' => 'string',      // Nacionalidad como string
         'degree' => 'string',           // Grado académico como string
         'occupation' => 'string',       // Ocupación como string
+        'sfh_consultation' => 'string', // Consulta sisfoh como string
         'sfh_category' => 'string',     // Categoría sisfoh como string
         'created_at' => 'datetime',     // Fecha de creación como objeto Carbon
         'updated_at' => 'datetime',     // Fecha de actualización como objeto Carbon

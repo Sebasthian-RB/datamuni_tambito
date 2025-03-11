@@ -50,8 +50,8 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Fecha de Solicitud</th>
-                                <th>Descripción</th>
-                                <th>Persona Relacionada</th>
+                                <th>Motivo</th>
+                                <th>Ciudadano Relacionado</th>
                                 <th class="no-export">Acciones</th>
                             </tr>
                         </thead>

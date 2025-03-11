@@ -1,11 +1,11 @@
 @extends('adminlte::page')
 
-@section('title', 'Detalles del Encuestador')
+@section('title', 'Detalles del Empadronador')
 
 @section('content_header')
     <!-- Texto y imagen superior -->
     <div class="px-4 py-3 d-flex justify-content-between align-items-center" style="background: #028a0f; border-radius: 0 0 0px 0px;">
-        <h3 style="color: gold; font-weight: bold; margin: 0;">Encuestador Sisfoh</h3>
+        <h3 style="color: gold; font-weight: bold; margin: 0;">Empadronador Sisfoh</h3>
         <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Logo Encuestador" class="img-fluid" style="max-height: 80px;">
     </div>
 @stop
@@ -17,7 +17,7 @@
         <div class="flex-grow-1">
             <!-- Encabezado de la tarjeta -->
             <div class="card-header" style="background: #028a0f; color: white; border-radius: 15px 15px 0 0;">
-                <h3 class="mb-0 card-title">Detalles del Encuestador</h3>
+                <h3 class="mb-0 card-title">Detalles del Empadronador</h3>
             </div>
 
             <!-- Cuerpo de la tarjeta con los detalles -->
@@ -39,7 +39,7 @@
                 <div class="mb-4 row">
                     <!-- Número de Documento -->
                     <div class="col-md-6">
-                        <h5 class="font-weight-bold" style="color: #028a0f;">Número de Documento:</h5>
+                        <h5 class="font-weight-bold" style="color: #028a0f;">N° Documento:</h5>
                         <p>{{ $enumerator->id }}</p>
                     </div>
 

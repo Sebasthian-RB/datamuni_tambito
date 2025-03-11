@@ -51,9 +51,9 @@
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label for="enumerator_id" class="font-weight-bold">Enumerador</label>
+                        <label for="enumerator_id" class="font-weight-bold">Empadronador(a)</label>
                         <select id="enumerator_id" name="enumerator_id" class="form-control @error('enumerator_id') is-invalid @enderror" required>
-                            <option value="" selected disabled>Selecciona un enumerador</option>
+                            <option value="" selected disabled>Selecciona un empadronador(a)</option>
                             @foreach ($enumerators as $enumerator)
                                 <option value="{{ $enumerator->id }}" {{ old('enumerator_id') == $enumerator->id ? 'selected' : '' }}>
                                     {{ $enumerator->given_name }} {{ $enumerator->paternal_last_name }} {{ $enumerator->maternal_last_name }}
@@ -82,7 +82,7 @@
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label for="observations" class="font-weight-bold">Observaciones</label>
+                        <label for="observations" class="font-weight-bold">Lugar de empadronamiento</label>
                         <textarea id="observations" name="observations" class="form-control @error('observations') is-invalid @enderror" rows="5" placeholder="Ingrese detalles adicionales sobre la visita">{{ old('observations') }}</textarea>
                         @error('observations')
                             <span class="invalid-feedback">{{ $message }}</span>

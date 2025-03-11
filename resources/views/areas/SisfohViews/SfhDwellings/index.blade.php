@@ -11,7 +11,7 @@
             </div>
             <div class="col-md-9 d-flex align-items-center justify-content-end">
                 <h1 class="perpetua-titling text-dorado" style="background: green; padding: 10px; border-radius: 0;">
-                    Registro de Viviendas
+                    Registro de Empadronamiento a los Hogares
                 </h1>
             </div>
         </div>
@@ -51,7 +51,7 @@
                                 <th>ID</th>
                                 <th>Dirección</th>
                                 <th>Referencia</th>
-                                <th>Vecindario</th>
+                                <th>Zona/lugares de empadronamiento</th>
                                 <th>Distrito</th>
                                 <th>Provincia</th>
                                 <th>Región</th>

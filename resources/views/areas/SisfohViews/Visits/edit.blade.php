@@ -72,7 +72,7 @@
                             <!-- Enumerador -->
                             <div class="row">
                                 <div class="col-md-12 form-group">
-                                    <label for="enumerator_id"><strong>Encuestador(a)</strong></label>
+                                    <label for="enumerator_id"><strong>Empadronador(a)</strong></label>
                                     <select id="enumerator_id" name="enumerator_id" 
                                             class="form-control @error('enumerator_id') is-invalid @enderror" required>
                                         @foreach ($enumerators as $enumerator)
@@ -108,7 +108,7 @@
                             <!-- Observaciones -->
                             <div class="row">
                                 <div class="col-md-12 form-group">
-                                    <label for="observations"><strong>Observaciones</strong></label>
+                                    <label for="observations"><strong>Lugar de empadronamiento</strong></label>
                                     <textarea id="observations" name="observations" rows="4"
                                                 class="form-control @error('observations') is-invalid @enderror">{{ old('observations', $visit->observations) }}</textarea>
                                     @error('observations')

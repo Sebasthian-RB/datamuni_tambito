@@ -22,5 +22,6 @@ class DatabaseSeeder extends Seeder
         ]);
         $this->call(AreaDeLaMujerSeeder::class);
         $this->call(VasoDeLecheSeeder::class);
+        $this->call(SisfohSeeder::class);
     }
 }

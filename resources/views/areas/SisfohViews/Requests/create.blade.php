@@ -40,7 +40,7 @@
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label for="sfh_person_id" class="font-weight-bold">Persona Relacionada</label>
+                        <label for="sfh_person_id" class="font-weight-bold">Ciudadano Relacionado</label>
                         <select id="sfh_person_id" name="sfh_person_id" class="form-control @error('sfh_person_id') is-invalid @enderror" required>
                             <option value="" selected disabled>Selecciona una persona</option>
                             @foreach($people as $person)
@@ -57,7 +57,7 @@
                 <!-- Columna Derecha -->
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="description" class="font-weight-bold">Descripción</label>
+                        <label for="description" class="font-weight-bold">Motivo</label>
                         <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror" rows="5" placeholder="Ingrese detalles adicionales sobre la solicitud">{{ old('description') }}</textarea>
                         @error('description')
                             <span class="invalid-feedback">{{ $message }}</span>

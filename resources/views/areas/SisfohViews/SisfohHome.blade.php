@@ -80,8 +80,8 @@
             <a href="{{ route('enumerators.index') }}" class="text-decoration-none">
                 <div class="small-box" style="background-color: #2ECC71; color: white;">
                     <div class="inner">
-                        <h3 style="font-size: 1.5rem;">Generar Encuestadores</h3>
-                        <p>Registrar nuevos encuestadores</p>
+                        <h3 style="font-size: 1.5rem;">Generar Empadronadores</h3>
+                        <p>Registrar nuevos empadronadores</p>
                     </div>
                     <div class="icon">
                         <i class="fas fa-user-tie"></i>

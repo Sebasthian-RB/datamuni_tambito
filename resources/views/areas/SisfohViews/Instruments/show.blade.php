@@ -37,9 +37,15 @@
                 </div>
 
                 <div class="mb-4 row">
+                    <!-- Numero de Instrumento -->
+                    <div class="col-md-6">
+                        <h5 class="font-weight-bold" style="color: #028a0f;">N° Instrumento:</h5>
+                        <p>{{ $instrument->number_instruments }}</p>
+                    </div>
+
                     <!-- Descripción -->
-                    <div class="col-md-12">
-                        <h5 class="font-weight-bold" style="color: #028a0f;">Descripción:</h5>
+                    <div class="col-md-6">
+                        <h5 class="font-weight-bold" style="color: #028a0f;">Motivo:</h5>
                         <p>{{ $instrument->description ?? 'Sin descripción disponible.' }}</p>
                     </div>
                 </div>

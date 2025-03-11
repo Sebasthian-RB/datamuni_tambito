@@ -94,6 +94,11 @@ class UpdateSfhPersonRequest extends FormRequest
                 'string',
                 'max:100', // Máximo 100 caracteres
             ],
+            'sfh_consultation' => [
+                'required',
+                'string',
+                Rule::in(['Atendido', 'Empadronado', 'No empadronado']), // Solo estas opciones
+            ],
             'sfh_category' => [
                 'required',
                 'string',
@@ -157,6 +162,10 @@ class UpdateSfhPersonRequest extends FormRequest
             'occupation.string' => 'La ocupación debe ser una cadena de texto.',
             'occupation.max' => 'La ocupación no puede tener más de 100 caracteres.',
 
+            'sfh_consultation.required' => 'La categoría SISFOH es obligatoria.',
+            'sfh_consultation.string' => 'La categoría SISFOH debe ser una cadena de texto.',
+            'sfh_consultation.in' => 'La categoría SISFOH debe ser una de las siguientes: Atendido, Empadronado, No empadronado.',
+
             'sfh_category.required' => 'La categoría SISFOH es obligatoria.',
             'sfh_category.string' => 'La categoría SISFOH debe ser una cadena de texto.',
             'sfh_category.in' => 'La categoría SISFOH debe ser una de las siguientes: No pobre, Pobre, Pobre extremo.',
@@ -183,6 +192,7 @@ class UpdateSfhPersonRequest extends FormRequest
             'nationality' => 'nacionalidad',
             'degree' => 'grado académico',
             'occupation' => 'ocupación',
+            'sfh_consultation' => 'consulta SISFOH',
             'sfh_category' => 'categoría SISFOH',
         ];
     }

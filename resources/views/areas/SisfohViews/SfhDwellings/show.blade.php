@@ -39,7 +39,7 @@
                 <div class="mb-4 row">
                     <!-- Barrio -->
                     <div class="col-md-6">
-                        <h5 class="font-weight-bold" style="color: #028a0f;">Barrio:</h5>
+                        <h5 class="font-weight-bold" style="color: #028a0f;">Zona/Lugares de empadronamiento:</h5>
                         <p>{{ $sfhDwelling->neighborhood }}</p>
                     </div>
 

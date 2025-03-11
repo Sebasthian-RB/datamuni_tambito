@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('sfh_people', function (Blueprint $table) {
             $table->string('id', 36)->primary();
             $table->enum('identity_document', ['DNI', 'Pasaporte', 'Carnet', 'Cedula']); // Solo estas opciones - tipos de documentos
-            $table->string('given_name', 80); // Máximo 50 caracteres
+            $table->string('given_name', 80); // Máximo 80 caracteres
             $table->string('paternal_last_name', 50); // Máximo 50 caracteres
             $table->string('maternal_last_name', 50); // Máximo 50 caracteres
             $table->enum('marital_status', ['Soltero(a)', 'Casado(a)', 'Divorciado(a)', 'Viudo(a)'])->nullable();
@@ -65,6 +65,11 @@ return new class extends Migration
                 'Pobre',
                 'Pobre extremo'
             ]); // Relacion de categoria sisfoh
+            $table->enum('sfh_consultation', [
+                'Atendido',
+                'Empadronado',
+                'No empadronado'
+            ]); // Relacion de consulta sisfoh
             $table->timestamps();
 
         });
