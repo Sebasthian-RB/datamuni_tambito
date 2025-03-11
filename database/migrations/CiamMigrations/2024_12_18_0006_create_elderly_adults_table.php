@@ -39,7 +39,7 @@ return new class extends Migration
             $table->string('private_insurance', 255)->nullable(); // Seguro privado (opcional)
 
             // Programas sociales
-            $table->string('social_program', 255)->nullable(); // Programa social al que pertenece (opcional)
+            $table->json('social_program')->nullable(); // Programa social al que pertenece (opcional)
 
             // Estado del adulto mayor en el CIAM
             $table->boolean('state')->default(true);

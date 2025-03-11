@@ -53,7 +53,6 @@ class ElderlyAdultController extends Controller
 
             // Verifica si existe social_program y conviértelo en un string separado por comas
             $data = $request->all();
-            $data['social_program'] = isset($data['social_program']) ? implode(', ', $data['social_program']) : null;
 
             // Guarda los datos en la BD
             ElderlyAdult::create($data);
@@ -96,9 +95,6 @@ class ElderlyAdultController extends Controller
 
             // Obtener todos los datos
             $data = $request->all();
-
-            // Convertir el array de checkboxes en un string separado por comas
-            $data['social_program'] = isset($data['social_program']) ? implode(', ', $data['social_program']) : null;
 
             // Actualizar los datos en la BD
             $elderlyAdult->update($data);

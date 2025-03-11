@@ -36,10 +36,10 @@ class ElderlyAdult extends Model
         'permanent_attention',
         'observation',
         'guardian_id', // Relación con Guardian
-        'public_insurance', // Nuevo: Seguro público
-        'private_insurance', // Nuevo: Seguro privado
-        'social_program', // Nuevo: Programa social
-        'state', // Nuevo: Estado en el CIAM (Activo/Inactivo)
+        'public_insurance', // Seguro público
+        'private_insurance', // Seguro privado
+        'social_program', // Programa social
+        'state', // Estado en el CIAM (Activo/Inactivo)
     ];
 
     /**
@@ -64,7 +64,7 @@ class ElderlyAdult extends Model
         'guardian_id' => 'string',
         'public_insurance' => 'string',
         'private_insurance' => 'string',
-        'social_program' => 'string',
+        'social_program' => 'array', // Convertir automáticamente a array
         'state' => 'boolean', // Convertir automáticamente a booleano
     ];
 

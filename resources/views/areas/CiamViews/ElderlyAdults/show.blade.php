@@ -91,7 +91,7 @@
                 </tbody>
             </table>
 
-            <!-- Información de relaciones con otras entidades -->
+            <!-- Información Relacionada -->
             <h4 class="mt-4 text-center" style="color: #6E8E59;"><i class="fas fa-link"></i> Información Relacionada</h4>
             <table class="table table-bordered">
                 <tbody>
@@ -124,8 +124,10 @@
                     <tr>
                         <th style="background-color: #9cbf5c; color: white;">Programas Sociales</th>
                         <td>
-                            @if (!empty($elderlyAdult->social_program))
-                            <p>{{ $elderlyAdult->social_program }}</p>
+                            @if ($elderlyAdult->social_program && count($elderlyAdult->social_program) > 0)
+                            @foreach ($elderlyAdult->social_program as $program)
+                            <span class="badge bg-warning">{{ $program }}</span>
+                            @endforeach
                             @else
                             <p>No pertenece a ningún programa social.</p>
                             @endif

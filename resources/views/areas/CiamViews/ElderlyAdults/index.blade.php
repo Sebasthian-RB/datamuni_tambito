@@ -2,20 +2,29 @@
 
 @section('title', 'Listado de Adultos Mayores')
 
-@section('content_header')
-<h1 class="text-center">Listado de Adultos Mayores</h1>
-@stop
-
 @section('content')
 <div class="container">
-    <!-- Botones de acción -->
-    <div class="mb-3 d-flex justify-content-between">
-        <a href="{{ route('elderly_adults.create') }}" class="btn" style="background-color: #6E8E59; color: white;">
-            <i class="fas fa-user-plus"></i> Agregar Adulto Mayor
-        </a>
-        <a href="{{ route('CiamHome') }}" class="btn btn-secondary" style="background-color: #CAE0BC; color: black;">
-            <i class="fas fa-arrow-left"></i> Volver a la Pagina de Inicio
-        </a>
+
+    <!-- Botones de encabezado-->
+    <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3 mb-4">
+        <!-- Botón "Volver" -->
+        <div class="col-md-2 d-flex justify-content-start align-items-center">
+            <a href="{{ route('CiamHome') }}" class="btn btn-secondary btn-main">
+                <i class="fas fa-arrow-left me-2"></i> <!-- Ícono más grande y descriptivo -->
+                <span>Volver</span>
+            </a>
+        </div>
+
+        <div class="col-md-7">
+        </div>
+
+        <!-- Botón "Agregar Adulto Mayor" -->
+        <div class="col-md-3 d-flex justify-content-end align-items-center">
+            <a href="{{ route('elderly_adults.create') }}" class="btn btn-secondary btn-main">
+                <i class="fas fa-plus-circle me-2"></i> Agregar Adulto Mayor
+            </a>
+        </div>
+
     </div>
 
     <!-- Mensaje de éxito -->
@@ -28,8 +37,15 @@
 
     <!-- Tabla de Adultos Mayores -->
     <div class="card">
-        <div class="card-header text-white" style="background-color: #6E8E59;">
-            <h3 class="card-title"><i class="fas fa-users"></i> Adultos Mayores Registrados</h3>
+        <!-- Header con título y logo -->
+        <div class="card-header mb-4">
+            <div class="header-content">
+                <div class="header-text">
+                    <h1 class="card-title"><i class="fas fa-users"></i> Listado de Adultos Mayores</h1>
+                    <p class="card-subtitle"> Gestión de adultos mayores registrados en el sistema.</p>
+                </div>
+                <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="header-logo">
+            </div>
         </div>
         <div class="card-body">
             <table id="elderlyAdultsTable" class="table table-bordered table-striped">
@@ -104,7 +120,154 @@
 @stop
 
 @section('css')
+
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
+<style>
+    /* Colores de la paleta CIAM */
+    :root {
+        --color-primary: #6E8E59;
+        /* Rojo oscuro */
+        --color-secondary: #780C28;
+        /* Verde oliva */
+        --color-accent: #CAE0BC;
+        /* Verde claro */
+        --color-background: #EAFAEA;
+        /* Fondo suave */
+        --color-gray: #6c757d;
+        /* Gris neutro */
+        --color-table-border: #780C28;
+        /* Rojo oscuro para bordes de tabla */
+        --color-hover: #9A1F40;
+        /* Rojo intenso para efectos hover */
+        --color-light-text: #F5F5F5;
+        /* Blanco roto para mejor contraste */
+        --color-button-hover: #5A7D42;
+        /* Verde más oscuro para botones */
+    }
+
+    /* Estilos generales */
+    .card {
+        border: 1px solid var(--color-accent);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .container {
+        padding-top: 20px;
+    }
+
+    /* Header */
+    .card-header {
+        background: linear-gradient(135deg, #31766E, #1F4F48);
+        color: #FFFFFF;
+        padding: 25px 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+
+    .header-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .header-text {
+        display: flex;
+        flex-direction: column;
+        /* Apila el título y el subtítulo verticalmente */
+    }
+
+    .card-title {
+        font-size: 1.75rem;
+        margin: 0;
+        font-weight: 700;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-subtitle {
+        font-size: 1rem;
+        color: var(--color-accent);
+        margin-top: 5px;
+        font-weight: 400;
+        opacity: 0.8;
+    }
+
+    .header-logo {
+        height: 50px;
+        width: auto;
+        transition: opacity 0.3s ease;
+    }
+
+    .header-logo:hover {
+        opacity: 0.8;
+    }
+
+    /* Estilos para los botones principales */
+    .btn-main {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        /* Centra el contenido */
+        gap: 8px;
+        padding: 12px 24px;
+        /* Aumenté el padding para más espacio */
+        font-size: 14px;
+        font-weight: 500;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        /* Ocupa el 100% del ancho en móviles */
+        margin-bottom: 10px;
+        /* Separa los botones verticalmente */
+    }
+
+    .btn-custom {
+        background-color: var(--color-secondary);
+        color: white;
+    }
+
+    .btn-secondary {
+        background-color: var(--color-gray);
+        /* Color gris para el botón de Volver */
+        color: white;
+    }
+
+    /* Estilos para los botones de acción */
+    .btn-action {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        /* Centra el contenido */
+        gap: 5px;
+        padding: 8px 16px;
+        /* Aumenté el padding para más espacio */
+        font-size: 12px;
+        font-weight: 500;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        /* Ocupa el 100% del ancho en móviles */
+        margin-bottom: 5px;
+        /* Separa los botones verticalmente */
+    }
+
+    /* Estilos de hover para todos los botones */
+    .btn-main:hover,
+    .btn-action:hover {
+        background-color: var(--color-primary);
+        /* Mismo color para todos los hovers */
+        color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        /* Sombra suave */
+    }
+</style>
+
 @stop
 
 @section('js')

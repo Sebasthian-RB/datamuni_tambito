@@ -99,11 +99,12 @@ class StoreElderlyAdultRequest extends FormRequest
 
             'observation' => 'nullable|string|max:500',
 
-            'state' => 'required|boolean', // Activo o no en CIAM
+            // Estado de la persona en el sistema
+            'state' => 'required|boolean', // Activo o Inactivo en CIAM
 
-            // **Lista de programas sociales (array de strings)**
-            'social_program' => 'nullable|array', // Permite enviar un array de opciones
-            'social_program.*' => 'string|max:255',
+            // Lista de programas sociales 
+            'social_program' => 'nullable|array',
+            'social_program.*' => 'in:Pensión 65,P.V.L.,Comedor Popular,Otros',
         ];
     }
 
@@ -148,9 +149,7 @@ class StoreElderlyAdultRequest extends FormRequest
             'guardian_id.exists' => 'El guardián seleccionado no existe en el sistema.',
 
             // **Errores de programas sociales**
-            'social_program.array' => 'Debe ser una lista de valores válidos.',
-            'social_program.*.string' => 'Cada programa social debe ser un texto.',
-            'social_program.*.max' => 'El nombre del programa social no debe exceder los 100 caracteres.',
+            'social_program.*.in' => 'El programa social seleccionado no es válido.',
         ];
     }
 

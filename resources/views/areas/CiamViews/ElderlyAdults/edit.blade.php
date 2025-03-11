@@ -264,24 +264,29 @@
 
                 <!-- Programas Sociales -->
                 <div class="form-group">
-                    <label class="form-label fw-bold">Programas Sociales</label>
-
-                    @php
-                    // Convertir la cadena guardada en un array (sin cambiar en la BD)
-                    $selectedPrograms = explode(', ', $elderlyAdult->social_program ?? '');
-                    @endphp
-
-                    @foreach(['Pensión 65', 'Qali Warma', 'FOCAM'] as $program)
-                    <div class="form-check">
-                        <input
-                            class="form-check-input"
-                            type="checkbox"
-                            name="social_program[]"
-                            value="{{ $program }}"
-                            {{ in_array($program, $selectedPrograms) ? 'checked' : '' }}>
-                        <label class="form-check-label">{{ $program }}</label>
+                    <label>Programa(s) Social(es)</label>
+                    <div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="social_program[]" id="social_program_pension65" value="Pensión 65"
+                                {{ in_array('Pensión 65', old('social_program', $elderlyAdult->social_program ?? [])) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="social_program_pension65">Pensión 65</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="social_program[]" id="social_program_pvl" value="P.V.L."
+                                {{ in_array('P.V.L.', old('social_program', $elderlyAdult->social_program ?? [])) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="social_program_pvl">P.V.L.</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="social_program[]" id="social_program_comedor" value="Comedor Popular"
+                                {{ in_array('Comedor Popular', old('social_program', $elderlyAdult->social_program ?? [])) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="social_program_comedor">Comedor Popular</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="social_program[]" id="social_program_otros" value="Otros"
+                                {{ in_array('Otros', old('social_program', $elderlyAdult->social_program ?? [])) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="social_program_otros">Otros</label>
+                        </div>
                     </div>
-                    @endforeach
                 </div>
 
                 <!-- Estado -->

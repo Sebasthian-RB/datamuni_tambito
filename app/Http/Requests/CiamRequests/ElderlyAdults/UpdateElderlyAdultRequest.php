@@ -102,10 +102,11 @@ class UpdateElderlyAdultRequest extends FormRequest
 
             'private_insurance' => 'nullable|string|max:100',
 
-            // **Lista de programas sociales (array de strings)**
-            'social_program' => 'nullable|array', // Permite enviar un array de opciones
-            'social_program.*' => 'string|max:100', // Cada opción debe ser un string válido
+            // Lista de programas sociales
+            'social_program' => 'nullable|array',
+            'social_program.*' => 'in:Pensión 65,P.V.L.,Comedor Popular,Otros',
 
+            // Estado de la persona
             'state' => 'required|boolean',
 
             'observation' => ['sometimes', 'nullable', 'string'],
@@ -155,9 +156,7 @@ class UpdateElderlyAdultRequest extends FormRequest
             'guardian_id.exists' => 'El guardián seleccionado no existe en el sistema.',
 
             // **Errores de programas sociales**
-            'social_program.array' => 'Debe ser una lista de valores válidos.',
-            'social_program.*.string' => 'Cada programa social debe ser un texto.',
-            'social_program.*.max' => 'El nombre del programa social no debe exceder los 100 caracteres.',
+            'social_program.*.in' => 'El programa social seleccionado no es válido.',
         ];
     }
 
@@ -182,11 +181,6 @@ class UpdateElderlyAdultRequest extends FormRequest
             'permanent_attention' => 'atención permanente',
             'observation' => 'observación',
             'state' => 'estado en CIAM',
-            /*
-            'department' => 'departamento',
-            'province' => 'provincia',
-            'district' => 'distrito',
-            */
             'public_insurance' => 'seguro público',
             'private_insurance' => 'seguro privado',
             'guardian_id' => 'guardia',

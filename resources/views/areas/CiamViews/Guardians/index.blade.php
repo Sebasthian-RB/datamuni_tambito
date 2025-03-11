@@ -8,6 +8,8 @@
 
 @section('content')
 <div class="container">
+
+    <!-- Botones de encabezado-->
     <div class="mb-3">
         <a href="{{ route('guardians.create') }}" class="btn" style="background-color: #6E8E59; color: white;">
             <i class="fas fa-plus-circle"></i> Agregar Nuevo Guardián
