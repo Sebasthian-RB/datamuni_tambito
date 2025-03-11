@@ -57,7 +57,7 @@ class ElderlyAdult extends Model
         'sex_type' => 'boolean',
         'language' => 'array',
         'phone_number' => 'string',
-        'type_of_disability' => 'string',
+        'type_of_disability' => 'array',
         'household_members' => 'integer',
         'permanent_attention' => 'boolean',
         'observation' => 'string',

@@ -23,7 +23,7 @@ return new class extends Migration
             $table->boolean('sex_type'); // Sexo (0: femenino, 1: masculino)
             $table->json('language'); // Lengua (Español, Quechua, Aimara, Otro)
             $table->string('phone_number', 50)->nullable(); // Teléfono
-            $table->enum('type_of_disability', ['Visual', 'Motriz', 'Mental'])->nullable(); // Tipo de discapacidad
+            $table->json('type_of_disability')->nullable(); // Tipo de discapacidad
             $table->integer('household_members')->nullable(); // Miembros del hogar
             $table->boolean('permanent_attention')->nullable(); // Atención permanente
             $table->text('observation')->nullable(); // Observaciones generales 
