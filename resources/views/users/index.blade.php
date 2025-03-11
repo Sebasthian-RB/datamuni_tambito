@@ -69,10 +69,7 @@
                                             </a>
                                             <a class="dropdown-item" href="{{ route('users.edit', $user) }}">
                                                 <i class="fas fa-edit text-warning"></i> Editar
-                                            </a>
-                                            <a href="{{ route('users.assignRoleForm', $user) }}" class="btn btn-success btn-sm">
-                                                <i class="fas fa-user-tag"></i> Asignar Rol
-                                            </a>                                            
+                                            </a>                                           
                                             <div class="dropdown-divider"></div>
                                             <form action="{{ route('users.destroy', $user) }}" method="POST"
                                                 class="d-inline">

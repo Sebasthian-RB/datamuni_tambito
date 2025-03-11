@@ -68,6 +68,10 @@ use App\Http\Controllers\RoleController;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/help', function () {
+    return view('help');
+});
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -81,10 +85,9 @@ Route::middleware([
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
-    Route::get('/users/{user}/assign-role', [UserController::class, 'assignRoleForm'])->name('users.assignRoleForm');
-    Route::post('/users/{user}/assign-role', [UserController::class, 'assignRole'])->name('users.assignRole');
-
-
+    Route::get('users/{user}/assign-permissions', [UserController::class, 'assignPermissionsForm'])->name('users.assignPermissionsForm');
+    Route::post('users/{user}/assign-permissions', [UserController::class, 'assignPermissions'])->name('users.assignPermissions');
+    
     // Rutas de los controladores de Área de la Mujer dentro del grupo de autenticación
     Route::resource('am_people', AmPersonController::class);
     Route::resource('interventions', InterventionController::class);

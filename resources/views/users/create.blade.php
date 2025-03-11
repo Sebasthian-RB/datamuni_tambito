@@ -20,16 +20,16 @@
                     <label for="name" class="font-weight-bold">
                         <i class="fas fa-user-tag"></i> Nombre Completo
                     </label>
-                    <input type="text" name="name" class="form-control form-control-lg" required
-                        placeholder="Ej: Juan Pérez" autofocus>
+                    <input type="text" name="name" class="form-control form-control-lg" value="{{ old('name') }}"
+                        required placeholder="Ej: Juan Pérez" autofocus>
                 </div>
 
                 <div class="form-group">
                     <label for="email" class="font-weight-bold">
                         <i class="fas fa-envelope"></i> Correo Electrónico
                     </label>
-                    <input type="email" name="email" class="form-control form-control-lg" required
-                        placeholder="ejemplo@dominio.com">
+                    <input type="email" name="email" class="form-control form-control-lg" value="{{ old('email') }}"
+                        required placeholder="ejemplo@dominio.com">
                 </div>
 
                 <div class="form-group">
@@ -39,7 +39,7 @@
                     <div class="input-group">
                         <input type="password" name="password" id="password" class="form-control form-control-lg" required
                             pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$"
-                            title="Debe cumplir con los requisitos de seguridad">
+                            title="Debe cumplir con los requisitos de seguridad" placeholder="********">
                         <div class="input-group-append">
                             <span class="input-group-text toggle-password" style="cursor: pointer">
                                 <i class="fas fa-eye"></i>
@@ -65,15 +65,40 @@
                         </ul>
                     </div>
                 </div>
+
                 <div class="form-group">
-                    <label>Seleccionar Rol</label>
+                    <label class="font-weight-bold">
+                        <i class="fas fa-user-tag"></i> Seleccionar Rol
+                    </label>
                     <select name="role" class="form-control select2" required>
                         <option value="">-- Selecciona un Rol --</option>
-                        @foreach ($roles as $id => $name)
-                            <option value="{{ $name }}">{{ $name }}</option>
+                        @foreach ($roles as $role)
+                            <option value="{{ $role }}" {{ old('role') == $role ? 'selected' : '' }}>
+                                {{ $role }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
+                <!-- Permisos sin modal -->
+                <div class="form-group">
+                    <label class="font-weight-bold">
+                        <i class="fas fa-shield-alt"></i> Asignar Permisos
+                    </label>
+                    <div class="row">
+                        @foreach ($permissions as $permission)
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" name="permissions[]"
+                                        value="{{ $permission->name }}" id="perm_{{ $permission->id }}">
+                                    <label class="form-check-label" for="perm_{{ $permission->id }}">
+                                        {{ ucfirst($permission->name) }}
+                                    </label>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+
             </div>
             <div class="card-footer bg-white">
                 <button type="submit" class="btn btn-lg btn-primary">
@@ -103,6 +128,11 @@
                 font-size: 0.9rem;
             }
 
+            .text-success i,
+            .text-danger i {
+                margin-right: 5px;
+            }
+
             .card-primary {
                 border-top: 3px solid #007bff;
             }
@@ -112,31 +142,26 @@
     @push('js')
         <script>
             $(document).ready(function() {
+                const passwordInput = $('#password');
+
                 // Validación de contraseña en tiempo real
-                $('#password').on('keyup', function() {
+                passwordInput.on('keyup', function() {
                     const password = $(this).val();
 
-                    toggleValidation('#length', password.length >= 8);
-                    toggleValidation('#uppercase', /[A-Z]/.test(password));
-                    toggleValidation('#number', /\d/.test(password));
-                    toggleValidation('#special', /[@$!%*?&]/.test(password));
+                    validateRequirement('#length', password.length >= 8);
+                    validateRequirement('#uppercase', /[A-Z]/.test(password));
+                    validateRequirement('#number', /\d/.test(password));
+                    validateRequirement('#special', /[@$!%*?&]/.test(password));
                 });
 
                 // Toggle para mostrar/ocultar contraseña
                 $('.toggle-password').click(function() {
-                    const input = $('#password');
                     const icon = $(this).find('i');
-
-                    if (input.attr('type') === 'password') {
-                        input.attr('type', 'text');
-                        icon.removeClass('fa-eye').addClass('fa-eye-slash');
-                    } else {
-                        input.attr('type', 'password');
-                        icon.removeClass('fa-eye-slash').addClass('fa-eye');
-                    }
+                    passwordInput.attr('type', passwordInput.attr('type') === 'password' ? 'text' : 'password');
+                    icon.toggleClass('fa-eye fa-eye-slash');
                 });
 
-                function toggleValidation(element, isValid) {
+                function validateRequirement(element, isValid) {
                     $(element).toggleClass('text-success', isValid)
                         .toggleClass('text-danger', !isValid)
                         .find('i')

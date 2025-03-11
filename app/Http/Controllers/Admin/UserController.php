@@ -13,14 +13,15 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::paginate(10);
+        $users = User::paginate(20);
         return view('users.index', compact('users'));
     }
 
     public function create()
     {
         $roles = Role::pluck('name', 'id'); // Obtener los roles disponibles
-        return view('users.create', compact('roles'));
+        $permissions = Permission::all(); // Obtener todos los permisos con su información
+        return view('users.create', compact('roles', 'permissions'));
     }
 
     public function store(Request $request)
@@ -41,11 +42,18 @@ class UserController extends Controller
             'password.regex' => 'La contraseña debe incluir al menos una mayúscula, un número y un carácter especial (@$!%*?&).',
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        $user->assignRole($request->role);
+
+        // Asignar Permisos
+        if ($request->has('permissions')) {
+            $user->syncPermissions($request->permissions);
+        }
 
         return redirect()->route('users.index')->with('success', 'Usuario creado correctamente.');
     }
@@ -53,14 +61,15 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        $user->load('roles'); // Cargar roles para evitar consultas innecesarias
+        $user->load('roles', 'permissions'); // Cargar roles y permisos del usuario
         return view('users.show', compact('user'));
     }
 
 
     public function edit(User $user)
     {
-        return view('users.edit', compact('user'));
+        $roles = Role::all();
+        return view('users.edit', compact('user', 'roles'));
     }
 
     public function update(Request $request, User $user)
@@ -75,20 +84,24 @@ class UserController extends Controller
                 'regex:/[0-9]/',
                 'regex:/[@@$!%*?&]/'
             ],
+            'role' => 'required|exists:roles,name',
         ], [
             'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
             'password.regex' => 'La contraseña debe incluir al menos una mayúscula, un número y un carácter especial (@$!%*?&).',
         ]);
 
-        $data = $request->only(['name', 'email']);
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
 
         if ($request->filled('password')) {
-            $data['password'] = Hash::make($request->password);
+            $user->update(['password' => Hash::make($request->password)]);
         }
 
-        $user->update($data);
+        $user->syncRoles($request->role);
 
-        return redirect()->route('users.index')->with('success', 'Usuario actualizado correctamente.');
+        return redirect()->route('users.index')->with('success', 'Usuario actualizado.');
     }
 
 
@@ -98,21 +111,15 @@ class UserController extends Controller
 
         return redirect()->route('users.index')->with('success', 'Usuario eliminado correctamente.');
     }
-
-    public function assignRoleForm(User $user)
+    public function assignPermissionsForm(User $user)
     {
-        $roles = Role::pluck('name', 'id'); // Obtener roles
-        return view('users.assign-role', compact('user', 'roles'));
+        $permissions = Permission::pluck('name'); // Obtener permisos existentes
+        return view('users.assign-permissions', compact('user', 'permissions'));
     }
 
-    public function assignRole(Request $request, User $user)
+    public function assignPermissions(Request $request, User $user)
     {
-        $request->validate([
-            'role' => 'required|exists:roles,name',
-        ]);
-
-        $user->syncRoles([$request->role]);
-
-        return redirect()->route('users.index')->with('success', 'Rol asignado correctamente.');
+        $user->syncPermissions($request->permissions ?? []); // Asigna los permisos seleccionados
+        return redirect()->route('users.index')->with('success', 'Permisos asignados correctamente.');
     }
 }

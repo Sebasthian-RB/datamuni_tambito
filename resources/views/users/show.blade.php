@@ -56,6 +56,20 @@
                                 @endif
                             </td>
                         </tr>
+                        <tr>
+                            <td class="font-weight-bold">
+                                <i class="fas fa-key text-primary"></i> Permisos Asignados
+                            </td>
+                            <td>
+                                @if($user->permissions->isNotEmpty())
+                                    @foreach ($user->permissions as $permission)
+                                        <span class="badge badge-info">{{ $permission->name }}</span>
+                                    @endforeach
+                                @else
+                                    <span class="badge badge-secondary">Sin Permisos</span>
+                                @endif
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
