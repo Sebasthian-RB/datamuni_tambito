@@ -517,7 +517,7 @@ return [
                             'icon_color' => 'orange',
                         ],
                         [
-                            'text' => 'Encuestadores',
+                            'text' => 'Empadronadores',
                             'url' => 'enumerators',
                             'icon' => 'fas fa-user-tie',
                             'icon_color' => 'green',
