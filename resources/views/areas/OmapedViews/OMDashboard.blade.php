@@ -34,7 +34,23 @@
                 </a>
             </div>
         </div>
-
+        <!-- botones secundarios -->
+        <div class="secondary-actions">
+            <div class="action-buttons">
+                <a href="{{ route('caregivers.index') }}" class="secondary-button">
+                    <i class="fas fa-hands-helping"></i>
+                    Cuidadores Registrados
+                </a>
+                <a href="{{ route('om-dwellings.index') }}" class="secondary-button">
+                    <i class="fas fa-home"></i>
+                    Viviendas Registradas
+                </a>
+                <a href="{{ route('disabilities.index') }}" class="secondary-button">
+                    <i class="fas fa-wheelchair"></i>
+                    Certificados de Discapacidad
+                </a>
+            </div>
+        </div>
         <!-- Grid de métricas -->
         <div class="metric-grid">
             <!-- Columna 1 -->
@@ -270,6 +286,60 @@
 
         .table-data tr:hover {
             background: #f1f1f1;
+        }
+
+        .secondary-actions {
+            margin: 2rem 0;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .secondary-button {
+            background: linear-gradient(135deg, #FF9F0A, #FF6B00);
+            color: #fff !important;
+            padding: 1.2rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            min-width: 280px;
+            justify-content: center;
+        }
+
+        .secondary-button i {
+            font-size: 1.4rem;
+            transition: transform 0.3s ease;
+        }
+
+        .secondary-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 0, 0.3);
+            background: linear-gradient(135deg, #FF6B00, #FF9F0A);
+        }
+
+        .secondary-button:hover i {
+            transform: scale(1.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .secondary-button {
+                width: 100%;
+                min-width: auto;
+            }
         }
     </style>
 @stop

@@ -216,11 +216,9 @@
 </head>
 
 <body class="d-flex h-100 text-center">
-
+    @include('layouts.logins.logins')
     <div class="background-image"></div> <!-- Imagen de fondo con desenfoque -->
     <div class="overlay"></div> <!-- Capa oscurecedora -->
-    @include('layouts.logins.logins')
-
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
         <header class="mb-auto header">
             <div class="d-flex align-items-center">
@@ -268,9 +266,11 @@
         </main>
 
         <footer class="mt-auto text-white-50">
-            <p>© 2024 Municipalidad Tambo. Todos los derechos reservados</p>
+            <p>© 2024 Municipalidad Tambo. Todos los derechos reservados
+                <span class="badge bg-warning text-dark ms-2">Alpha 0.0.2</span>
+            </p>
         </footer>
-        
+
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

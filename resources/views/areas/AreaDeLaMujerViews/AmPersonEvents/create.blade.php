@@ -264,6 +264,28 @@
 
 @section('js')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Función para obtener la fecha/hora actual en GMT-5
+            function getCurrentGMT5DateTime() {
+                const now = new Date();
+                // Ajustar a GMT-5 (5 horas de diferencia)
+                const offset = 5 * 60 * 60 * 1000; // 5 horas en milisegundos
+                const gmt5Time = new Date(now.getTime() - offset);
+
+                // Formatear a YYYY-MM-DDTHH:mm (formato de datetime-local)
+                return gmt5Time.toISOString().slice(0, 16);
+            }
+            document.getElementById('attendance_datetime').value = getCurrentGMT5DateTime();
+
+            // Cuando se abre el modal
+            $('#addPersonModal').on('shown.bs.modal', function() {
+                // Establecer la fecha/hora actual en GMT-5
+                document.getElementById('attendance_date').value = getCurrentGMT5DateTime();
+            });
+        });
+    </script>
     <script>
         $(document).ready(function() {
             $('.select2').select2({
@@ -474,7 +496,7 @@
                 docNumber.classList.toggle('is-invalid', !isValid);
                 return isValid;
             }
-
+            
             // Manejar submit del formulario en Laravel
             document.querySelector('form').addEventListener('submit', function(e) {
                 if (!validateDocument()) {

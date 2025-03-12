@@ -152,7 +152,7 @@
                         <i class="fas fa-user-tie"></i>
                     </div>
                     <div class="dev-info">
-                        <span class="dev-name">Paul David Quilca Coronación</span>
+                        <span class="dev-name">Mag. Paul David Quilca Coronación</span>
                         <div class="dev-role">
                             Jefe de Proyecto
                             <span class="uc-badge">Municipalidad de El Tambo</span>
@@ -165,7 +165,7 @@
                         <i class="fas fa-code"></i>
                     </div>
                     <div class="dev-info">
-                        <span class="dev-name">Yorshyo Artemio Villena Ochoa</span>
+                        <span class="dev-name">Ing. Yorshyo Artemio Villena Ochoa</span>
                         <div class="dev-role">
                             Desarrollo FullStack
                             <span class="uc-badge">Universidad Continental</span>

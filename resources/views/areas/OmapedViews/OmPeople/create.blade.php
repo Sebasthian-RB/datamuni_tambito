@@ -38,7 +38,7 @@
                                         <label class="font-weight-bold" style="color: #2c3e50;">Fecha de Registro</label>
                                         <input type="datetime-local" class="form-control shadow-sm" name="registration_date"
                                             style="border: 2px solid #18bc9c; border-radius: 8px;"
-                                            value="{{ old('registration_date') ? \Carbon\Carbon::parse(old('registration_date'))->format('Y-m-d\TH:i') : '' }}"
+                                            value="{{ old('registration_date') ? \Carbon\Carbon::parse(old('registration_date'))->format('Y-m-d\TH:i') : \Carbon\Carbon::now('America/Lima')->format('Y-m-d\TH:i') }}"
                                             required>
                                         @error('registration_date')
                                             <div class="invalid-feedback">{{ $message }}</div>

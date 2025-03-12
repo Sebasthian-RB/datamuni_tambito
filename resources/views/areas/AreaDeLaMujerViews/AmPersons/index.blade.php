@@ -200,7 +200,7 @@
                             <span class="text-danger error-text attendance_date_error"></span>
                         </div>
 
-                        
+
                         <!-- Botones -->
                         <div class="text-right mt-4">
                             <button type="button" class="btn btn-lg shadow-sm" id="savePerson"
@@ -302,6 +302,27 @@
                         }
                     }
                 });
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Función para obtener la fecha/hora actual en GMT-5
+            function getCurrentGMT5DateTime() {
+                const now = new Date();
+                // Ajustar a GMT-5 (5 horas de diferencia)
+                const offset = 5 * 60 * 60 * 1000; // 5 horas en milisegundos
+                const gmt5Time = new Date(now.getTime() - offset);
+
+                // Formatear a YYYY-MM-DDTHH:mm (formato de datetime-local)
+                return gmt5Time.toISOString().slice(0, 16);
+            }
+
+            // Cuando se abre el modal
+            $('#addPersonModal').on('shown.bs.modal', function() {
+                // Establecer la fecha/hora actual en GMT-5
+                document.getElementById('attendance_date').value = getCurrentGMT5DateTime();
             });
         });
     </script>

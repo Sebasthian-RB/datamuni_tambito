@@ -14,6 +14,16 @@
 @stop
 
 @section('content')
+<!-- Panel de Administración -->
+<div class="card mb-4 shadow">
+    <div class="card-header bg-gradient-success text-white py-4">
+        <h1 class="text-center mb-0">
+            <i class="fas fa-user-shield fa-lg mr-3"></i>
+            Panel de Administración del Administrador
+            <div class="header-line mt-3"></div>
+        </h1>
+    </div>
+</div>
 <div class="container-fluid">
     <div class="row">
         <!-- Sección principal de áreas -->
@@ -160,6 +170,7 @@
 
 @section('css')
 <style>
+    
     .card {
         transition: transform 0.3s ease, box-shadow 0.3s ease;
         border-radius: 15px;
@@ -211,5 +222,6 @@
         background-color: #f8f9fa;
         transform: translateX(5px);
     }
+    
 </style>
 @stop
