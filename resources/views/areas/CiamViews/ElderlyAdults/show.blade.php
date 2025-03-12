@@ -74,7 +74,15 @@
                     </tr>
                     <tr>
                         <th style="background-color: #CAE0BC;">Tipo de Discapacidad</th>
-                        <td>{{ $elderlyAdult->type_of_disability ?? 'Ninguna' }}</td>
+                        <td>
+                            @if ($elderlyAdult->type_of_disability && count($elderlyAdult->type_of_disability) > 0)
+                            @foreach ($elderlyAdult->type_of_disability as $disability)
+                            <span class="badge bg-info">{{ $disability }}</span>
+                            @endforeach
+                            @else
+                            <span class="text-muted">No especificado</span>
+                            @endif
+                        </td>
                     </tr>
                     <tr>
                         <th style="background-color: #CAE0BC;">Miembros del Hogar</th>

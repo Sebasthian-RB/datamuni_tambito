@@ -51,8 +51,8 @@ class ElderlyAdultController extends Controller
         try {
             DB::beginTransaction();
 
-            // Verifica si existe social_program y conviértelo en un string separado por comas
-            $data = $request->all();
+            // Obtén los datos validados
+            $data = $request->validated();
 
             // Guarda los datos en la BD
             ElderlyAdult::create($data);
@@ -93,8 +93,8 @@ class ElderlyAdultController extends Controller
         try {
             DB::beginTransaction();
 
-            // Obtener todos los datos
-            $data = $request->all();
+            // Obtén los datos validados
+            $data = $request->validated();
 
             // Actualizar los datos en la BD
             $elderlyAdult->update($data);
@@ -103,6 +103,7 @@ class ElderlyAdultController extends Controller
             return redirect()->route('elderly_adults.index')->with('success', 'Adulto mayor actualizado exitosamente.');
         } catch (\Exception $e) {
             DB::rollBack();
+            Log::error('Error al actualizar el adulto mayor: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Ocurrió un error al actualizar el adulto mayor.');
         }
     }

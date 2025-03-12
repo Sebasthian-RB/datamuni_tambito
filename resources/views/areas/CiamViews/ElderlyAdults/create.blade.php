@@ -87,8 +87,12 @@
                 <!-- Fecha de Nacimiento -->
                 <div class="form-group">
                     <label for="birth_date">Fecha de Nacimiento</label>
-                    <input type="date" class="form-control" id="birth_date" name="birth_date"
-                        value="{{ old('birth_date') }}" required>
+                    <input type="date" class="form-control @error('birth_date') is-invalid @enderror"
+                        id="birth_date" name="birth_date"
+                        value="{{ old('birth_date') }}"
+                        max="{{ now()->subYears(60)->format('Y-m-d') }}"
+                        min="{{ now()->subYears(125)->format('Y-m-d') }}"
+                        required>
                     @error('birth_date')
                     <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
@@ -208,15 +212,36 @@
                     </select>
                 </div>
 
-                <!-- Tipo de Discapacidad -->
+                <!-- TIPO DE DISCAPACIDAD -->
                 <div class="form-group">
-                    <label>Tipo de Discapacidad</label>
+                    <label class="fw-bold">Tipo de Discapacidad</label>
                     <div class="btn-group" role="group" aria-label="Discapacidades">
-                        <button type="button" class="btn btn-outline-primary toggle-button" data-value="Visual">Visual</button>
-                        <button type="button" class="btn btn-outline-primary toggle-button" data-value="Motriz">Motriz</button>
-                        <button type="button" class="btn btn-outline-primary toggle-button" data-value="Mental">Mental</button>
+                        <!-- Visual -->
+                        <button type="button" class="btn btn-outline-primary toggle-button" data-value="Visual">
+                            <i class="fas fa-eye"></i> Visual
+                        </button>
+                        <!-- Auditiva -->
+                        <button type="button" class="btn btn-outline-primary toggle-button" data-value="Auditiva">
+                            <i class="fas fa-deaf"></i> Auditiva
+                        </button>
+                        <!-- Motriz -->
+                        <button type="button" class="btn btn-outline-primary toggle-button" data-value="Motriz">
+                            <i class="fas fa-wheelchair"></i> Motriz
+                        </button>
+                        <!-- Mental -->
+                        <button type="button" class="btn btn-outline-primary toggle-button" data-value="Mental">
+                            <i class="fas fa-brain"></i> Mental
+                        </button>
+                        <!-- Del Habla -->
+                        <button type="button" class="btn btn-outline-primary toggle-button" data-value="Del Habla">
+                            <i class="fas fa-comments"></i> Del Habla
+                        </button>
+                        <!-- Otra -->
+                        <button type="button" class="btn btn-outline-primary toggle-button" data-value="Otra">
+                            <i class="fas fa-question-circle"></i> Otra
+                        </button>
                     </div>
-                    <input type="hidden" name="type_of_disability" id="type_of_disability" value="{{ old('type_of_disability', '[]') }}">
+                    <input type="hidden" name="type_of_disability" id="type_of_disability" value="{{ old('type_of_disability', json_encode($elderlyAdult->type_of_disability ?? [])) }}">
                 </div>
 
                 <!-- Atención Permanente -->
@@ -466,6 +491,14 @@
         const buttons = document.querySelectorAll('.toggle-button');
         const hiddenInput = document.getElementById('type_of_disability');
 
+        // Cargar valores seleccionados previamente
+        const initialValues = JSON.parse(hiddenInput.value || '[]');
+        initialValues.forEach(value => {
+            const button = Array.from(buttons).find(btn => btn.getAttribute('data-value') === value);
+            if (button) button.classList.add('active');
+        });
+
+        // Manejar clics en los botones
         buttons.forEach(button => {
             button.addEventListener('click', function() {
                 this.classList.toggle('active');
@@ -473,6 +506,7 @@
             });
         });
 
+        // Actualizar el campo oculto con los valores seleccionados
         function updateHiddenInput() {
             const selectedValues = Array.from(buttons)
                 .filter(button => button.classList.contains('active'))
@@ -591,6 +625,11 @@
     .btn-group .btn.active {
         background-color: #007bff;
         color: white;
+    }
+
+    .btn-group .btn i {
+        margin-right: 5px;
+        /* Espacio entre el icono y el texto */
     }
 </style>
 

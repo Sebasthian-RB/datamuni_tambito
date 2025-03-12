@@ -213,9 +213,30 @@
                 <div class="form-group">
                     <label class="fw-bold">Tipo de Discapacidad</label>
                     <div class="btn-group" role="group" aria-label="Discapacidades">
-                        <button type="button" class="btn btn-outline-primary toggle-button" data-value="Visual">Visual</button>
-                        <button type="button" class="btn btn-outline-primary toggle-button" data-value="Motriz">Motriz</button>
-                        <button type="button" class="btn btn-outline-primary toggle-button" data-value="Mental">Mental</button>
+                        <!-- Visual -->
+                        <button type="button" class="btn btn-outline-primary toggle-button" data-value="Visual">
+                            <i class="fas fa-eye"></i> Visual
+                        </button>
+                        <!-- Auditiva -->
+                        <button type="button" class="btn btn-outline-primary toggle-button" data-value="Auditiva">
+                            <i class="fas fa-deaf"></i> Auditiva
+                        </button>
+                        <!-- Motriz -->
+                        <button type="button" class="btn btn-outline-primary toggle-button" data-value="Motriz">
+                            <i class="fas fa-wheelchair"></i> Motriz
+                        </button>
+                        <!-- Mental -->
+                        <button type="button" class="btn btn-outline-primary toggle-button" data-value="Mental">
+                            <i class="fas fa-brain"></i> Mental
+                        </button>
+                        <!-- Del Habla -->
+                        <button type="button" class="btn btn-outline-primary toggle-button" data-value="Del Habla">
+                            <i class="fas fa-comments"></i> Del Habla
+                        </button>
+                        <!-- Otra -->
+                        <button type="button" class="btn btn-outline-primary toggle-button" data-value="Otra">
+                            <i class="fas fa-question-circle"></i> Otra
+                        </button>
                     </div>
                     <input type="hidden" name="type_of_disability" id="type_of_disability" value="{{ old('type_of_disability', json_encode($elderlyAdult->type_of_disability ?? [])) }}">
                 </div>
@@ -469,7 +490,7 @@
     });
 </script>
 
-<!-- PARA EL TIPO DE DISCAPACIDAD -->
+<!-- PARA LOS TIPOS DE DISCAPACIDADES -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const buttons = document.querySelectorAll('.toggle-button');
@@ -580,11 +601,16 @@
     }
 </style>
 
-<!-- Estilos adicional para campo de tipo de discapacidad -->
+<!-- Estilo adicional para campo de tipo de discapacidad-->
 <style>
     .btn-group .btn.active {
         background-color: #007bff;
         color: white;
+    }
+
+    .btn-group .btn i {
+        margin-right: 5px;
+        /* Espacio entre el icono y el texto */
     }
 </style>
 

@@ -18,6 +18,16 @@ class UpdateElderlyAdultRequest extends FormRequest
         return true; // Permitir acceso a cualquier usuario autorizado.
     }
 
+    // Convierte el campo type_of_disability a un array si es un JSON
+    protected function prepareForValidation()
+    {
+        if ($this->has('type_of_disability') && is_string($this->type_of_disability)) {
+            $this->merge([
+                'type_of_disability' => json_decode($this->type_of_disability, true),
+            ]);
+        }
+    }
+
     /**
      * Reglas de validación que se aplican a la solicitud.
      */
@@ -94,7 +104,9 @@ class UpdateElderlyAdultRequest extends FormRequest
                 'exists:guardians,id', // Asegura que el ID exista en la tabla de guardians
             ],
 
-            'type_of_disability' => ['nullable', Rule::in(['Visual', 'Motriz', 'Mental'])],
+            // Lista de tipos de discapacidades
+            'type_of_disability' => 'nullable|array',
+            'type_of_disability.*' => 'in:Visual,Auditiva,Motriz,Mental,Del Habla,Otra',
 
             'permanent_attention' => ['nullable', 'boolean'],
 

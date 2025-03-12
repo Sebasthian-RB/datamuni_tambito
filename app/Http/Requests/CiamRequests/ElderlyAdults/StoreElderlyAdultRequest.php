@@ -18,6 +18,17 @@ class StoreElderlyAdultRequest extends FormRequest
         return true; // Permitir acceso a cualquier usuario autorizado.
     }
 
+    protected function prepareForValidation()
+    {
+        // Convierte el campo type_of_disability a un array si es un JSON
+        if ($this->has('type_of_disability') && is_string($this->type_of_disability)) {
+            $this->merge([
+                'type_of_disability' => json_decode($this->type_of_disability, true),
+            ]);
+        }
+    }
+
+
     /**
      * Reglas de validación que se aplican a la solicitud.
      */
@@ -71,8 +82,8 @@ class StoreElderlyAdultRequest extends FormRequest
             'birth_date' => [
                 'required',
                 'date',
-                'before_or_equal:today', // No puede ser una fecha futura
-                'after_or_equal:' . now()->subYears(120)->format('Y-m-d'), // No debe tener más de 120 años
+                'before_or_equal:' . now()->subYears(60)->format('Y-m-d'), // No puede ser menor de 60 años
+                'after_or_equal:' . now()->subYears(125)->format('Y-m-d'), // No puede ser mayor de 125 años
             ],
 
             'address' => 'nullable|string|max:255',
@@ -88,7 +99,9 @@ class StoreElderlyAdultRequest extends FormRequest
             // **Guardian opcional**
             'guardian_id' => 'nullable|integer|exists:guardians,id',
 
-            'type_of_disability' => ['nullable', Rule::in(['Visual', 'Motriz', 'Mental'])],
+            // Lista de tipos de discapacidades
+            'type_of_disability' => 'nullable|array',
+            'type_of_disability.*' => 'in:Visual,Auditiva,Motriz,Mental,Del Habla,Otra',
 
             'permanent_attention' => ['nullable', 'boolean'],
 
@@ -123,8 +136,8 @@ class StoreElderlyAdultRequest extends FormRequest
             'given_name.required' => 'El nombre es obligatorio.',
             'paternal_last_name.required' => 'El apellido paterno es obligatorio.',
             'birth_date.required' => 'La fecha de nacimiento es obligatoria.',
-            'birth_date.before_or_equal' => 'No puede ser una fecha futura.',
-            'birth_date.after_or_equal' => 'Debe ser menor de 120 años.',
+            'birth_date.before_or_equal' => 'La persona debe tener al menos 60 años.',
+            'birth_date.after_or_equal' => 'La persona no puede tener más de 125 años.',
 
             'address.max' => 'Máximo 255 caracteres.',
             'reference.max' => 'Máximo 255 caracteres.',
