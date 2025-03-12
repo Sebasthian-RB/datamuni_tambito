@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class SfhDashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         // 📌 Total de Visitas Registradas
         $totalVisits = DB::table('visits')->count();
@@ -27,25 +27,6 @@ class SfhDashboardController extends Controller
             ->limit(5)
             ->get();
 
-        // 🎯 Total de Instrumentos Aplicados
-        $totalInstrumentsApplied = DB::table('instrument_visits')->count();
-
-        // 📌 Cantidad de Instrumentos Aplicados por Tipo
-        $instrumentTypeStats = DB::table('instrument_visits')
-            ->join('instruments', 'instrument_visits.instrument_id', '=', 'instruments.id')
-            ->select('instruments.type_instruments', DB::raw('COUNT(instrument_visits.id) as count'))
-            ->groupBy('instruments.type_instruments')
-            ->get();
-
-        // 📑 Últimos Instrumentos Aplicados
-        $recentInstrumentsApplied = DB::table('instrument_visits')
-            ->join('instruments', 'instrument_visits.instrument_id', '=', 'instruments.id')
-            ->join('visits', 'instrument_visits.visit_id', '=', 'visits.id')
-            ->select('instruments.name_instruments', 'instrument_visits.application_date', 'visits.visit_date')
-            ->orderBy('instrument_visits.created_at', 'desc')
-            ->limit(5)
-            ->get();
-
         // 📌 Total de Solicitudes de Ayuda
         $totalRequests = DB::table('sfh_requests')->count();
 
@@ -54,7 +35,7 @@ class SfhDashboardController extends Controller
             ->select(DB::raw('YEAR(request_date) as year, MONTH(request_date) as month, COUNT(id) as count'))
             ->groupBy('year', 'month')
             ->orderBy('year', 'desc')
-            ->orderBy('month', 'desc')
+            ->orderBy('month', 'asc')
             ->get()
             ->map(function ($r) {
                 $r->formatted_date = $r->year . '-' . str_pad($r->month, 2, '0', STR_PAD_LEFT);
@@ -68,30 +49,21 @@ class SfhDashboardController extends Controller
             ->limit(5)
             ->get();
 
-        // 👨‍👩‍👧‍👦 Total de Personas Únicas Asociadas a Viviendas
-        $totalUniquePersonsInDwellings = DB::table('sfh_dwelling_sfh_people')
-            ->distinct('sfh_person_id')
-            ->count('sfh_person_id');
-
-        // 🏠 Cantidad de Viviendas Activas e Inactivas
-        $dwellingStatusStats = DB::table('sfh_dwelling_sfh_people')
-            ->select('status', DB::raw('COUNT(id) as count'))
-            ->groupBy('status')
-            ->get();
+        // 📊 Obtener todos los años disponibles para el selector
+        $years = DB::table('sfh_requests')
+            ->select(DB::raw('DISTINCT YEAR(request_date) as year'))
+            ->orderBy('year', 'desc')
+            ->pluck('year');
 
         // 📊 Pasar datos a la vista
         return view('areas.SisfohViews.SfhDashboard', [
             'totalVisits' => $totalVisits,
             'visitStatusStats' => $visitStatusStats,
             'recentVisits' => $recentVisits,
-            'totalInstrumentsApplied' => $totalInstrumentsApplied,
-            'instrumentTypeStats' => $instrumentTypeStats,
-            'recentInstrumentsApplied' => $recentInstrumentsApplied,
             'totalRequests' => $totalRequests,
             'requestDateStats' => $requestDateStats,
             'recentRequests' => $recentRequests,
-            'totalUniquePersonsInDwellings' => $totalUniquePersonsInDwellings,
-            'dwellingStatusStats' => $dwellingStatusStats,
+            'years' => $years, // Pasamos los años a la vista
         ]);
     }
 }

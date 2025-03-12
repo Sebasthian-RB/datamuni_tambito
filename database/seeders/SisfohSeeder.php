@@ -1,5 +1,4 @@
 <?php
-
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
@@ -47,9 +46,42 @@ class SisfohSeeder extends Seeder
                 'phone_number' => $faker->numerify('9########'),
                 'nationality' => $faker->country,
                 'degree' => $faker->randomElement([
-                    'INICIAL', 'NINGUNO_NIVEL_LETRADO', 'PRIMARIA COMPLETA', 'PRIMARIA INCOMPLETA',
-                    'SECUNDARIA COMPLETA', 'SECUNDARIA INCOMPLETA', 'SUPERIOR COMPLETA', 'SUPERIOR INCOMPLETA',
-                    'ILETRADO/SIN INSTRUCCION', 'TECNICA COMPLETA', 'TECNICA INCOMPLETA', 'EDUCACION ESPECIAL'
+                    'INICIAL',
+                'NINGUNO_NIVEL_LETRADO',
+                'PRIMARIA COMPLETA',
+                'PRIMARIA-1ER GRADO',
+                'PRIMARIA-2DO GRADO',
+                'PRIMARIA-3ER GRADO',
+                'PRIMARIA-4TO GRADO',
+                'PRIMARIA-5TO GRADO',
+                'PRIMARIA-6TO GRADO',
+                'PRIMARIA INCOMPLETA',
+                'SECUNDARIA COMPLETA',
+                'SECUNDARIA-1ER AÑO',
+                'SECUNDARIA-2DO AÑO',
+                'SECUNDARIA-3ER AÑO',
+                'SECUNDARIA-4TO AÑO',
+                'SECUNDARIA-5TO AÑO',
+                'SECUNDARIA INCOMPLETA',
+                'SUPERIOR COMPLETA',
+                'SUPERIOR-1ER AÑO',
+                'SUPERIOR-2DO AÑO',
+                'SUPERIOR-3ER AÑO',
+                'SUPERIOR-4TO AÑO',
+                'SUPERIOR-5TO AÑO',
+                'SUPERIOR-6TO AÑO',
+                'SUPERIOR-7MO AÑO',
+                'SUPERIOR-8VO AÑO',
+                'SUPERIOR INCOMPLETA',
+                'ILETRADO/SIN INSTRUCCION',
+                'TECNICA COMPLETA',
+                'TECNICA-1ER AÑO',
+                'TECNICA-2DO AÑO',
+                'TECNICA-3ER AÑO',
+                'TECNICA-4TO AÑO',
+                'TECNICA-5TO AÑO',
+                'TECNICA IMCOMPLETA',
+                'EDUCACION ESPECIAL'
                 ]),
                 'occupation' => $faker->jobTitle,
                 'sfh_category' => $faker->randomElement(['No pobre', 'Pobre', 'Pobre extremo']),
