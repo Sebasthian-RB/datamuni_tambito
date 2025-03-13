@@ -49,11 +49,11 @@
         new Chart(document.getElementById('adultsByAgeChart'), {
             type: 'bar',
             data: {
-                labels: @json($adultsByAge - > pluck('age')), // Edades
+                labels: @json($adultsByAge -> pluck('age')), // Edades
                 datasets: [{
                     label: 'Cantidad de adultos',
-                    data: @json($adultsByAge - > pluck('count')), // Cantidad de adultos por edad
-                    backgroundColor: generateGradientColors(@json($adultsByAge - > count())) // Colores degradados
+                    data: @json($adultsByAge -> pluck('count')), // Cantidad de adultos por edad
+                    backgroundColor: generateGradientColors(@json($adultsByAge -> count())) // Colores degradados
                 }]
             },
             options: {

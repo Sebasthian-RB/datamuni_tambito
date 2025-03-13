@@ -68,9 +68,9 @@
         new Chart(document.getElementById('visitStatusChart'), {
             type: 'pie',
             data: {
-                labels: @json($visitStatusStats - > pluck('status')),
+                labels: @json($visitStatusStats -> pluck('status')),
                 datasets: [{
-                    data: @json($visitStatusStats - > pluck('count')),
+                    data: @json($visitStatusStats -> pluck('count')),
                     backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56']
                 }]
             }
