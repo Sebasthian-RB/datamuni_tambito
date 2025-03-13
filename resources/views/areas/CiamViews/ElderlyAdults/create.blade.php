@@ -152,6 +152,9 @@
                             <label class="form-check-label" for="language_otro">Otro</label>
                         </div>
                     </div>
+                    @error('language')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <!-- Teléfono -->

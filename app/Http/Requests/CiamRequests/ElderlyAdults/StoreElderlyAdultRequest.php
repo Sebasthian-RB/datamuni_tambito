@@ -143,6 +143,7 @@ class StoreElderlyAdultRequest extends FormRequest
             'reference.max' => 'Máximo 255 caracteres.',
             'sex_type.required' => 'El sexo es obligatorio.',
             'sex_type.in' => 'El valor seleccionado para el sexo no es válido.',
+            'language.required' => 'Debe seleccionar al menos un idioma.',
             'language.*.in' => 'El idioma seleccionado no es válido.',
             'phone_number.regex' => 'El número de teléfono debe contener exactamente 9 dígitos numéricos.',
 
