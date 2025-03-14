@@ -20,7 +20,7 @@
                     
                     <div class="text-center card-header" 
                         style="background: #028a0f; color: white; border-radius: 15px 15px 0 0;">
-                        <h3 class="mb-0 card-title">Editar Encuestador</h3>
+                        <h3 class="mb-0 card-title">Editar Empadronador(a)</h3>
                     </div>
 
                     <div class="card-body" 

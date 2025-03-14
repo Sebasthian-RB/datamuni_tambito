@@ -55,6 +55,21 @@ class SfhDashboardController extends Controller
             ->orderBy('year', 'desc')
             ->pluck('year');
 
+        // 📊 Contar personas por categoría SISFOH
+        $sisfohCategoryStats = DB::table('sfh_people') // Asegúrate de que esta tabla existe
+            ->select('sfh_category', DB::raw('COUNT(id) as count'))
+            ->groupBy('sfh_category')
+            ->get();
+
+        // Preparar los datos para el gráfico
+        $sisfohLabels = [];
+        $sisfohData = [];
+
+        foreach ($sisfohCategoryStats as $category) {
+            $sisfohLabels[] = $category->sfh_category; // Categorías (No pobre, Pobre, Pobre extremo)
+            $sisfohData[] = $category->count;         // Cantidad de personas en cada categoría
+        }
+
         // 📊 Pasar datos a la vista
         return view('areas.SisfohViews.SfhDashboard', [
             'totalVisits' => $totalVisits,
@@ -64,6 +79,8 @@ class SfhDashboardController extends Controller
             'requestDateStats' => $requestDateStats,
             'recentRequests' => $recentRequests,
             'years' => $years, // Pasamos los años a la vista
+            'sisfohLabels' => $sisfohLabels, // Etiquetas para el gráfico
+            'sisfohData' => $sisfohData,     // Datos para el gráfico
         ]);
     }
 }

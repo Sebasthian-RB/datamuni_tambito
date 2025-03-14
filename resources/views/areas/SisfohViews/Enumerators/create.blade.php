@@ -12,7 +12,7 @@
 @section('content')
 <div class="shadow-lg card" style="border-radius: 15px; max-width: 800px; margin: 2rem auto;">
     <div class="text-white card-header bg-success" style="border-radius: 15px 15px 0 0;">
-        <h3 class="mb-0 card-title">Ingresar Nuevo Encuestador</h3>
+        <h3 class="mb-0 card-title">Ingresar Nuevo Empadronador(a)</h3>
     </div>
     
     <div class="card-body">

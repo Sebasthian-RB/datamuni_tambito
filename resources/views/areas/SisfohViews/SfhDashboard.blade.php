@@ -43,6 +43,20 @@
         </div>
     </div>
 </div>
+
+<!-- NUEVO GRÁFICO: Distribución de Categorías SISFOH -->
+<div class="mt-4 row">
+    <div class="col-lg-12">
+        <div class="mb-4 card">
+            <div class="text-white card-header" style="background-color: #FF9800;">
+                <h5>Distribución de Categorías SISFOH</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="sisfohChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
 @stop
 
 @section('js')
@@ -166,6 +180,33 @@
 
         // 🔄 Cargar datos iniciales
         updateChart();
+
+        // 📊 Nuevo gráfico: Distribución de Categorías SISFOH
+        new Chart(document.getElementById('sisfohChart'), {
+            type: 'doughnut', // Tipo de gráfico: corona (doughnut)
+            data: {
+                labels: @json($sisfohLabels),
+                datasets: [{
+                    label: 'Cantidad de Personas',
+                    data: @json($sisfohData),
+                    backgroundColor: ['#FF5722', '#FFC107', '#4CAF50'], // Colores personalizados
+                    borderColor: ['#FF5722', '#FFC107', '#4CAF50'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Distribución de Categorías SISFOH'
+                    }
+                }
+            }
+        });
     });
 </script>
 @stop
