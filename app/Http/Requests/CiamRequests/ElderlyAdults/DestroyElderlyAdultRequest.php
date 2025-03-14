@@ -27,22 +27,4 @@ class DestroyElderlyAdultRequest extends FormRequest
     {
         return [];
     }
-
-    /**
-     * Realiza validaciones adicionales antes de proceder con la eliminación.
-     */
-    protected function passedValidation()
-    {
-        $elderlyAdultId = $this->route('elderly_adult');
-
-        // Verificar si el adulto mayor tiene un guardián asignado
-        $hasGuardian = DB::table('elderly_adults')
-            ->where('id', $elderlyAdultId)
-            ->whereNotNull('guardian_id')
-            ->exists();
-
-        if ($hasGuardian) {
-            abort(403, 'No se puede eliminar este adulto mayor porque tiene un guardián asignado.');
-        }
-    }
 }

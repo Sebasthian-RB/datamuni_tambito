@@ -115,12 +115,29 @@ class ElderlyAdultController extends Controller
     {
         try {
             DB::beginTransaction();
+
+            // Verificar si el adulto mayor tiene un guardián asignado
+            if ($elderlyAdult->guardian_id !== null) {
+                // Desasignar al guardián
+                $elderlyAdult->guardian_id = null;
+                $elderlyAdult->save();
+
+                // Mostrar un mensaje de advertencia
+                session()->flash('warning', 'El guardián ha sido desasignado de este adulto mayor.');
+            }
+
+            // Eliminar al adulto mayor
             $elderlyAdult->delete();
+
             DB::commit();
-            return redirect()->route('elderly_adults.index')->with('success', 'Adulto mayor eliminado exitosamente.');
+
+            // Redirigir con un mensaje de éxito
+            return redirect()->route('elderly_adults.index')->with('success', 'Adulto mayor eliminado correctamente.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'Ocurrió un error al eliminar el adulto mayor.');
+
+            // Redirigir con un mensaje de error
+            return redirect()->back()->with('error', 'No se pudo eliminar el adulto mayor.');
         }
     }
 }

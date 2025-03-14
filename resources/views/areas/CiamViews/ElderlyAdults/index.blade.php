@@ -27,11 +27,22 @@
 
     </div>
 
-    <!-- Mensaje de éxito -->
+    <!-- Mensajes de éxito, error y advertencia -->
     @if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="alert alert-success auto-dismiss" role="alert">
+        <strong>Éxito:</strong> {{ session('success') }}
+    </div>
+    @endif
+
+    @if(session('error'))
+    <div class="alert alert-danger auto-dismiss" role="alert">
+        <strong>Error:</strong> {{ session('error') }}
+    </div>
+    @endif
+
+    @if(session('warning'))
+    <div class="alert alert-warning auto-dismiss" role="alert">
+        <strong>Advertencia:</strong> {{ session('warning') }}
     </div>
     @endif
 
@@ -83,6 +94,7 @@
                             <a href="{{ route('elderly_adults.edit', $elderlyAdult->id) }}" class="btn btn-sm text-white" style="background-color: #CAE0BC;">
                                 <i class="fas fa-edit"></i> Editar
                             </a>
+                            <!-- Botones de acciones -->
                             <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $elderlyAdult->id }}">
                                 <i class="fas fa-trash-alt"></i> Eliminar
                             </button>
@@ -95,10 +107,16 @@
                             <div class="modal-content">
                                 <div class="modal-header" style="background-color: #780C28; color: white;">
                                     <h5 class="modal-title" id="deleteModalLabel">Confirmar Eliminación</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     ¿Estás seguro de que deseas eliminar a <strong>{{ $elderlyAdult->given_name }} {{ $elderlyAdult->paternal_last_name }}</strong>?
+
+                                    <!-- Mensaje de advertencia si tiene un guardián asignado -->
+                                    @if ($elderlyAdult->guardian_id !== null)
+                                    <div class="alert alert-warning mt-3">
+                                        <strong>Advertencia:</strong> El guardián <strong>{{ $elderlyAdult->guardian->given_name }} {{ $elderlyAdult->guardian->paternal_last_name }}</strong> quedará desasignado de este adulto mayor.
+                                    </div>
+                                    @endif
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -120,7 +138,9 @@
 @stop
 
 @section('css')
-
+<!-- Incluir Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+<!-- Incluir DataTables CSS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 
 <style>
@@ -268,9 +288,52 @@
     }
 </style>
 
+<style>
+    /* DISEÑO PARA Mensajes de éxito, error y advertencia  */
+    .alert {
+        border-radius: 8px;
+        /* Bordes redondeados */
+        padding: 15px;
+        /* Espaciado interno */
+        margin-bottom: 20px;
+        /* Margen inferior */
+    }
+
+    .alert strong {
+        font-size: 1.1em;
+        /* Tamaño de fuente más grande para el texto destacado */
+    }
+
+    .btn-close {
+        padding: 0.75rem;
+        /* Espaciado para el botón de cierre */
+    }
+</style>
+
+<style>
+    /* Animación de desvanecimiento para los mensajes*/
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+        }
+
+        to {
+            opacity: 0;
+        }
+    }
+
+    /* Clase para aplicar la animación */
+    .fade-out {
+        animation: fadeOut 0.5s ease-in-out forwards;
+        /* Duración de 0.5 segundos */
+    }
+</style>
 @stop
 
 @section('js')
+<!-- Incluir Bootstrap JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script>
     $(document).ready(function() {
@@ -282,5 +345,22 @@
             autoWidth: false,
         });
     });
+</script>
+
+<!-- Script para hacer que los mensajes desaparezcan automáticamente -->
+<script>
+    // Desvanecer y eliminar los mensajes después de 5 segundos (5000 ms)
+    setTimeout(function() {
+        const alerts = document.querySelectorAll('.auto-dismiss');
+        alerts.forEach(alert => {
+            // Agregar la clase de desvanecimiento
+            alert.classList.add('fade-out');
+
+            // Eliminar el mensaje del DOM después de que termine la animación
+            alert.addEventListener('animationend', () => {
+                alert.remove();
+            });
+        });
+    }, 5000);
 </script>
 @stop
