@@ -3,6 +3,7 @@
 namespace App\Http\Requests\VasoDeLecheRequests\VlFamilyMembers;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 /**
  * Form Request para crear un miembro familiar.
@@ -46,6 +47,7 @@ class StoreVlFamilyMemberRequest extends FormRequest
                 'min:' . $this->maxIdLength,  // Aplica la longitud mínima
                 'max:' . $this->maxIdLength,  // Aplica la longitud máxima                'unique:vl_family_members,id', //El id debe ser único
                 'regex:/^\d+$/', // El id debe ser un número entero
+                Rule::unique('vl_family_members')
             ],
             'identity_document' => [
                 'required',

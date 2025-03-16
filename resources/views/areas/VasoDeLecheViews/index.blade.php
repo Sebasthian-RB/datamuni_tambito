@@ -105,7 +105,7 @@
         <!-- Contenedor de Texto -->
         <div class="text-container">
             <h1 class="welcome-text">
-                BIENVENIDO A VASO DE LECHE
+                BIENVENIDO AL PROGRAMA DE VASO DE LECHE
             </h1>
         </div>
 

@@ -91,6 +91,14 @@ class VlMinorController extends Controller
         // Validación de datos y creación del registro
         VlMinor::create($request->validated());
 
+        // Si es una solicitud AJAX, retorna JSON
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Menor creado correctamente.',
+            ]);
+        }
+
         // Redirección con mensaje de éxito
         return redirect()->route('vl_minors.index')->with('success', 'Menor registrado correctamente.');
     }
