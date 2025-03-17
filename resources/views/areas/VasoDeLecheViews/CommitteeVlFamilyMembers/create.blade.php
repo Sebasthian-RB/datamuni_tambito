@@ -1454,8 +1454,8 @@
                 $('#minor-details-container').empty(); // Limpiar todos los cards existentes
         
                 if (minorsData.length > 0) {
-                    // Crear una fila (row) para los cards, ahora con dos columnas por fila
-                    const rowHTML = $('<div class="row row-cols-1 row-cols-md-2 g-4"></div>'); // row-cols-md-2 para 2 cards por fila
+                    // Crear una fila (row) para los cards
+                    const rowHTML = $('<div class="row row-cols-1 g-4"></div>'); // row-cols-md-2 para 2 cards por fila
         
                     minorsData.forEach(function(minor) {
                         originalMinorValues[minor.id] = { ...minor }; // Guardar valores originales
@@ -1518,7 +1518,7 @@
                                         <!-- Contenedor para las dos columnas -->
                                         <div class="row">
                                             <!-- Columna 1: Información básica + Apellidos y nombres -->
-                                            <div class="col-12">
+                                            <div class="col-md-6">
                                                 <!-- Información básica -->
                                                 <div class="info-box d-flex justify-content-between align-items-center" style="background: white; border-radius: 10px; padding: 15px 20px; border-left: 4px solid #B8B8B8; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.05);">
                                                     <div>
@@ -1560,7 +1560,7 @@
                                             </div>
 
                                             <!-- Columna 2: Información adicional -->
-                                            <div class="col-12">
+                                            <div class="col-md-6">
                                                 <div class="info-box d-flex flex-column mt-3" style="background: white; border-radius: 10px; padding: 15px 20px; border-left: 4px solid #B8B8B8; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.05);">
                                                     
                                                     <div class="row g-3 align-items-center">
@@ -1582,71 +1582,75 @@
                                                             </select>                                                   
                                                         </div>
                                                     </div>
+
+                                                    <div class="row g-3 align-items-center">
+                                                        <div class="col-md-4 mb-1">
+                                                            <label style="color: #3B1E54; font-weight: 600; font-size: 14px; padding-top: 15px;">
+                                                                <i class="fas fa-clipboard-list"></i> Condición
+                                                            </label>
+                                                            <select class="form-control" id="condition_${minor.id}" disabled 
+                                                                style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
+                                                                ${@json($conditions).map(condition => 
+                                                                    `<option value="${condition}" ${minor.condition === condition ? 'selected' : ''}>${condition}</option>`
+                                                                ).join('')}
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-4 mb-1">
+                                                            <label style="color: #3B1E54; font-weight: 600; font-size: 14px; padding-top: 15px;">
+                                                                <i class="fas fa-users"></i> Relación
+                                                            </label>
+                                                            <select class="form-control" id="kinship_${minor.id}" disabled 
+                                                                style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
+                                                                ${@json($kinships).map(kinship => 
+                                                                    `<option value="${kinship}" ${minor.kinship === kinship ? 'selected' : ''}>${kinship}</option>`
+                                                                ).join('')}
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="col-md-4 mb-1">
+                                                            <label style="color: #3B1E54; font-weight: 600; font-size: 14px; padding-top: 15px;">
+                                                                <i class="fas fa-wheelchair"></i> Discapacidad
+                                                            </label>
+                                                            <select class="form-control" id="disability_${minor.id}" disabled 
+                                                                style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
+                                                                ${Object.entries(@json($disabilities)).map(([disability, value]) => 
+                                                                    `<option value="${disability}" ${minor.disability == disability ? 'selected' : ''}>${value}</option>`
+                                                                ).join('')}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
                                                     <div>
                                                         <label style="color: #3B1E54; font-weight: 600; font-size: 14px; padding-top: 15px;">
                                                             <i class="fas fa-map-marker-alt"></i> Dirección
                                                         </label>
                                                         <input type="text" class="form-control" id="address_${minor.id}" disabled value="${minor.address}" style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
                                                     </div>
-                                                    <div>
-                                                        <label style="color: #3B1E54; font-weight: 600; font-size: 14px; padding-top: 15px;">
-                                                            <i class="fas fa-home"></i> Tipo de Vivienda
-                                                        </label>
-                                                        <select class="form-control" id="dwelling_type_${minor.id}" disabled 
-                                                            style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
-                                                            ${@json($dwellingTypes).map(dwelling => 
-                                                                `<option value="${dwelling}" ${minor.dwelling_type === dwelling ? 'selected' : ''}>${dwelling}</option>`
-                                                            ).join('')}
-                                                        </select>
 
-                                                    </div>
-                                                    
-                                                    <div>
-                                                        <label style="color: #3B1E54; font-weight: 600; font-size: 14px; padding-top: 15px;">
-                                                            <i class="fas fa-graduation-cap"></i> Nivel de Educación
-                                                        </label>
-                                                        <select class="form-control" id="education_level_${minor.id}" disabled 
-                                                            style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
-                                                            ${@json($educationLevels).map(level => 
-                                                                `<option value="${level}" ${minor.education_level === level ? 'selected' : ''}>${level}</option>`
-                                                            ).join('')}
-                                                        </select>
-
-                                                    </div>
-                                                    <div>
-                                                        <label style="color: #3B1E54; font-weight: 600; font-size: 14px; padding-top: 15px;">
-                                                            <i class="fas fa-clipboard-list"></i> Condición
-                                                        </label>
-                                                        <select class="form-control" id="condition_${minor.id}" disabled 
-                                                            style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
-                                                            ${@json($conditions).map(condition => 
-                                                                `<option value="${condition}" ${minor.condition === condition ? 'selected' : ''}>${condition}</option>`
-                                                            ).join('')}
-                                                        </select>
-                                                    </div>
-                                                    <div>
-                                                        <label style="color: #3B1E54; font-weight: 600; font-size: 14px; padding-top: 15px;">
-                                                            <i class="fas fa-users"></i> Relación
-                                                        </label>
-                                                        <select class="form-control" id="kinship_${minor.id}" disabled 
-                                                            style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
-                                                            ${@json($kinships).map(kinship => 
-                                                                `<option value="${kinship}" ${minor.kinship === kinship ? 'selected' : ''}>${kinship}</option>`
-                                                            ).join('')}
-                                                        </select>
-
-                                                    </div>
-                                                    <div>
-                                                        <label style="color: #3B1E54; font-weight: 600; font-size: 14px; padding-top: 15px;">
-                                                            <i class="fas fa-wheelchair"></i> Discapacidad
-                                                        </label>
-                                                        <select class="form-control" id="disability_${minor.id}" disabled 
-                                                            style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
-                                                            ${Object.entries(@json($disabilities)).map(([disability, value]) => 
-                                                                `<option value="${disability}" ${minor.disability == disability ? 'selected' : ''}>${value}</option>`
-                                                            ).join('')}
-                                                        </select>
-
+                                                    <div class="row g-3 align-items-center">
+                                                        <div class="col-md-6 mb-1">
+                                                            <label style="color: #3B1E54; font-weight: 600; font-size: 14px; padding-top: 15px;">
+                                                                <i class="fas fa-home"></i> Tipo de Vivienda
+                                                            </label>
+                                                            <select class="form-control" id="dwelling_type_${minor.id}" disabled 
+                                                                style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
+                                                                ${@json($dwellingTypes).map(dwelling => 
+                                                                    `<option value="${dwelling}" ${minor.dwelling_type === dwelling ? 'selected' : ''}>${dwelling}</option>`
+                                                                ).join('')}
+                                                            </select>
+                                                        </div>
+                                                        
+                                                        <div class="col-md-6 mb-1">
+                                                            <label style="color: #3B1E54; font-weight: 600; font-size: 14px; padding-top: 15px;">
+                                                                <i class="fas fa-graduation-cap"></i> Nivel de Educación
+                                                            </label>
+                                                            <select class="form-control" id="education_level_${minor.id}" disabled 
+                                                                style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
+                                                                ${@json($educationLevels).map(level => 
+                                                                    `<option value="${level}" ${minor.education_level === level ? 'selected' : ''}>${level}</option>`
+                                                                ).join('')}
+                                                            </select>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1943,67 +1947,107 @@
     <!-- Script para el modal de creación de menor -->
     <script>
         $(document).ready(function() {
-            // Actualizar el ID del familiar al abrir el modal
             $('#minorsModal').on('show.bs.modal', function() {
                 const selectedFamilyId = $('#vl_family_member_id').val();
                 $('#selected_family_member_id').val(selectedFamilyId);
             });
-
+    
             $('#addMinorForm').on('submit', function(e) {
                 e.preventDefault();
                 
                 const form = $(this);
                 const url = form.attr('action');
-                const familyMemberId = $('#vl_family_member_id').val();
-                $('#selected_family_member_id').val(familyMemberId);
-
+    
                 $.ajax({
                     url: url,
                     method: 'POST',
                     data: form.serialize(),
                     dataType: 'json',
                     success: function(response) {
-                        // Cerrar modal y limpiar
                         $('#minorsModal').modal('hide');
-                        $('.modal-backdrop').remove();
-                        form[0].reset();
-                        
-                        // Limpiar errores
-                        $('.invalid-feedback').remove();
-                        $('.is-invalid').removeClass('is-invalid');
-                        
-                        // Actualizar tabla de menores si existe
-                        if(typeof window.updateMinorsTable === 'function') {
-                            window.updateMinorsTable();
+
+                        setTimeout(() => {
+                            form[0].reset();
+                            $('.invalid-feedback').remove();
+                            $('.is-invalid').removeClass('is-invalid');
+                        }, 300);
+
+                        // Verificar que la respuesta contiene los datos esperados
+                        if (!response.data) {
+                            console.error('❌ Error: No se recibieron datos válidos del servidor.');
+                            toastr.error('Error al registrar el menor. Inténtalo de nuevo.');
+                            return;
                         }
+
+                        const minorData = response.data;
+                        console.log("✅ Datos del menor:", minorData);
+
+                        // Verificar que los atributos obligatorios están presentes
+                        const requiredFields = ['id', 'identity_document', 'given_name', 'paternal_last_name', 'birth_date', 'sex_type', 'condition', 'kinship'];
+                        const missingFields = requiredFields.filter(field => minorData[field] === undefined || minorData[field] === null || minorData[field] === '');
                         
-                        // Mostrar notificación
-                        toastr.success('Menor registrado exitosamente');
+                        if (missingFields.length > 0) {
+                            console.error('❌ Faltan los siguientes campos obligatorios:', missingFields);
+                            toastr.error('Error en los datos recibidos. Faltan campos obligatorios.');
+                            return;
+                        }
+
+                        const selectedOption = $('#vl_family_member_id option:selected');
+                        const currentMinors = JSON.parse(selectedOption.attr('data-minors') || '[]');
+
+                        currentMinors.push({
+                            id: minorData.id,  // Obligatorio, no se asigna valor por defecto
+                            identity_document: minorData.identity_document,
+                            given_name: minorData.given_name,
+                            paternal_last_name: minorData.paternal_last_name,
+                            maternal_last_name: minorData.maternal_last_name ?? null, // Nullable
+                            birth_date: minorData.birth_date.split('T')[0], 
+                            sex_type: Boolean(minorData.sex_type),
+                            registration_date: new Date().toISOString().split('T')[0], // Fecha actual
+                            condition: minorData.condition,
+                            kinship: minorData.kinship,
+                            // Campos opcionales
+                            address:cleanValue(minorData.address),
+                            dwelling_type: minorData.dwelling_type ?? null,
+                            education_level: minorData.education_level ?? null,
+                            disability: minorData.disability !== undefined ? Boolean(minorData.disability) : null,
+                            status: true, // Siempre activo por defecto
+                            vl_family_member_id: selectedOption.val()
+                        });
+
+                        selectedOption.attr('data-minors', JSON.stringify(currentMinors));
+                        $('#vl_family_member_id').trigger('change');
+
+                        toastr.success(response.message || 'Menor registrado exitosamente');
                     },
+
                     error: function(xhr) {
                         if(xhr.status === 422) {
                             const errors = xhr.responseJSON.errors;
                             $('.invalid-feedback').remove();
                             $('.is-invalid').removeClass('is-invalid');
                             
-                            // Mostrar errores en los campos correspondientes
                             Object.keys(errors).forEach(field => {
                                 const input = form.find(`[name="${field}"]`);
                                 input.addClass('is-invalid');
                                 input.after(`<div class="invalid-feedback">${errors[field][0]}</div>`);
                             });
                         } else {
-                            toastr.error('Error inesperado al procesar la solicitud');
+                            toastr.error(xhr.responseJSON.message || 'Error inesperado al procesar la solicitud');
                         }
                     }
                 });
             });
-
+    
             // Limpiar el formulario al cerrar el modal
             $('#minorsModal').on('hidden.bs.modal', function() {
                 $(this).find('form')[0].reset();
                 $('.invalid-feedback').remove();
                 $('.is-invalid').removeClass('is-invalid');
+                
+                // Eliminar backdrop residual
+                $('.modal-backdrop').remove();
+                $('body').removeClass('modal-open').css('padding-right', '');
             });
         });
     </script>
