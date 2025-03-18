@@ -13,13 +13,15 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::paginate(20);
+        $users = User::whereDoesntHave('roles', function ($query) {
+            $query->where('name', 'Super Administrador');
+        })->paginate(20);
         return view('users.index', compact('users'));
     }
 
     public function create()
     {
-        $roles = Role::all(); // Obtener todos los roles como objetos
+        $roles = Role::where('name', '!=', 'Super Administrador')->get(); // Obtener todos los roles como objetos
         $permissions = Permission::all(); // Obtener todos los permisos con su información
         return view('users.create', compact('roles', 'permissions'));
     }
@@ -36,7 +38,7 @@ class UserController extends Controller
                 'regex:/[0-9]/', // Al menos un número
                 'regex:/[@$!%*?&]/' // Al menos un carácter especial opcional
             ],
-            'role' => 'required|exists:roles,name',
+            'role' => 'required|exists:roles,name|not_in:Super Administrador', // 🔥 Evita asignar "Super Administrador"
         ], [
             'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
             'password.regex' => 'La contraseña debe incluir al menos una mayúscula, un número y un carácter especial (@$!%*?&).',
@@ -68,7 +70,7 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        $roles = Role::all();
+        $roles = Role::where('name', '!=', 'Super Administrador')->get();
         $permissions = Permission::all(); // Obtener todos los permisos con su información
         return view('users.edit', compact('user', 'roles', 'permissions'));
     }
@@ -85,7 +87,7 @@ class UserController extends Controller
                 'regex:/[0-9]/',
                 'regex:/[@$!%*?&]/'
             ],
-            'role' => 'required|exists:roles,name',
+            'role' => 'required|exists:roles,name|not_in:Super Administrador', // 🔥 Evita asignar "Super Administrador"
         ], [
             'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
             'password.regex' => 'La contraseña debe incluir al menos una mayúscula, un número y un carácter especial (@$!%*?&).',
@@ -114,6 +116,9 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
+        if ($user->hasRole('Super Administrador')) {
+            return redirect()->route('users.index')->with('error', 'No puedes eliminar al Super Administrador.');
+        }
         $user->delete();
 
         return redirect()->route('users.index')->with('success', 'Usuario eliminado correctamente.');

