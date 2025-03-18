@@ -73,7 +73,7 @@ class VasoDeLecheSeeder extends Seeder
         // Crear 10 registros de ejemplo
         for ($i = 0; $i < 10; $i++) {
             DB::table('vl_family_members')->insert([
-                'id' => $faker->unique()->numerify('#######'),  // Genera un número único como ID
+                'id' => $faker->unique()->numerify('########'),  // Genera un número único como ID
                 'identity_document' => $faker->randomElement(['DNI', 'Cédula', 'Pasaporte']),  // Tipo de documento
                 'given_name' => $faker->firstName,  // Nombre
                 'paternal_last_name' => $faker->lastName,  // Apellido paterno
@@ -89,7 +89,7 @@ class VasoDeLecheSeeder extends Seeder
         // Crear 10 registros para la tabla vl_minors
         for ($i = 0; $i < 10; $i++) {
             DB::table('vl_minors')->insert([
-                'id' => $faker->unique()->numerify('#######'),  // Generar un ID único para el menor
+                'id' => $faker->unique()->numerify('########'),  // Generar un ID único para el menor
                 'identity_document' => $faker->randomElement(['DNI', 'Cédula', 'Pasaporte']),
                 'given_name' => $faker->firstName,
                 'paternal_last_name' => $faker->lastName,

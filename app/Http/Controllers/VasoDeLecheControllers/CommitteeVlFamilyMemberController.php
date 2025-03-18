@@ -80,8 +80,8 @@ class CommitteeVlFamilyMemberController extends Controller
         ];
 
         $disabilities = [
-            1 => 'Activo',
-            0 => 'Inactiv',
+            1 => 'Sí',
+            0 => 'No',
         ];
 
         return view('areas.VasoDeLecheViews.CommitteeVlFamilyMembers.create', compact(

@@ -1536,7 +1536,7 @@
                                                 </div>
 
                                                 <!-- Apellidos y nombres -->
-                                                <div class="info-box d-flex flex-column mt-3" style="background: white; border-radius: 10px; padding: 15px 20px; border-left: 4px solid #B8B8B8; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.05);">
+                                                <div class="info-box d-flex flex-column mt-4" style="background: white; border-radius: 10px; padding: 15px 20px; border-left: 4px solid #B8B8B8; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.05);">
                                                     <div class="d-flex justify-content-between">
                                                         <div>
                                                             <label style="color: #3B1E54; font-weight: 600; font-size: 14px;">
@@ -1561,7 +1561,7 @@
 
                                             <!-- Columna 2: Información adicional -->
                                             <div class="col-md-6">
-                                                <div class="info-box d-flex flex-column mt-3" style="background: white; border-radius: 10px; padding: 15px 20px; border-left: 4px solid #B8B8B8; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.05);">
+                                                <div class="info-box d-flex flex-column" style="background: white; border-radius: 10px; padding: 15px 20px; border-left: 4px solid #B8B8B8; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.05);">
                                                     
                                                     <div class="row g-3 align-items-center">
                                                         <div class="col-md-6 mb-1">
@@ -1825,6 +1825,7 @@
                     disability: $(`#disability_${minorId}`).val() !== undefined ? parseInt($(`#disability_${minorId}`).val()) : (originalMinorValues[minorId]?.disability ? 1 : 0),
                     kinship: $(`#kinship_${minorId}`).val() || originalMinorValues[minorId]?.kinship || "Hijo(a)",
                     vl_family_member_id: $(`#vl_family_member_id_${minorId}`).val() || originalMinorValues[minorId]?.vl_family_member_id || "",
+                    status: $(`#status_${minorId}`).val() !== undefined ? parseInt($(`#status_${minorId}`).val()) : (originalMinorValues[minorId]?.status ? 1 : 0),
                 };
 
                 // Función para formatear fechas correctamente
@@ -1858,17 +1859,19 @@
                     error: function(xhr) {
                         if (xhr.status === 422) {
                             let errors = xhr.responseJSON.errors;
-                            $('.invalid-feedback').remove();
-                            $('.is-invalid').removeClass('is-invalid');
+                            // Eliminar mensajes previos
+                            $(`#minor-details-${minorId} .invalid-feedback`).remove();
+                            $(`#minor-details-${minorId} .is-invalid`).removeClass('is-invalid');
 
+                            // Mostrar nuevos errores
                             $.each(errors, function(key, messages) {
                                 let inputField = $(`#${key}_${minorId}`);
                                 inputField.addClass('is-invalid');
                                 inputField.after(`<div class="invalid-feedback">${messages[0]}</div>`);
                             });
                         } else {
-                            console.log(xhr.responseText);
-                            alert('Error al actualizar los datos: ' + xhr.responseText);
+                            console.error('Error:', xhr.responseText);
+                            alert('Error al actualizar los datos.');
                         }
                     }
                 });
