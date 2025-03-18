@@ -16,8 +16,6 @@
                 <a href="{{ route('users.create') }}" class="btn btn-light btn-sm">
                     <i class="fas fa-user-plus"></i> Nuevo Usuario
                 </a>
-
-                
             </div>
         </div>
         <div class="card-body p-0">
@@ -69,7 +67,7 @@
                                             </a>
                                             <a class="dropdown-item" href="{{ route('users.edit', $user) }}">
                                                 <i class="fas fa-edit text-warning"></i> Editar
-                                            </a>                                           
+                                            </a>
                                             <div class="dropdown-divider"></div>
                                             <form action="{{ route('users.destroy', $user) }}" method="POST"
                                                 class="d-inline">
@@ -123,12 +121,6 @@
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-        }
-
-        .table-hover tbody tr:hover {
-            background-color: #f8f9fa;
-            transform: scale(1.005);
-            transition: transform 0.2s ease;
         }
 
         .user-badge {

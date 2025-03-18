@@ -81,69 +81,83 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 
-    // Rutas de las vista para el administrador
-    Route::resource('users', UserController::class);
-    Route::resource('roles', RoleController::class);
-    Route::resource('permissions', PermissionController::class);
-    Route::get('users/{user}/assign-permissions', [UserController::class, 'assignPermissionsForm'])->name('users.assignPermissionsForm');
-    Route::post('users/{user}/assign-permissions', [UserController::class, 'assignPermissions'])->name('users.assignPermissions');
+    // Rutas para el Administrador (puede acceder a todo)
+    Route::middleware('role:Administrador')->group(function () {
+        Route::resource('users', UserController::class);
+        Route::resource('roles', RoleController::class);
+        Route::resource('permissions', PermissionController::class);
+        Route::get('users/{user}/assign-permissions', [UserController::class, 'assignPermissionsForm'])->name('users.assignPermissionsForm');
+        Route::post('users/{user}/assign-permissions', [UserController::class, 'assignPermissions'])->name('users.assignPermissions');
+    });
+
+    // 🔥 Área de la Mujer
+    Route::middleware('role:Área de la Mujer|Administrador')->group(function () {
+        Route::resource('am_people', AmPersonController::class);
+        Route::resource('interventions', InterventionController::class);
+        Route::resource('violences', ViolenceController::class);
+        Route::resource('programs', ProgramController::class);
+        Route::resource('events', EventController::class);
+        Route::resource('am_person_interventions', AmPersonInterventionController::class);
+        Route::resource('am_person_violences', AmPersonViolenceController::class);
+        Route::resource('am_person_events', AmPersonEventController::class);
+        Route::get('/am_dashboard', [AmDashboardController::class, 'index'])->name('amdashboard');
+    });
     
-    // Rutas de los controladores de Área de la Mujer dentro del grupo de autenticación
-    Route::resource('am_people', AmPersonController::class);
-    Route::resource('interventions', InterventionController::class);
-    Route::resource('violences', ViolenceController::class);
-    Route::resource('programs', ProgramController::class);
-    Route::resource('events', EventController::class);
-    Route::resource('am_person_interventions', AmPersonInterventionController::class);
-    Route::resource('am_person_violences', AmPersonViolenceController::class);
-    Route::resource('am_person_events', AmPersonEventController::class);
-    Route::get('/am_dashboard', [AmDashboardController::class, 'index'])->name('amdashboard');
-
     // Rutas de los controladores de Vaso de Leche dentro del grupo de autenticación    
-    Route::resource('committees', CommitteeController::class);
-    Route::resource('products', ProductController::class);
-    Route::resource('sectors', SectorController::class);
-    Route::resource('vl_family_members', VlFamilyMemberController::class);
-    Route::resource('vl_family_members_products', VlFamilyMemberProductController::class);
-    Route::resource('vl_minors', VlMinorController::class);
-    Route::get('/vaso-de-leche', [VasoDeLecheController::class, 'index'])->name('vaso-de-leche.index');
-
-    //Rutas de "committee_vl_family_members" (Padrón de Beneficiarios)
-    Route::get('padron-de-beneficiarios/{committee_id}', [CommitteeVlFamilyMemberController::class, 'index'])->name('committee_vl_family_members.index');
-    Route::get('committee_vl_family_members/create/{committee_id}', [CommitteeVlFamilyMemberController::class, 'create'])->name('committee_vl_family_members.create'); // Formulario de creación
-
-    Route::post('committee_vl_family_members', [CommitteeVlFamilyMemberController::class, 'store'])->name('committee_vl_family_members.store'); // Almacenar el nuevo miembro
-    Route::get('committee_vl_family_members/{committee_vl_family_member}', [CommitteeVlFamilyMemberController::class, 'show'])->name('committee_vl_family_members.show'); // Ver detalles de un miembro
-    Route::get('committee_vl_family_members/{committee_vl_family_member}/edit', [CommitteeVlFamilyMemberController::class, 'edit'])->name('committee_vl_family_members.edit'); // Formulario de edición
-    Route::put('committee_vl_family_members/{committee_vl_family_member}', [CommitteeVlFamilyMemberController::class, 'update'])->name('committee_vl_family_members.update'); // Actualizar un miembro
-    Route::delete('committee_vl_family_members/{committee_vl_family_member}', [CommitteeVlFamilyMemberController::class, 'destroy'])->name('committee_vl_family_members.destroy'); // Eliminar un miembro
-
+    // 🔥 Vaso de Leche
+    Route::middleware('role:Vaso de Leche|Administrador')->group(function () {
+        Route::resource('committees', CommitteeController::class);
+        Route::resource('products', ProductController::class);
+        Route::resource('sectors', SectorController::class);
+        Route::resource('vl_family_members', VlFamilyMemberController::class);
+        Route::resource('vl_family_members_products', VlFamilyMemberProductController::class);
+        Route::resource('vl_minors', VlMinorController::class);
+        Route::get('/vaso-de-leche', [VasoDeLecheController::class, 'index'])->name('vaso-de-leche.index');
+        Route::get('padron-de-beneficiarios/{committee_id}', [CommitteeVlFamilyMemberController::class, 'index'])->name('committee_vl_family_members.index');
+    
+        //Rutas de "committee_vl_family_members" (Padrón de Beneficiarios)
+        Route::get('committee_vl_family_members/create/{committee_id}', [CommitteeVlFamilyMemberController::class, 'create'])->name('committee_vl_family_members.create'); // Formulario de creación
+        Route::post('committee_vl_family_members', [CommitteeVlFamilyMemberController::class, 'store'])->name('committee_vl_family_members.store'); // Almacenar el nuevo miembro
+        Route::get('committee_vl_family_members/{committee_vl_family_member}', [CommitteeVlFamilyMemberController::class, 'show'])->name('committee_vl_family_members.show'); // Ver detalles de un miembro
+        Route::get('committee_vl_family_members/{committee_vl_family_member}/edit', [CommitteeVlFamilyMemberController::class, 'edit'])->name('committee_vl_family_members.edit'); // Formulario de edición
+        Route::put('committee_vl_family_members/{committee_vl_family_member}', [CommitteeVlFamilyMemberController::class, 'update'])->name('committee_vl_family_members.update'); // Actualizar un miembro
+        Route::delete('committee_vl_family_members/{committee_vl_family_member}', [CommitteeVlFamilyMemberController::class, 'destroy'])->name('committee_vl_family_members.destroy'); // Eliminar un miembro
+    
+    });
 
 
     // Rutas de los controladores de Sisfoh dentro del grupo de autenticación
-    Route::resource('enumerators', EnumeratorController::class);
-    Route::resource('instruments', InstrumentController::class);
-    Route::resource('instrument_visits', InstrumentVisitController::class);
-    Route::resource('sfh_dwelling_sfh_people', SfhDwellingSfhPersonController::class);
-    Route::resource('sfh_dwelling', SfhDwellingController::class);
-    Route::resource('sfh_people', SfhPersonController::class);
-    Route::resource('sfh_requests', SfhRequestController::class);
-    Route::resource('visits', VisitController::class);
-
-    Route::get('/sisfoh_home', [SfhHomeController::class, 'index'])->name('sisfohHome');
-    Route::get('/sisfoh_dashboard', [SfhDashboardController::class, 'index'])->name('sfhdashboard');
-
+    // 🔥 SISFOH
+    Route::middleware('role:SISFOH|Administrador')->group(function () {
+        Route::resource('enumerators', EnumeratorController::class);
+        Route::resource('instruments', InstrumentController::class);
+        Route::resource('instrument_visits', InstrumentVisitController::class);
+        Route::resource('sfh_dwelling_sfh_people', SfhDwellingSfhPersonController::class);
+        Route::resource('sfh_dwelling', SfhDwellingController::class);
+        Route::resource('sfh_people', SfhPersonController::class);
+        Route::resource('sfh_requests', SfhRequestController::class);
+        Route::resource('visits', VisitController::class);
+        Route::get('/sisfoh_home', [SfhHomeController::class, 'index'])->name('sisfohHome');
+        Route::get('/sisfoh_dashboard', [SfhDashboardController::class, 'index'])->name('sfhdashboard');
+    });
+    
     // Rutas de los controladores de Ciam dentro del grupo de autenticación    
-    Route::resource('elderly_adults', ElderlyAdultController::class);
-    Route::resource('guardians', GuardianController::class);
-
-    Route::get('/ciam_home', [CiamHomeController::class, 'index'])->name('CiamHome');
-    Route::get('/ciam_dashboard', [CiamDashboardController::class, 'index'])->name('ciamdashboard');
+    // 🔥 CIAM
+    Route::middleware('role:CIAM|Administrador')->group(function () {
+        Route::resource('elderly_adults', ElderlyAdultController::class);
+        Route::resource('guardians', GuardianController::class);
+        Route::get('/ciam_home', [CiamHomeController::class, 'index'])->name('CiamHome');
+        Route::get('/ciam_dashboard', [CiamDashboardController::class, 'index'])->name('ciamdashboard');
+    });
 
     // Rutas de los controladores de OMAPED dentro del grupo de autenticación
-    Route::resource('caregivers', CaregiverController::class);
-    Route::resource('om-dwellings', OmDwellingController::class);
-    Route::resource('disabilities', DisabilityController::class);
-    Route::resource('om-people', OmPersonController::class);
-    Route::get('/om_dashboard', [OmDashboardController::class, 'index'])->name('omdashboard');
+    // 🔥 OMAPED
+    Route::middleware('role:OMAPED|Administrador')->group(function () {
+        Route::resource('caregivers', CaregiverController::class);
+        Route::resource('om-dwellings', OmDwellingController::class);
+        Route::resource('disabilities', DisabilityController::class);
+        Route::resource('om-people', OmPersonController::class);
+        Route::get('/om_dashboard', [OmDashboardController::class, 'index'])->name('omdashboard');
+    });
+    
 });
