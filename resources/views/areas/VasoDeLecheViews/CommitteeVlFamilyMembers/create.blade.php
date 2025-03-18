@@ -2010,7 +2010,7 @@
                             condition: minorData.condition,
                             kinship: minorData.kinship,
                             // Campos opcionales
-                            address:cleanValue(minorData.address),
+                            address: minorData.address || '',
                             dwelling_type: minorData.dwelling_type ?? null,
                             education_level: minorData.education_level ?? null,
                             disability: minorData.disability !== undefined ? Boolean(minorData.disability) : null,
