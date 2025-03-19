@@ -13,14 +13,16 @@ use App\Http\Requests\SisfohRequests\Requests\UpdateRequestRequest;
 use App\Http\Requests\SisfohRequests\Requests\DestroyRequestRequest;
 
 use App\Models\SisfohModels\SfhPerson; // Asumiendo que tienes un modelo relacionado para las personas
-
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class SfhRequestController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index(IndexRequestRequest $request)
     {
+        $this->authorize('ver BD');
         $requests = SfhRequest::with('sfhPerson')->get(); // Cargar las solicitudes con la persona relacionada
         return view('areas.SisfohViews.Requests.index', compact('requests'));
     }
@@ -30,6 +32,7 @@ class SfhRequestController extends Controller
      */
     public function create(CreateRequestRequest $request)
     {
+        $this->authorize('crear');
         // Obtener las personas relacionadas con las solicitudes (si es necesario)
         $people = SfhPerson::all();
 
@@ -52,6 +55,7 @@ class SfhRequestController extends Controller
      */
     public function show(SfhRequest $sfhRequest, ShowRequestRequest $request)
     {
+        $this->authorize('ver detalles');
         // Formatear las fechas para que estén en formato 'Y-m-d' antes de mostrar la solicitud
         $sfhRequest->date = $sfhRequest->date ? $sfhRequest->date->format('Y-m-d') : null;
 
@@ -63,6 +67,7 @@ class SfhRequestController extends Controller
      */
     public function edit(SfhRequest $sfhRequest, EditRequestRequest $request)
     {
+        $this->authorize('editar');
         // Formatear las fechas antes de pasarlas a la vista
         $sfhRequest->date = $sfhRequest->date ? $sfhRequest->date->format('Y-m-d') : null;
 
@@ -91,6 +96,7 @@ class SfhRequestController extends Controller
      */
     public function destroy(SfhRequest $sfhRequest, DestroyRequestRequest $request)
     {
+        $this->authorize('eliminar');
         $sfhRequest->delete();  // Eliminar la solicitud
 
         return redirect()->route('sfh_requests.index')->with('success', 'Solicitud eliminada exitosamente.');

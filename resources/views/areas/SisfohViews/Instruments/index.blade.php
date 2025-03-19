@@ -28,9 +28,11 @@
                 <div class="card-header" style="background-color: #228B22; color:white;">
                     <h3 class="card-title">Lista de Instrumentos</h3>
                     <div class="card-tools">
+                        @can('crear')
                         <a href="{{ route('instruments.create') }}" class="btn btn-primary btn-sm btn-with-border btn-primary-custom">
                             <i class="fas fa-plus"></i> Nuevo Instrumento
                         </a>
+                        @endcan
                         <a href="{{ route('sisfohHome') }}" class="btn btn-secondary btn-sm btn-with-border btn-secondary-custom" style="margin-left: 10px;">
                             <i class="fas fa-arrow-left"></i> Volver
                         </a>
@@ -65,18 +67,24 @@
                                     <td>{{ $instrument->number_instruments }}</td>
                                     <td>{{ $instrument->description }}</td>
                                     <td>
+                                        @can('ver detalles')
                                         <a href="{{ route('instruments.show', $instrument) }}" class="btn btn-info btn-sm">
                                             <i class="fas fa-eye"></i> Ver
                                         </a>
+                                        @endcan
+                                        @can('editar')
                                         <a href="{{ route('instruments.edit', $instrument) }}" class="btn btn-warning btn-sm">
                                             <i class="fas fa-edit"></i> Editar
                                         </a>
+                                        @endcan
                                         <form action="{{ route('instruments.destroy', $instrument) }}" method="POST" style="display: inline-block;">
                                             @csrf
                                             @method('DELETE')
+                                            @can('eliminar')
                                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este instrumento?')">
                                                 <i class="fas fa-trash"></i> Eliminar
                                             </button>
+                                            @endcan
                                         </form>
                                     </td>
                                 </tr>

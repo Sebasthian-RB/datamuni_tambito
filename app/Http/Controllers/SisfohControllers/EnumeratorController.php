@@ -12,14 +12,16 @@ use App\Http\Requests\SisfohRequests\Enumerators\StoreEnumeratorRequest;
 use App\Http\Requests\SisfohRequests\Enumerators\EditEnumeratorRequest;
 use App\Http\Requests\SisfohRequests\Enumerators\UpdateEnumeratorRequest;
 use App\Http\Requests\SisfohRequests\Enumerators\DestroyEnumeratorRequest;
-
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class EnumeratorController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index(IndexEnumeratorRequest $request)
     {
+        $this->authorize('ver BD');
         // Recupera todos los encuestadores de la base de datos
         $enumerators = Enumerator::all(); 
 
@@ -32,6 +34,7 @@ class EnumeratorController extends Controller
      */
     public function create(CreateEnumeratorRequest $request)
     {
+        $this->authorize('crear');
         // Retorna la vista de crear un nuevo encuestador
         return view('areas.SisfohViews.Enumerators.create');
     }
@@ -54,6 +57,7 @@ class EnumeratorController extends Controller
      */
     public function show(Enumerator $enumerator, ShowEnumeratorRequest $request)
     {
+        $this->authorize('ver detalles');
         // Muestra los detalles de un encuestador específico
         return view('areas.SisfohViews.Enumerators.show', compact('enumerator'));
     }
@@ -63,6 +67,7 @@ class EnumeratorController extends Controller
      */
     public function edit(Enumerator $enumerator, EditEnumeratorRequest $request)
     {
+        $this->authorize('editar');
         // Muestra el formulario de edición de un encuestador
         return view('areas.SisfohViews.Enumerators.edit', compact('enumerator'));
     }
@@ -85,6 +90,7 @@ class EnumeratorController extends Controller
      */
     public function destroy(Enumerator $enumerator, DestroyEnumeratorRequest $request)
     {
+        $this->authorize('eliminar');
         // Elimina el encuestador
         $enumerator->delete();
 

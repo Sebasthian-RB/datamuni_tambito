@@ -28,9 +28,11 @@
                 <div class="card-header" style="background-color: #228B22; color:white;">
                     <h3 class="card-title">Lista de Viviendas</h3>
                     <div class="card-tools">
+                        @can('crear')
                         <a href="{{ route('sfh_dwelling.create') }}" class="btn btn-primary btn-sm btn-with-border btn-primary-custom">
                             <i class="fas fa-plus"></i> Crear Nueva Vivienda
                         </a>
+                        @endcan
                         <a href="{{ route('sisfohHome') }}" class="btn btn-secondary btn-sm btn-with-border btn-secondary-custom" style="margin-left: 10px;">
                             <i class="fas fa-arrow-left"></i> Volver
                         </a>
@@ -69,18 +71,24 @@
                                     <td>{{ $dwelling->provincia }}</td>
                                     <td>{{ $dwelling->region }}</td>
                                     <td>
+                                        @can('ver detalles')
                                         <a href="{{ route('sfh_dwelling.show', $dwelling) }}" class="btn btn-info btn-sm">
                                             <i class="fas fa-eye"></i> Ver
                                         </a>
+                                        @endcan
+                                        @can('editar')
                                         <a href="{{ route('sfh_dwelling.edit', $dwelling) }}" class="btn btn-warning btn-sm">
                                             <i class="fas fa-edit"></i> Editar
                                         </a>
+                                        @endcan
                                         <form action="{{ route('sfh_dwelling.destroy', $dwelling) }}" method="POST" style="display: inline-block;">
                                             @csrf
                                             @method('DELETE')
+                                            @can('eliminar')
                                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Está seguro de eliminar esta vivienda?')">
                                                 <i class="fas fa-trash"></i> Eliminar
                                             </button>
+                                            @endcan
                                         </form>
                                     </td>
                                 </tr>

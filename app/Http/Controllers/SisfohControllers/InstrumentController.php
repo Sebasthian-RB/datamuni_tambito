@@ -11,14 +11,17 @@ use App\Http\Requests\SisfohRequests\Instruments\StoreInstrumentRequest;
 use App\Http\Requests\SisfohRequests\Instruments\EditInstrumentRequest;
 use App\Http\Requests\SisfohRequests\Instruments\UpdateInstrumentRequest;
 use App\Http\Requests\SisfohRequests\Instruments\DestroyInstrumentRequest;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class InstrumentController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index(IndexInstrumentRequest $request)
     {
+        $this->authorize('ver BD');
         $instruments = Instrument::all();
         return view('areas.SisfohViews.Instruments.index', compact('instruments'));
     }
@@ -28,6 +31,7 @@ class InstrumentController extends Controller
      */
     public function create(CreateInstrumentRequest $request)
     {
+        $this->authorize('crear');
         return view('areas.SisfohViews.Instruments.create');
     }
 
@@ -48,6 +52,7 @@ class InstrumentController extends Controller
      */
     public function show(ShowInstrumentRequest $request, Instrument $instrument)
     {
+        $this->authorize('ver detalles');
         return view('areas.SisfohViews.Instruments.show', compact('instrument'));
     }
 
@@ -56,6 +61,7 @@ class InstrumentController extends Controller
      */
     public function edit(EditInstrumentRequest $request, Instrument $instrument)
     {
+        $this->authorize('editar');
         return view('areas.SisfohViews.Instruments.edit', compact('instrument'));
     }
 
@@ -76,6 +82,7 @@ class InstrumentController extends Controller
      */
     public function destroy(DestroyInstrumentRequest $request, Instrument $instrument)
     {
+        $this->authorize('eliminar');
         $instrument->delete();
 
         return redirect()->route('instruments.index')
