@@ -18,10 +18,12 @@
 <div class="container">
     <!-- Botones de acción -->
     <div class="mb-3 d-flex">
+        @can('crear')
         <a href="{{ route('interventions.create') }}" class="btn text-white shadow-sm"
             style="background: #f67280; border-radius: 8px;">
             <i class="fa fa-plus"></i> Crear Intervención
         </a>
+        @endcan
         <a href="{{ route('amdashboard') }}" class="btn btn-secondary shadow-sm" style="border-radius: 8px;">
             <i class="fa fa-arrow-left"></i> Volver
         </a>
@@ -58,18 +60,24 @@
                             <td>{{ $intervention->derivation ?? 'N/A' }}</td>
                             <td>{{ $intervention->appointment_date }}</td>
                             <td>
+                                @can('ver detalles')
                                 <a href="{{ route('interventions.show', $intervention->id) }}" class="btn btn-info btn-sm shadow-sm">
                                     <i class="fa fa-eye"></i> Ver
                                 </a>
+                                @endcan
+                                @can('editar')
                                 <a href="{{ route('interventions.edit', $intervention->id) }}" class="btn btn-warning btn-sm shadow-sm">
                                     <i class="fa fa-edit"></i> Editar
                                 </a>
+                                @endcan
                                 <form action="{{ route('interventions.destroy', $intervention->id) }}" method="POST" style="display:inline-block;">
                                     @csrf
                                     @method('DELETE')
+                                    @can('eliminar')
                                     <button type="submit" class="btn btn-danger btn-sm shadow-sm" onclick="return confirm('¿Estás seguro?')">
                                         <i class="fa fa-trash"></i> Eliminar
                                     </button>
+                                    @endcan
                                 </form>
                             </td>
                         </tr>

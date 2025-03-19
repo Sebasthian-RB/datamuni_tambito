@@ -6,15 +6,18 @@ use App\Models\AreaDeLaMujerModels\Program;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AreaDeLaMujerRequests\Programs\StoreProgramRequest;
 use App\Http\Requests\AreaDeLaMujerRequests\Programs\UpdateProgramRequest;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
 class ProgramController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        $this->authorize('ver BD');
         $search = $request->input('search');
 
         $programs = Program::where('name', 'like', "%$search%")
@@ -28,6 +31,7 @@ class ProgramController extends Controller
      */
     public function create()
     {
+        $this->authorize('crear');
         return view('areas.AreaDeLaMujerViews.Programs.create');
     }
 
@@ -46,6 +50,7 @@ class ProgramController extends Controller
      */
     public function show(Program $program)
     {
+        $this->authorize('ver detalles');
         return view('areas.AreaDeLaMujerViews.Programs.show', compact('program'));
     }
 
@@ -54,6 +59,7 @@ class ProgramController extends Controller
      */
     public function edit(Program $program)
     {
+        $this->authorize('editar');
         return view('areas.AreaDeLaMujerViews.Programs.edit', compact('program'));
     }
 
@@ -72,6 +78,7 @@ class ProgramController extends Controller
      */
     public function destroy(Program $program)
     {
+        $this->authorize('eliminar');
         $program->delete();
         return redirect()->route('programs.index')->with('success', 'Programa eliminado con éxito.');
     }

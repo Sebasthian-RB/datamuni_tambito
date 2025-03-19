@@ -19,10 +19,12 @@
     <div class="container">
         <!-- Botones de acción -->
         <div class="mb-3 d-flex">
+            @can('crear')
             <a href="{{ route('events.create') }}" class="btn text-white shadow-sm"
                 style="background: #f67280; border-radius: 8px;">
                 <i class="fa fa-plus"></i> Agregar Nuevo Evento
             </a>
+            @endcan
             <a href="{{ route('amdashboard') }}" class="btn btn-secondary shadow-sm" style="border-radius: 8px;">
                 <i class="fa fa-arrow-left"></i> Volver
             </a>
@@ -88,20 +90,26 @@
                                 <td>{{ \Carbon\Carbon::parse($event->start_date)->format('d/m/Y') }}</td>
                                 <td>{{ \Carbon\Carbon::parse($event->end_date)->format('d/m/Y') }}</td>
                                 <td>
+                                    @can('ver detalles')
                                     <a href="{{ route('events.show', $event) }}" class="btn btn-info btn-sm shadow-sm">
                                         <i class="fa fa-eye"></i> Ver
                                     </a>
+                                    @endcan
+                                    @can('editar')
                                     <a href="{{ route('events.edit', $event) }}" class="btn btn-warning btn-sm shadow-sm">
                                         <i class="fa fa-edit"></i> Editar
                                     </a>
+                                    @endcan
                                     <form action="{{ route('events.destroy', $event) }}" method="POST"
                                         style="display:inline-block;">
                                         @csrf
                                         @method('DELETE')
+                                        @can('eliminar')
                                         <button class="btn btn-danger btn-sm shadow-sm"
                                             onclick="return confirm('¿Estás seguro?')">
                                             <i class="fa fa-trash"></i> Eliminar
                                         </button>
+                                        @endcan
                                     </form>
                                 </td>
                             </tr>

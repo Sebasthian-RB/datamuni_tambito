@@ -18,10 +18,12 @@
 <div class="container">
     <!-- Botones de acción -->
     <div class="mb-3 d-flex justify-content-between">
+        @can('crear')
         <a href="{{ route('am_person_events.create') }}" class="btn text-white shadow-sm"
             style="background: #f67280; border-radius: 8px; font-size: 1.1rem;">
             <i class="fa fa-plus"></i> Nueva Asistencia
         </a>
+        @endcan
         <a href="{{ route('amdashboard') }}" class="btn btn-secondary shadow-sm" style="border-radius: 8px; font-size: 1.1rem;">
             <i class="fa fa-arrow-left"></i> Volver
         </a>
@@ -83,19 +85,25 @@
                                 </span>
                             </td>
                             <td>
+                                @can('ver detalles')
                                 <a href="{{ route('am_person_events.show', $record->id) }}" class="btn btn-info btn-sm shadow-sm">
                                     <i class="fa fa-eye"></i> Ver
                                 </a>
+                                @endcan
+                                @can('editar')
                                 <a href="{{ route('am_person_events.edit', $record->id) }}" class="btn btn-warning btn-sm shadow-sm">
                                     <i class="fa fa-edit"></i> Editar
                                 </a>
+                                @endcan
                                 <form action="{{ route('am_person_events.destroy', $record->id) }}" method="POST" style="display:inline-block;">
                                     @csrf
                                     @method('DELETE')
+                                    @can('eliminar')
                                     <button type="submit" class="btn btn-danger btn-sm shadow-sm"
                                         onclick="return confirm('¿Estás seguro de eliminar esta asistencia?')">
                                         <i class="fa fa-trash"></i> Eliminar
                                     </button>
+                                    @endcan
                                 </form>
                             </td>
                         </tr>

@@ -7,15 +7,19 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AreaDeLaMujerRequests\AmPeople\StoreAmPersonRequest;
 use App\Http\Requests\AreaDeLaMujerRequests\AmPeople\UpdateAmPersonRequest;
 use App\Models\AreaDeLaMujerModels\AmPerson;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Validator;
 
 class AmPersonController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        $this->authorize('ver BD');
+
         $query = AmPerson::query();
 
         if ($request->has('search')) {
@@ -41,6 +45,7 @@ class AmPersonController extends Controller
      */
     public function create()
     {
+        $this->authorize('crear');
         // Mostrar formulario de creación
         return view('areas.AreaDeLaMujerViews.AmPersons.create');
     }
@@ -69,6 +74,7 @@ class AmPersonController extends Controller
      */
     public function show(AmPerson $amPerson)
     {
+        $this->authorize('ver detalles');
         // Mostrar los detalles de una persona
         return view('areas.AreaDeLaMujerViews.AmPersons.show', compact('amPerson'));
     }
@@ -78,6 +84,7 @@ class AmPersonController extends Controller
      */
     public function edit(AmPerson $amPerson)
     {
+        $this->authorize('editar');
         // Mostrar formulario de edición
         return view('areas.AreaDeLaMujerViews.AmPersons.edit', compact('amPerson'));
     }
@@ -97,6 +104,7 @@ class AmPersonController extends Controller
      */
     public function destroy(AmPerson $amPerson)
     {
+        $this->authorize('eliminar');
         // Eliminar la persona
         $amPerson->delete();
 

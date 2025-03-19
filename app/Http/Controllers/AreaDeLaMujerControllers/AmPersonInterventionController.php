@@ -8,15 +8,18 @@ use App\Http\Requests\AreaDeLaMujerRequests\AmPersonInterventions\StoreAmPersonI
 use App\Http\Requests\AreaDeLaMujerRequests\AmPersonInterventions\UpdateAmPersonInterventionsRequest;
 use App\Models\AreaDeLaMujerModels\AmPerson;
 use App\Models\AreaDeLaMujerModels\Intervention;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
 class AmPersonInterventionController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        $this->authorize('ver BD');
         $search = $request->input('search');
 
         $amPersonInterventions = AmPersonIntervention::with(['amPerson', 'intervention'])
@@ -36,6 +39,7 @@ class AmPersonInterventionController extends Controller
      */
     public function create()
     {
+        $this->authorize('create');
         $amPersons = AmPerson::all();
         $interventions = Intervention::all();
         return view('areas.AreaDeLaMujerViews.AmPersonInterventions.create', compact('amPersons', 'interventions'));
@@ -55,6 +59,7 @@ class AmPersonInterventionController extends Controller
      */
     public function show(AmPersonIntervention $amPersonIntervention)
     {
+        $this->authorize('ver detalles');
         return view('areas.AreaDeLaMujerViews.AmPersonInterventions.show', compact('amPersonIntervention'));
     }
 
@@ -63,6 +68,7 @@ class AmPersonInterventionController extends Controller
      */
     public function edit(AmPersonIntervention $amPersonIntervention)
     {
+        $this->authorize('editar');
         $amPersons = AmPerson::all();
         $interventions = Intervention::all();
         return view('areas.AreaDeLaMujerViews.AmPersonInterventions.edit', compact('amPersonIntervention', 'amPersons', 'interventions'));
@@ -82,6 +88,7 @@ class AmPersonInterventionController extends Controller
      */
     public function destroy(AmPersonIntervention $amPersonIntervention)
     {
+        $this->authorize('eliminar');
         $amPersonIntervention->delete();
         return redirect()->route('am_person_interventions.index')->with('success', 'Relación eliminada correctamente.');
     }

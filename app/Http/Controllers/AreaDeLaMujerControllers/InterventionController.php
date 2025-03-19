@@ -7,15 +7,18 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AreaDeLaMujerRequests\AmPersonInterventions\StoreAmPersonInterventionsRequest;
 use App\Http\Requests\AreaDeLaMujerRequests\Interventions\StoreInterventionRequest;
 use App\Http\Requests\AreaDeLaMujerRequests\Interventions\UpdateInterventionRequest;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
 class InterventionController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        $this->authorize('ver BD');
         $interventions = Intervention::paginate(10);
         return view('areas.AreaDeLaMujerViews.Interventions.index', compact('interventions'));
     }
@@ -25,6 +28,7 @@ class InterventionController extends Controller
      */
     public function create()
     {
+        $this->authorize('crear');
         return view('areas.AreaDeLaMujerViews.Interventions.create');
     }
 
@@ -55,6 +59,7 @@ class InterventionController extends Controller
      */
     public function show(Intervention $intervention)
     {
+        $this->authorize('ver detalles');
         return view('areas.AreaDeLaMujerViews.Interventions.show', compact('intervention'));
     }
 
@@ -63,6 +68,7 @@ class InterventionController extends Controller
      */
     public function edit(Intervention $intervention)
     {
+        $this->authorize('editar');
         return view('areas.AreaDeLaMujerViews.Interventions.edit', compact('intervention'));
     }
 
@@ -81,6 +87,7 @@ class InterventionController extends Controller
      */
     public function destroy(Intervention $intervention)
     {
+        $this->authorize('eliminar');
         $intervention->delete();
         return redirect()->route('interventions.index')->with('success', 'Intervención eliminada correctamente.');
     }

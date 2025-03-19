@@ -82,7 +82,7 @@ Route::middleware([
     })->name('dashboard');
 
     // Rutas para el Administrador (puede acceder a todo)
-    Route::middleware('role:Administrador')->group(function () {
+    Route::middleware('role:Administrador|Super Administrador')->group(function () {
         Route::resource('users', UserController::class);
         Route::resource('roles', RoleController::class);
         Route::resource('permissions', PermissionController::class);
