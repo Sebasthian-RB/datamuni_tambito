@@ -11,14 +11,17 @@ use App\Http\Requests\SisfohRequests\SfhDwellings\StoreSfhDwellingRequest;
 use App\Http\Requests\SisfohRequests\SfhDwellings\EditSfhDwellingRequest;
 use App\Http\Requests\SisfohRequests\SfhDwellings\UpdateSfhDwellingRequest;
 use App\Http\Requests\SisfohRequests\SfhDwellings\DestroySfhDwellingRequest;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class SfhDwellingController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index(IndexSfhDwellingRequest $request)
     {
+        $this->authorize('ver BD');
         // Lógica para obtener la lista de SfhDwellings
         $sfhDwellings = SfhDwelling::all(); // Puedes agregar paginación o filtros si es necesario
 
@@ -30,6 +33,7 @@ class SfhDwellingController extends Controller
      */
     public function create(CreateSfhDwellingRequest $request)
     {
+        $this->authorize('crear');
         // Lógica para mostrar el formulario de creación
         return view('areas.SisfohViews.SfhDwellings.create');
     }
@@ -54,6 +58,7 @@ class SfhDwellingController extends Controller
      */
     public function show(SfhDwelling $sfhDwelling, ShowSfhDwellingRequest $request)
     {
+        $this->authorize('ver detalles');
         // Mostrar los detalles del SfhDwelling
         return view('areas.SisfohViews.SfhDwellings.show', compact('sfhDwelling'));
     }
@@ -63,6 +68,7 @@ class SfhDwellingController extends Controller
      */
     public function edit(SfhDwelling $sfhDwelling, EditSfhDwellingRequest $request)
     {
+        $this->authorize('editar');
         // Mostrar el formulario de edición
         return view('areas.SisfohViews.SfhDwellings.edit', compact('sfhDwelling'));
     }
@@ -87,6 +93,7 @@ class SfhDwellingController extends Controller
      */
     public function destroy(SfhDwelling $sfhDwelling, DestroySfhDwellingRequest $request)
     {
+        $this->authorize('eliminar');
         // Eliminar el registro
         $sfhDwelling->delete();
 

@@ -199,8 +199,10 @@
             </div>
         </div>
 
-        <footer>
-            <p>© 2024 Municipalidad Tambo. Todos los derechos reservados</p>
+        <footer class="mt-auto text-white-50">
+            <p>© 2024 Municipalidad Tambo. Todos los derechos reservados
+                <span class="badge bg-warning text-dark ms-2">Alpha 0.0.2</span>
+            </p>
         </footer>
     </div>
 

@@ -93,8 +93,11 @@
                             <div class="col-md-3 col-sm-6 mb-2">
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" name="permissions[]" value="{{ $permission->name }}"
-                                        class="custom-control-input" id="perm_{{ $permission->id }}"
-                                        {{ in_array($permission->name, old('permissions', [])) ? 'checked' : '' }}>
+                                        class="custom-control-input perm-checkbox" id="perm_{{ $permission->id }}"
+                                        {{ $permission->name == 'ver BD' ? 'checked' : (in_array($permission->name, old('permissions', [])) ? 'checked' : '') }}
+                                        {{ $permission->name == 'ver BD' ? 'data-always-checked' : '' }}>
+                                    <!-- Siempre activo -->
+
                                     <label class="custom-control-label d-block p-2 rounded bg-light shadow-sm"
                                         for="perm_{{ $permission->id }}">
                                         <i class="fas fa-key mr-2 text-muted"></i>
@@ -191,6 +194,32 @@
                         .toggleClass('fa-check-circle', isValid)
                         .toggleClass('fa-times-circle', !isValid);
                 }
+            });
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const verBdCheckbox = document.querySelector("input[value='ver BD']");
+                const allCheckboxes = document.querySelectorAll(".perm-checkbox");
+        
+                // Siempre marcar "Ver BD" por defecto
+                if (verBdCheckbox) {
+                    verBdCheckbox.checked = true;
+                }
+        
+                allCheckboxes.forEach(checkbox => {
+                    checkbox.addEventListener("change", function () {
+                        if (this.value !== "ver BD") {
+                            // Si cualquier otro permiso se marca, activamos "Ver BD"
+                            if (this.checked) {
+                                verBdCheckbox.checked = true;
+                            } else {
+                                // Si todos los demás permisos están desmarcados, permitir quitar "Ver BD"
+                                const anyChecked = [...allCheckboxes].some(cb => cb !== verBdCheckbox && cb.checked);
+                                verBdCheckbox.checked = anyChecked;
+                            }
+                        }
+                    });
+                });
             });
         </script>
     @endpush

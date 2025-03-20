@@ -16,8 +16,6 @@
                 <a href="{{ route('users.create') }}" class="btn btn-light btn-sm">
                     <i class="fas fa-user-plus"></i> Nuevo Usuario
                 </a>
-
-                
             </div>
         </div>
         <div class="card-body p-0">
@@ -33,57 +31,59 @@
                     </thead>
                     <tbody>
                         @foreach ($users as $user)
-                            <tr>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <div class="user-badge mr-3">
-                                            <span class="user-initial">{{ substr($user->name, 0, 1) }}</span>
+                            {{-- <@if (!$user->hasRole('Super Administrador')) --}}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="user-badge mr-3">
+                                                <span class="user-initial">{{ substr($user->name, 0, 1) }}</span>
+                                            </div>
+                                            <div class="user-info">
+                                                <div class="user-name">{{ $user->name }}</div>
+                                                <div class="user-registered">Registrado:
+                                                    {{ $user->created_at->format('d/m/Y') }}</div>
+                                            </div>
                                         </div>
-                                        <div class="user-info">
-                                            <div class="user-name">{{ $user->name }}</div>
-                                            <div class="user-registered">Registrado:
-                                                {{ $user->created_at->format('d/m/Y') }}</div>
+                                    </td>
+                                    <td>{{ $user->email }}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <span class="password-hidden">••••••••</span>
+                                            <span class="password-visible d-none">{{ $user->password }}</span>
+                                            <button class="btn btn-sm btn-secondary toggle-password ml-2"
+                                                title="Mostrar/Ocultar contraseña">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
                                         </div>
-                                    </div>
-                                </td>
-                                <td>{{ $user->email }}</td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <span class="password-hidden">••••••••</span>
-                                        <span class="password-visible d-none">{{ $user->password }}</span>
-                                        <button class="btn btn-sm btn-secondary toggle-password ml-2"
-                                            title="Mostrar/Ocultar contraseña">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                                <td class="text-center">
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-sm btn-outline-primary dropdown-toggle"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Acciones
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="{{ route('users.show', $user) }}">
-                                                <i class="fas fa-eye text-info"></i> Ver Detalles
-                                            </a>
-                                            <a class="dropdown-item" href="{{ route('users.edit', $user) }}">
-                                                <i class="fas fa-edit text-warning"></i> Editar
-                                            </a>                                           
-                                            <div class="dropdown-divider"></div>
-                                            <form action="{{ route('users.destroy', $user) }}" method="POST"
-                                                class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="dropdown-item text-danger"
-                                                    onclick="return confirm('¿Confirmar eliminación?')">
-                                                    <i class="fas fa-trash-alt"></i> Eliminar
-                                                </button>
-                                            </form>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-sm btn-outline-primary dropdown-toggle"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Acciones
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="{{ route('users.show', $user) }}">
+                                                    <i class="fas fa-eye text-info"></i> Ver Detalles
+                                                </a>
+                                                <a class="dropdown-item" href="{{ route('users.edit', $user) }}">
+                                                    <i class="fas fa-edit text-warning"></i> Editar
+                                                </a>
+                                                <div class="dropdown-divider"></div>
+                                                <form action="{{ route('users.destroy', $user) }}" method="POST"
+                                                    class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="dropdown-item text-danger"
+                                                        onclick="return confirm('¿Confirmar eliminación?')">
+                                                        <i class="fas fa-trash-alt"></i> Eliminar
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
+                            {{-- @endif --}}
                         @endforeach
                     </tbody>
                 </table>
@@ -123,12 +123,6 @@
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-        }
-
-        .table-hover tbody tr:hover {
-            background-color: #f8f9fa;
-            transform: scale(1.005);
-            transition: transform 0.2s ease;
         }
 
         .user-badge {

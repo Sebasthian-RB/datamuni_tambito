@@ -59,7 +59,12 @@ class VlFamilyMemberController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Miembro familiar creado correctamente.',
-                'id' => $newFamilyMember->id
+                'id' => $newFamilyMember->id,
+                'identity_document' => $newFamilyMember->identity_document,
+                'given_name' => $newFamilyMember->given_name,
+                'paternal_last_name' => $newFamilyMember->paternal_last_name,
+                'maternal_last_name' => $newFamilyMember->maternal_last_name,
+                'minors' => [] // Si no hay menores, devolvemos un array vacío
             ]);
         }
 

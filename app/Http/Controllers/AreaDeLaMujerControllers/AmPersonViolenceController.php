@@ -8,15 +8,18 @@ use App\Http\Requests\AreaDeLaMujerRequests\AmPersonViolences\StoreAmPersonViole
 use App\Http\Requests\AreaDeLaMujerRequests\AmPersonViolences\UpdateAmPersonViolenceRequest;
 use App\Models\AreaDeLaMujerModels\AmPerson;
 use App\Models\AreaDeLaMujerModels\Violence;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
 class AmPersonViolenceController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        $this->authorize('ver BD');
         $search = $request->input('search');
 
         $amPersonViolences = AmPersonViolence::with(['amPerson', 'violence'])
@@ -36,6 +39,7 @@ class AmPersonViolenceController extends Controller
      */
     public function create()
     {
+        $this->authorize('crear');
         $amPersons = AmPerson::all();
         $violences = Violence::all();
         return view('areas.AreaDeLaMujerViews.AmPersonViolences.create', compact('amPersons', 'violences'));
@@ -55,6 +59,7 @@ class AmPersonViolenceController extends Controller
      */
     public function show(AmPersonViolence $amPersonViolence)
     {
+        $this->authorize('ver detalles');
         return view('areas.AreaDeLaMujerViews.AmPersonViolences.show', compact('amPersonViolence'));
     }
 
@@ -63,6 +68,7 @@ class AmPersonViolenceController extends Controller
      */
     public function edit(AmPersonViolence $amPersonViolence)
     {
+        $this->authorize('editar');
         $amPersons = AmPerson::all();
         $violences = Violence::all();
         return view('areas.AreaDeLaMujerViews.AmPersonViolences.edit', compact('amPersonViolence', 'amPersons', 'violences'));
@@ -82,6 +88,7 @@ class AmPersonViolenceController extends Controller
      */
     public function destroy(AmPersonViolence $amPersonViolence)
     {
+        $this->authorize('eliminar');
         $amPersonViolence->delete();
 
         return redirect()->route('am_person_violences.index')->with('success', 'Relación eliminada exitosamente.');

@@ -15,13 +15,17 @@ use App\Http\Requests\SisfohRequests\Visits\DestroyVisitRequest;
 use App\Models\SisfohModels\Enumerator;
 use App\Models\SisfohModels\SfhRequest;
 use Carbon\Carbon;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 class VisitController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index(IndexVisitRequest $request)
     {
+        $this->authorize('ver BD');
         $visits = Visit::all()->map(function ($visit) {
             $visit->visit_date = Carbon::parse($visit->visit_date)->format('Y-m-d'); // Formatear la fecha
             return $visit;
@@ -34,6 +38,7 @@ class VisitController extends Controller
      */
     public function create(CreateVisitRequest $request)
     {
+        $this->authorize('crear');
         $enumerators = Enumerator::all(); // Obtener todos los encuestadores
         $requests = SfhRequest::all(); // Obtener todas las solicitudes relacionadas
         return view('areas.SisfohViews.Visits.create', compact('enumerators', 'requests')); // Devolver vista para crear visita
@@ -62,6 +67,7 @@ class VisitController extends Controller
      */
     public function show(Visit $visit, ShowVisitRequest $request)
     {
+        $this->authorize('ver detalles');
         return view('areas.SisfohViews.Visits.show', compact('visit')); // Devolver vista con los detalles de la visita
     }
 
@@ -70,6 +76,7 @@ class VisitController extends Controller
      */
     public function edit(Visit $visit, EditVisitRequest $request)
     {
+        $this->authorize('editar');
         $enumerators = Enumerator::all(); // Obtener todos los encuestadores
         $requests = SfhRequest::all(); // Obtener todas las solicitudes relacionadas
 
@@ -99,6 +106,7 @@ class VisitController extends Controller
      */
     public function destroy(Visit $visit, DestroyVisitRequest $request)
     {
+        $this->authorize('eliminar');
         $visit->delete(); // Eliminar la visita
 
         return redirect()->route('visits.index')->with('success', 'Visita eliminada exitosamente.');

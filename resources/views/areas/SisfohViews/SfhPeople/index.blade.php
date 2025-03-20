@@ -28,9 +28,11 @@
                 <div class="card-header" style="background-color: #228B22; color:white;">
                     <h3 class="card-title">Lista de Personas</h3>
                     <div class="card-tools">
+                        @can('crear')
                         <a href="{{ route('sfh_people.create') }}" class="btn btn-primary btn-sm btn-with-border btn-primary-custom">
                             <i class="fas fa-plus"></i> Crear Persona
                         </a>
+                        @endcan
                         <a href="{{ route('sisfohHome') }}" class="btn btn-secondary btn-sm btn-with-border btn-secondary-custom" style="margin-left: 10px;">
                             <i class="fas fa-arrow-left"></i> Volver
                         </a>
@@ -83,18 +85,24 @@
                                     <td>{{ $person->sfh_category }}</td>
                                     <td>{{ $person->sfh_consultation }}</td>
                                     <td>
+                                        @can('ver detalles')
                                         <a href="{{ route('sfh_people.show', $person) }}" class="btn btn-info btn-sm">
                                             <i class="fas fa-eye"></i> Ver
                                         </a>
+                                        @endcan
+                                        @can('editar')
                                         <a href="{{ route('sfh_people.edit', $person) }}" class="btn btn-warning btn-sm">
                                             <i class="fas fa-edit"></i> Editar
                                         </a>
+                                        @endcan
                                         <form action="{{ route('sfh_people.destroy', $person) }}" method="POST" style="display: inline-block;">
                                             @csrf
                                             @method('DELETE')
+                                            @can('eliminar')
                                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Está seguro de eliminar esta persona?')">
                                                 <i class="fas fa-trash"></i> Eliminar
                                             </button>
+                                            @endcan
                                         </form>
                                     </td>
                                 </tr>

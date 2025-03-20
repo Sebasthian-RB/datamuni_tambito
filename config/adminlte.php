@@ -300,7 +300,6 @@ return [
 
     'menu' => [
         // Navbar items:
-        
 
         ['header' => 'Gestión de Areas'],
 
@@ -743,3 +742,4 @@ return [
 
     'livewire' => false,
 ];
+

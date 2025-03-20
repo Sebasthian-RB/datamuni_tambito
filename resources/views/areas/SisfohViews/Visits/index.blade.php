@@ -28,9 +28,11 @@
                 <div class="card-header" style="background-color: #228B22; color:white;">
                     <h3 class="card-title">Lista de Visitas</h3>
                     <div class="card-tools">
+                        @can('crear')
                         <a href="{{ route('visits.create') }}" class="btn btn-primary btn-sm btn-with-border btn-primary-custom">
                             <i class="fas fa-plus"></i> Crear Nueva Visita
                         </a>
+                        @endcan
                         <a href="{{ route('sisfohHome') }}" class="btn btn-secondary btn-sm btn-with-border btn-secondary-custom" style="margin-left: 10px;">
                             <i class="fas fa-arrow-left"></i> Volver
                         </a>
@@ -69,18 +71,24 @@
                                     <td>{{ $visit->request->id }}</td>
                                     <td>{{ $visit->observations }}</td>
                                     <td>
+                                        @can('ver detalles')
                                         <a href="{{ route('visits.show', $visit->id) }}" class="btn btn-info btn-sm">
                                             <i class="fas fa-eye"></i> Ver
                                         </a>
+                                        @endcan
+                                        @can('editar')
                                         <a href="{{ route('visits.edit', $visit->id) }}" class="btn btn-warning btn-sm">
                                             <i class="fas fa-edit"></i> Editar
                                         </a>
+                                        @endcan
                                         <form action="{{ route('visits.destroy', $visit->id) }}" method="POST" style="display: inline-block;">
                                             @csrf
                                             @method('DELETE')
+                                            @can('eliminar')
                                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Está seguro de eliminar esta visita?')">
                                                 <i class="fas fa-trash"></i> Eliminar
                                             </button>
+                                            @endcan
                                         </form>
                                     </td>
                                 </tr>

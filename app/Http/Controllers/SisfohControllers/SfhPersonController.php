@@ -12,10 +12,11 @@ use App\Http\Requests\SisfohRequests\SfhPeople\StoreSfhPersonRequest;
 use App\Http\Requests\SisfohRequests\SfhPeople\EditSfhPersonRequest;
 use App\Http\Requests\SisfohRequests\SfhPeople\UpdateSfhPersonRequest;
 use App\Http\Requests\SisfohRequests\SfhPeople\DestroySfhPersonRequest;
-
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class SfhPersonController extends Controller
 {
 
+    use AuthorizesRequests;
     /**
      * Grados académicos disponibles.
      *
@@ -73,6 +74,7 @@ class SfhPersonController extends Controller
      */
     public function index(IndexSfhPersonRequest $request)
     {
+        $this->authorize('ver BD');
         // Validar la solicitud si es necesario
         $validated = $request->validated();
         
@@ -89,6 +91,7 @@ class SfhPersonController extends Controller
      */
     public function create(CreateSfhPersonRequest $request)
     {
+        $this->authorize('crear');
         // Retornar la vista para crear una persona
         // Pasar los grados académicos a la vista
         $degrees = $this->degrees;
@@ -115,6 +118,7 @@ class SfhPersonController extends Controller
      */
     public function show(ShowSfhPersonRequest $request, SfhPerson $sfhPerson)
     {
+        $this->authorize('ver detalles');
         // Validar la solicitud si es necesario
         $validated = $request->validated();
         
@@ -127,6 +131,7 @@ class SfhPersonController extends Controller
      */
     public function edit(EditSfhPersonRequest $request, SfhPerson $sfhPerson)
     {
+        $this->authorize('editar');
         // Validar la solicitud si es necesario
         $validated = $request->validated();
         
@@ -159,6 +164,7 @@ class SfhPersonController extends Controller
      */
     public function destroy(DestroySfhPersonRequest $request, SfhPerson $sfhPerson)
     {
+        $this->authorize('eliminar');
         // Validar la solicitud si es necesario
         $validated = $request->validated();
         

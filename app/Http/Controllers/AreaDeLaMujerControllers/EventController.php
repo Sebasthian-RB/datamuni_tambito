@@ -7,15 +7,18 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AreaDeLaMujerRequests\Events\StoreEventRequest;
 use App\Http\Requests\AreaDeLaMujerRequests\Events\UpdateEventRequest;
 use App\Models\AreaDeLaMujerModels\Program;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        $this->authorize('ver BD');
         $search = $request->input('search');
 
         $events = Event::with('program')
@@ -30,6 +33,7 @@ class EventController extends Controller
      */
     public function create()
     {
+        $this->authorize('crear');
         $programs = Program::all();
         return view('areas.AreaDeLaMujerViews.Events.create', compact('programs'));
     }
@@ -48,6 +52,7 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
+        $this->authorize('ver detalles');
         return view('areas.AreaDeLaMujerViews.Events.show', compact('event'));
     }
 
@@ -56,6 +61,7 @@ class EventController extends Controller
      */
     public function edit(Event $event)
     {
+        $this->authorize('editar');
         $programs = Program::all();
         return view('areas.AreaDeLaMujerViews.Events.edit', compact('event', 'programs'));
     }
@@ -74,6 +80,7 @@ class EventController extends Controller
      */
     public function destroy(Event $event)
     {
+        $this->authorize('eliminar');
         $event->delete();
         return redirect()->route('events.index')->with('success', 'Evento eliminado con éxito.');
     }

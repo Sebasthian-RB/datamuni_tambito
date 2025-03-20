@@ -6,15 +6,18 @@ use App\Models\AreaDeLaMujerModels\Violence;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AreaDeLaMujerRequests\AmPersonViolences\StoreViolenceRequest as AmPersonViolencesStoreViolenceRequest;
 use App\Http\Requests\AreaDeLaMujerRequests\Violences\StoreViolenceRequest;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
 class ViolenceController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        $this->authorize('ver BD');
         $violences = Violence::paginate(10);
         return view('areas.AreaDeLaMujerViews.Violences.index', compact('violences'));
     }
@@ -24,6 +27,7 @@ class ViolenceController extends Controller
      */
     public function create()
     {
+        $this->authorize('crear');
         return view('areas.AreaDeLaMujerViews.Violences.create');
     }
 
@@ -42,6 +46,7 @@ class ViolenceController extends Controller
      */
     public function show(Violence $violence)
     {
+        $this->authorize('ver detalles');
         return view('areas.AreaDeLaMujerViews.Violences.show', compact('violence'));
     }
 
@@ -50,6 +55,7 @@ class ViolenceController extends Controller
      */
     public function edit(Violence $violence)
     {
+        $this->authorize('editar');
         return view('areas.AreaDeLaMujerViews.Violences.edit', compact('violence'));
     }
 
@@ -69,6 +75,7 @@ class ViolenceController extends Controller
      */
     public function destroy(Violence $violence)
     {
+        $this->authorize('eliminar');
         $violence->delete();
 
         return redirect()->route('violences.index')->with('success', 'Violencia eliminada exitosamente.');

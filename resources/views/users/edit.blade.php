@@ -29,16 +29,37 @@
                                 value="{{ $user->email }}" required>
                         </div>
 
+                        <!-- CAMBIO DE CONTRASEÑA -->
                         <div class="form-group">
-                            <label class="font-weight-bold"><i class="fas fa-lock"></i> Nueva Contraseña (opcional)</label>
+                            <label class="font-weight-bold"><i class="fas fa-lock"></i> Nueva Contraseña</label>
                             <div class="input-group">
                                 <input type="password" name="password" id="password" class="form-control form-control-lg"
-                                    placeholder="Dejar en blanco para mantener la actual">
+                                    pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$"
+                                    title="Debe cumplir con los requisitos de seguridad"
+                                    placeholder="Dejar vacío si no cambia">
                                 <div class="input-group-append">
                                     <span class="input-group-text toggle-password" style="cursor: pointer">
                                         <i class="fas fa-eye"></i>
                                     </span>
                                 </div>
+                            </div>
+
+                            <div class="mt-3" id="password-requirements" style="display: none;">
+                                <small class="text-muted">Requisitos de seguridad:</small>
+                                <ul class="list-unstyled mt-2">
+                                    <li class="text-danger" id="length">
+                                        <i class="fas fa-times-circle"></i> Mínimo 8 caracteres
+                                    </li>
+                                    <li class="text-danger" id="uppercase">
+                                        <i class="fas fa-times-circle"></i> Al menos una mayúscula
+                                    </li>
+                                    <li class="text-danger" id="number">
+                                        <i class="fas fa-times-circle"></i> Al menos un número
+                                    </li>
+                                    <li class="text-danger" id="special">
+                                        <i class="fas fa-times-circle"></i> Carácter especial (@$!%*?&)
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -73,8 +94,11 @@
                             <div class="col-md-3 col-sm-6 mb-2">
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" name="permissions[]" value="{{ $permission->name }}"
-                                        class="custom-control-input" id="perm_{{ $permission->id }}"
-                                        {{ $user->hasPermissionTo($permission->name) ? 'checked' : '' }}>
+                                        class="custom-control-input perm-checkbox" id="perm_{{ $permission->id }}"
+                                        {{ $user->hasPermissionTo($permission->name) ? 'checked' : '' }}
+                                        {{ $permission->name == 'ver BD' ? 'data-always-checked' : '' }}>
+                                    <!-- Siempre activo -->
+
                                     <label class="custom-control-label d-block p-2 rounded bg-light shadow-sm"
                                         for="perm_{{ $permission->id }}">
                                         <i class="fas fa-key mr-2 text-muted"></i>
@@ -142,6 +166,67 @@
                     input.attr('type', input.attr('type') === 'password' ? 'text' : 'password');
                     icon.toggleClass('fa-eye fa-eye-slash');
                 });
+            });
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const verBdCheckbox = document.querySelector("input[value='ver BD']");
+                const allCheckboxes = document.querySelectorAll(".perm-checkbox");
+
+                // Si "ver BD" no está marcado por defecto, se marca automáticamente
+                if (verBdCheckbox) {
+                    verBdCheckbox.checked = true;
+                }
+
+                allCheckboxes.forEach(checkbox => {
+                    checkbox.addEventListener("change", function() {
+                        if (this.value !== "ver BD") {
+                            if (this.checked) {
+                                verBdCheckbox.checked = true;
+                            } else {
+                                // Si todos los demás están desmarcados, permitir quitar "Ver BD"
+                                const anyChecked = [...allCheckboxes].some(cb => cb !== verBdCheckbox &&
+                                    cb.checked);
+                                verBdCheckbox.checked = anyChecked;
+                            }
+                        }
+                    });
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function() {
+                const passwordInput = $('#password');
+                const passwordRequirements = $('#password-requirements');
+        
+                // Mostrar validaciones solo si el usuario empieza a escribir
+                passwordInput.on('input', function() {
+                    if ($(this).val().length > 0) {
+                        passwordRequirements.show();
+                    } else {
+                        passwordRequirements.hide();
+                    }
+        
+                    validateRequirement('#length', this.value.length >= 8);
+                    validateRequirement('#uppercase', /[A-Z]/.test(this.value));
+                    validateRequirement('#number', /\d/.test(this.value));
+                    validateRequirement('#special', /[@$!%*?&]/.test(this.value));
+                });
+        
+                // Mostrar/Ocultar contraseña
+                $('.toggle-password').click(function() {
+                    const icon = $(this).find('i');
+                    passwordInput.attr('type', passwordInput.attr('type') === 'password' ? 'text' : 'password');
+                    icon.toggleClass('fa-eye fa-eye-slash');
+                });
+        
+                function validateRequirement(element, isValid) {
+                    $(element).toggleClass('text-success', isValid)
+                        .toggleClass('text-danger', !isValid)
+                        .find('i')
+                        .toggleClass('fa-check-circle', isValid)
+                        .toggleClass('fa-times-circle', !isValid);
+                }
             });
         </script>
     @endpush

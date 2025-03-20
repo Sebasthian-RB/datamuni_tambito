@@ -74,6 +74,16 @@ class CommitteeVlFamilyMemberController extends Controller
 
         $kinships = ['Hijo(a)', 'Socio(a)'];
 
+        $sexTypes = [
+            1 => 'Masculino',
+            0 => 'Femenino',
+        ];
+
+        $disabilities = [
+            1 => 'Sí',
+            0 => 'No',
+        ];
+
         return view('areas.VasoDeLecheViews.CommitteeVlFamilyMembers.create', compact(
             'committee', 
             'vlFamilyMembers', 
@@ -83,7 +93,9 @@ class CommitteeVlFamilyMemberController extends Controller
             'educationLevels',
             'conditions',
             'dwellingTypes',
-            'kinships'
+            'kinships',
+            'sexTypes', 
+            'disabilities'
         ));
     }
 

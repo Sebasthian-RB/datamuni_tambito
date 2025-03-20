@@ -18,17 +18,19 @@
     <div class="container">
         <!-- Botones de acción -->
         <div class="mb-3 d-flex">
-            <a href="{{ route('violences.create') }}" class="btn text-white shadow-sm"
-                style="background: #f67280; border-radius: 8px;">
-                <i class="fa fa-plus"></i> Nueva Violencia
-            </a>
+            @can('crear')
+                <a href="{{ route('violences.create') }}" class="btn text-white shadow-sm"
+                    style="background: #f67280; border-radius: 8px;">
+                    <i class="fa fa-plus"></i> Nueva Violencia
+                </a>
+            @endcan
             <a href="{{ route('amdashboard') }}" class="btn btn-secondary shadow-sm" style="border-radius: 8px;">
                 <i class="fa fa-arrow-left"></i> Volver
             </a>
         </div>
 
         <!-- Mensaje de éxito -->
-        @if(session('success'))
+        @if (session('success'))
             <div class="alert alert-success shadow-sm" style="border-radius: 8px;">
                 {{ session('success') }}
             </div>
@@ -50,28 +52,34 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($violences as $violence)
+                        @foreach ($violences as $violence)
                             <tr>
                                 <td>{{ $violence->id }}</td>
                                 <td>{{ $violence->kind_violence }}</td>
                                 <td>{{ Str::limit($violence->description, 50) }}</td> <!-- Limitar a 50 caracteres -->
                                 <td>
-                                    <a href="{{ route('violences.show', $violence->id) }}"
-                                        class="btn btn-info btn-sm shadow-sm">
-                                        <i class="fa fa-eye"></i> Ver
-                                    </a>
-                                    <a href="{{ route('violences.edit', $violence->id) }}"
-                                        class="btn btn-warning btn-sm shadow-sm">
-                                        <i class="fa fa-edit"></i> Editar
-                                    </a>
+                                    @can('ver detalles')
+                                        <a href="{{ route('violences.show', $violence->id) }}"
+                                            class="btn btn-info btn-sm shadow-sm">
+                                            <i class="fa fa-eye"></i> Ver
+                                        </a>
+                                    @endcan
+                                    @can('editar')
+                                        <a href="{{ route('violences.edit', $violence->id) }}"
+                                            class="btn btn-warning btn-sm shadow-sm">
+                                            <i class="fa fa-edit"></i> Editar
+                                        </a>
+                                    @endcan
                                     <form action="{{ route('violences.destroy', $violence->id) }}" method="POST"
                                         style="display:inline-block;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm shadow-sm"
-                                            onclick="return confirm('¿Está seguro de eliminar este tipo de violencia?')">
-                                            <i class="fa fa-trash"></i> Eliminar
-                                        </button>
+                                        @can('eliminar')
+                                            <button type="submit" class="btn btn-danger btn-sm shadow-sm"
+                                                onclick="return confirm('¿Está seguro de eliminar este tipo de violencia?')">
+                                                <i class="fa fa-trash"></i> Eliminar
+                                            </button>
+                                        @endcan
                                     </form>
                                 </td>
                             </tr>

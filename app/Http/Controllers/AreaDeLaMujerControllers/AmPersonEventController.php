@@ -8,15 +8,19 @@ use App\Http\Requests\AreaDeLaMujerRequests\AmPersonEvents\StoreAmPersonEventReq
 use App\Http\Requests\AreaDeLaMujerRequests\AmPersonEvents\UpdateAmPersonEventRequest;
 use App\Models\AreaDeLaMujerModels\AmPerson;
 use App\Models\AreaDeLaMujerModels\Event;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
 class AmPersonEventController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        $this->authorize('ver BD');
+
         $query = AmPersonEvent::with(['amPerson', 'event']);
     
         // Filtro por nombre o DNI
@@ -49,6 +53,7 @@ class AmPersonEventController extends Controller
      */
     public function create()
     {
+        $this->authorize('crear');
         // Obtener personas y eventos disponibles
         $people = AmPerson::all();
         $events = Event::all();
@@ -76,6 +81,7 @@ class AmPersonEventController extends Controller
      */
     public function show(AmPersonEvent $amPersonEvent)
     {
+        $this->authorize('ver detalles');
         // Mostrar el detalle del registro con relaciones
         $amPersonEvent->load(['amPerson', 'event']);
 
@@ -87,6 +93,7 @@ class AmPersonEventController extends Controller
      */
     public function edit(AmPersonEvent $amPersonEvent)
     {
+        $this->authorize('editar');
         // Obtener personas y eventos para mostrar en el formulario de edición
         $people = AmPerson::all();
         $events = Event::all();
@@ -116,6 +123,7 @@ class AmPersonEventController extends Controller
      */
     public function destroy(AmPersonEvent $amPersonEvent)
     {
+        $this->authorize('eliminar');
         // Eliminar el registro
         $amPersonEvent->delete();
 
