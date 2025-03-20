@@ -80,7 +80,7 @@
                             <span class="badge bg-info">{{ $disability }}</span>
                             @endforeach
                             @else
-                            <span class="text-muted">No especificado</span>
+                            <span class="text-muted">Ninguna</span>
                             @endif
                         </td>
                     </tr>

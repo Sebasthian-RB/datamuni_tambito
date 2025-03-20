@@ -18,13 +18,18 @@ class UpdateElderlyAdultRequest extends FormRequest
         return true; // Permitir acceso a cualquier usuario autorizado.
     }
 
-    // Convierte el campo type_of_disability a un array si es un JSON
     protected function prepareForValidation()
     {
+        // Convierte el campo type_of_disability a un array si es un JSON
         if ($this->has('type_of_disability') && is_string($this->type_of_disability)) {
             $this->merge([
                 'type_of_disability' => json_decode($this->type_of_disability, true),
             ]);
+        }
+
+        // Si el campo social_program no está presente en la solicitud, asignar un array vacío
+        if (!$this->has('social_program')) {
+            $this->merge(['social_program' => []]);
         }
     }
 
@@ -79,8 +84,8 @@ class UpdateElderlyAdultRequest extends FormRequest
 
             'sex_type' => ['required', Rule::in(['0', '1'])],
 
-            'language' => 'nullable|array',
-            'language.*' => 'in:Español,Quechua,Aimara,Otro', // Validar que los valores estén permitidos
+            'language' => 'required|array|min:1',
+            'language.*' => 'in:Español,Quechua,Aimara,Otro',
 
             'birth_date' => [
                 'required',
@@ -147,6 +152,8 @@ class UpdateElderlyAdultRequest extends FormRequest
             'reference.max' => 'Máximo 255 caracteres.',
             'sex_type.required' => 'El sexo es obligatorio.',
             'sex_type.in' => 'El valor seleccionado para el sexo no es válido.',
+            'language.required' => 'Debe seleccionar al menos un idioma.',
+            'language.min' => 'Debe seleccionar al menos un idioma.',
             'language.*.in' => 'El idioma seleccionado no es válido.',
             'phone_number.regex' => 'El número de teléfono debe contener exactamente 9 dígitos numéricos.',
 

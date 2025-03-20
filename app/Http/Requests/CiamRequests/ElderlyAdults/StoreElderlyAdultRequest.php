@@ -76,7 +76,7 @@ class StoreElderlyAdultRequest extends FormRequest
 
             'sex_type' => ['required', Rule::in(['0', '1'])],
 
-            'language' => 'nullable|array',
+            'language' => 'required|array|min:1',
             'language.*' => 'in:Español,Quechua,Aimara,Otro',
 
             'birth_date' => [
@@ -144,6 +144,7 @@ class StoreElderlyAdultRequest extends FormRequest
             'sex_type.required' => 'El sexo es obligatorio.',
             'sex_type.in' => 'El valor seleccionado para el sexo no es válido.',
             'language.required' => 'Debe seleccionar al menos un idioma.',
+            'language.min' => 'Debe seleccionar al menos un idioma.',
             'language.*.in' => 'El idioma seleccionado no es válido.',
             'phone_number.regex' => 'El número de teléfono debe contener exactamente 9 dígitos numéricos.',
 

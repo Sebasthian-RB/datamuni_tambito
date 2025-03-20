@@ -22,7 +22,7 @@
 
     <!--  FIN DEL CÓDIGO PARA MOSTRAR ERRORES -->
 
-    <form action="{{ route('elderly_adults.store') }}" method="POST">
+    <form id="create-elderly-form" action="{{ route('elderly_adults.store') }}" method="POST">
         @csrf
 
         <div class="card">
@@ -49,10 +49,10 @@
                 <div class="form-group">
                     <label for="id">Número de Documento</label>
                     <input type="text" class="form-control @error('id') is-invalid @enderror" id="id" name="id" required>
-                    @error('id') <span class="invalid-feedback">{{ $message }}</span> @enderror
                     @error('id')
                     <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
+                    <div id="id-error" class="alert alert-danger" style="display: none;"></div>
                 </div>
 
                 <!-- Nombres-->
@@ -152,10 +152,12 @@
                             <label class="form-check-label" for="language_otro">Otro</label>
                         </div>
                     </div>
-                    @error('language')
-                    <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror
+                    <!-- Mensaje de error (se mostrará con JavaScript) -->
+                    <div id="language-error" class="alert alert-danger" style="display: none;">
+                        Debe seleccionar al menos un idioma.
+                    </div>
                 </div>
+
 
                 <!-- Teléfono -->
                 <div class="form-group">
@@ -407,20 +409,99 @@
     });
 </script>
 
-<!--  PARA LOS NOMBRES-->
+<!--  PARA mandar lista de Ids y evitar duplicidad de id's-->
+<script>
+    const existingIds = @json($existingIds); // Convertir la lista de IDs a JSON
+</script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        let nameInputs = ['given_name', 'paternal_last_name', 'maternal_last_name'];
+        const form = document.getElementById('create-elderly-form');
+        const idInput = document.getElementById('id');
+        const idError = document.getElementById('id-error');
 
-        nameInputs.forEach(function(inputId) {
-            let input = document.getElementById(inputId);
-            input.addEventListener('input', function() {
-                this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
-            });
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Evitar que el formulario se envíe automáticamente
+
+            // Validar el campo de idiomas (si lo tienes)
+            const languageCheckboxes = document.querySelectorAll('input[name="language[]"]:checked');
+            if (languageCheckboxes.length === 0) {
+                document.getElementById('language-error').style.display = 'block';
+                document.getElementById('language-error').scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+                return; // Detener la ejecución si no se selecciona ningún idioma
+            }
+
+            // Validar el ID
+            const id = idInput.value;
+
+            if (existingIds.includes(id)) {
+                // Mostrar mensaje de error si el ID ya existe
+                idError.textContent = 'El ID ya está registrado.'; // Mensaje de error personalizado
+                idError.style.display = 'block';
+                idError.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            } else {
+                // Enviar el formulario si el ID no está duplicado
+                form.submit();
+            }
         });
     });
 </script>
 
+<!--  PARA LOS NOMBRES-->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('JavaScript cargado correctamente'); // Depuración
+
+        document.getElementById('create-elderly-form').addEventListener('submit', function(event) {
+            console.log('Formulario enviado'); // Depuración
+
+            const languageCheckboxes = document.querySelectorAll('input[name="language[]"]:checked');
+            if (languageCheckboxes.length === 0) {
+                console.log('No se seleccionó ningún idioma'); // Depuración
+                document.getElementById('language-error').style.display = 'block';
+                event.preventDefault(); // Evitar que el formulario se envíe
+            } else {
+                document.getElementById('language-error').style.display = 'none';
+            }
+        });
+    });
+</script>
+
+<!-- PARA IDIOMAS -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('JavaScript cargado correctamente'); // Depuración
+
+        document.getElementById('create-elderly-form').addEventListener('submit', function(event) {
+            console.log('Formulario enviado'); // Depuración
+
+            const languageCheckboxes = document.querySelectorAll('input[name="language[]"]:checked');
+            console.log('Checkboxes seleccionados:', languageCheckboxes.length); // Depuración
+
+            if (languageCheckboxes.length === 0) {
+                console.log('No se seleccionó ningún idioma'); // Depuración
+                document.getElementById('language-error').style.display = 'block';
+
+                // Desplazar la página hasta el campo de idiomas
+                document.getElementById('language-error').scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+
+                event.preventDefault(); // Evitar que el formulario se envíe
+            } else {
+                console.log('Idiomas seleccionados:', languageCheckboxes.length); // Depuración
+                document.getElementById('language-error').style.display = 'none';
+            }
+        });
+    });
+</script>
 
 <!-- PARA GUARDIAN -->
 <script>
@@ -633,6 +714,15 @@
     .btn-group .btn i {
         margin-right: 5px;
         /* Espacio entre el icono y el texto */
+    }
+</style>
+
+<!-- Estilo adicional para campo de IDIOMA-->
+<style>
+    #language-error {
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 5px;
     }
 </style>
 

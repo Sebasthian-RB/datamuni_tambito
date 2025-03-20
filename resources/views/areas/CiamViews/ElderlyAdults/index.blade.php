@@ -29,7 +29,7 @@
 
     <!-- Mensajes de éxito, error y advertencia -->
     @if(session('success'))
-    <div class="alert alert-success auto-dismiss" role="alert">
+    <div class="alert {{ session('success_type') === 'delete' ? 'alert-success-delete' : 'alert-success' }} auto-dismiss" role="alert">
         <strong>Éxito:</strong> {{ session('success') }}
     </div>
     @endif
@@ -307,6 +307,18 @@
     .btn-close {
         padding: 0.75rem;
         /* Espaciado para el botón de cierre */
+    }
+</style>
+
+<style>
+    /* Color personalizado para el mensaje de éxito de eliminación */
+    .alert-success-delete {
+        background-color: #780C29;
+        /* Color de fondo */
+        color: white;
+        /* Color del texto */
+        border-color: #660a22;
+        /* Color del borde (opcional) */
     }
 </style>
 
