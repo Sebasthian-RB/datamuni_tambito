@@ -21,7 +21,7 @@
     @endif
     <!--  FIN DEL CÓDIGO PARA MOSTRAR ERRORES -->
 
-    <form action="{{ route('elderly_adults.update', $elderlyAdult->id) }}" method="POST">
+    <form id="edit-elderly-form" action="{{ route('elderly_adults.update', $elderlyAdult->id) }}" method="POST">
         @csrf
         @method('PUT')
 
@@ -48,11 +48,11 @@
                 <!-- Número de Documento -->
                 <div class="form-group">
                     <label for="id">Número de Documento</label>
-                    <input type="text" class="form-control @error('id') is-invalid @enderror" id="id" name="id" value="{{ $elderlyAdult->id }}" required>
+                    <input type="text" class="form-control @error('id') is-invalid @enderror" id="id" name="id" value="{{ old('id', $elderlyAdult->id) }}" required>
                     @error('id')
                     <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
-                    @error('id') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                    <div id="id-error" class="alert alert-danger" style="display: none;"></div>
                 </div>
 
                 <!-- Nombres -->
@@ -148,6 +148,10 @@
                                 {{ in_array('Otro', old('language', $elderlyAdult->language ?? [])) ? 'checked' : '' }}>
                             <label class="form-check-label" for="language_otro">Otro</label>
                         </div>
+                    </div>
+                    <!-- Mensaje de error -->
+                    <div id="language-error" class="alert alert-danger" style="display: none;">
+                        Debe seleccionar al menos un idioma.
                     </div>
                 </div>
 
@@ -434,6 +438,51 @@
     });
 </script>
 
+<!--  PARA mandar lista de Ids y evitar duplicidad de id's-->
+<script>
+    const existingIds = @json($existingIds); // Convertir la lista de IDs a JSON
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('edit-elderly-form');
+        const idInput = document.getElementById('id');
+        const idError = document.getElementById('id-error');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Evitar que el formulario se envíe automáticamente
+
+            // Validar el campo de idiomas (si lo tienes)
+            const languageCheckboxes = document.querySelectorAll('input[name="language[]"]:checked');
+            if (languageCheckboxes.length === 0) {
+                document.getElementById('language-error').style.display = 'block';
+                document.getElementById('language-error').scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+                return; // Detener la ejecución si no se selecciona ningún idioma
+            }
+
+            // Validar el ID
+            const id = idInput.value;
+
+            if (existingIds.includes(id)) {
+                // Mostrar mensaje de error si el ID ya existe
+                idError.textContent = 'El ID ya está registrado.';
+                idError.style.display = 'block';
+                idError.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            } else {
+                // Enviar el formulario si el ID no está duplicado
+                form.submit();
+            }
+        });
+    });
+</script>
+
+
 <!-- PARA EL TELEFONO -->
 <script>
     document.getElementById("phone_number").addEventListener("input", function(e) {
@@ -447,6 +496,35 @@
     });
 </script>
 
+<!-- PARA IDIOMAS -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('JavaScript cargado correctamente'); // Depuración
+
+        document.getElementById('edit-elderly-form').addEventListener('submit', function(event) {
+            console.log('Formulario enviado'); // Depuración
+
+            const languageCheckboxes = document.querySelectorAll('input[name="language[]"]:checked');
+            console.log('Checkboxes seleccionados:', languageCheckboxes.length); // Depuración
+
+            if (languageCheckboxes.length === 0) {
+                console.log('No se seleccionó ningún idioma'); // Depuración
+                document.getElementById('language-error').style.display = 'block';
+
+                // Desplazar la página hasta el campo de idiomas
+                document.getElementById('language-error').scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+
+                event.preventDefault(); // Evitar que el formulario se envíe
+            } else {
+                console.log('Idiomas seleccionados:', languageCheckboxes.length); // Depuración
+                document.getElementById('language-error').style.display = 'none';
+            }
+        });
+    });
+</script>
 
 <!-- PARA EL GUARDIAN -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>

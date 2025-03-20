@@ -37,7 +37,8 @@ class ElderlyAdultController extends Controller
     public function create(CreateElderlyAdultRequest $request): View
     {
         $guardians = Guardian::all();
-        return view('areas.CiamViews.ElderlyAdults.create', compact('guardians'));
+        $existingIds = ElderlyAdult::pluck('id')->toArray(); // Obtener todos los IDs existentes
+        return view('areas.CiamViews.ElderlyAdults.create', compact('guardians', 'existingIds'));
     }
 
     /**
@@ -81,8 +82,9 @@ class ElderlyAdultController extends Controller
     {
 
         $guardians = Guardian::all();
+        $existingIds = ElderlyAdult::where('id', '!=', $elderlyAdult->id)->pluck('id')->toArray(); // Excluir el ID actual
 
-        return view('areas.CiamViews.ElderlyAdults.edit', compact('elderlyAdult', 'guardians'));
+        return view('areas.CiamViews.ElderlyAdults.edit', compact('elderlyAdult', 'guardians', 'existingIds'));
     }
 
     /**
@@ -132,7 +134,10 @@ class ElderlyAdultController extends Controller
             DB::commit();
 
             // Redirigir con un mensaje de éxito
-            return redirect()->route('elderly_adults.index')->with('success', 'Adulto mayor eliminado correctamente.');
+            return redirect()->route('elderly_adults.index')->with([
+                'success' => 'Adulto mayor eliminado correctamente.',
+                'success_type' => 'delete', // Identificador para el tipo de éxito
+            ]);
         } catch (\Exception $e) {
             DB::rollBack();
 
