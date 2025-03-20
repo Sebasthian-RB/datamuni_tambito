@@ -6,7 +6,7 @@
 <div class="container">
 
     <!-- Botones de encabezado-->
-    <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3 mb-4">
+    <div class="gap-3 mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center">
 
         <!-- Botón "Volver" -->
         <div class="col-md-2 d-flex justify-content-start align-items-center">
@@ -21,9 +21,11 @@
 
         <!-- Botón "Agregar Adulto Mayor" -->
         <div class="col-md-3 d-flex justify-content-end align-items-center">
+            @can('crear')
             <a href="{{ route('guardians.create') }}" class="btn btn-secondary btn-main">
                 <i class="fas fa-plus-circle me-2"></i> Agregar Nuevo Guardián
             </a>
+            @endcan
         </div>
 
     </div>
@@ -53,7 +55,7 @@
     <!-- Tabla de guardianes -->
     <div class="card">
         <!-- Header con título y logo -->
-        <div class="card-header mb-4">
+        <div class="mb-4 card-header">
             <div class="header-content">
                 <div class="header-text">
                     <h1 class="card-title"><i class="fas fa-users"></i> Listado de Guardianes</h1>
@@ -65,7 +67,7 @@
 
         <div class="card-body" style="background-color: #EAFAEA;">
             @if ($guardians->isEmpty())
-            <div class="alert alert-info text-center">
+            <div class="text-center alert alert-info">
                 <i class="fas fa-info-circle"></i> No hay guardianes registrados.
             </div>
             @else
@@ -93,18 +95,24 @@
                             @endif
                         </td>
                         <td>
+                            @can('ver detalles')
                             <a href="{{ route('guardians.show', $guardian->id) }}" class="btn btn-sm" style="background-color: #6E8E59; color: white;" aria-label="Ver detalles">
                                 <i class="fas fa-eye"></i>
                             </a>
+                            @endcan
+                            @can('editar')
                             <a href="{{ route('guardians.edit', $guardian->id) }}" class="btn btn-sm" style="background-color: #CAE0BC; color: black;" aria-label="Editar guardián">
                                 <i class="fas fa-edit"></i>
                             </a>
+                            @endcan
                             <form action="{{ route('guardians.destroy', $guardian->id) }}" method="POST" style="display: inline;">
                                 @csrf
                                 @method('DELETE')
+                                @can('eliminar')
                                 <button type="submit" class="btn btn-sm" style="background-color: #780C28; color: white;" onclick="return confirm('¿Está seguro de eliminar este guardián?')" aria-label="Eliminar guardián">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
+                                @endcan
                             </form>
                         </td>
                     </tr>

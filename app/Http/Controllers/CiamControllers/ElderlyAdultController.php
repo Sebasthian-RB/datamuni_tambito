@@ -17,16 +17,17 @@ use Illuminate\View\View;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\QueryException;
-
-
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class ElderlyAdultController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Muestra una lista de todos los adultos mayores con su guardián asociado.
      */
     public function index(IndexElderlyAdultRequest $request): View
     {
+        $this->authorize('ver BD');
         $elderlyAdults = ElderlyAdult::with('guardian')->get();
         return view('areas.CiamViews.ElderlyAdults.index', compact('elderlyAdults'));
     }
@@ -36,6 +37,7 @@ class ElderlyAdultController extends Controller
      */
     public function create(CreateElderlyAdultRequest $request): View
     {
+        $this->authorize('crear');
         $guardians = Guardian::all();
         return view('areas.CiamViews.ElderlyAdults.create', compact('guardians'));
     }
@@ -71,6 +73,7 @@ class ElderlyAdultController extends Controller
      */
     public function show(ShowElderlyAdultRequest $request, ElderlyAdult $elderlyAdult): View
     {
+        $this->authorize('ver detalles');
         return view('areas.CiamViews.ElderlyAdults.show', compact('elderlyAdult'));
     }
 
@@ -113,6 +116,7 @@ class ElderlyAdultController extends Controller
      */
     public function destroy(DestroyElderlyAdultRequest $request, ElderlyAdult $elderlyAdult): RedirectResponse
     {
+        $this->authorize('eliminar');
         try {
             DB::beginTransaction();
 
