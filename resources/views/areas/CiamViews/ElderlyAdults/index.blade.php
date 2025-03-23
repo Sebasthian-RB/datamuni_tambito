@@ -19,10 +19,15 @@
         </div>
 
         <!-- Botón "Agregar Adulto Mayor" -->
+
         <div class="col-md-3 d-flex justify-content-end align-items-center">
+            @can('crear')
+
             <a href="{{ route('elderly_adults.create') }}" class="btn btn-secondary btn-main">
                 <i class="fas fa-plus-circle me-2"></i> Agregar Adulto Mayor
             </a>
+            @endcan
+
         </div>
 
     </div>
@@ -86,18 +91,24 @@
                             <span class="badge bg-danger">Inactivo</span>
                             @endif
                         </td>
+
+                        <!-- Botones de acciones -->
                         <td class="text-center">
-                            <!-- Botones de acciones -->
+                            @can('ver detalles')
                             <a href="{{ route('elderly_adults.show', $elderlyAdult->id) }}" class="btn btn-sm text-white" style="background-color: #6E8E59;">
                                 <i class="fas fa-eye"></i> Ver
                             </a>
+                            @endcan
+                            @can('editar')
                             <a href="{{ route('elderly_adults.edit', $elderlyAdult->id) }}" class="btn btn-sm text-white" style="background-color: #CAE0BC;">
                                 <i class="fas fa-edit"></i> Editar
                             </a>
-                            <!-- Botones de acciones -->
+                            @endcan
+                            @can('eliminar')
                             <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $elderlyAdult->id }}">
                                 <i class="fas fa-trash-alt"></i> Eliminar
                             </button>
+                            @endcan
                         </td>
                     </tr>
 

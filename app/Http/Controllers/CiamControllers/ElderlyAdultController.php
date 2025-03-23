@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\CiamControllers;
 
+
 use App\Http\Controllers\Controller;
 use App\Models\CiamModels\ElderlyAdult;
 use App\Models\CiamModels\Guardian;
@@ -83,7 +84,7 @@ class ElderlyAdultController extends Controller
      */
     public function edit(EditElderlyAdultRequest $request, ElderlyAdult $elderlyAdult): View
     {
-
+        $this->authorize('editar');
         $guardians = Guardian::all();
         $existingIds = ElderlyAdult::where('id', '!=', $elderlyAdult->id)->pluck('id')->toArray(); // Excluir el ID actual
 

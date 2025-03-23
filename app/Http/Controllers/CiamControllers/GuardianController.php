@@ -11,14 +11,20 @@ use App\Http\Requests\CiamRequests\Guardians\StoreGuardianRequest;
 use App\Http\Requests\CiamRequests\Guardians\EditGuardianRequest;
 use App\Http\Requests\CiamRequests\Guardians\UpdateGuardianRequest;
 use App\Http\Requests\CiamRequests\Guardians\DestroyGuardianRequest;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 
 class GuardianController extends Controller
 {
+
+    use AuthorizesRequests;
+
     /**
      * Muestra una lista de todos los guardianes.
      */
     public function index(IndexGuardianRequest $request)
     {
+        $this->authorize('ver BD');
         $guardians = Guardian::all();
         return view('areas.CiamViews.Guardians.index', compact('guardians'));
     }
@@ -28,6 +34,7 @@ class GuardianController extends Controller
      */
     public function create(CreateGuardianRequest $request)
     {
+        $this->authorize('crear');
         $documentTypes = ['DNI', 'Pasaporte', 'Carnet', 'Cedula'];
         return view('areas.CiamViews.Guardians.create', compact('documentTypes'));
     }
@@ -54,6 +61,7 @@ class GuardianController extends Controller
      */
     public function show(ShowGuardianRequest $request, Guardian $guardian)
     {
+        $this->authorize('ver detalles');
         return view('areas.CiamViews.Guardians.show', compact('guardian'));
     }
 
@@ -62,6 +70,7 @@ class GuardianController extends Controller
      */
     public function edit(EditGuardianRequest $request, Guardian $guardian)
     {
+        $this->authorize('editar');
         $documentTypes = ['DNI', 'Pasaporte', 'Carnet', 'Cedula'];
         return view('areas.CiamViews.Guardians.edit', compact('guardian', 'documentTypes'));
     }
@@ -88,6 +97,7 @@ class GuardianController extends Controller
      */
     public function destroy(DestroyGuardianRequest $request, Guardian $guardian)
     {
+        $this->authorize('eliminar');
         // Validar si el guardián tiene adultos mayores asignados
         if ($guardian->elderlyAdults()->exists()) {
             return redirect()->route('guardians.index')->with('error', 'No se puede eliminar este guardián porque tiene adultos mayores asignados.');

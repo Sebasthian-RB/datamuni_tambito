@@ -9,7 +9,7 @@ use App\Models\CiamModels\ElderlyAdult;
 
 class CiamDashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         // 📌 Cantidad de adultos por edad
         $adultsByAge = DB::table('elderly_adults')
@@ -19,7 +19,7 @@ class CiamDashboardController extends Controller
             ->get();
 
         // 📌 Pasar datos a la vista
-        return view('areas.CiamViews.CiamDashboard', [
+        return view('areas.CIAMViews.CIAMDashboard', [
             'adultsByAge' => $adultsByAge,
         ]);
     }
