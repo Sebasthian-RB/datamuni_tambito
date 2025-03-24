@@ -12,87 +12,91 @@
 @stop
 
 @section('content')
-
-    <!-- Barra de búsqueda -->
-    <div class="mb-3 d-flex justify-content-center">
-        <form action="{{ route('om-dwellings.index') }}" method="GET" class="d-flex">
-            <input type="text" name="search" class="form-control me-2"
-                placeholder="Buscar por localización o referencia..." value="{{ request('search') }}">
-            <button type="submit" class="btn btn-custom">
-                <i class="fas fa-search"></i>
-            </button>
-        </form>
-    </div>
-    <div class="card shadow-lg" style="border-radius: 15px; border-left: 5px solid #99050f;">
-
-        <!-- Encabezado de la tarjeta con botón al lado del título -->
-        <div class="card-header d-flex align-items-center"
-            style="background: #f00e1c; color: white; border-radius: 15px 15px 0 0;">
-
-            <h3 class="mb-0 d-flex align-items-center">
-                Viviendas Registradas
-                <a href="{{ route('om-people.index') }}" class="btn btn-custom btn-sm ms-1">
-                    <i class="fas fa-arrow-left"></i> Volver
-                </a>
-            </h3>
+    @can('ver BD')
+        <!-- Barra de búsqueda -->
+        <div class="mb-3 d-flex justify-content-center">
+            <form action="{{ route('om-dwellings.index') }}" method="GET" class="d-flex">
+                <input type="text" name="search" class="form-control me-2"
+                    placeholder="Buscar por localización o referencia..." value="{{ request('search') }}">
+                <button type="submit" class="btn btn-custom">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
         </div>
+        <div class="card shadow-lg" style="border-radius: 15px; border-left: 5px solid #99050f;">
 
-        <!-- Cuerpo de la tarjeta -->
-        <div class="card-body">
-            <table class="table table-bordered table-striped text-center">
-                <thead class="table-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Localización</th>
-                        <th>Referencia</th>
-                        <th>Agua/Luz</th>
-                        <th>Tipo</th>
-                        <th>Ocupantes</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($dwellings as $dwelling)
+            <!-- Encabezado de la tarjeta con botón al lado del título -->
+            <div class="card-header d-flex align-items-center"
+                style="background: #f00e1c; color: white; border-radius: 15px 15px 0 0;">
+
+                <h3 class="mb-0 d-flex align-items-center">
+                    Viviendas Registradas
+                    <a href="{{ route('om-people.index') }}" class="btn btn-custom btn-sm ms-1">
+                        <i class="fas fa-arrow-left"></i> Volver
+                    </a>
+                </h3>
+            </div>
+
+            <!-- Cuerpo de la tarjeta -->
+            <div class="card-body">
+                <table class="table table-bordered table-striped text-center">
+                    <thead class="table-dark">
                         <tr>
-                            <td>{{ $dwelling->id }}</td>
-                            <td>{{ $dwelling->exact_location }}</td>
-                            <td>{{ $dwelling->reference ?? 'N/A' }}</td>
-                            <td>{{ $dwelling->water_electricity }}</td>
-                            <td>{{ $dwelling->type }}</td>
-                            <td>{{ $dwelling->permanent_occupants }}</td>
-                            <td class="d-flex justify-content-center">
-                                <a href="{{ route('om-dwellings.show', $dwelling->id) }}" class="btn btn-info btn-sm mx-1">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                                <a href="{{ route('om-dwellings.edit', $dwelling->id) }}"
-                                    class="btn btn-warning btn-sm mx-1">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <!-- Botón de eliminar con SweetAlert -->
-                                <button class="btn btn-danger btn-sm delete-button" data-id="{{ $dwelling->id }}">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-
-                                <!-- Formulario oculto para la eliminación -->
-                                <form id="delete-form-{{ $dwelling->id }}"
-                                    action="{{ route('om-dwellings.destroy', $dwelling->id) }}" method="POST"
-                                    style="display: none;">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
-                            </td>
+                            <th>ID</th>
+                            <th>Localización</th>
+                            <th>Referencia</th>
+                            <th>Agua/Luz</th>
+                            <th>Tipo</th>
+                            <th>Ocupantes</th>
+                            <th>Acciones</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach ($dwellings as $dwelling)
+                            <tr>
+                                <td>{{ $dwelling->id }}</td>
+                                <td>{{ $dwelling->exact_location }}</td>
+                                <td>{{ $dwelling->reference ?? 'N/A' }}</td>
+                                <td>{{ $dwelling->water_electricity }}</td>
+                                <td>{{ $dwelling->type }}</td>
+                                <td>{{ $dwelling->permanent_occupants }}</td>
+                                <td class="d-flex justify-content-center">
+                                    @can('ver detalles')
+                                        <a href="{{ route('om-dwellings.show', $dwelling->id) }}" class="btn btn-info btn-sm mx-1">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    @endcan
+                                    @can('editar')
+                                        <a href="{{ route('om-dwellings.edit', $dwelling->id) }}"
+                                            class="btn btn-warning btn-sm mx-1">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    @endcan
+                                    @can('eliminar')
+                                        <!-- Botón de eliminar con SweetAlert -->
+                                        <button class="btn btn-danger btn-sm delete-button" data-id="{{ $dwelling->id }}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    @endcan
+                                    <!-- Formulario oculto para la eliminación -->
+                                    <form id="delete-form-{{ $dwelling->id }}"
+                                        action="{{ route('om-dwellings.destroy', $dwelling->id) }}" method="POST"
+                                        style="display: none;">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <!-- Paginación -->
+            <div class="d-flex justify-content-center mt-3">
+                {{ $dwellings->links('pagination::bootstrap-4') }}
+            </div>
         </div>
-
-        <!-- Paginación -->
-        <div class="d-flex justify-content-center mt-3">
-            {{ $dwellings->links('pagination::bootstrap-4') }}
-        </div>
-
-    </div>
+    @endcan
 @stop
 
 @section('css')
@@ -147,6 +151,7 @@
             background-color: #930813;
             color: white;
         }
+
         /* Estilizar el campo de búsqueda */
         .form-control {
             border: 1px solid #930813;

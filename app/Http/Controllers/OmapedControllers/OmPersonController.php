@@ -9,15 +9,18 @@ use App\Models\OmapedModels\Caregiver;
 use App\Models\OmapedModels\Disability;
 use App\Models\OmapedModels\OmDwelling;
 use App\Models\OmapedModels\OmPerson;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
 class OmPersonController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        $this->authorize('ver BD');
         // Obtener todas las personas con sus relaciones (si es necesario)
         $people = OmPerson::with(['dwelling', 'disability', 'caregiver'])->paginate(6);
         return view('areas.OmapedViews.OmPeople.index', compact('people'));
@@ -28,6 +31,7 @@ class OmPersonController extends Controller
      */
     public function create()
     {
+        $this->authorize('crear');
         $dwellings = OmDwelling::all();
         $disabilities = Disability::all();
         $caregivers = Caregiver::all();
@@ -56,6 +60,7 @@ class OmPersonController extends Controller
      */
     public function show(OmPerson $omPerson)
     {
+        $this->authorize('ver detalles');
         // Mostrar los detalles de una persona
         return view('areas.OmapedViews.OmPeople.show', compact('omPerson'));
     }
@@ -65,6 +70,7 @@ class OmPersonController extends Controller
      */
     public function edit(OmPerson $omPerson)
     {
+        $this->authorize('editar');
         // Mostrar formulario para editar una persona
         $dwellings = OmDwelling::all();
         $disabilities = Disability::all();
@@ -94,6 +100,7 @@ class OmPersonController extends Controller
      */
     public function destroy(OmPerson $omPerson)
     {
+        $this->authorize('eliminar');
         // Eliminar persona
         $omPerson->delete();
         return redirect()->route('om-people.index')->with('success', 'Persona eliminada con éxito.');

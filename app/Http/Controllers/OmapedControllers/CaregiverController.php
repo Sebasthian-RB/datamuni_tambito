@@ -6,15 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\OmapedRequests\Caregiver\StoreCaregiverRequest;
 use App\Http\Requests\OmapedRequests\Caregiver\UpdateCaregiverRequest;
 use App\Models\OmapedModels\Caregiver;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
 class CaregiverController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        $this->authorize('ver BD');
         // Obtener el valor de búsqueda
         $search = $request->input('search');
 
@@ -32,6 +35,7 @@ class CaregiverController extends Controller
      */
     public function create()
     {
+        $this->authorize('crear');
         // Mostrar formulario para registrar un nuevo cuidador
         return view('areas.OmapedViews.Caregivers.create');
     }
@@ -60,6 +64,7 @@ class CaregiverController extends Controller
      */
     public function show(Caregiver $caregiver)
     {
+        $this->authorize('ver detalles');
         // Mostrar detalles de un cuidador
         return view('areas.OmapedViews.Caregivers.show', compact('caregiver'));
     }
@@ -69,6 +74,7 @@ class CaregiverController extends Controller
      */
     public function edit(Caregiver $caregiver)
     {
+        $this->authorize('editar');
         // Mostrar formulario para editar un cuidador
 
         return view('areas.OmapedViews.Caregivers.edit', compact('caregiver'));
@@ -89,6 +95,7 @@ class CaregiverController extends Controller
      */
     public function destroy(Caregiver $caregiver)
     {
+        $this->authorize('eliminar');
         // Eliminar cuidador
         $caregiver->delete();
 

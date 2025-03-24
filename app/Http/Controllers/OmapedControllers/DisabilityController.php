@@ -6,32 +6,36 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\OmapedRequests\Disability\StoreDisabilityRequest;
 use App\Http\Requests\OmapedRequests\Disability\UpdateDisabilityRequest;
 use App\Models\OmapedModels\Disability;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
 class DisabilityController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
-{
-    // Obtener el valor de búsqueda
-    $search = $request->input('search');
+    {
+        $this->authorize('ver BD');
+        // Obtener el valor de búsqueda
+        $search = $request->input('search');
 
-    // Consultar discapacidades con filtro opcional por N° de certificado, diagnóstico o tipo de discapacidad
-    $disabilities = Disability::when($search, function ($query) use ($search) {
-        $query->where('certificate_number', 'LIKE', "%{$search}%")
-              ->orWhere('diagnosis', 'LIKE', "%{$search}%")
-              ->orWhere('disability_type', 'LIKE', "%{$search}%");
-    })->paginate(10); // Manteniendo la paginación
+        // Consultar discapacidades con filtro opcional por N° de certificado, diagnóstico o tipo de discapacidad
+        $disabilities = Disability::when($search, function ($query) use ($search) {
+            $query->where('certificate_number', 'LIKE', "%{$search}%")
+                ->orWhere('diagnosis', 'LIKE', "%{$search}%")
+                ->orWhere('disability_type', 'LIKE', "%{$search}%");
+        })->paginate(10); // Manteniendo la paginación
 
-    return view('areas.OmapedViews.Disabilities.index', compact('disabilities'));
-}
+        return view('areas.OmapedViews.Disabilities.index', compact('disabilities'));
+    }
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
+        $this->authorize('crear');
         // Mostrar formulario para registrar una nueva discapacidad
         return view('areas.OmapedViews.Disabilities.create');
     }
@@ -62,6 +66,7 @@ class DisabilityController extends Controller
      */
     public function show(Disability $disability)
     {
+        $this->authorize('ver detalles');
         // Mostrar detalles de una discapacidad
         return view('areas.OmapedViews.Disabilities.show', compact('disability'));
     }
@@ -71,6 +76,7 @@ class DisabilityController extends Controller
      */
     public function edit(Disability $disability)
     {
+        $this->authorize('editar');
         // Mostrar formulario para editar una discapacidad
         return view('areas.OmapedViews.Disabilities.edit', compact('disability'));
     }
@@ -89,6 +95,7 @@ class DisabilityController extends Controller
      */
     public function destroy(Disability $disability)
     {
+        $this->authorize('eliminar');
         // Eliminar discapacidad
         $disability->delete();
         return redirect()->route('disabilities.index')->with('success', 'Discapacidad eliminada con éxito.');

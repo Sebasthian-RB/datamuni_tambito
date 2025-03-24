@@ -12,92 +12,99 @@
 @stop
 
 @section('content')
-<br>
-    <!-- Formulario de búsqueda -->
-    <div class="d-flex justify-content-center mb-3">
-        <form action="{{ route('caregivers.index') }}" method="GET" class="d-flex">
-            <input type="text" name="search" class="form-control me-2" placeholder="Buscar por nombre o DNI"
-                value="{{ request('search') }}" style="border-radius: 8px; border: 1px solid #930813; max-width: 250px;">
-            <button type="submit" class="btn btn-custom">
-                <i class="fas fa-search"></i> Buscar
-            </button>
-        </form>
-    </div>
-    <div class="card shadow-lg"
-        style="border-radius: 15px; max-width: 1100px; margin: 2rem auto; border-left: 5px solid #99050f;">
-
-        <!-- Cabecera con diseño -->
-        <div class="card-header d-flex justify-content-between align-items-center"
-            style="background: #f00e1c; color: white; border-radius: 15px 15px 0 0;">
-            <h3 class="mb-0 d-flex align-items-center">
-                Cuidadores Registradas
-                <a href="{{ route('om-people.index') }}" class="btn btn-custom btn-sm ms-1">
-                    <i class="fas fa-arrow-left"></i> Volver
-                </a>
-            </h3>
+    <br>
+    @can('ver BD')
+        <!-- Formulario de búsqueda -->
+        <div class="d-flex justify-content-center mb-3">
+            <form action="{{ route('caregivers.index') }}" method="GET" class="d-flex">
+                <input type="text" name="search" class="form-control me-2" placeholder="Buscar por nombre o DNI"
+                    value="{{ request('search') }}" style="border-radius: 8px; border: 1px solid #930813; max-width: 250px;">
+                <button type="submit" class="btn btn-custom">
+                    <i class="fas fa-search"></i> Buscar
+                </button>
+            </form>
         </div>
+        <div class="card shadow-lg"
+            style="border-radius: 15px; max-width: 1100px; margin: 2rem auto; border-left: 5px solid #99050f;">
 
-        <!-- Cuerpo de la tarjeta -->
-        <div class="card-body" style="background: linear-gradient(135deg, #f8b19550 0%, #f6728050 100%);">
-            @if (session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
-            @endif
+            <!-- Cabecera con diseño -->
+            <div class="card-header d-flex justify-content-between align-items-center"
+                style="background: #f00e1c; color: white; border-radius: 15px 15px 0 0;">
+                <h3 class="mb-0 d-flex align-items-center">
+                    Cuidadores Registradas
+                    <a href="{{ route('om-people.index') }}" class="btn btn-custom btn-sm ms-1">
+                        <i class="fas fa-arrow-left"></i> Volver
+                    </a>
+                </h3>
+            </div>
 
-            <table class="table table-bordered table-hover text-center">
-                <thead style="background: #f00e1c; color: white;">
-                    <tr>
-                        <th>#</th>
-                        <th>Nombre Completo</th>
-                        <th>Relación</th>
-                        <th>DNI</th>
-                        <th>Teléfono</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($caregivers as $caregiver)
+            <!-- Cuerpo de la tarjeta -->
+            <div class="card-body" style="background: linear-gradient(135deg, #f8b19550 0%, #f6728050 100%);">
+                @if (session('success'))
+                    <div class="alert alert-success">{{ session('success') }}</div>
+                @endif
+
+                <table class="table table-bordered table-hover text-center">
+                    <thead style="background: #f00e1c; color: white;">
                         <tr>
-                            <td>{{ $caregiver->id }}</td>
-                            <td>{{ $caregiver->full_name }}</td>
-                            <td>{{ $caregiver->relationship }}</td>
-                            <td>{{ $caregiver->dni }}</td>
-                            <td>{{ $caregiver->phone ?? 'N/A' }}</td>
-                            <td>
-                                <a href="{{ route('caregivers.show', $caregiver) }}" class="btn btn-info btn-sm">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                                <a href="{{ route('caregivers.edit', $caregiver) }}" class="btn btn-warning btn-sm">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-
-                                <!-- Botón de eliminar con SweetAlert -->
-                                <button class="btn btn-danger btn-sm delete-button" data-id="{{ $caregiver->id }}">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-
-                                <!-- Formulario oculto para la eliminación -->
-                                <form id="delete-form-{{ $caregiver->id }}"
-                                    action="{{ route('caregivers.destroy', $caregiver) }}" method="POST"
-                                    style="display: none;">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
-                            </td>
+                            <th>#</th>
+                            <th>Nombre Completo</th>
+                            <th>Relación</th>
+                            <th>DNI</th>
+                            <th>Teléfono</th>
+                            <th>Acciones</th>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" class="text-center">No hay cuidadores registrados.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @forelse($caregivers as $caregiver)
+                            <tr>
+                                <td>{{ $caregiver->id }}</td>
+                                <td>{{ $caregiver->full_name }}</td>
+                                <td>{{ $caregiver->relationship }}</td>
+                                <td>{{ $caregiver->dni }}</td>
+                                <td>{{ $caregiver->phone ?? 'N/A' }}</td>
+                                <td>
+                                    @can('ver detalles')
+                                        <a href="{{ route('caregivers.show', $caregiver) }}" class="btn btn-info btn-sm">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    @endcan
+                                    @can('editar')
+                                        <a href="{{ route('caregivers.edit', $caregiver) }}" class="btn btn-warning btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    @endcan
+                                    @can('eliminar')
+                                        <!-- Botón de eliminar con SweetAlert -->
+                                        <button class="btn btn-danger btn-sm delete-button" data-id="{{ $caregiver->id }}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    @endcan
 
-            <!-- Paginación mejorada -->
-            <div class="d-flex justify-content-center mt-3">
-                {{ $caregivers->links('pagination::bootstrap-4') }}
+                                    <!-- Formulario oculto para la eliminación -->
+                                    <form id="delete-form-{{ $caregiver->id }}"
+                                        action="{{ route('caregivers.destroy', $caregiver) }}" method="POST"
+                                        style="display: none;">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center">No hay cuidadores registrados.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+
+                <!-- Paginación mejorada -->
+                <div class="d-flex justify-content-center mt-3">
+                    {{ $caregivers->links('pagination::bootstrap-4') }}
+                </div>
             </div>
         </div>
-    </div>
+    @endcan
 @stop
 
 @section('css')

@@ -21,111 +21,118 @@
             </div>
         </div>
     @endif
+    @can('ver BD')
+        <div class="container-fluid px-lg-4">
+            <h1 class="main-title animate__animated animate__fadeIn">
+                <span class="title-text">Gestión de Personas</span>
+                <div class="title-line"></div>
+            </h1>
+            @can('crear')
+                <!-- Acciones principales -->
+                <div class="action-bar animate__animated animate__fadeInUp">
+                    <a href="{{ route('om-people.create') }}" class="neo-btn">
+                        <i class="fas fa-user-plus mr-2"></i>
+                        <span class="btn-gradient-text">Nueva Persona</span>
+                    </a>
+                @endcan
+                <a href="{{ route('omdashboard') }}" class="neo-btn">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    <span class="btn-gradient-text">Volver</span>
+                </a>
+            </div>
+            <br>
+            <!-- Barra de búsqueda -->
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Buscar por Nombre o DNI..." class="search-input">
+                <button class="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <br>
+            <!-- Grid de tarjetas -->
+            <div class="responsive-grid">
+                @foreach ($people as $person)
+                    <div class="grid-item animate__animated animate__zoomIn">
+                        <div class="person-card">
+                            <div class="card-header">
+                                @can('eliminar')
+                                    <button class="delete-btn holographic" data-id="{{ $person->id }}" data-toggle="tooltip"
+                                        title="Eliminar permanentemente"></button>
+                                @endcan
+                                <h3 class="person-name">
+                                    {{ strtoupper($person->paternal_last_name) }}
+                                    <span class="name-highlight">{{ $person->given_name }}</span>
+                                </h3>
+                            </div>
 
-    <div class="container-fluid px-lg-4">
-        <h1 class="main-title animate__animated animate__fadeIn">
-            <span class="title-text">Gestión de Personas</span>
-            <div class="title-line"></div>
-        </h1>
-
-        <!-- Acciones principales -->
-        <div class="action-bar animate__animated animate__fadeInUp">
-            <a href="{{ route('om-people.create') }}" class="neo-btn">
-                <i class="fas fa-user-plus mr-2"></i>
-                <span class="btn-gradient-text">Nueva Persona</span>
-            </a>
-            <a href="{{ route('omdashboard') }}" class="neo-btn">
-                <i class="fas fa-arrow-left mr-2"></i>
-                <span class="btn-gradient-text">Volver</span>
-            </a>
-        </div>
-        <br>
-        <!-- Barra de búsqueda -->
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Buscar por Nombre o DNI..." class="search-input">
-            <button class="search-btn">
-                <i class="fas fa-search"></i>
-            </button>
-        </div>
-        <br>
-        <!-- Grid de tarjetas -->
-        <div class="responsive-grid">
-            @foreach ($people as $person)
-                <div class="grid-item animate__animated animate__zoomIn">
-                    <div class="person-card">
-                        <div class="card-header">
-                            <button class="delete-btn holographic" data-id="{{ $person->id }}" data-toggle="tooltip"
-                                title="Eliminar permanentemente"></button>
-                            <h3 class="person-name">
-                                {{ strtoupper($person->paternal_last_name) }}
-                                <span class="name-highlight">{{ $person->given_name }}</span>
-                            </h3>
-                        </div>
-
-                        <div class="card-body">
-                            <div class="info-grid">
-                                <div class="info-item">
-                                    <i class="fas fa-id-card icon"></i>
-                                    <div class="info-content">
-                                        <span class="info-label">DNI</span>
-                                        <span class="info-value dni-code">{{ $person->dni }}</span>
+                            <div class="card-body">
+                                <div class="info-grid">
+                                    <div class="info-item">
+                                        <i class="fas fa-id-card icon"></i>
+                                        <div class="info-content">
+                                            <span class="info-label">DNI</span>
+                                            <span class="info-value dni-code">{{ $person->dni }}</span>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="info-item">
-                                    <i class="fas fa-cake-candles icon"></i>
-                                    <div class="info-content">
-                                        <span class="info-label">Edad</span>
-                                        <span class="info-value age-badge">{{ $person->age }}</span>
+                                    <div class="info-item">
+                                        <i class="fas fa-cake-candles icon"></i>
+                                        <div class="info-content">
+                                            <span class="info-label">Edad</span>
+                                            <span class="info-value age-badge">{{ $person->age }}</span>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="info-item">
-                                    <i class="fas fa-heart icon"></i>
-                                    <div class="info-content">
-                                        <span class="info-label">Estado Civil</span>
-                                        <span class="info-value">{{ $person->marital_status }}</span>
+                                    <div class="info-item">
+                                        <i class="fas fa-heart icon"></i>
+                                        <div class="info-content">
+                                            <span class="info-label">Estado Civil</span>
+                                            <span class="info-value">{{ $person->marital_status }}</span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="address-container">
-                                    <div class="address-item">
-                                        <i class="fas fa-map-marker-alt address-icon"></i>
-                                        <span class="address-text">
-                                            {{ $person->dwelling->exact_location ?? 'Dirección no registrada' }}
-                                        </span>
+                                    <div class="address-container">
+                                        <div class="address-item">
+                                            <i class="fas fa-map-marker-alt address-icon"></i>
+                                            <span class="address-text">
+                                                {{ $person->dwelling->exact_location ?? 'Dirección no registrada' }}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                            @can('ver detalles')
+                                <!-- Actualiza la sección de acciones de la tarjeta -->
+                                <div class="card-actions">
+                                    <a href="{{ route('om-people.show', $person->id) }}" class="action-btn view-btn"
+                                        data-toggle="tooltip" title="Ver detalles">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                @endcan
+                                @can('editar')
+                                    <a href="{{ route('om-people.edit', $person->id) }}" class="action-btn edit-btn"
+                                        data-toggle="tooltip" title="Editar registro">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </a>
+                                @endcan
+                            </div>
 
-                        <!-- Actualiza la sección de acciones de la tarjeta -->
-                        <div class="card-actions">
-                            <a href="{{ route('om-people.show', $person->id) }}" class="action-btn view-btn"
-                                data-toggle="tooltip" title="Ver detalles">
-                                <i class="fas fa-eye"></i>
-                            </a>
-                            <a href="{{ route('om-people.edit', $person->id) }}" class="action-btn edit-btn"
-                                data-toggle="tooltip" title="Editar registro">
-                                <i class="fas fa-pencil-alt"></i>
-                            </a>
                         </div>
-
                     </div>
-                </div>
-            @endforeach
+                @endforeach
+            </div>
+
+            <!-- Paginación mejorada -->
+            <div class="custom-pagination">
+                {{ $people->onEachSide(2)->links('pagination::semantic-ui') }}
+            </div>
         </div>
 
-        <!-- Paginación mejorada -->
-        <div class="custom-pagination">
-            {{ $people->onEachSide(2)->links('pagination::semantic-ui') }}
-        </div>
-    </div>
-
-    <!-- Formulario oculto para eliminación -->
-    <form id="delete-form" action="{{ route('om-people.destroy', '') }}" method="POST">
-        @csrf
-        @method('DELETE')
-    </form>
+        <!-- Formulario oculto para eliminación -->
+        <form id="delete-form" action="{{ route('om-people.destroy', '') }}" method="POST">
+            @csrf
+            @method('DELETE')
+        </form>
+    @endcan
 @stop
 
 @section('css')

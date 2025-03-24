@@ -12,89 +12,96 @@
 @stop
 
 @section('content')
+    @can('ver BD')
 
-    <!-- Barra de búsqueda -->
-    <div class="mb-3 d-flex justify-content-center">
-        <form action="{{ route('disabilities.index') }}" method="GET" class="d-flex">
-            <input type="text" name="search" class="form-control me-2"
-                placeholder="Buscar por N° de certificado, diagnóstico o tipo..." value="{{ request('search') }}">
-            <button type="submit" class="btn btn-custom">
-                <i class="fas fa-search"></i>
-            </button>
-        </form>
-    </div>
-
-    <div class="card shadow-lg"
-        style="border-radius: 15px; max-width: 1100px; margin: 2rem auto; border-left: 5px solid #99050f;">
-        <!-- Cabecera de la tarjeta -->
-        <div class="card-header d-flex justify-content-between align-items-center"
-            style="background: #f00e1c; color: white; border-radius: 15px 15px 0 0;">
-            <h3 class="mb-0 d-flex align-items-center">
-                Certificados de Discapacidad Registradas
-                <a href="{{ route('om-people.index') }}" class="btn btn-custom btn-sm ms-1">
-                    <i class="fas fa-arrow-left"></i> Volver
-                </a>
-            </h3>
+        <!-- Barra de búsqueda -->
+        <div class="mb-3 d-flex justify-content-center">
+            <form action="{{ route('disabilities.index') }}" method="GET" class="d-flex">
+                <input type="text" name="search" class="form-control me-2"
+                    placeholder="Buscar por N° de certificado, diagnóstico o tipo..." value="{{ request('search') }}">
+                <button type="submit" class="btn btn-custom">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
         </div>
 
-        <!-- Cuerpo de la tarjeta -->
-        <div class="card-body" style="background: linear-gradient(135deg, #f8b19550 0%, #f6728050 100%);">
-            <table class="table table-bordered table-hover text-center">
-                <thead style="background: #f00e1c; color: white;">
-                    <tr>
-                        <th>ID</th>
-                        <th>N° Certificado</th>
-                        <th>Diagnóstico</th>
-                        <th>Tipo</th>
-                        <th>Gravedad</th>
-                        <th>Fecha de Emisión</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($disabilities as $disability)
-                        <tr>
-                            <td>{{ $disability->id }}</td>
-                            <td>{{ $disability->certificate_number }}</td>
-                            <td>{{ $disability->diagnosis }}</td>
-                            <td>{{ $disability->disability_type }}</td>
-                            <td>{{ $disability->severity_level }}</td>
-                            <td>{{ $disability->certificate_issue_date->format('d/m/Y') }}</td>
-                            <td>
-                                <a href="{{ route('disabilities.show', $disability) }}" class="btn btn-info btn-sm">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                                <a href="{{ route('disabilities.edit', $disability) }}" class="btn btn-warning btn-sm">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <!-- Botón de eliminar con SweetAlert -->
-                                <button class="btn btn-danger btn-sm delete-button" data-id="{{ $disability->id }}">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+        <div class="card shadow-lg"
+            style="border-radius: 15px; max-width: 1100px; margin: 2rem auto; border-left: 5px solid #99050f;">
+            <!-- Cabecera de la tarjeta -->
+            <div class="card-header d-flex justify-content-between align-items-center"
+                style="background: #f00e1c; color: white; border-radius: 15px 15px 0 0;">
+                <h3 class="mb-0 d-flex align-items-center">
+                    Certificados de Discapacidad Registradas
+                    <a href="{{ route('om-people.index') }}" class="btn btn-custom btn-sm ms-1">
+                        <i class="fas fa-arrow-left"></i> Volver
+                    </a>
+                </h3>
+            </div>
 
-                                <!-- Formulario oculto para la eliminación -->
-                                <form id="delete-form-{{ $disability->id }}"
-                                    action="{{ route('disabilities.destroy', $disability) }}" method="POST"
-                                    style="display: none;">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
-                            </td>
-                        </tr>
-                    @empty
+            <!-- Cuerpo de la tarjeta -->
+            <div class="card-body" style="background: linear-gradient(135deg, #f8b19550 0%, #f6728050 100%);">
+                <table class="table table-bordered table-hover text-center">
+                    <thead style="background: #f00e1c; color: white;">
                         <tr>
-                            <td colspan="7" class="text-center">No hay discapacidades registradas.</td>
+                            <th>ID</th>
+                            <th>N° Certificado</th>
+                            <th>Diagnóstico</th>
+                            <th>Tipo</th>
+                            <th>Gravedad</th>
+                            <th>Fecha de Emisión</th>
+                            <th>Acciones</th>
                         </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @forelse ($disabilities as $disability)
+                            <tr>
+                                <td>{{ $disability->id }}</td>
+                                <td>{{ $disability->certificate_number }}</td>
+                                <td>{{ $disability->diagnosis }}</td>
+                                <td>{{ $disability->disability_type }}</td>
+                                <td>{{ $disability->severity_level }}</td>
+                                <td>{{ $disability->certificate_issue_date->format('d/m/Y') }}</td>
+                                <td>
+                                    @can('eliminar')
+                                        <a href="{{ route('disabilities.show', $disability) }}" class="btn btn-info btn-sm">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    @endcan
+                                    @can('eliminar')
+                                        <a href="{{ route('disabilities.edit', $disability) }}" class="btn btn-warning btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    @endcan
+                                    @can('eliminar')
+                                        <!-- Botón de eliminar con SweetAlert -->
+                                        <button class="btn btn-danger btn-sm delete-button" data-id="{{ $disability->id }}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    @endcan
+                                    <!-- Formulario oculto para la eliminación -->
+                                    <form id="delete-form-{{ $disability->id }}"
+                                        action="{{ route('disabilities.destroy', $disability) }}" method="POST"
+                                        style="display: none;">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="text-center">No hay discapacidades registradas.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
 
-            <!-- Paginación mejorada -->
-            <div class="d-flex justify-content-center mt-3">
-                {{ $disabilities->links('pagination::bootstrap-4') }}
+                <!-- Paginación mejorada -->
+                <div class="d-flex justify-content-center mt-3">
+                    {{ $disabilities->links('pagination::bootstrap-4') }}
+                </div>
             </div>
         </div>
-    </div>
+    @endcan
 @stop
 
 @section('css')
@@ -144,6 +151,7 @@
             background-color: #930813;
             color: white;
         }
+
         /* Estilizar el campo de búsqueda */
         .form-control {
             border: 1px solid #930813;

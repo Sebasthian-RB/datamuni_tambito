@@ -6,15 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\OmapedRequests\OmDwelling\StoreOmDwellingRequest;
 use App\Http\Requests\OmapedRequests\OmDwelling\UpdateOmDwellingRequest;
 use App\Models\OmapedModels\OmDwelling;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
 class OmDwellingController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        $this->authorize('ver BD');
         // Obtener el valor de búsqueda
         $search = $request->input('search');
 
@@ -32,6 +35,7 @@ class OmDwellingController extends Controller
      */
     public function create()
     {
+        $this->authorize('crear');
         // Mostrar formulario para registrar una nueva vivienda
         return view('areas.OmapedViews.OmDwellings.create');
     }
@@ -59,6 +63,7 @@ class OmDwellingController extends Controller
      */
     public function show(OmDwelling $omDwelling)
     {
+        $this->authorize('ver detalles');
         // Mostrar detalles de una vivienda
         return view('areas.OmapedViews.OmDwellings.show', compact('omDwelling'));
     }
@@ -68,6 +73,7 @@ class OmDwellingController extends Controller
      */
     public function edit(OmDwelling $omDwelling)
     {
+        $this->authorize('editar');
         // Mostrar formulario para editar una vivienda
         return view('areas.OmapedViews.OmDwellings.edit', compact('omDwelling'));
     }
@@ -86,6 +92,7 @@ class OmDwellingController extends Controller
      */
     public function destroy(OmDwelling $omDwelling)
     {
+        $this->authorize('eliminar');
         // Eliminar vivienda
         $omDwelling->delete();
         return redirect()->route('om-dwellings.index')->with('success', 'Vivienda eliminada con éxito.');
