@@ -13,9 +13,12 @@ use App\Http\Requests\VasoDeLecheRequests\Committees\UpdateCommitteeRequest;
 use App\Http\Requests\VasoDeLecheRequests\Committees\DestroyCommitteeRequest;
 
 use App\Models\VasoDeLecheModels\Sector;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class CommitteeController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Muestra una lista de todos los comités.
      *
@@ -24,6 +27,9 @@ class CommitteeController extends Controller
      */
     public function index(IndexCommitteeRequest $request)
     {
+        //Permiso
+        $this->authorize('ver BD');
+
         // Obtener todos los comités con los sectores relacionados
         $committees = Committee::with('sector')->paginate(15);
 

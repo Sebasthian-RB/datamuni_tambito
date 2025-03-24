@@ -181,7 +181,59 @@ class CommitteeVlFamilyMemberController extends Controller
      */
     public function edit(EditCommitteeVlFamilyMemberRequest $request, CommitteeVlFamilyMember $committeeVlFamilyMember)
     {
-        return view('areas.VasoDeLecheViews.CommitteeVlFamilyMembers.edit', compact('committeeVlFamilyMember'));
+        // Obtener el comité específico
+        $committee = $committeeVlFamilyMember->committee;
+
+        // Obtener los miembros de la familia desde el modelo VlFamilyMember
+        $vlFamilyMembers = VlFamilyMember::with('vlMinors')->get();        
+
+        // Definir las opciones para el campo 'status' en el controlador
+        $statusOptions = [
+            1 => 'Activo',
+            0 => 'Inactivo',
+        ];
+
+        // Definir las opciones disponibles para los selects
+        $documentTypes = ['DNI', 'Pasaporte', 'Cédula de Extranjería'];  //Para el menor de edad
+        $identityDocumentTypes = [
+            'DNI' => 'DNI',
+            'Carnet de Extranjería' => 'Carnet de Extranjería',
+            'Otro' => 'Otro',
+        ]; // Para el familiar (agregar)
+        
+        
+        $educationLevels = ['Ninguno', 'Inicial', 'Primaria', 'Secundaria', 'Técnico', 'Superior'];
+        
+        $conditions = ['Gest.', 'Lact.', 'Anc.'];
+        
+        $dwellingTypes = ['Propio', 'Alquilado'];
+
+        $kinships = ['Hijo(a)', 'Socio(a)'];
+
+        $sexTypes = [
+            1 => 'Masculino',
+            0 => 'Femenino',
+        ];
+
+        $disabilities = [
+            1 => 'Sí',
+            0 => 'No',
+        ];
+
+        return view('areas.VasoDeLecheViews.CommitteeVlFamilyMembers.edit', compact(
+            'committeeVlFamilyMember',
+            'committee', 
+            'vlFamilyMembers', 
+            'statusOptions', 
+            'documentTypes',
+            'identityDocumentTypes',
+            'educationLevels',
+            'conditions',
+            'dwellingTypes',
+            'kinships',
+            'sexTypes', 
+            'disabilities'    
+        ));
     }
 
     /**
@@ -194,7 +246,10 @@ class CommitteeVlFamilyMemberController extends Controller
     public function update(UpdateCommitteeVlFamilyMemberRequest $request, CommitteeVlFamilyMember $committeeVlFamilyMember)
     {
         $committeeVlFamilyMember->update($request->validated());
-        return redirect()->route('committee_vl_family_members.index')->with('success', 'Miembro familiar del comité actualizado correctamente.');
+
+        return redirect()->route('committee_vl_family_members.index', [
+            'committee_id' => $committeeVlFamilyMember->committee_id
+        ])->with('success', 'Miembro familiar del comité actualizado correctamente.');
     }
 
     /**
@@ -206,7 +261,12 @@ class CommitteeVlFamilyMemberController extends Controller
      */
     public function destroy(DestroyCommitteeVlFamilyMemberRequest $request, CommitteeVlFamilyMember $committeeVlFamilyMember)
     {    
+        $committeeId = $committeeVlFamilyMember->committee_id; 
+        
         $committeeVlFamilyMember->delete();
-        return redirect()->route('committee-vl-family-members.index')->with('success', 'Miembro familiar del comité eliminado correctamente.');
+
+        return redirect()->route('committee_vl_family_members.index', [
+            'committee_id' => $committeeId
+        ])->with('success', 'Miembro familiar del comité eliminado correctamente.');
     }
 }
