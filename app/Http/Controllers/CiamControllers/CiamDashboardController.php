@@ -17,10 +17,23 @@ class CiamDashboardController extends Controller
             ->groupBy('age')
             ->orderBy('age')
             ->get();
+        
+        // 📌 Cantidad de adultos por enfermedad
+        $adultsByDisability = DB::table('elderly_adults')
+        ->selectRaw('JSON_UNQUOTE(JSON_EXTRACT(type_of_disability, "$[0]")) as disability, COUNT(id) as count')
+        ->whereNotNull('type_of_disability')
+        ->where('type_of_disability', '!=', '[]')
+        ->groupBy('disability')
+        ->get();
+
 
         // 📌 Pasar datos a la vista
         return view('areas.CIAMViews.CIAMDashboard', [
             'adultsByAge' => $adultsByAge,
+            'adultsByDisability' => $adultsByDisability,
+
         ]);
     }
+
+
 }

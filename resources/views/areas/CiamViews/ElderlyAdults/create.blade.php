@@ -31,9 +31,23 @@
             </div>
             <div class="card-body">
 
+    <!-- Tarjeta 1: Información Personal -->
+    <div class="card mb-4 border-success">
+        <div class="card-header" style="background-color: #708f3a; color: white;">
+            <h3 class="card-title">
+                <i class="fas fa-user-circle mr-2"></i> Información Personal
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+            <!-- Columna Izquierda -->
+            <div class="col-md-6">
+
                 <!-- Tipo de Documento -->
                 <div class="form-group">
-                    <label for="document_type">Tipo de Documento</label>
+                    <label for="document_type">
+                    <i class="fas fa-file-alt mr-1 text-success"></i> Tipo de Documento
+                    </label>
                     <select class="form-control" id="document_type" name="document_type" required>
                         <option value="" disabled selected>Seleccione</option>
                         @foreach(['DNI', 'Pasaporte', 'Carnet', 'Cedula'] as $type)
@@ -47,7 +61,9 @@
 
                 <!-- ID -->
                 <div class="form-group">
-                    <label for="id">Número de Documento</label>
+                    <label for="id">
+                    <i class="fas fa-hashtag mr-1 text-success"></i> Número de Documento
+                    </label>
                     <input type="text" class="form-control @error('id') is-invalid @enderror" id="id" name="id" required>
                     @error('id')
                     <div class="alert alert-danger">{{ $message }}</div>
@@ -57,17 +73,25 @@
 
                 <!-- Nombres-->
                 <div class="form-group">
-                    <label for="given_name">Nombres</label>
+                    <label for="given_name"> 
+                    <i class="fas fa-signature mr-1 text-success"></i> Nombres
+                    </label>
                     <input type="text" class="form-control" id="given_name" name="given_name"
                         value="{{ old('given_name') }}" required>
                     @error('given_name')
                     <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
+            </div>
+
+            <!-- Columna Derecha -->
+            <div class="col-md-6">
 
                 <!-- Apellido Paterno -->
                 <div class="form-group">
-                    <label for="paternal_last_name">Apellido Paterno</label>
+                    <label for="paternal_last_name">
+                    <i class="fas fa-signature mr-1 text-success"></i> Apellido Paterno
+                    </label>
                     <input type="text" class="form-control" id="paternal_last_name" name="paternal_last_name"
                         value="{{ old('paternal_last_name') }}" required>
                     @error('paternal_last_name')
@@ -76,7 +100,9 @@
                 </div>
                 <!-- Apellido Materno -->
                 <div class="form-group">
-                    <label for="maternal_last_name">Apellido Materno</label>
+                    <label for="maternal_last_name">
+                    <i class="fas fa-signature mr-1 text-success"></i> Apellido Materno
+                    </label>
                     <input type="text" class="form-control" id="maternal_last_name" name="maternal_last_name"
                         value="{{ old('maternal_last_name') }}" required>
                     @error('maternal_last_name')
@@ -86,7 +112,9 @@
 
                 <!-- Fecha de Nacimiento -->
                 <div class="form-group">
-                    <label for="birth_date">Fecha de Nacimiento</label>
+                    <label for="birth_date">
+                    <i class="fas fa-birthday-cake mr-1 text-success"></i> Fecha de Nacimiento
+                    </label>
                     <input type="date" class="form-control @error('birth_date') is-invalid @enderror"
                         id="birth_date" name="birth_date"
                         value="{{ old('birth_date') }}"
@@ -97,10 +125,14 @@
                     <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
+            </div>
+        </div>
+        <!-- Campos de ancho completo (debajo de las columnas) -->
 
-                <!-- Sexo -->
-                <div class="form-group">
-                    <label class="form-label fw-bold" style="font-size: 1.2rem;">Sexo</label>
+          <!-- Sexo -->
+          <div class="form-group">
+                    <label class="form-label fw-bold" style="font-size: 1.2rem;"><i class="fas fa-venus-mars mr-1 text-success"></i> Sexo
+                    </label>
                     <div class="d-flex justify-content-start align-items-center mt-3" style="gap: 20px;">
                         <!-- Masculino -->
                         <div class="form-check" style="border: 2px solid #6E8E59; border-radius: 10px; padding: 10px 15px; background-color: #CCE6FF; display: flex; align-items: center; gap: 15px; cursor: pointer;">
@@ -129,7 +161,9 @@
 
                 <!-- Idioma(s) -->
                 <div class="form-group">
-                    <label>Idioma(s)</label>
+                    <label>
+                    <i class="fas fa-language mr-1 text-success"></i> Idioma(s)
+                    </label>
                     <div>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="language[]" id="language_es" value="Español"
@@ -158,10 +192,10 @@
                     </div>
                 </div>
 
-
                 <!-- Teléfono -->
                 <div class="form-group">
-                    <label for="phone_number">Teléfono</label>
+                    <label for="phone_number"><i class="fas fa-phone-alt mr-1 text-success"></i> Teléfono
+                    </label>
                     <input type="text" class="form-control @error('phone_number') is-invalid @enderror"
                         id="phone_number" name="phone_number"
                         value="{{ old('phone_number', $elderlyAdult->phone_number ?? '') }}"
@@ -170,6 +204,9 @@
                     <span class="invalid-feedback">{{ $message }}</span>
                     @enderror
                 </div>
+                
+        </div>
+    </div>
 
                 <!-- Dirección -->
                 <div class="form-group">
