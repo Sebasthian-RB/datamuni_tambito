@@ -67,6 +67,41 @@ class VasoDeLecheDashboardController extends Controller
             ->get()
         ];
 
-        return view('areas.VasoDeLecheViews.Dashboard.index', compact('stats', 'chartData', 'latestRecords'));
+
+        // Obtener comités para el select2
+        $committees = Committee::with('sector')->get();
+
+        // Manejar solicitud AJAX para estadísticas de comité
+        if($request->ajax() && $request->has('committee_id')) {
+            return $this->getCommitteeStats($request->committee_id);
+        }
+
+        return view('areas.VasoDeLecheViews.Dashboard.index', compact('stats', 'chartData', 'latestRecords' , 'committees'));
+    }
+
+    private function getCommitteeStats($committeeId)
+    {
+        $committee = Committee::with(['sector', 'vlFamilyMembers.vlMinors'])->find($committeeId);
+
+        $stats = [
+            'total_beneficiarios' => $committee->vlFamilyMembers->flatMap->vlMinors->where('status', true)->count(),
+            'total_miembros' => $committee->vlFamilyMembers->count(),
+            'age_distribution' => [
+                'under7' => $committee->vlFamilyMembers->flatMap->vlMinors
+                    ->where('status', true)
+                    ->filter(fn($m) => now()->diffInYears($m->birth_date) < 7)
+                    ->count(),
+                'over7' => $committee->vlFamilyMembers->flatMap->vlMinors
+                    ->where('status', true)
+                    ->filter(fn($m) => now()->diffInYears($m->birth_date) >= 7)
+                    ->count()
+            ],
+            'condition_distribution' => $committee->vlFamilyMembers->flatMap->vlMinors
+                ->where('status', true)
+                ->groupBy('condition')
+                ->map->count()
+        ];
+
+        return response()->json($stats);
     }
 }
