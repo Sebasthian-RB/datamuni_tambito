@@ -12,6 +12,10 @@ use App\Http\Requests\VasoDeLecheRequests\VlFamilyMemberProducts\EditVlFamilyMem
 use App\Http\Requests\VasoDeLecheRequests\VlFamilyMemberProducts\UpdateVlFamilyMemberProductRequest;
 use App\Http\Requests\VasoDeLecheRequests\VlFamilyMemberProducts\DestroyVlFamilyMemberProductRequest;
 
+use App\Models\VasoDeLecheModels\Committee;
+use App\Models\VasoDeLecheModels\Product;
+use App\Models\VasoDeLecheModels\VlFamilyMember;
+
 class VlFamilyMemberProductController extends Controller
 {
     /**
@@ -20,10 +24,24 @@ class VlFamilyMemberProductController extends Controller
      * @param IndexVlFamilyMemberProductRequest $request
      * @return \Illuminate\View\View
      */
-    public function index(IndexVlFamilyMemberProductRequest $request)
+    public function index(IndexVlFamilyMemberProductRequest $request, $committee_id)
     {
-        $vlFamilyMemberProducts = VlFamilyMemberProduct::all();
-        return view('areas.VasoDeLecheViews.VlFamilyMemberProducts.index', compact('vlFamilyMemberProducts'));
+        $committee = Committee::findOrFail($committee_id);
+
+        // Obtiene los familiares que pertenecen al comité y tienen status = 1
+        $vlFamilyMembers = VlFamilyMember::whereHas('committees', function ($query) use ($committee_id) {
+            $query->where('committee_id', $committee_id)
+                ->where('committee_vl_family_members.status', 1);
+        })->with('products') // Carga los productos aunque no tengan
+        ->get();
+
+        // Obtener las asignaciones de productos a los familiares del comité
+        $vlFamilyMemberProducts = VlFamilyMemberProduct::whereHas('vlFamilyMember.committees', function ($query) use ($committee_id) {
+            $query->where('committee_id', $committee_id)
+                ->where('committee_vl_family_members.status', 1);
+        })->get();
+
+        return view('areas.VasoDeLecheViews.VlFamilyMemberProducts.index', compact('committee', 'vlFamilyMembers', 'vlFamilyMemberProducts'));
     }
 
     /**
@@ -32,9 +50,21 @@ class VlFamilyMemberProductController extends Controller
      * @param CreateVlFamilyMemberProductRequest $request
      * @return \Illuminate\View\View
      */
-    public function create(CreateVlFamilyMemberProductRequest $request)
+    public function create(CreateVlFamilyMemberProductRequest $request, $committee_id)
     {
-        return view('areas.VasoDeLecheViews.VlFamilyMemberProducts.create');
+        // Obtener solo miembros familiares activos del comité específico
+        $vlFamilyMembers = VlFamilyMember::whereHas('committees', function($query) use ($committee_id) {
+            $query->where('committee_id', $committee_id)
+                  ->where('committee_vl_family_members.status', 1); 
+        })->get();
+
+        $products = Product::all(); // Asegúrate de importar el modelo
+        
+        return view('areas.VasoDeLecheViews.VlFamilyMemberProducts.create', [
+            'vlFamilyMembers' => $vlFamilyMembers,
+            'products' => $products,
+            'committee_id' => $committee_id
+        ]);
     }
 
     /**
@@ -45,8 +75,18 @@ class VlFamilyMemberProductController extends Controller
      */
     public function store(StoreVlFamilyMemberProductRequest $request)
     {
-        VlFamilyMemberProduct::create($request->validated());
-        return redirect()->route('vl-family-member-products.index')->with('success', 'Producto asignado al miembro familiar creado correctamente.');
+        // Los datos ya incluyen committee_id gracias al campo oculto
+        $validatedData = $request->validated();
+        
+        // Crear el registro
+        VlFamilyMemberProduct::create($validatedData);
+
+        // Obtener committee_id directamente del request (sin validar)
+        $committee_id = $request->input('committee_id');
+        
+        // Redireccionar
+        return redirect()->route('vl_family_member_products.index', [
+            'committee_id' => $committee_id ])->with('success', 'Producto asignado correctamente');
     }
 
     /**
@@ -68,9 +108,22 @@ class VlFamilyMemberProductController extends Controller
      * @param VlFamilyMemberProduct $vlFamilyMemberProduct
      * @return \Illuminate\View\View
      */
-    public function edit(EditVlFamilyMemberProductRequest $request, VlFamilyMemberProduct $vlFamilyMemberProduct)
+    public function edit(EditVlFamilyMemberProductRequest $request, VlFamilyMemberProduct $vlFamilyMemberProduct, $committee_id)
     {
-        return view('areas.VasoDeLecheViews.VlFamilyMemberProducts.edit', compact('vlFamilyMemberProduct'));
+        // Obtener solo miembros familiares activos del comité específico
+        $vlFamilyMembers = VlFamilyMember::whereHas('committees', function($query) use ($committee_id) {
+            $query->where('committee_id', $committee_id)
+                ->where('committee_vl_family_members.status', 1); 
+        })->get();
+
+        $products = Product::all();
+        
+        return view('areas.VasoDeLecheViews.VlFamilyMemberProducts.edit', [
+            'familyMemberProduct' => $vlFamilyMemberProduct, // Cambiado a familyMemberProduct
+            'vlFamilyMembers' => $vlFamilyMembers,
+            'products' => $products,
+            'committee_id' => $committee_id
+        ]);
     }
 
     /**
@@ -82,8 +135,18 @@ class VlFamilyMemberProductController extends Controller
      */
     public function update(UpdateVlFamilyMemberProductRequest $request, VlFamilyMemberProduct $vlFamilyMemberProduct)
     {
-        $vlFamilyMemberProduct->update($request->validated());
-        return redirect()->route('vl-family-member-products.index')->with('success', 'Producto asignado al miembro familiar actualizado correctamente.');
+        // Los datos ya incluyen committee_id gracias al campo oculto
+        $validatedData = $request->validated();
+        
+        // Actualizar el registro
+        $vlFamilyMemberProduct->update($validatedData);
+
+        // Obtener committee_id directamente del request (sin validar)
+        $committee_id = $request->input('committee_id');
+        
+        // Redireccionar
+        return redirect()->route('vl_family_member_products.index', [
+            'committee_id' => $committee_id ])->with('success', 'Producto asignado al miembro familiar actualizado correctamente.');
     }
 
     /**
@@ -95,7 +158,11 @@ class VlFamilyMemberProductController extends Controller
      */
     public function destroy(DestroyVlFamilyMemberProductRequest $request, VlFamilyMemberProduct $vlFamilyMemberProduct)
     {
+        // Obtener committee_id directamente del request (sin validar)
+        $committee_id = $request->input('committee_id');
+
         $vlFamilyMemberProduct->delete();
-        return redirect()->route('vl-family-member-products.index')->with('success', 'Producto asignado al miembro familiar eliminado correctamente.');
+        return redirect()->route('vl_family_member_products.index', [
+            'committee_id' => $committee_id ])->with('success', 'Producto asignado al miembro familiar eliminado correctamente.');
     }
 }

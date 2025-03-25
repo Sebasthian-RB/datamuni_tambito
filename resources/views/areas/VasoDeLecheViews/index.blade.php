@@ -404,7 +404,7 @@
                             <div class="vr" style="border-left: 2px solid #ffffff; height: 40px; margin-top: 0px; margin: 0px 8px 0px 8px;"></div>
                     
                             <!-- Botón Distribución de Productos -->
-                            <a href="vl_family_members_products.index" class="btn btn-gradient-secondary w-100 py-2 mb-0 rounded-lg font-weight-bold text-white text-center transition-all duration-300 hover:bg-secondary hover:shadow-xl d-flex flex-column align-items-center justify-content-center" style="transition: transform 0.3s ease; padding: 6px;">
+                            <a href="{{ route('vl_family_member_products.index', ['committee_id' => $committee->id]) }}" class="btn btn-gradient-secondary w-100 py-2 mb-0 rounded-lg font-weight-bold text-white text-center transition-all duration-300 hover:bg-secondary hover:shadow-xl d-flex flex-column align-items-center justify-content-center" style="transition: transform 0.3s ease; padding: 6px;">
                                 <i class="fas fa-box-open mb-2" style="font-size: 1rem;"></i>
                                 <span style="font-size: 0.8rem;">Distribución de Productos</span>
                             </a>

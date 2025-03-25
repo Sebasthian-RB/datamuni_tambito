@@ -34,6 +34,16 @@ class Product extends Model
     ];
 
     /**
+     * Relación M:M con el modelo 'VlFamilyMember' a través de la tabla pivote 'vl_family_member_products'.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function vlFamilyMembers()
+    {
+        return $this->belongsToMany(VlFamilyMember::class, 'vl_family_member_products', 'product_id', 'vl_family_member_id');
+    }
+
+    /**
      * Activar el manejo automático de timestamps.
      *
      * @var bool

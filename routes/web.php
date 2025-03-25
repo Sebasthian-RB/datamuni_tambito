@@ -110,12 +110,12 @@ Route::middleware([
         Route::resource('products', ProductController::class);
         Route::resource('sectors', SectorController::class);
         Route::resource('vl_family_members', VlFamilyMemberController::class);
-        Route::resource('vl_family_members_products', VlFamilyMemberProductController::class);
+        
         Route::resource('vl_minors', VlMinorController::class);
         Route::get('/vaso-de-leche', [VasoDeLecheController::class, 'index'])->name('vaso-de-leche.index');
-        Route::get('padron-de-beneficiarios/{committee_id}', [CommitteeVlFamilyMemberController::class, 'index'])->name('committee_vl_family_members.index');
-    
+        
         //Rutas de "committee_vl_family_members" (Padrón de Beneficiarios)
+        Route::get('padron-de-beneficiarios/{committee_id}', [CommitteeVlFamilyMemberController::class, 'index'])->name('committee_vl_family_members.index');
         Route::get('committee_vl_family_members/create/{committee_id}', [CommitteeVlFamilyMemberController::class, 'create'])->name('committee_vl_family_members.create'); // Formulario de creación
         Route::post('committee_vl_family_members', [CommitteeVlFamilyMemberController::class, 'store'])->name('committee_vl_family_members.store'); // Almacenar el nuevo miembro
         Route::get('committee_vl_family_members/{committee_vl_family_member}', [CommitteeVlFamilyMemberController::class, 'show'])->name('committee_vl_family_members.show'); // Ver detalles de un miembro
@@ -123,6 +123,15 @@ Route::middleware([
         Route::put('committee_vl_family_members/{committee_vl_family_member}', [CommitteeVlFamilyMemberController::class, 'update'])->name('committee_vl_family_members.update'); // Actualizar un miembro
         Route::delete('committee_vl_family_members/{committee_vl_family_member}', [CommitteeVlFamilyMemberController::class, 'destroy'])->name('committee_vl_family_members.destroy'); // Eliminar un miembro
     
+        //Rutas de "vl_family_members_products" (Hoja de Distribución de Productos)
+        Route::get('vl_family_member_products/{committee_id}', [VlFamilyMemberProductController::class, 'index'])->name('vl_family_member_products.index'); // Mostrar lista de productos
+        Route::get('vl_family_members_products/create/{committee_id}', [VlFamilyMemberProductController::class, 'create'])->name('vl_family_member_products.create'); // Formulario de creación
+        Route::post('vl_family_member_products', [VlFamilyMemberProductController::class, 'store'])->name('vl_family_member_products.store'); // Almacenar el nuevo producto
+        Route::get('vl_family_member_products/{vl_family_member_product}', [VlFamilyMemberProductController::class, 'show'])->name('vl_family_member_products.show'); // Ver detalles de un producto
+        Route::get('vl_family_member_products/edit/{vl_family_member_product}/{committee_id}', [VlFamilyMemberProductController::class, 'edit'])->name('vl_family_member_products.edit'); // Formulario de edición
+        Route::put('vl_family_member_products/{vl_family_member_product}', [VlFamilyMemberProductController::class, 'update'])->name('vl_family_member_products.update'); // Actualizar un producto
+        Route::delete('vl_family_member_products/{vl_family_member_product}', [VlFamilyMemberProductController::class, 'destroy'])->name('vl_family_member_products.destroy'); // Eliminar un producto
+
     });
 
 
