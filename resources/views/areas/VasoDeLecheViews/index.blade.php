@@ -172,7 +172,7 @@
                         <div class="carousel-item">
                             <div class="row justify-content-center"> 
                                 <div class="col-lg-2 col-md-4 col-6">
-                                    <a href="{{ route('committees.create') }}" class="small-box" style="display: block; background-color: #EEEEEE; text-align: center; padding: 12px 10px; color: #3B1E54; text-decoration: none; border-radius: 8px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); transition: background-color 0.3s;">
+                                    <a href="{{ route('pvl_dashboard.index') }}" class="small-box" style="display: block; background-color: #EEEEEE; text-align: center; padding: 12px 10px; color: #3B1E54; text-decoration: none; border-radius: 8px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); transition: background-color 0.3s;">
                                         <i class="fas fa-chart-line" style="font-size: 1.5rem;"></i>
                                         <p style="font-size: 0.9rem; margin-top: 8px; margin-bottom: 0;">Estadísticas</p>
                                     </a>

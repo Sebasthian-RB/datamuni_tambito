@@ -13,6 +13,7 @@ use App\Http\Controllers\VasoDeLecheControllers\VlFamilyMemberProductController;
 use App\Http\Controllers\VasoDeLecheControllers\VlMinorController;
 
 use App\Http\Controllers\VasoDeLecheControllers\VasoDeLecheController;
+use App\Http\Controllers\VasoDeLecheControllers\VasoDeLecheDashboardController;
 
 
 //Controladores deL Área: ÁREA DE LA MUJER
@@ -132,6 +133,8 @@ Route::middleware([
         Route::put('vl_family_member_products/{vl_family_member_product}', [VlFamilyMemberProductController::class, 'update'])->name('vl_family_member_products.update'); // Actualizar un producto
         Route::delete('vl_family_member_products/{vl_family_member_product}', [VlFamilyMemberProductController::class, 'destroy'])->name('vl_family_member_products.destroy'); // Eliminar un producto
 
+        //Dashboard
+        Route::get('/vaso-de-leche/dashboard', [VasoDeLecheDashboardController::class, 'index'])->name('pvl_dashboard.index');
     });
 
 

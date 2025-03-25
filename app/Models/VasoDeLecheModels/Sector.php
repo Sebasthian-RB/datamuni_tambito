@@ -28,6 +28,15 @@ class Sector extends Model
     public $timestamps = true;
 
     /**
+     * Relación con el modelo Committee.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function committees()
+    {
+        return $this->hasMany(Committee::class); // Ajusta según tu estructura
+    }
+    /**
      * Accesor: Obtener el nombre completo de la persona responsable en mayúsculas.
      *
      * @return string
