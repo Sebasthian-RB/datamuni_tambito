@@ -299,7 +299,7 @@
 
         /* ===== AJUSTE PARA MODAL ===== */
         .modal-content {
-            background: transparent;
+            background: white;
             border: none;
         }
 
@@ -637,7 +637,7 @@
         <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header" style="background: linear-gradient(45deg, #5A2E7A, #9B4D96); color: white; font:bold">
                         <h5 class="modal-title" id="confirmationModalLabel">Confirmación necesaria</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
                             <span aria-hidden="true">&times;</span>
@@ -667,9 +667,9 @@
                             <input type="hidden" name="confirm_update" value="1">
                             <input type="hidden" name="status" value="1">
 
-                            <button type="submit" class="btn btn-primary">Sí, actualizar</button>
+                            <button type="submit" class="btn btn-custom">Sí, actualizar</button>
                         </form>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                     </div>
                 </div>
             </div>
