@@ -3,13 +3,16 @@
 @section('title', 'Detalles de Vivienda')
 
 @section('content_header')
-    <div class="d-flex justify-content-center align-items-center py-3" style="background: #930813; border-radius: 0 0 15px 15px;">
-        <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="img-fluid" style="max-height: 80px;">
+    <div class="d-flex justify-content-center align-items-center py-3"
+        style="background: #930813; border-radius: 0 0 15px 15px;">
+        <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="img-fluid"
+            style="max-height: 80px;">
     </div>
 @stop
 
 @section('content')
-    <div class="card shadow-lg" style="border-radius: 15px; max-width: 800px; margin: 2rem auto; border-left: 5px solid #99050f;">
+    <div class="card shadow-lg"
+        style="border-radius: 15px; max-width: 800px; margin: 2rem auto; border-left: 5px solid #99050f;">
 
         <!-- Encabezado de la tarjeta -->
         <div class="card-header" style="background: #f00e1c; color: white; border-radius: 15px 15px 0 0;">
@@ -71,10 +74,12 @@
 
         <!-- Pie de página con los botones -->
         <div class="card-footer text-center" style="background: #f00e1c; border-radius: 0 0 15px 15px;">
-            <a href="javascript:history.back()" class="btn btn-lg btn-light shadow-sm" style="border-radius: 8px; color: white;">
+            <a href="javascript:history.back()" class="btn btn-lg btn-light shadow-sm"
+                style="border-radius: 8px; color: white;">
                 <i class="fas fa-arrow-left"></i> Volver
             </a>
-            <a href="{{ route('om-dwellings.edit', $omDwelling) }}" class="btn btn-lg btn-light shadow-sm" style="border-radius: 8px; color: white;">
+            <a href="{{ route('om-dwellings.edit', $omDwelling) }}" class="btn btn-lg btn-light shadow-sm"
+                style="border-radius: 8px; color: white;">
                 <i class="fas fa-edit"></i> Editar
             </a>
         </div>
@@ -82,6 +87,7 @@
 @stop
 
 @section('css')
+    <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
     <style>
         .card {
             transition: transform 0.3s ease;

@@ -3,15 +3,16 @@
 @section('title', 'Detalles de Discapacidad')
 
 @section('content_header')
-<div class="d-flex justify-content-center align-items-center py-3"
-style="background: #930813; border-radius: 0 0 15px 15px;">
-<img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="img-fluid"
-    style="max-height: 80px;">
-</div>
+    <div class="d-flex justify-content-center align-items-center py-3"
+        style="background: #930813; border-radius: 0 0 15px 15px;">
+        <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="img-fluid"
+            style="max-height: 80px;">
+    </div>
 @stop
 
 @section('content')
-    <div class="card shadow-lg" style="border-radius: 15px; max-width: 800px; margin: 2rem auto; border-left: 5px solid #99050f;">
+    <div class="card shadow-lg"
+        style="border-radius: 15px; max-width: 800px; margin: 2rem auto; border-left: 5px solid #99050f;">
 
         <!-- Encabezado de la tarjeta -->
         <div class="card-header" style="background: #f00e1c; color: white; border-radius: 15px 15px 0 0;">
@@ -26,11 +27,12 @@ style="background: #930813; border-radius: 0 0 15px 15px;">
                     <h5 class="font-weight-bold" style="color: #f00e1c;">N° Certificado:</h5>
                     <p>{{ $disability->certificate_number ?? 'No disponible' }}</p>
                 </div>
-                
+
                 <!-- Fecha de emisión -->
                 <div class="col-md-6">
                     <h5 class="font-weight-bold" style="color: #f00e1c;">Fecha de Emisión:</h5>
-                    <p>{{ $disability->certificate_issue_date ? $disability->certificate_issue_date->format('d/m/Y') : 'No disponible' }}</p>
+                    <p>{{ $disability->certificate_issue_date ? $disability->certificate_issue_date->format('d/m/Y') : 'No disponible' }}
+                    </p>
                 </div>
             </div>
 
@@ -38,7 +40,8 @@ style="background: #930813; border-radius: 0 0 15px 15px;">
                 <!-- Fecha de caducidad -->
                 <div class="col-md-6">
                     <h5 class="font-weight-bold" style="color: #f00e1c;">Fecha de Caducidad:</h5>
-                    <p>{{ $disability->certificate_expiry_date ? $disability->certificate_expiry_date->format('d/m/Y') : 'No especificada' }}</p>
+                    <p>{{ $disability->certificate_expiry_date ? $disability->certificate_expiry_date->format('d/m/Y') : 'No especificada' }}
+                    </p>
                 </div>
 
                 <!-- Organización -->
@@ -87,10 +90,12 @@ style="background: #930813; border-radius: 0 0 15px 15px;">
 
         <!-- Pie de página con el botón de volver -->
         <div class="card-footer text-center" style="background: #f00e1c; border-radius: 0 0 15px 15px;">
-            <a href="javascript:history.back()" class="btn btn-lg btn-light shadow-sm" style="border-radius: 8px; color: white;">
+            <a href="javascript:history.back()" class="btn btn-lg btn-light shadow-sm"
+                style="border-radius: 8px; color: white;">
                 <i class="fas fa-arrow-left"></i> Volver
             </a>
-            <a href="{{ route('disabilities.edit', $disability) }}" class="btn btn-lg btn-light shadow-sm" style="border-radius: 8px; color: #fff;">
+            <a href="{{ route('disabilities.edit', $disability) }}" class="btn btn-lg btn-light shadow-sm"
+                style="border-radius: 8px; color: #fff;">
                 <i class="fas fa-edit"></i> Editar
             </a>
         </div>
@@ -98,12 +103,13 @@ style="background: #930813; border-radius: 0 0 15px 15px;">
 @stop
 
 @section('css')
+    <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
     <style>
         .card {
             transition: transform 0.3s ease;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        
+
         .card:hover {
             transform: translateY(-5px);
         }

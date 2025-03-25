@@ -3,28 +3,25 @@
 @section('title', 'Editar Cuidador')
 
 @section('content_header')
-    <div class="d-flex justify-content-center align-items-center py-3" 
-         style="background: #930813; border-radius: 0 0 15px 15px;">
-        <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" 
-             alt="Escudo El Tambo" class="img-fluid" 
-             style="max-height: 80px;">
+    <div class="d-flex justify-content-center align-items-center py-3"
+        style="background: #930813; border-radius: 0 0 15px 15px;">
+        <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="img-fluid"
+            style="max-height: 80px;">
     </div>
 @stop
 
 @section('content')
-    <div class="card shadow-lg" 
-         style="border-radius: 15px; max-width: 800px; margin: 2rem auto; border-left: 5px solid #99050f;">
-        
+    <div class="card shadow-lg"
+        style="border-radius: 15px; max-width: 800px; margin: 2rem auto; border-left: 5px solid #99050f;">
+
         <!-- Encabezado -->
-        <div class="card-header text-center" 
-             style="background: #f00e1c; color: white; border-radius: 15px 15px 0 0;">
+        <div class="card-header text-center" style="background: #f00e1c; color: white; border-radius: 15px 15px 0 0;">
             <h3 class="card-title mb-0">Editar Cuidador</h3>
         </div>
 
         <!-- Cuerpo -->
-        <div class="card-body" 
-             style="background: linear-gradient(135deg, #f8b19550 0%, #f6728050 100%); padding: 2rem;">
-            
+        <div class="card-body" style="background: linear-gradient(135deg, #f8b19550 0%, #f6728050 100%); padding: 2rem;">
+
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>
@@ -43,10 +40,9 @@
                     <!-- Nombre Completo -->
                     <div class="col-md-6 form-group">
                         <label for="full_name"><strong>Nombre Completo</strong></label>
-                        <input type="text" name="full_name" id="full_name" 
-                               class="form-control @error('full_name') is-invalid @enderror" 
-                               value="{{ old('full_name', $caregiver->full_name) }}" required 
-                               oninput="formatName(this)">
+                        <input type="text" name="full_name" id="full_name"
+                            class="form-control @error('full_name') is-invalid @enderror"
+                            value="{{ old('full_name', $caregiver->full_name) }}" required oninput="formatName(this)">
                         @error('full_name')
                             <span class="invalid-feedback">{{ $message }}</span>
                         @enderror
@@ -55,16 +51,30 @@
                     <!-- Relación -->
                     <div class="col-md-6 form-group">
                         <label for="relationship"><strong>Relación</strong></label>
-                        <select name="relationship" id="relationship" 
-                                class="form-control @error('relationship') is-invalid @enderror" required>
+                        <select name="relationship" id="relationship"
+                            class="form-control @error('relationship') is-invalid @enderror" required>
                             <option value="">Seleccione...</option>
-                            <option value="Padre" {{ old('relationship', $caregiver->relationship) == 'Padre' ? 'selected' : '' }}>Padre</option>
-                            <option value="Madre" {{ old('relationship', $caregiver->relationship) == 'Madre' ? 'selected' : '' }}>Madre</option>
-                            <option value="Hermano/a" {{ old('relationship', $caregiver->relationship) == 'Hermano/a' ? 'selected' : '' }}>Hermano/a</option>
-                            <option value="Tío/a" {{ old('relationship', $caregiver->relationship) == 'Tío/a' ? 'selected' : '' }}>Tío/a</option>
-                            <option value="Abuelo/a" {{ old('relationship', $caregiver->relationship) == 'Abuelo/a' ? 'selected' : '' }}>Abuelo/a</option>
-                            <option value="Tutor/a" {{ old('relationship', $caregiver->relationship) == 'Tutor/a' ? 'selected' : '' }}>Tutor/a</option>
-                            <option value="Otro" {{ old('relationship', $caregiver->relationship) == 'Otro' ? 'selected' : '' }}>Otro</option>
+                            <option value="Padre"
+                                {{ old('relationship', $caregiver->relationship) == 'Padre' ? 'selected' : '' }}>Padre
+                            </option>
+                            <option value="Madre"
+                                {{ old('relationship', $caregiver->relationship) == 'Madre' ? 'selected' : '' }}>Madre
+                            </option>
+                            <option value="Hermano/a"
+                                {{ old('relationship', $caregiver->relationship) == 'Hermano/a' ? 'selected' : '' }}>
+                                Hermano/a</option>
+                            <option value="Tío/a"
+                                {{ old('relationship', $caregiver->relationship) == 'Tío/a' ? 'selected' : '' }}>Tío/a
+                            </option>
+                            <option value="Abuelo/a"
+                                {{ old('relationship', $caregiver->relationship) == 'Abuelo/a' ? 'selected' : '' }}>Abuelo/a
+                            </option>
+                            <option value="Tutor/a"
+                                {{ old('relationship', $caregiver->relationship) == 'Tutor/a' ? 'selected' : '' }}>Tutor/a
+                            </option>
+                            <option value="Otro"
+                                {{ old('relationship', $caregiver->relationship) == 'Otro' ? 'selected' : '' }}>Otro
+                            </option>
                         </select>
                         @error('relationship')
                             <span class="invalid-feedback">{{ $message }}</span>
@@ -76,11 +86,10 @@
                     <!-- DNI -->
                     <div class="col-md-6 form-group">
                         <label for="dni"><strong>DNI</strong></label>
-                        <input type="text" name="dni" id="dni" 
-                               class="form-control @error('dni') is-invalid @enderror" 
-                               value="{{ old('dni', $caregiver->dni) }}" maxlength="8" required 
-                               pattern="\d{8}" title="Debe contener exactamente 8 dígitos"
-                               onkeypress="return soloNumeros(event)">
+                        <input type="text" name="dni" id="dni"
+                            class="form-control @error('dni') is-invalid @enderror"
+                            value="{{ old('dni', $caregiver->dni) }}" maxlength="8" required pattern="\d{8}"
+                            title="Debe contener exactamente 8 dígitos" onkeypress="return soloNumeros(event)">
                         @error('dni')
                             <span class="invalid-feedback">{{ $message }}</span>
                         @enderror
@@ -89,11 +98,10 @@
                     <!-- Teléfono -->
                     <div class="col-md-6 form-group">
                         <label for="phone"><strong>Teléfono</strong></label>
-                        <input type="text" name="phone" id="phone" 
-                               class="form-control @error('phone') is-invalid @enderror" 
-                               value="{{ old('phone', $caregiver->phone) }}" maxlength="9" required
-                               pattern="\d{9}" title="Debe contener exactamente 9 dígitos"
-                               onkeypress="return soloNumeros(event)">
+                        <input type="text" name="phone" id="phone"
+                            class="form-control @error('phone') is-invalid @enderror"
+                            value="{{ old('phone', $caregiver->phone) }}" maxlength="9" required pattern="\d{9}"
+                            title="Debe contener exactamente 9 dígitos" onkeypress="return soloNumeros(event)">
                         @error('phone')
                             <span class="invalid-feedback">{{ $message }}</span>
                         @enderror
@@ -115,6 +123,7 @@
 @stop
 
 @section('css')
+    <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
     <style>
         .btn-custom {
             background-color: #930813;

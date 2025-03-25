@@ -4,14 +4,16 @@
 
 @section('content_header')
     <!-- Imagen superior -->
-    <div class="d-flex justify-content-center align-items-center py-3" style="background: #c06c84; border-radius: 0 0 15px 15px;">
-        <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="img-fluid" style="max-height: 80px;">
+    <div class="d-flex justify-content-center align-items-center py-3"
+        style="background: #c06c84; border-radius: 0 0 15px 15px;">
+        <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Escudo El Tambo" class="img-fluid"
+            style="max-height: 80px;">
     </div>
 @stop
 
 @section('content')
     <div class="card shadow-lg" style="border-radius: 15px; max-width: 800px; margin: 2rem auto;">
-        
+
         <!-- Encabezado con imagen -->
         <div class="card-header" style="background: #355c7d; color: white; border-radius: 15px 15px 0 0;">
             <h3 class="card-title mb-0">Detalles del Evento: {{ $event->name }}</h3>
@@ -37,8 +39,8 @@
                 <!-- Estado del Evento -->
                 <div class="col-md-6">
                     <h5 class="font-weight-bold" style="color: #355c7d;">Estado:</h5>
-                    <p class="badge {{ $event->status == 'Pendiente' ? 'bg-warning' : ($event->status == 'Finalizado' ? 'bg-success' : 'bg-danger') }}" 
-                       style="font-size: 16px; padding: 10px; border-radius: 8px;">
+                    <p class="badge {{ $event->status == 'Pendiente' ? 'bg-warning' : ($event->status == 'Finalizado' ? 'bg-success' : 'bg-danger') }}"
+                        style="font-size: 16px; padding: 10px; border-radius: 8px;">
                         {{ $event->status }}
                     </p>
                 </div>
@@ -67,8 +69,8 @@
 
         <!-- Pie de página con el botón de volver -->
         <div class="card-footer text-center" style="background: #355c7d; border-radius: 0 0 15px 15px;">
-            <a href="{{ route('events.index') }}" class="btn btn-lg btn-light shadow-sm" 
-               style="border-radius: 8px; color: #355c7d;">
+            <a href="{{ route('events.index') }}" class="btn btn-lg btn-light shadow-sm"
+                style="border-radius: 8px; color: #355c7d;">
                 <i class="fas fa-arrow-left"></i> Volver al listado
             </a>
         </div>
@@ -76,6 +78,7 @@
 @stop
 
 @section('css')
+    <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
     <style>
         .card {
             transition: transform 0.3s ease;

@@ -13,19 +13,23 @@
                 @csrf
                 <div class="form-group">
                     <label>N° Certificado</label>
-                    <input type="text" name="certificate_number" class="form-control" value="{{ old('certificate_number') }}" required>
+                    <input type="text" name="certificate_number" class="form-control" value="{{ old('certificate_number') }}"
+                        required>
                 </div>
                 <div class="form-group">
                     <label>Fecha de Emisión</label>
-                    <input type="date" name="certificate_issue_date" class="form-control" value="{{ old('certificate_issue_date') }}" required>
+                    <input type="date" name="certificate_issue_date" class="form-control"
+                        value="{{ old('certificate_issue_date') }}" required>
                 </div>
                 <div class="form-group">
                     <label>Fecha de Caducidad</label>
-                    <input type="date" name="certificate_expiry_date" class="form-control" value="{{ old('certificate_expiry_date') }}">
+                    <input type="date" name="certificate_expiry_date" class="form-control"
+                        value="{{ old('certificate_expiry_date') }}">
                 </div>
                 <div class="form-group">
                     <label>Organización</label>
-                    <input type="text" name="organization_name" class="form-control" value="{{ old('organization_name') }}" required>
+                    <input type="text" name="organization_name" class="form-control"
+                        value="{{ old('organization_name') }}" required>
                 </div>
                 <div class="form-group">
                     <label>Diagnóstico</label>
@@ -33,7 +37,8 @@
                 </div>
                 <div class="form-group">
                     <label>Tipo de Discapacidad</label>
-                    <input type="text" name="disability_type" class="form-control" value="{{ old('disability_type') }}" required>
+                    <input type="text" name="disability_type" class="form-control" value="{{ old('disability_type') }}"
+                        required>
                 </div>
                 <div class="form-group">
                     <label>Nivel de Gravedad</label>
@@ -55,4 +60,8 @@
             </form>
         </div>
     </div>
+@stop
+
+@section('css')
+    <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
 @stop

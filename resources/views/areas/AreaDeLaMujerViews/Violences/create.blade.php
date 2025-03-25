@@ -47,22 +47,24 @@
         </div>
     </div>
 @stop
+@section('css')
+    <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
+    <style>
+        .form-control:focus {
+            border-color: #f67280 !important;
+            box-shadow: 0 0 0 0.2rem rgba(246, 114, 128, 0.25) !important;
+        }
 
-<style>
-    .form-control:focus {
-        border-color: #f67280 !important;
-        box-shadow: 0 0 0 0.2rem rgba(246, 114, 128, 0.25) !important;
-    }
+        .card {
+            transition: transform 0.3s ease;
+        }
 
-    .card {
-        transition: transform 0.3s ease;
-    }
+        .card:hover {
+            transform: translateY(-5px);
+        }
 
-    .card:hover {
-        transform: translateY(-5px);
-    }
-
-    .btn {
-        border-radius: 8px !important;
-    }
-</style>
+        .btn {
+            border-radius: 8px !important;
+        }
+    </style>
+@stop

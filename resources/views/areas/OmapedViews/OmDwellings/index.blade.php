@@ -100,6 +100,7 @@
 @stop
 
 @section('css')
+    <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
     <style>
         .btn-custom:hover {
             background-color: #ffffff;

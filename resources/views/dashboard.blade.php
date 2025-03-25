@@ -36,7 +36,7 @@
                             <h5 class="mb-0"><i class="fas fa-female mr-2"></i>Área de la Mujer</h5>
                         </div>
                         <div class="card-img-container p-3">
-                            <img src="{{ asset('images/AreaDeLaMujerLogo.png') }}" class="card-img-top img-fluid" 
+                            <img src="{{ asset('Images/AreaDeLaMujerLogo.png') }}" class="card-img-top img-fluid" 
                                 alt="Área de la Mujer" style="height: 150px; object-fit: contain;">
                         </div>
                         <div class="card-body">
@@ -56,7 +56,7 @@
                             <h5 class="mb-0"><i class="fas fa-mug-hot mr-2"></i>Vaso de Leche</h5>
                         </div>
                         <div class="card-img-container p-3">
-                            <img src="{{ asset('images/vaso-de-leche.jpg') }}" class="card-img-top" 
+                            <img src="{{ asset('Images/vaso-de-leche.jpg') }}" class="card-img-top" 
                                 alt="Vaso de Leche" style="height: 150px; object-fit: contain;">
                         </div>
                         <div class="card-body">
@@ -76,7 +76,7 @@
                             <h5 class="mb-0"><i class="fas fa-wheelchair mr-2"></i>OMAPED</h5>
                         </div>
                         <div class="card-img-container p-3">
-                            <img src="{{ asset('images/omaped.png') }}" class="card-img-top" 
+                            <img src="{{ asset('Images/omaped.png') }}" class="card-img-top" 
                                 alt="OMAPED" style="height: 150px; object-fit: contain;">
                         </div>
                         <div class="card-body">
@@ -96,7 +96,7 @@
                             <h5 class="mb-0"><i class="fas fa-clipboard-check mr-2"></i>SISFOH</h5>
                         </div>
                         <div class="card-img-container p-3">
-                            <img src="{{ asset('images/sfh_family02_sinfondo.png') }}" class="card-img-top" 
+                            <img src="{{ asset('Images/sfh_family02_sinfondo.png') }}" class="card-img-top" 
                                 alt="SISFOH" style="height: 150px; object-fit: contain;">
                         </div>
                         <div class="card-body">
@@ -116,7 +116,7 @@
                             <h5 class="mb-0"><i class="fas fa-city mr-2"></i>CIAM</h5>
                         </div>
                         <div class="card-img-container p-3">
-                            <img src="{{ asset('images/Ciam-homepage.jpeg') }}" class="card-img-top" 
+                            <img src="{{ asset('Images/Ciam-homepage.jpeg') }}" class="card-img-top" 
                                 alt="CIAM" style="height: 150px; object-fit: cover;">
                         </div>
                         <div class="card-body">
@@ -141,20 +141,7 @@
                     <a href="{{ route('users.index') }}" class="btn btn-lg btn-outline-primary w-100 mb-3">
                         <i class="fas fa-users-cog fa-2x"></i>
                         <div class="mt-2">Gestión de Usuarios</div>
-                    </a>
-                    <hr>
-                    <h6 class="text-muted mb-3">Accesos Rápidos</h6>
-                    <div class="list-group">
-                        <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
-                            <i class="fas fa-tools mr-2"></i>Configuración
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
-                            <i class="fas fa-chart-bar mr-2"></i>Reportes
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
-                            <i class="fas fa-clipboard-list mr-2"></i>Auditoría
-                        </a>
-                    </div>
+                    </a>                    
                 </div>
             </div>
         </div>
@@ -169,6 +156,8 @@
 @stop
 
 @section('css')
+<link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
+
 <style>
     
     .card {

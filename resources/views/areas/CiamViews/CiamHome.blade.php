@@ -22,7 +22,7 @@
 <div class="position-relative" style="height: 45vh; overflow: hidden;">
     <video autoplay loop muted playsinline class="w-100 h-100"
         style="object-fit: cover; object-position: top; position: absolute; left: 0;">
-        <source src="{{ asset('Videos/CIAM-elderlyadultvideo.mp4') }}" type="video/mp4">
+        <source src="{{ asset('videos/CIAM-elderlyadultvideo.mp4') }}" type="video/mp4">
         Tu navegador no soporta videos.
     </video>
 </div>

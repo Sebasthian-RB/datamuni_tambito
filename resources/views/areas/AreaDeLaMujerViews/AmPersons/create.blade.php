@@ -134,6 +134,7 @@
 @stop
 
 @section('css')
+<link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
 
 <style>
     .select2-container--default .select2-selection--single {

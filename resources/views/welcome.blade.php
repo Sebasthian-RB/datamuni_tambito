@@ -214,6 +214,7 @@
         }
     </style>
 </head>
+<link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
 
 <body class="d-flex h-100 text-center">
     @include('layouts.logins.logins')
