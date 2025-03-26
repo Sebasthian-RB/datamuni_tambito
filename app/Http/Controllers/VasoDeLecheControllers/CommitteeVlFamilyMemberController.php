@@ -68,7 +68,7 @@ class CommitteeVlFamilyMemberController extends Controller
         
         $educationLevels = ['Ninguno', 'Inicial', 'Primaria', 'Secundaria', 'Técnico', 'Superior'];
         
-        $conditions = ['Gest.', 'Lact.', 'Anc.'];
+        $conditions = ['Gestante', 'Lactante', 'Menores de 7 años', 'Anciano', 'Desnutrición Severa', 'Discapacitado', 'Persona con TBC'];
         
         $dwellingTypes = ['Propio', 'Alquilado'];
 
@@ -204,7 +204,7 @@ class CommitteeVlFamilyMemberController extends Controller
         
         $educationLevels = ['Ninguno', 'Inicial', 'Primaria', 'Secundaria', 'Técnico', 'Superior'];
         
-        $conditions = ['Gest.', 'Lact.', 'Anc.'];
+        $conditions = ['Gestante', 'Lactante', 'Menores de 7 años', 'Anciano', 'Desnutrición Severa', 'Discapacitado', 'Persona con TBC'];
         
         $dwellingTypes = ['Propio', 'Alquilado'];
 

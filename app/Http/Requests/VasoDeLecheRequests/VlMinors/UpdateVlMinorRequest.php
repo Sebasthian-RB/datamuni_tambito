@@ -113,7 +113,8 @@ class UpdateVlMinorRequest extends FormRequest
             ],
             'condition' => [
                 'required',
-                'in:Gest.,Lact.,Anc.',
+                'string',
+                'regex:/^[A-Za-záéíóúüñÑÜ\s\'-]+$/', // Permitido: letras (con acentos, ñ, ü) y espacios
             ],
             'disability' => [
                 'nullable',
@@ -198,8 +199,9 @@ class UpdateVlMinorRequest extends FormRequest
             'education_level.in' => 'El nivel educativo debe ser uno de los siguientes: Ninguno, Inicial, Primaria, Secundaria, Técnico, Superior.',
     
             'condition.required' => 'La condición es obligatoria.',
-            'condition.in' => 'La condición debe ser una de las siguientes: Gest., Lact., Anc.',
-    
+            'condition.string' => 'La condición debe ser un texto válido.',
+            'condition.regex' => 'La condición solo puede contener letras, espacios y caracteres especiales como acentos, ñ, ü, y guiones.',
+
             'disability.required' => 'El campo discapacidad es obligatorio.',
             'disability.boolean' => 'El campo discapacidad debe ser un valor booleano (verdadero o falso).',
     

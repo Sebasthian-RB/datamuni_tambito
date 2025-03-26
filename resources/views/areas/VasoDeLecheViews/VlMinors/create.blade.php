@@ -135,7 +135,49 @@
             height: 100%;
             background-color: var(--color-accent);
         }
-    
+
+        /* Estilos personalizados para Select2 */
+        .select2-container--default .select2-selection--single {
+            height: 37px !important;
+            line-height: 45px !important;
+            font-size: 16px !important;
+            background-color: #ffffff !important;
+            border: 2px solid #9B7EBD !important;
+            border-radius: 12px !important;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        .select2-container--default .select2-selection__rendered {
+            padding-top: 5px !important;
+            padding-bottom: 5px !important;
+            color: #3B1E54 !important;
+        }
+
+        .select2-dropdown {
+            max-height: 300px !important;
+            overflow-y: auto !important;
+            background-color: #D4BEE4 !important;
+            border: 2px solid #9B7EBD !important;
+            border-radius: 12px !important;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        .select2-results__option {
+            padding: 10px !important;
+            font-size: 16px !important;
+            color: #3B1E54 !important;
+        }
+
+        .select2-results__option--highlighted {
+            background-color: #9B7EBD !important;
+            color: white !important;
+        }
+
+        .select2-container--default .select2-selection__arrow {
+            height: 43px !important;
+        }
+
+        
         /* Estilos responsivos */
         @media (max-width: 768px) {
             .col-md-6, .col-md-4, .col-md-8, .col-md-5, .col-md-1 {
@@ -180,19 +222,6 @@
             .btn-danger {
                 margin-left: 0 !important; /* Eliminar margen izquierdo en móviles */
             }
-        }
-
-        /* Estilos para select 2 */
-        .select2-container .select2-selection--single {
-            height: 36px; /* Ajusta la altura según tus necesidades */
-            padding: 10px;
-            font-size: 16px;
-        }
-        .select2-container--default .select2-selection--single .select2-selection__rendered {
-            line-height: 20px;
-        }
-        .select2-container--default .select2-selection--single .select2-selection__arrow {
-            height: 20px;
         }
     </style>
 @stop
@@ -334,9 +363,9 @@
                                             <span class="text-danger">*</span>
                                             <select class="form-control @error('condition') is-invalid @enderror" id="condition" name="condition" required>
                                                 <option value="" disabled selected>Seleccione la condición</option>
-                                                <option value="Gest." {{ old('condition') == 'Gest.' ? 'selected' : '' }}>Gestante</option>
-                                                <option value="Lact." {{ old('condition') == 'Lact.' ? 'selected' : '' }}>Lactante</option>
-                                                <option value="Anc." {{ old('condition') == 'Anc.' ? 'selected' : '' }}>Anciano</option>
+                                                @foreach($conditions as $condition)
+                                                    <option value="{{ $condition }}" {{ old('condition') == $condition ? 'selected' : '' }}>{{ $condition }}</option>
+                                                @endforeach
                                             </select>
                                             @error('condition')
                                                 <span class="invalid-feedback">{{ $message }}</span>
@@ -452,15 +481,21 @@
                                                 <i class="fas fa-users mr-2"></i>Miembro de Familia
                                             </label>
                                             <span class="text-danger">*</span>
-                                            <select name="vl_family_member_id" id="vl_family_member_id" class="form-control select2 @error('vl_family_member_id') is-invalid @enderror" required>
-                                                <option value="">Seleccione un miembro de la familia</option>
+                                            <select class="form-control select2 @error('vl_family_member_id') is-invalid @enderror" id="vl_family_member_id" name="vl_family_member_id" required>
+                                                <option value="" disabled selected>Seleccione un miembro de familia</option>
                                                 @foreach($vlFamilyMembers as $member)
                                                     <option value="{{ $member->id }}" 
-                                                        @if(old('vl_family_member_id') == $member->id) selected @endif>
-                                                        {{ $member->id }}  <!-- Mostrar solo el ID del miembro -->
+                                                        data-id="{{ $member->id }}"
+                                                        data-identity="{{ $member->identity_document }}"
+                                                        data-given-name="{{ $member->given_name }}"
+                                                        data-paternal="{{ $member->paternal_last_name }}"
+                                                        data-maternal="{{ $member->maternal_last_name }}"
+                                                        data-minors="{{ json_encode($member->vlMinors) }}"
+                                                        {{ old('vl_family_member_id') == $member->id ? 'selected' : '' }}>
+                                                        {{ $member->id }} - {{ $member->given_name }} {{ $member->paternal_last_name }} {{ $member->maternal_last_name }}
                                                     </option>
                                                 @endforeach
-                                            </select>                             
+                                            </select>                        
                                             @error('vl_family_member_id')
                                                 <span class="invalid-feedback">{{ $message }}</span>
                                             @enderror
@@ -518,5 +553,114 @@
 @stop
 
 @push('js')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Inicialización de Select2 para miembros de familia con estilo similar al primer formulario
+            $('#vl_family_member_id').select2({
+                placeholder: "Buscar por ID o nombre",
+                allowClear: true,
+                minimumInputLength: 0,
+                matcher: function(params, data) {
+                    if ($.trim(params.term) === '') {
+                        return data;
+                    }
+
+                    if (!data.id || !data.element) {
+                        return null;
+                    }
+
+                    // Convertir los valores a cadenas y a minúsculas para evitar errores
+                    const term = params.term.toLowerCase();
+                    const id = String(data.id).toLowerCase();
+                    const givenName = (data.element.getAttribute('data-given-name') || '').toLowerCase();
+                    const paternalLastName = (data.element.getAttribute('data-paternal') || '').toLowerCase();
+
+                    // Comparar con el término de búsqueda
+                    if (id.includes(term) || 
+                        givenName.includes(term) || 
+                        paternalLastName.includes(term)) {
+                        return data;
+                    }
+
+                    return null;
+                },
+                templateResult: formatMember,
+                templateSelection: formatMemberSelection
+            });
+
+            // Inicialización de Select2 para productos con estilo similar
+            $('#product_id').select2({
+                placeholder: "Buscar producto por nombre",
+                allowClear: true,
+                minimumInputLength: 0,
+                templateResult: formatProduct,
+                templateSelection: formatProductSelection
+            });
+
+            // Función para formatear cómo se muestran los resultados de búsqueda (miembros)
+            function formatMember(member) {
+                if (!member.id) return member.text;
+                
+                const givenName = member.element.getAttribute('data-given-name') || '';
+                const paternalLastName = member.element.getAttribute('data-paternal') || '';
+                const maternalLastName = member.element.getAttribute('data-maternal') || '';
+
+                return $(
+                    `<div>
+                        <strong>ID: ${member.id}</strong><br>
+                        <small>Nombre: ${givenName} ${paternalLastName} ${maternalLastName}</small>
+                    </div>`
+                );
+            }
+
+            // Función para formatear cómo se muestra la selección (miembros)
+            function formatMemberSelection(member) {
+                if (!member.id) return member.text;
+
+                const givenName = member.element.getAttribute('data-given-name') || '';
+                const paternalLastName = member.element.getAttribute('data-paternal') || '';
+                const maternalLastName = member.element.getAttribute('data-maternal') || '';
+
+                return `${member.id} - ${givenName} ${paternalLastName} ${maternalLastName}`;
+            }
+
+            // Función para formatear cómo se muestran los resultados de búsqueda (productos)
+            function formatProduct(product) {
+                if (!product.id) return product.text;
+                
+                return $(
+                    `<div>
+                        <strong>${product.text}</strong>
+                    </div>`
+                );
+            }
+
+            // Función para formatear cómo se muestra la selección (productos)
+            function formatProductSelection(product) {
+                if (!product.id) return product.text;
+                return product.text;
+            }
+
+            // Manejar el evento clear
+            $('#vl_family_member_id').on('select2:clear', function() {
+                $(this).select2('close');
+            });
+
+            let preventOpening = false;
+            $('#vl_family_member_id').on('select2:unselecting', function() {
+                preventOpening = true;
+            });
+
+            $('#vl_family_member_id').on('select2:opening', function(e) {
+                if (preventOpening) {
+                    e.preventDefault();
+                    preventOpening = false;
+                }
+            });
+        });
+    </script>
 @endpush

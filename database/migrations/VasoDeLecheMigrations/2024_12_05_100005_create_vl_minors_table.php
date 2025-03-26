@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('address')->nullable();                                                                      // Domicilio del menor (Dirección)
             $table->enum('dwelling_type', ['Propio', 'Alquilado'])->nullable();                                         // (Tipo) Vivienda del menor
             $table->enum('education_level', ['Ninguno', 'Inicial', 'Primaria', 'Secundaria', 'Técnico', 'Superior'])->nullable();   // Grado de Instrucción del menor
-            $table->enum('condition',  ['Gest.', 'Lact.', 'Anc.']);                                                     // Condición del menor (GEST. | LACT. | ANC.)
+            $table->string('condition', 100);                                                     // Condición del menor (GEST. | LACT. | ANC.)
             $table->boolean('disability')->nullable();                                                                  // Discapacidad del menor
             $table->boolean('status');                                                                                  // Estado activo o inactivo
             $table->string('vl_family_member_id');                                                                      // Clave foránea hacia el Miembro de Familia

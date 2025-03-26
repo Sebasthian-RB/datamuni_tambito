@@ -48,7 +48,7 @@ class VlMinorController extends Controller
             1 => 'Masculino',
         ];
         $educationLevels = ['Ninguno', 'Inicial', 'Primaria', 'Secundaria', 'Técnico', 'Superior'];
-        $conditions = ['Gest.', 'Lact.', 'Anc.'];
+        $conditions = ['Gestante', 'Lactante', 'Menores de 7 años', 'Anciano', 'Desnutrición Severa', 'Discapacitado', 'Persona con TBC'];
         $disabilities = [
             0 => 'No',
             1 => 'Sí',
@@ -137,7 +137,7 @@ class VlMinorController extends Controller
             1 => 'Masculino',
         ];
         $educationLevels = ['Ninguno', 'Inicial', 'Primaria', 'Secundaria', 'Técnico', 'Superior'];
-        $conditions = ['Gest.', 'Lact.', 'Anc.'];
+        $conditions = ['Gestante', 'Lactante', 'Menores de 7 años', 'Anciano', 'Desnutrición Severa', 'Discapacitado', 'Persona con TBC'];
         $disabilities = [
             0 => 'No',
             1 => 'Sí',
