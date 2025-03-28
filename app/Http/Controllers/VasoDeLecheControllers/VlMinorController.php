@@ -47,15 +47,15 @@ class VlMinorController extends Controller
             0 => 'Femenino',
             1 => 'Masculino',
         ];
-        $educationLevels = ['Ninguno', 'Inicial', 'Primaria', 'Secundaria', 'Técnico', 'Superior'];
+        $educationLevels = ['Ninguno', 'Inicial', 'Primaria', 'Secundaria', 'Técnico', 'Superior', 'Educación Especial'];
         $conditions = ['Gestante', 'Lactante', 'Menores de 7 años', 'Anciano', 'Desnutrición Severa', 'Discapacitado', 'Persona con TBC'];
         $disabilities = [
             0 => 'No',
             1 => 'Sí',
         ];
-        $dwellingTypes = ['Propio', 'Alquilado'];
+        $dwellingTypes = ['Propio', 'Alquilado', 'Cedido', 'Vivienda Social'];
 
-        $kinships = ['Hijo(a)', 'Socio(a)'];
+        $kinships = ['Hijo(a)', 'Socio(a)', 'Otro Familiar'];
 
         $status = [
             0 => 'No',
@@ -136,15 +136,15 @@ class VlMinorController extends Controller
             0 => 'Femenino',
             1 => 'Masculino',
         ];
-        $educationLevels = ['Ninguno', 'Inicial', 'Primaria', 'Secundaria', 'Técnico', 'Superior'];
+        $educationLevels = ['Ninguno', 'Inicial', 'Primaria', 'Secundaria', 'Técnico', 'Superior', 'Educación Especial'];
         $conditions = ['Gestante', 'Lactante', 'Menores de 7 años', 'Anciano', 'Desnutrición Severa', 'Discapacitado', 'Persona con TBC'];
         $disabilities = [
             0 => 'No',
             1 => 'Sí',
         ];
-        $dwellingTypes = ['Propio', 'Alquilado'];
+        $dwellingTypes = ['Propio', 'Alquilado', 'Cedido', 'Vivienda Social'];
 
-        $kinships = ['Hijo(a)', 'Socio(a)'];
+        $kinships = ['Hijo(a)', 'Socio(a)', 'Otro Familiar'];
 
         $status = [
             0 => 'No',

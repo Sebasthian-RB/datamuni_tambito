@@ -105,11 +105,11 @@ class StoreVlMinorRequest extends FormRequest
             ],
             'dwelling_type' => [
                 'nullable',
-                'in:Propio,Alquilado',
+                'in:Propio,Alquilado,Cedido,Vivienda Social',
             ],
             'education_level' => [
                 'nullable',
-                'in:Ninguno,Inicial,Primaria,Secundaria,Técnico,Superior',
+                'in:Ninguno,Inicial,Primaria,Secundaria,Técnico,Superior,Educación Especial',
             ],
             'condition' => [
                 'required',
@@ -133,7 +133,7 @@ class StoreVlMinorRequest extends FormRequest
                 'required',
                 'string',
                 'max:100',
-                'in:Hijo(a),Socio(a)',
+                'in:Hijo(a),Socio(a),Otro Familiar',
             ],
         ];
     }
@@ -193,10 +193,10 @@ class StoreVlMinorRequest extends FormRequest
             'address.regex' => 'El campo solo puede contener letras (mayúsculas y minúsculas) del alfabeto español, números, espacios, y los siguientes caracteres especiales: punto, coma, apóstrofe, guion, barra, paréntesis, corchetes, dos puntos y punto y coma.',
 
             'dwelling_type.required' => 'El tipo de vivienda es obligatorio.',
-            'dwelling_type.in' => 'El tipo de vivienda debe ser "Propio" o "Alquilado".',
+            'dwelling_type.in' => 'El tipo de vivienda debe ser: Propio, Alquilado, Cedido, Vivienda Social.',
     
             'education_level.nullable' => 'El nivel educativo es opcional.',
-            'education_level.in' => 'El nivel educativo debe ser uno de los siguientes: Ninguno, Inicial, Primaria, Secundaria, Técnico, Superior.',
+            'education_level.in' => 'El nivel educativo debe ser uno de los siguientes: Ninguno, Inicial, Primaria, Secundaria, Técnico, Superior, Educación Especial.',
     
             'condition.required' => 'La condición es obligatoria.',
             'condition.string' => 'La condición debe ser un texto válido.',
@@ -215,7 +215,7 @@ class StoreVlMinorRequest extends FormRequest
             'kinship.required' => 'El parentesco con el familiar es obligatorio.',
             'kinship.string' => 'El parentesco con el familiar debe ser una cadena de texto.',
             'kinship.max' => 'El parentesco con el familiar no debe exceder los 100 caracteres.',
-            'kinship.in' => 'El parentesco debe ser uno de los siguientes: Hijo(a), Socio(a).',
+            'kinship.in' => 'El parentesco debe ser uno de los siguientes: Hijo(a), Socio(a), Otro Familiar.',
         ];
     }
 

@@ -16,8 +16,9 @@ class Product extends Model
     */
     // Campos que son asignables masivamente
     protected $fillable = [
-        'name',           // Nombre del producto
-        'description',    // Descripción del producto (puede ser nula)
+        'name',         // Nombre del producto
+        'description',  // Descripción del producto (puede ser nula)
+        'year',         // Año de entrega
     ];
 
     /**
@@ -29,6 +30,7 @@ class Product extends Model
     protected $casts = [
         'name' => 'string',           // El nombre se almacena como string
         'description' => 'string',    // La descripción se almacena como string (aunque puede ser nula)
+        'year' => 'integer',             // El año se almacena como año
         'created_at' => 'datetime',   // Convertir la fecha de creación a un objeto DateTime
         'updated_at' => 'datetime',   // Convertir la fecha de actualización a un objeto DateTime
     ];

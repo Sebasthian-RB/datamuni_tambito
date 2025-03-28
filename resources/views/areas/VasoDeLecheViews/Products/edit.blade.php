@@ -217,6 +217,21 @@
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
                                 </div>
+
+                                <!-- Campo: Año de Entrega -->
+                                <div class="form-group mb-4">
+                                    <label for="year" class="font-weight-bold">
+                                        <i class="fas fa-calendar-alt mr-2"></i>Año
+                                    </label>
+                                    <span class="text-danger">*</span>
+                                    <input type="number" class="form-control @error('year') is-invalid @enderror" 
+                                        id="year" name="year" 
+                                        value="{{ old('year', $product->year) }}" 
+                                        placeholder="Ej: 2025" required>
+                                    @error('year')
+                                        <span class="invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                </div>
                             </div>
         
                             <!-- Línea divisoria -->

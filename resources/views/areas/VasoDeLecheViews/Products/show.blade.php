@@ -103,6 +103,8 @@
                     @endif
                 </span>
             </p>
+            <p><span class="detail-label">Año de Entrega:</span> <span class="detail-value">{{ $product->year }}</span></p>
+
         </div>
 
         <!-- Card Footer -->

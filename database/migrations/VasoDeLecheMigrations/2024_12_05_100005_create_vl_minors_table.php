@@ -22,13 +22,13 @@ return new class extends Migration
             $table->date('registration_date');                                                                          // Fecha de Empadronamiento del menor
             $table->date('withdrawal_date')->nullable();                                                                // Fecha de Retiro del menor
             $table->string('address')->nullable();                                                                      // Domicilio del menor (Dirección)
-            $table->enum('dwelling_type', ['Propio', 'Alquilado'])->nullable();                                         // (Tipo) Vivienda del menor
-            $table->enum('education_level', ['Ninguno', 'Inicial', 'Primaria', 'Secundaria', 'Técnico', 'Superior'])->nullable();   // Grado de Instrucción del menor
-            $table->string('condition', 100);                                                     // Condición del menor (GEST. | LACT. | ANC.)
+            $table->string('dwelling_type', 50)->nullable();                                                            // (Tipo) Vivienda del menor
+            $table->string('education_level', 80)->nullable();   // Grado de Instrucción del menor
+            $table->string('condition', 100);                                                     // Condición del menor
             $table->boolean('disability')->nullable();                                                                  // Discapacidad del menor
             $table->boolean('status');                                                                                  // Estado activo o inactivo
             $table->string('vl_family_member_id');                                                                      // Clave foránea hacia el Miembro de Familia
-            $table->enum('kinship', ['Hijo(a)', 'Socio(a)']);                                                               // Parentesco con familiar
+            $table->string('kinship', 50);                                                               // Parentesco con familiar
             $table->timestamps();                                                                                       // Timestamps para created_at y updated_at
 
             $table->foreign('vl_family_member_id')

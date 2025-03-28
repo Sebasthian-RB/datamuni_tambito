@@ -364,6 +364,7 @@
                             <th>ID</th>
                             <th>Nombre</th>
                             <th>Descripción</th>
+                            <th>Año de Entrega</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -379,6 +380,7 @@
                                         <span class="text-secondary"> (Sin descripción)</span>
                                     @endif
                                 </td>
+                                <td>{{ $product->year }}</td>
                                 <td>
                                     <div class="d-flex flex-column flex-md-row gap-2">
                                         <a href="{{ route('products.show', $product->id) }}" class="btn btn-view btn-action">

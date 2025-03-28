@@ -39,6 +39,12 @@ class UpdateProductRequest extends FormRequest
                 'regex:/^[a-zA-Z0-9\s.,;:"\'()-áéíóúÁÉÍÓÚñÑüÜ]+$/', // Caracteres básicos permitidos
                 'not_regex:/<script.*?>.*?<\/script>/i', // Protege contra inyección de scripts
             ],
+            'year' => [
+                'required', // El campo es obligatorio
+                'integer', // Valida que el campo tenga el formato de un año (por ejemplo, 2025)
+                'min:1900', // El año no puede ser menor que 1900
+                'max:' . date('Y'), // El año no puede ser mayor que el año actual
+            ],
         ];
     }
 
@@ -63,7 +69,14 @@ class UpdateProductRequest extends FormRequest
                 'regex' => 'La descripción solo puede contener letras, números, espacios, comas, puntos, puntos y coma, comillas, paréntesis y caracteres del alfabeto español (como ñ, á, é, í, ó, ú, ü).',
                 'not_regex' => 'La descripción no puede contener scripts.',
             ],
-        ];        
+            'year' => [
+                'required' => 'El año es obligatorio.',
+                'date_format' => 'El año debe tener el formato correcto (YYYY).',
+                'min' => 'El año no puede ser menor que 1900.',
+                'max' => 'El año no puede ser mayor que el año actual.',
+            ],
+
+        ];   
     }
 
      /**
@@ -76,6 +89,7 @@ class UpdateProductRequest extends FormRequest
         return [
             'name' => 'nombre del producto',
             'description' => 'descripción del producto',
+            'year' => 'año del producto',
         ];
     }
 }

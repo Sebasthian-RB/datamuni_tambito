@@ -276,7 +276,7 @@
                                                 @foreach($documentTypes as $type)
                                                     <option value="{{ $type }}" {{ old('identity_document', $vlMinor->identity_document) == $type ? 'selected' : '' }}>{{ $type }}</option>
                                                 @endforeach
-                                            </select>
+                                            </select>                                            
                                             @error('identity_document')
                                                 <span class="invalid-feedback">{{ $message }}</span>
                                             @enderror
@@ -451,9 +451,11 @@
                                         <i class="fas fa-home mr-2"></i>Tipo de Vivienda
                                     </label>
                                     <select class="form-control @error('dwelling_type') is-invalid @enderror" id="dwelling_type" name="dwelling_type">
-                                        <option value="" disabled selected>Seleccione el tipo de vivienda</option>
-                                        <option value="Propio" {{ old('dwelling_type', $vlMinor->dwelling_type) == 'Propio' ? 'selected' : '' }}>Propio</option>
-                                        <option value="Alquilado" {{ old('dwelling_type', $vlMinor->dwelling_type) == 'Alquilado' ? 'selected' : '' }}>Alquilado</option>
+                                        <option value="" disabled {{ old('dwelling_type', $vlMinor->dwelling_type) == '' ? 'selected' : '' }}>Seleccione el tipo de vivienda</option>
+                                        
+                                        @foreach($dwellingTypes as $type)
+                                            <option value="{{ $type }}" {{ old('dwelling_type', $vlMinor->dwelling_type) == $type ? 'selected' : '' }}>{{ $type }}</option>
+                                        @endforeach
                                     </select>
                                     @error('dwelling_type')
                                         <span class="invalid-feedback">{{ $message }}</span>
@@ -467,13 +469,12 @@
                                     </label>
                                     <select class="form-control @error('education_level') is-invalid @enderror" id="education_level" name="education_level">
                                         <option value="" disabled selected>Seleccione el nivel educativo</option>
-                                        <option value="Ninguno" {{ old('education_level', $vlMinor->education_level) == 'Ninguno' ? 'selected' : '' }}>Ninguno</option>
-                                        <option value="Inicial" {{ old('education_level', $vlMinor->education_level) == 'Inicial' ? 'selected' : '' }}>Inicial</option>
-                                        <option value="Primaria" {{ old('education_level', $vlMinor->education_level) == 'Primaria' ? 'selected' : '' }}>Primaria</option>
-                                        <option value="Secundaria" {{ old('education_level', $vlMinor->education_level) == 'Secundaria' ? 'selected' : '' }}>Secundaria</option>
-                                        <option value="Técnico" {{ old('education_level', $vlMinor->education_level) == 'Técnico' ? 'selected' : '' }}>Técnico</option>
-                                        <option value="Superior" {{ old('education_level', $vlMinor->education_level) == 'Superior' ? 'selected' : '' }}>Superior</option>
-                                    </select>
+                                        @foreach($educationLevels as $level)
+                                            <option value="{{ $level }}" {{ old('education_level', $vlMinor->education_level) == $level ? 'selected' : '' }}>
+                                                {{ $level }}
+                                            </option>
+                                        @endforeach
+                                    </select>                                   
                                     @error('education_level')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
@@ -519,9 +520,10 @@
                                             <span class="text-danger">*</span>
                                             <select name="kinship" id="kinship" class="form-control @error('kinship') is-invalid @enderror" required>
                                                 <option value="" disabled selected>Seleccione una relación</option>
-                                                <option value="Hijo(a)" {{ old('kinship', $vlMinor->kinship) == 'Hijo(a)' ? 'selected' : '' }}>Hijo(a)</option>
-                                                <option value="Socio(a)" {{ old('kinship', $vlMinor->kinship) == 'Socio(a)' ? 'selected' : '' }}>Socio(a)</option>
-                                            </select>
+                                                @foreach($kinships as $kinship)
+                                                    <option value="{{ $kinship }}" {{ old('kinship', $vlMinor->kinship) == $kinship ? 'selected' : '' }}>{{ $kinship }}</option>
+                                                @endforeach
+                                            </select>                                            
                                             @error('kinship')
                                                 <span class="invalid-feedback">{{ $message }}</span>
                                             @enderror

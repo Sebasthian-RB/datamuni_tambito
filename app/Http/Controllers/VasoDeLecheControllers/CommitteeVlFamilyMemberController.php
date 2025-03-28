@@ -66,13 +66,13 @@ class CommitteeVlFamilyMemberController extends Controller
         ]; // Para el familiar (agregar)
         
         
-        $educationLevels = ['Ninguno', 'Inicial', 'Primaria', 'Secundaria', 'Técnico', 'Superior'];
+        $educationLevels = ['Ninguno', 'Inicial', 'Primaria', 'Secundaria', 'Técnico', 'Superior', 'Educación Especial'];
         
         $conditions = ['Gestante', 'Lactante', 'Menores de 7 años', 'Anciano', 'Desnutrición Severa', 'Discapacitado', 'Persona con TBC'];
         
-        $dwellingTypes = ['Propio', 'Alquilado'];
+        $dwellingTypes = ['Propio', 'Alquilado', 'Cedido', 'Vivienda Social'];
 
-        $kinships = ['Hijo(a)', 'Socio(a)'];
+        $kinships = ['Hijo(a)', 'Socio(a)', 'Otro Familiar'];
 
         $sexTypes = [
             1 => 'Masculino',
@@ -202,13 +202,13 @@ class CommitteeVlFamilyMemberController extends Controller
         ]; // Para el familiar (agregar)
         
         
-        $educationLevels = ['Ninguno', 'Inicial', 'Primaria', 'Secundaria', 'Técnico', 'Superior'];
+        $educationLevels = ['Ninguno', 'Inicial', 'Primaria', 'Secundaria', 'Técnico', 'Superior', 'Educación Especial'];
         
         $conditions = ['Gestante', 'Lactante', 'Menores de 7 años', 'Anciano', 'Desnutrición Severa', 'Discapacitado', 'Persona con TBC'];
         
-        $dwellingTypes = ['Propio', 'Alquilado'];
+        $dwellingTypes = ['Propio', 'Alquilado', 'Cedido', 'Vivienda Social'];
 
-        $kinships = ['Hijo(a)', 'Socio(a)'];
+        $kinships = ['Hijo(a)', 'Socio(a)', 'Otro Familiar'];
 
         $sexTypes = [
             1 => 'Masculino',

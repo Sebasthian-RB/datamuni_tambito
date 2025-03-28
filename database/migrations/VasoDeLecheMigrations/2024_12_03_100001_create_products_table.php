@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();                               // Id autogenerado
-            $table->string('name', 50);                     // Nombre del producto
+            $table->string('name', 50);                 // Nombre del producto
             $table->text('description')->nullable();    // Descripción del producto
+            $table->int('year');                       // Año de entrega
             $table->timestamps();                       // Columnas created_at y updated_at
         });
     }
