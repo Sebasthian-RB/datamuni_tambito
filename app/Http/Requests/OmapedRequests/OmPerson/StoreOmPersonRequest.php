@@ -3,6 +3,7 @@
 namespace App\Http\Requests\OmapedRequests\OmPerson;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Carbon\Carbon;
 
 class StoreOmPersonRequest extends FormRequest
 {
@@ -31,9 +32,17 @@ class StoreOmPersonRequest extends FormRequest
             'birth_date' => [
                 'required',
                 'date',
-                'before_or_equal:today'
+                'before_or_equal:today',
+                function ($attribute, $value, $fail) {
+                    $minAge = 0;
+                    $maxAge = 120;
+                    $age = Carbon::parse($value)->age;
+
+                    if ($age < $minAge || $age > $maxAge) {
+                        $fail("La edad debe estar entre $minAge y $maxAge años.");
+                    }
+                }
             ],
-            'age' => 'required|integer|min:0',
             'gender' => 'required|in:Masculino,Femenino,Otro',
             'phone' => 'nullable|string|max:15',
             'email' => 'nullable|email|max:150',

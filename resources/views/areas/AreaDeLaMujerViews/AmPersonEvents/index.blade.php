@@ -104,8 +104,8 @@
                                         @csrf
                                         @method('DELETE')
                                         @can('eliminar')
-                                            <button type="submit" class="btn btn-danger btn-sm shadow-sm"
-                                                onclick="return confirm('¿Estás seguro de eliminar esta asistencia?')">
+                                            <button type="button" class="btn btn-danger btn-sm shadow-sm delete-btn"
+                                                data-id="{{ $record->id }}">
                                                 <i class="fa fa-trash"></i> Eliminar
                                             </button>
                                         @endcan
@@ -172,11 +172,81 @@
         .table {
             font-size: 0.9rem;
         }
+
+        .custom-swal {
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .swal2-confirm-btn {
+            border-radius: 8px;
+            padding: 10px 20px;
+        }
+
+        .swal2-cancel-btn {
+            border-radius: 8px;
+            padding: 10px 20px;
+        }
+
+        .swal2-icon.swal2-error {
+            border-color: #FF3B30;
+            color: #FF3B30;
+        }
+
+        .swal2-x-mark-line-left,
+        .swal2-x-mark-line-right {
+            background-color: #FF3B30;
+        }
     </style>
 @stop
 
 @section('js')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        // JS adicional si lo necesitas
+        document.addEventListener('DOMContentLoaded', function() {
+            // Eliminación con SweetAlert
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const recordId = this.dataset.id;
+                    const personName = this.closest('tr').querySelector('td:nth-child(2)')
+                        .textContent;
+
+                    Swal.fire({
+                        title: '¿Eliminar Asistencia?',
+                        html: `<div class="swal2-icon-container">
+                                <div class="swal2-icon-shadow"></div>
+                                <div class="swal2-icon swal2-error">
+                                    <div class="swal2-error-circular-line"></div>
+                                    <div class="swal2-error-x-mark">
+                                        <span class="swal2-x-mark-line-left"></span>
+                                        <span class="swal2-x-mark-line-right"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swal2-html-container">
+                                <p>Se eliminará permanentemente el registro de asistencia para:</p>
+                                <strong>${personName}</strong>
+                            </div>`,
+                        showCancelButton: true,
+                        confirmButtonColor: '#FF3B30',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'Confirmar Eliminación',
+                        cancelButtonText: 'Cancelar',
+                        background: '#f8f9fa',
+                        customClass: {
+                            popup: 'custom-swal',
+                            confirmButton: 'swal2-confirm-btn',
+                            cancelButton: 'swal2-cancel-btn'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            const form = this.closest('form');
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        });
     </script>
 @stop

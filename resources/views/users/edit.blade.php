@@ -123,6 +123,7 @@
     </div>
 
     @push('css')
+        <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
         <style>
             .toggle-password:hover {
                 background-color: #e9ecef;
@@ -198,7 +199,7 @@
             $(document).ready(function() {
                 const passwordInput = $('#password');
                 const passwordRequirements = $('#password-requirements');
-        
+
                 // Mostrar validaciones solo si el usuario empieza a escribir
                 passwordInput.on('input', function() {
                     if ($(this).val().length > 0) {
@@ -206,20 +207,20 @@
                     } else {
                         passwordRequirements.hide();
                     }
-        
+
                     validateRequirement('#length', this.value.length >= 8);
                     validateRequirement('#uppercase', /[A-Z]/.test(this.value));
                     validateRequirement('#number', /\d/.test(this.value));
                     validateRequirement('#special', /[@$!%*?&]/.test(this.value));
                 });
-        
+
                 // Mostrar/Ocultar contraseña
                 $('.toggle-password').click(function() {
                     const icon = $(this).find('i');
                     passwordInput.attr('type', passwordInput.attr('type') === 'password' ? 'text' : 'password');
                     icon.toggleClass('fa-eye fa-eye-slash');
                 });
-        
+
                 function validateRequirement(element, isValid) {
                     $(element).toggleClass('text-success', isValid)
                         .toggleClass('text-danger', !isValid)

@@ -83,7 +83,10 @@ class OmPersonController extends Controller
      */
     public function update(UpdateOmPersonRequest $request, OmPerson $omPerson)
     {
+        
         $validatedData = $request->validated();
+
+        unset($validatedData['age']);
 
         // Convertir fecha y hora correctamente
         if ($request->has('registration_date')) {

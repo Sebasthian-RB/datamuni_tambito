@@ -20,7 +20,6 @@ return new class extends Migration
             $table->enum('marital_status', ['Soltero', 'Casado', 'Divorciado', 'Viudo', 'Unión libre']); // Estado civil
             $table->string('dni', 8)->unique(); // DNI
             $table->date('birth_date'); // Fecha de nacimiento
-            $table->integer('age'); // Edad
             $table->enum('gender', ['Masculino', 'Femenino', 'Otro']); // Sexo
             $table->string('phone', 15)->nullable(); // Teléfono
             $table->string('email', 150)->nullable(); // Correo electrónico

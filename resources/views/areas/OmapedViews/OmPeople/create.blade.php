@@ -139,12 +139,9 @@
                                         </div>
 
                                         <div class="col-md-6">
-                                            <input type="number" class="form-control shadow-sm" name="age"
-                                                style="border: 2px solid #18bc9c; border-radius: 8px;" id="age"
-                                                value="{{ old('age') }}" required readonly placeholder="Edad">
-                                            @error('age')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
+                                            <input type="text" class="form-control shadow-sm" id="age"
+                                                style="border: 2px solid #18bc9c; border-radius: 8px; background-color: #f8f9fa;"
+                                                readonly placeholder="Edad (se calcula automáticamente)">
                                         </div>
                                     </div>
                                 </div>
@@ -200,7 +197,7 @@
                                             <select
                                                 class="form-control select2 @error('om_dwelling_id') is-invalid @enderror"
                                                 style="border: 2px solid #18bc9c; border-radius: 8px;"
-                                                name="disability_id" name="om_dwelling_id" id="om_dwelling_id" required>
+                                                name="om_dwelling_id" id="om_dwelling_id" required>
                                                 <option value="">Seleccione Vivienda</option>
                                                 @foreach ($dwellings as $dwelling)
                                                     <option value="{{ $dwelling->id }}"
@@ -887,25 +884,35 @@
     </script>
     <!-- Calcular Edad -->
     <script>
-        function calcularEdad() {
-            let birthDate = document.getElementById("birth_date").value;
-            if (birthDate) {
-                let today = new Date();
-                let birth = new Date(birthDate);
-                let age = today.getFullYear() - birth.getFullYear();
-                let monthDiff = today.getMonth() - birth.getMonth();
-                let dayDiff = today.getDate() - birth.getDate();
+        document.addEventListener('DOMContentLoaded', function() {
+            const birthDateInput = document.getElementById(
+            'birth_date'); // Asegúrate de que tu campo de fecha tenga este ID
+            const ageInput = document.getElementById('age');
 
-                // Ajuste si el cumpleaños no ha pasado aún este año
-                if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+            birthDateInput.addEventListener('change', function() {
+                const birthDate = new Date(this.value);
+                const today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const monthDiff = today.getMonth() - birthDate.getMonth();
+
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
                     age--;
                 }
 
-                document.getElementById("age").value = age > 0 ? age : 0;
-            }
-        }
-    </script>
+                ageInput.value = age + " años";
 
+                // Validación adicional en tiempo real
+                if (age < 0 || age > 120) {
+                    ageInput.style.borderColor = '#e74c3c';
+                    ageInput.nextElementSibling.textContent = 'Edad inválida';
+                } else {
+                    ageInput.style.borderColor = '#18bc9c';
+                    ageInput.nextElementSibling.textContent = '';
+                }
+            });
+        });
+    </script>
+    
     <!-- Ajax del modal de vivienda -->
     <script>
         $(document).ready(function() {

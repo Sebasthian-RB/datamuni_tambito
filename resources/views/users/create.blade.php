@@ -122,6 +122,7 @@
     </div>
 
     @push('css')
+        <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
         <style>
             .toggle-password:hover {
                 background-color: #e9ecef;
@@ -197,24 +198,25 @@
             });
         </script>
         <script>
-            document.addEventListener("DOMContentLoaded", function () {
+            document.addEventListener("DOMContentLoaded", function() {
                 const verBdCheckbox = document.querySelector("input[value='ver BD']");
                 const allCheckboxes = document.querySelectorAll(".perm-checkbox");
-        
+
                 // Siempre marcar "Ver BD" por defecto
                 if (verBdCheckbox) {
                     verBdCheckbox.checked = true;
                 }
-        
+
                 allCheckboxes.forEach(checkbox => {
-                    checkbox.addEventListener("change", function () {
+                    checkbox.addEventListener("change", function() {
                         if (this.value !== "ver BD") {
                             // Si cualquier otro permiso se marca, activamos "Ver BD"
                             if (this.checked) {
                                 verBdCheckbox.checked = true;
                             } else {
                                 // Si todos los demás permisos están desmarcados, permitir quitar "Ver BD"
-                                const anyChecked = [...allCheckboxes].some(cb => cb !== verBdCheckbox && cb.checked);
+                                const anyChecked = [...allCheckboxes].some(cb => cb !== verBdCheckbox &&
+                                    cb.checked);
                                 verBdCheckbox.checked = anyChecked;
                             }
                         }

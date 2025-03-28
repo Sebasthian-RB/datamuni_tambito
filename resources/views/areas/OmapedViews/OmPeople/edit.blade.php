@@ -151,10 +151,11 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <input type="number" class="form-control shadow-sm" name="age"
-                                            style="border: 2px solid #18bc9c; border-radius: 8px;" id="age"
-                                            value="{{ old('age', $omPerson->age) }}" required readonly>
-                                        @error('age')
+                                        <input type="text"
+                                        class="form-control shadow-sm" 
+                                        id="age"
+                                        style="border: 2px solid #18bc9c; border-radius: 8px; background-color: #f8f9fa;" readonly placeholder="Edad (calculada automáticamente)" value="{{ old('age',Carbon\Carbon::parse($omPerson->birth_date)->age . 'años')}}">
+                                        @error('birth_date')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
@@ -437,16 +438,31 @@
     <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
 @stop
 @section('js')
-    <script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const birthDateInput = document.getElementById('birth_date'); // Asegúrate que tu input de fecha tenga este ID
+        const ageInput = document.getElementById('age');
+    
         function calcularEdad() {
-            const fechaNacimiento = new Date(document.getElementById('birth_date').value);
-            const hoy = new Date();
-            let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
-            const mes = hoy.getMonth() - fechaNacimiento.getMonth();
-            if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNacimiento.getDate())) {
-                edad--;
+            if (birthDateInput.value) {
+                const birthDate = new Date(birthDateInput.value);
+                const today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const monthDiff = today.getMonth() - birthDate.getMonth();
+                
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                
+                ageInput.value = age + " años";
             }
-            document.getElementById('age').value = edad;
         }
+    
+        // Calcular al cargar la página (para edición)
+        calcularEdad();
+        
+        // Calcular cuando cambia la fecha
+        birthDateInput.addEventListener('change', calcularEdad);
+    });
     </script>
 @stop

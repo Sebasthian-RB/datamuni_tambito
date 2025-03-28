@@ -268,7 +268,7 @@
 
         <footer class="mt-auto text-white-50">
             <p>© 2024 Municipalidad Tambo. Todos los derechos reservados
-                <span class="badge bg-warning text-dark ms-2">Alpha 0.0.2</span>
+                <span class="badge bg-warning text-dark ms-2">V1.0</span>
             </p>
         </footer>
 

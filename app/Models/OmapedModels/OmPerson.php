@@ -4,6 +4,7 @@ namespace App\Models\OmapedModels;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class OmPerson extends Model
 {
@@ -18,7 +19,6 @@ class OmPerson extends Model
         'marital_status',
         'dni',
         'birth_date',
-        'age',
         'gender',
         'phone',
         'email',
@@ -42,7 +42,6 @@ class OmPerson extends Model
     protected $casts = [
         'registration_date' => 'datetime', // Asegura formato de fecha
         'birth_date' => 'date', // Trata correctamente las fechas
-        'age' => 'integer', // Edad como entero
         'sisfoh' => 'boolean', // Representa como verdadero/falso
         'om_dwelling_id' => 'integer',
         'disability_id' => 'integer',
@@ -80,22 +79,27 @@ class OmPerson extends Model
     {
         return ucfirst(strtolower($value));
     }
-    
-     // Relación con OmDwelling (Muchas personas en una vivienda)
-     public function dwelling()
-     {
-         return $this->belongsTo(OmDwelling::class, 'om_dwelling_id');
-     }
- 
-     // Relación con Disability (1 a 1)
-     public function disability()
-     {
-         return $this->belongsTo(Disability::class, 'disability_id');
-     }
- 
-     // Relación con Caregiver (1 cuidador, muchas personas)
-     public function caregiver()
-     {
-         return $this->belongsTo(Caregiver::class, 'caregiver_id');
-     }
+
+    // Relación con OmDwelling (Muchas personas en una vivienda)
+    public function dwelling()
+    {
+        return $this->belongsTo(OmDwelling::class, 'om_dwelling_id');
+    }
+
+    // Relación con Disability (1 a 1)
+    public function disability()
+    {
+        return $this->belongsTo(Disability::class, 'disability_id');
+    }
+
+    // Relación con Caregiver (1 cuidador, muchas personas)
+    public function caregiver()
+    {
+        return $this->belongsTo(Caregiver::class, 'caregiver_id');
+    }
+
+    public function getAgeAttribute()
+    {
+        return Carbon::parse($this->birth_date)->age;
+    }
 }

@@ -137,6 +137,7 @@
         .links-container a:hover {
             text-decoration: underline;
         }
+
         .ingresar-title {
             display: block;
             /* Asegura que esté en su propia línea */
@@ -166,26 +167,17 @@
 
     <div class="login-container">
         <img src="{{ asset('Images/Logomunicipalidad_tambo.png') }}" alt="Logo" class="logo">
-        
+
         <div class="form-container">
             <h2 class="ingresar-title">Iniciar sesión</h2>
             <form method="POST" action="{{ route('login') }}">
                 @csrf
-                <input type="email" name="email" class="form-control" placeholder="Correo electrónico" required autofocus>
+                <input type="email" name="email" class="form-control" placeholder="Correo electrónico" required
+                    autofocus>
                 <input type="password" name="password" class="form-control" placeholder="Contraseña" required>
-                
+
                 <button type="submit" class="btn-submit">Iniciar sesión</button>
             </form>
-            
-            <!-- Enlaces de recuperar contraseña y registrarse -->
-            <div class="links-container">
-                @if (Route::has('password.request'))
-                    <a href="{{ route('password.request') }}" class="d-block">Olvidé mi contraseña</a>
-                @endif
-                @if (Route::has('register'))
-                    <a href="{{ route('register') }}" class="d-block">¿No tienes cuenta? Regístrate</a>
-                @endif
-            </div>
 
             <div class="social-icons">
                 <a href="https://twitter.com" target="_blank" class="text-white">
@@ -202,12 +194,11 @@
 
         <footer class="mt-auto text-white-50">
             <p>© 2024 Municipalidad Tambo. Todos los derechos reservados
-                <span class="badge bg-warning text-dark ms-2">Alpha 0.0.2</span>
+                <span class="badge bg-warning text-dark ms-2">V1.0</span>
             </p>
         </footer>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

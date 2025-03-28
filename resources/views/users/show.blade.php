@@ -86,6 +86,7 @@
 </div>
 
 @push('css')
+<link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">P
 <style>
     .user-badge {
         width: 120px;

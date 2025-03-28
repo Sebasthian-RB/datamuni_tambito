@@ -26,36 +26,68 @@
                                 <h5 class="mb-0"><i class="fas fa-id-card mr-2"></i>Datos Generales</h5>
                             </div>
                             <div class="card-body">
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Fecha de Registro</label>
-                                    <div class="form-control-static"
-                                        style="border: 2px solid #18bc9c; border-radius: 8px; padding: 8px;">
-                                        {{ $omPerson->registration_date }}
+                                <!-- Subsección Identificación -->
+                                <div class="mb-4">
+                                    <h6 class="text-muted mb-3"><i class="fas fa-fingerprint mr-2"></i>Identificación</h6>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="font-weight-bold">Fecha de Registro</label>
+                                                <div class="form-control-static"
+                                                    style="border: 2px solid #18bc9c; border-radius: 8px; padding: 8px;">
+                                                    {{ \Carbon\Carbon::parse($omPerson->registration_date)->format('d/m/Y H:i') }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="font-weight-bold">Documentación (DNI)</label>
+                                                <div class="form-control-static"
+                                                    style="border: 2px solid #18bc9c; border-radius: 8px; padding: 8px;">
+                                                    {{ $omPerson->dni }}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Nombre Completo</label>
-                                    <div class="form-control-static"
-                                        style="border: 2px solid #18bc9c; border-radius: 8px; padding: 8px;">
-                                        {{ $omPerson->paternal_last_name }} {{ $omPerson->maternal_last_name }}
-                                        {{ $omPerson->given_name }}
+                                <!-- Subsección Nombres -->
+                                <div class="mb-4">
+                                    <h6 class="text-muted mb-3"><i class="fas fa-user-tag mr-2"></i>Nombres Completos</h6>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-control-static"
+                                                style="border: 2px solid #18bc9c; border-radius: 8px; padding: 8px;">
+                                                {{ $omPerson->paternal_last_name }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-control-static"
+                                                style="border: 2px solid #18bc9c; border-radius: 8px; padding: 8px;">
+                                                {{ $omPerson->maternal_last_name }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-control-static"
+                                                style="border: 2px solid #18bc9c; border-radius: 8px; padding: 8px;">
+                                                {{ $omPerson->given_name }}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="font-weight-bold">Estado Civil</label>
+                                <!-- Subsección Estado Civil y Género -->
+                                <div class="mb-4">
+                                    <h6 class="text-muted mb-3"><i class="fas fa-venus-mars mr-2"></i>Estado Civil y Género
+                                    </h6>
+                                    <div class="row">
+                                        <div class="col-md-6">
                                             <div class="form-control-static"
                                                 style="border: 2px solid #18bc9c; border-radius: 8px; padding: 8px;">
                                                 {{ $omPerson->marital_status }}
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="font-weight-bold">Género</label>
+                                        <div class="col-md-6">
                                             <div class="form-control-static"
                                                 style="border: 2px solid #18bc9c; border-radius: 8px; padding: 8px;">
                                                 {{ $omPerson->gender }}
@@ -64,32 +96,23 @@
                                     </div>
                                 </div>
 
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="font-weight-bold">DNI</label>
+                                <!-- Subsección Fecha de Nacimiento y Edad -->
+                                <div class="mb-4">
+                                    <h6 class="text-muted mb-3"><i class="fas fa-birthday-cake mr-2"></i>Fecha de Nacimiento
+                                    </h6>
+                                    <div class="row">
+                                        <div class="col-md-6">
                                             <div class="form-control-static"
                                                 style="border: 2px solid #18bc9c; border-radius: 8px; padding: 8px;">
-                                                {{ $omPerson->dni }}
+                                                {{ \Carbon\Carbon::parse($omPerson->birth_date)->format('d/m/Y') }}
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="font-weight-bold">Edad</label>
+                                        <div class="col-md-6">
                                             <div class="form-control-static"
                                                 style="border: 2px solid #18bc9c; border-radius: 8px; padding: 8px;">
-                                                {{ $omPerson->age }} años
+                                                {{ \Carbon\Carbon::parse($omPerson->birth_date)->age }} años
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Fecha de Nacimiento</label>
-                                    <div class="form-control-static"
-                                        style="border: 2px solid #18bc9c; border-radius: 8px; padding: 8px;">
-                                        {{ \Carbon\Carbon::parse($omPerson->birth_date)->format('d/m/Y') }}
                                     </div>
                                 </div>
                             </div>

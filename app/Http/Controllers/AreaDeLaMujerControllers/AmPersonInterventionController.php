@@ -39,7 +39,7 @@ class AmPersonInterventionController extends Controller
      */
     public function create()
     {
-        $this->authorize('create');
+        $this->authorize('crear');
         $amPersons = AmPerson::all();
         $interventions = Intervention::all();
         return view('areas.AreaDeLaMujerViews.AmPersonInterventions.create', compact('amPersons', 'interventions'));

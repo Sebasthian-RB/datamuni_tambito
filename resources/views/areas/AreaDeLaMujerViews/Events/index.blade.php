@@ -20,10 +20,10 @@
         <!-- Botones de acción -->
         <div class="mb-3 d-flex">
             @can('crear')
-            <a href="{{ route('events.create') }}" class="btn text-white shadow-sm"
-                style="background: #f67280; border-radius: 8px;">
-                <i class="fa fa-plus"></i> Agregar Nuevo Evento
-            </a>
+                <a href="{{ route('events.create') }}" class="btn text-white shadow-sm"
+                    style="background: #f67280; border-radius: 8px;">
+                    <i class="fa fa-plus"></i> Agregar Nuevo Evento
+                </a>
             @endcan
             <a href="{{ route('amdashboard') }}" class="btn btn-secondary shadow-sm" style="border-radius: 8px;">
                 <i class="fa fa-arrow-left"></i> Volver
@@ -91,24 +91,24 @@
                                 <td>{{ \Carbon\Carbon::parse($event->end_date)->format('d/m/Y') }}</td>
                                 <td>
                                     @can('ver detalles')
-                                    <a href="{{ route('events.show', $event) }}" class="btn btn-info btn-sm shadow-sm">
-                                        <i class="fa fa-eye"></i> Ver
-                                    </a>
+                                        <a href="{{ route('events.show', $event) }}" class="btn btn-info btn-sm shadow-sm">
+                                            <i class="fa fa-eye"></i> Ver
+                                        </a>
                                     @endcan
                                     @can('editar')
-                                    <a href="{{ route('events.edit', $event) }}" class="btn btn-warning btn-sm shadow-sm">
-                                        <i class="fa fa-edit"></i> Editar
-                                    </a>
+                                        <a href="{{ route('events.edit', $event) }}" class="btn btn-warning btn-sm shadow-sm">
+                                            <i class="fa fa-edit"></i> Editar
+                                        </a>
                                     @endcan
                                     <form action="{{ route('events.destroy', $event) }}" method="POST"
                                         style="display:inline-block;">
                                         @csrf
                                         @method('DELETE')
                                         @can('eliminar')
-                                        <button class="btn btn-danger btn-sm shadow-sm"
-                                            onclick="return confirm('¿Estás seguro?')">
-                                            <i class="fa fa-trash"></i> Eliminar
-                                        </button>
+                                            <button type="button" class="btn btn-danger btn-sm shadow-sm delete-btn"
+                                                data-id="{{ $event->id }}">
+                                                <i class="fa fa-trash"></i> Eliminar
+                                            </button>
                                         @endcan
                                     </form>
                                 </td>
@@ -125,5 +125,85 @@
     </div>
 @stop
 @section('css')
-<link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
+<style>
+    /* Estilos para SweetAlert */
+    .custom-swal {
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .swal2-confirm-btn {
+        border-radius: 8px;
+        padding: 10px 20px;
+        transition: all 0.3s ease;
+    }
+    
+    .swal2-cancel-btn {
+        border-radius: 8px;
+        padding: 10px 20px;
+        transition: all 0.3s ease;
+    }
+    
+    .swal2-icon.swal2-error {
+        border-color: #FF3B30;
+        color: #FF3B30;
+    }
+    
+    .swal2-x-mark-line-left,
+    .swal2-x-mark-line-right {
+        background-color: #FF3B30;
+    }
+</style>
 @stop
+@section('js')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Eliminación con confirmación mejorada
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const eventId = this.dataset.id;
+                    const eventName = this.closest('tr').querySelector('td:nth-child(2)')
+                        .textContent;
+
+                    Swal.fire({
+                        title: '¿Eliminar Evento?',
+                        html: `<div class="swal2-icon-container">
+                                <div class="swal2-icon-shadow"></div>
+                                <div class="swal2-icon swal2-error">
+                                    <div class="swal2-error-circular-line"></div>
+                                    <div class="swal2-error-x-mark">
+                                        <span class="swal2-x-mark-line-left"></span>
+                                        <span class="swal2-x-mark-line-right"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swal2-html-container">
+                                <p>Se eliminará permanentemente el evento:</p>
+                                <strong>${eventName}</strong>
+                                <p class="text-muted mt-2">Esta acción también eliminará todas las asistencias relacionadas</p>
+                            </div>`,
+                        showCancelButton: true,
+                        confirmButtonColor: '#FF3B30',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'Confirmar Eliminación',
+                        cancelButtonText: 'Cancelar',
+                        background: '#f8f9fa',
+                        customClass: {
+                            popup: 'custom-swal',
+                            confirmButton: 'swal2-confirm-btn',
+                            cancelButton: 'swal2-cancel-btn'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            const form = this.closest('form');
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+@endsection

@@ -100,8 +100,8 @@
                                         @csrf
                                         @method('DELETE')
                                         @can('eliminar')
-                                            <button class="btn btn-danger btn-sm shadow-sm"
-                                                onclick="return confirm('¿Estás seguro?')">
+                                            <button type="button" class="btn btn-danger btn-sm shadow-sm delete-btn"
+                                                data-id="{{ $program->id }}">
                                                 <i class="fa fa-trash"></i> Eliminar
                                             </button>
                                         @endcan
@@ -121,4 +121,84 @@
 @stop
 @section('css')
     <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
+<style>
+    /* Estilos para SweetAlert */
+    .custom-swal {
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .swal2-confirm-btn {
+        border-radius: 8px;
+        padding: 10px 20px;
+        transition: all 0.3s ease;
+    }
+    
+    .swal2-cancel-btn {
+        border-radius: 8px;
+        padding: 10px 20px;
+        transition: all 0.3s ease;
+    }
+    
+    .swal2-icon.swal2-error {
+        border-color: #FF3B30;
+        color: #FF3B30;
+    }
+    
+    .swal2-x-mark-line-left,
+    .swal2-x-mark-line-right {
+        background-color: #FF3B30;
+    }
+</style>
 @stop
+@section('js')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Eliminación con confirmación mejorada
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const programId = this.dataset.id;
+                    const programName = this.closest('tr').querySelector('td:nth-child(2)')
+                        .textContent;
+
+                    Swal.fire({
+                        title: '¿Eliminar Programa?',
+                        html: `<div class="swal2-icon-container">
+                                <div class="swal2-icon-shadow"></div>
+                                <div class="swal2-icon swal2-error">
+                                    <div class="swal2-error-circular-line"></div>
+                                    <div class="swal2-error-x-mark">
+                                        <span class="swal2-x-mark-line-left"></span>
+                                        <span class="swal2-x-mark-line-right"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swal2-html-container">
+                                <p>Se eliminará permanentemente el programa:</p>
+                                <strong>${programName}</strong>
+                                <p class="text-muted mt-2">Todos los eventos asociados también serán eliminados</p>
+                            </div>`,
+                        showCancelButton: true,
+                        confirmButtonColor: '#FF3B30',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'Confirmar Eliminación',
+                        cancelButtonText: 'Cancelar',
+                        background: '#f8f9fa',
+                        customClass: {
+                            popup: 'custom-swal',
+                            confirmButton: 'swal2-confirm-btn',
+                            cancelButton: 'swal2-cancel-btn'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            const form = this.closest('form');
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+@endsection
