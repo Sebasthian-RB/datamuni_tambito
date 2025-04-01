@@ -22,11 +22,13 @@ class VasoDeLecheSeeder extends Seeder
         // PRODUCTO
         Product::create([
             'name' => 'Leche Evaporada Entera',
+            'year' => 2025,
             'description' => null,
         ]);
 
         Product::create([
             'name' => 'Hojuelas Precocidas',
+            'year' => 2025,
             'description' => 'Hojuelas precocidas de kiwicha, cañihua, avena y quinua, fortificada con vitaminas y minerales',
         ]);
 

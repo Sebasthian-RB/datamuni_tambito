@@ -351,8 +351,50 @@
         </div>
     </div>
 
+    <!-- BARRA DE BÚSQUEDA CON VALIDACIÓN -->
+    <div class="card mb-4" style="border: 2px solid #3B1E54;">
+        <div class="card-body p-3">
+            <form action="{{ route('vl_minors.index') }}" method="GET">
+                <div class="row g-3 align-items-center">
+                    <div class="col-md-8">
+                        <div class="input-group">
+                            <input 
+                                type="text" 
+                                name="search_id" 
+                                class="form-control @error('search_id') is-invalid @enderror" 
+                                placeholder="Buscar menor por ID"
+                                value="{{ old('search_id', request('search_id')) }}"
+                                style="border-color: #9B7EBD;"
+                            >
+                            <button type="submit" class="btn" style="background-color: #6A4A8E; color: white;">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            @if(request()->has('search_id'))
+                                <a href="{{ route('vl_minors.index') }}" class="btn" style="border-color: #6A4A8E; color: #6A4A8E;">
+                                    <i class="fas fa-times"></i>
+                                </a>
+                            @endif
+                        </div>
+                        
+                        @error('search_id')
+                            <span class="invalid-feedback d-block" style="color: #dc3545; font-size: 0.875em;">
+                                <strong><i class="fas fa-exclamation-circle me-2"></i>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                    
+                    <div class="col-md-4 text-end">
+                        <span class="text-muted" style="color: #3B1E54 !important;">
+                            <i class="fas fa-child me-2"></i>Total: {{ $vlMinors->total() }}
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
     <!-- Verificar si hay datos -->
-    @if($vlMinors->isEmpty()))
+    @if($vlMinors->isEmpty())
         <!-- Mensaje cuando no hay datos -->
         <div class="no-data-message text-center p-4 rounded">
             <i class="fas fa-info-circle me-2"></i>

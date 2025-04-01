@@ -347,6 +347,42 @@
         </div>
     </div>
 
+    <!-- BARRA DE BÚSQUEDA  -->
+    <div class="card mb-4" style="border: 2px solid #3B1E54;">
+        <div class="card-body p-3">
+            <form action="{{ route('vl_family_members.index') }}" method="GET" class="row g-3 align-items-center">
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <input type="text" 
+                               name="search_id" 
+                               class="form-control" 
+                               placeholder="Buscar miembro por ID"
+                               value="{{ old('search_id', request('search_id')) }}"
+                               style="border-color: #9B7EBD;">
+                        <button type="submit" class="btn" style="background-color: #6A4A8E; color: white;">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        @if(request()->has('search_id'))
+                            <a href="{{ route('vl_family_members.index') }}" class="btn" style="border-color: #6A4A8E; color: #6A4A8E;">
+                                <i class="fas fa-times"></i>
+                            </a>
+                        @endif
+                        @error('search_id')
+                            <span class="invalid-feedback d-block" role="alert" style="color: #dc3545; font-size: 0.875em;">
+                                <strong><i class="fas fa-exclamation-circle me-2"></i>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-md-4 text-end">
+                    <span class="text-muted" style="color: #3B1E54 !important;">
+                        <i class="fas fa-users me-2"></i>Total: {{ $vlFamilyMembers->total() }}
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Verificar si hay datos -->
     @if($vlFamilyMembers->isEmpty())
         <!-- Mensaje cuando no hay datos -->

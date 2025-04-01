@@ -23,10 +23,13 @@ class IndexVlFamilyMemberRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public function rules()
     {
         return [
-            //
+            'search_id' => [
+                'nullable',
+                'regex:/^\d+$/' // Solo números enteros positivos
+            ]
         ];
     }
 
@@ -38,7 +41,7 @@ class IndexVlFamilyMemberRequest extends FormRequest
     public function messages()
     {
         return [
-            // Mensajes
+            'search_id.regex' => 'Solo se permiten números enteros en la búsqueda'
         ];
     }
 }

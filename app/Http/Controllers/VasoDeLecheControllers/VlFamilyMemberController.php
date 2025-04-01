@@ -12,6 +12,8 @@ use App\Http\Requests\VasoDeLecheRequests\VlFamilyMembers\EditVlFamilyMemberRequ
 use App\Http\Requests\VasoDeLecheRequests\VlFamilyMembers\UpdateVlFamilyMemberRequest;
 use App\Http\Requests\VasoDeLecheRequests\VlFamilyMembers\DestroyVlFamilyMemberRequest;
 
+use Illuminate\Support\Facades\DB;
+
 class VlFamilyMemberController extends Controller
 {
     /**
@@ -22,9 +24,17 @@ class VlFamilyMemberController extends Controller
      */
     public function index(IndexVlFamilyMemberRequest $request)
     {
-        $vlFamilyMembers = VlFamilyMember::paginate(15);
+        $searchId = $request->input('search_id');
+    
+        $vlFamilyMembers = VlFamilyMember::when($searchId, function($query) use ($searchId) {
+                // Convertir el ID a cadena y buscar coincidencias parciales
+                return $query->where(DB::raw('CAST(id AS CHAR)'), 'LIKE', "%{$searchId}%");
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(15);
 
-        return view('areas.VasoDeLecheViews.VlFamilyMembers.index', compact('vlFamilyMembers'));
+        return view('areas.VasoDeLecheViews.VlFamilyMembers.index', 
+            compact('vlFamilyMembers', 'searchId'));
     }
 
     /**

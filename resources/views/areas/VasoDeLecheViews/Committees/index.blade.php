@@ -412,6 +412,48 @@
             </div>
         </div>
 
+        <!-- Barra de Búsqueda por Nombre -->
+        <div class="card mb-4" style="border: 2px solid #3B1E54;">
+            <div class="card-body p-3">
+                <form action="{{ route('committees.index') }}" method="GET">
+                    <div class="row g-3 align-items-center">
+                        <div class="col-md-8">
+                            <div class="input-group">
+                                <input 
+                                    type="text" 
+                                    name="search_name" 
+                                    class="form-control @error('search_name') is-invalid @enderror" 
+                                    placeholder="Buscar comité por nombre"
+                                    value="{{ old('search_name', request('search_name')) }}"
+                                    style="border-color: #9B7EBD;"
+                                >
+                                <button type="submit" class="btn" style="background-color: #6A4A8E; color: white;">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                                @if(request()->has('search_name'))
+                                    <a href="{{ route('committees.index') }}" class="btn" style="border-color: #6A4A8E; color: #6A4A8E;">
+                                        <i class="fas fa-times"></i>
+                                    </a>
+                                @endif
+                            </div>
+                            
+                            @error('search_name')
+                                <span class="invalid-feedback d-block" style="color: #dc3545; font-size: 0.875em;">
+                                    <strong><i class="fas fa-exclamation-circle me-2"></i>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        
+                        <div class="col-md-4 text-end">
+                            <span class="text-muted" style="color: #3B1E54 !important;">
+                                <i class="fas fa-users me-2"></i>Total: {{ $committees->total() }}
+                            </span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <!-- Verificar si hay datos -->
         @if ($committees->isEmpty())
             <!-- Mensaje cuando no hay datos -->

@@ -27,12 +27,21 @@ class CommitteeController extends Controller
      */
     public function index(IndexCommitteeRequest $request)
     {
-        //Permiso
+        // Verificación de permiso
         $this->authorize('ver BD');
 
-        // Obtener todos los comités con los sectores relacionados
-        $committees = Committee::with('sector')->paginate(15);
+        // Obtener parámetro de búsqueda validado
+        $validated = $request->validated();
+        $searchName = $validated['search_name'] ?? null;
 
+        // Consulta base con eager loading
+        $committees = Committee::with('sector')
+            ->when($searchName, function($query) use ($searchName) {
+                return $query->where('name', 'LIKE', "%{$searchName}%");
+            })
+            ->orderBy('name')
+            ->paginate(15)
+            ->appends(['search_name' => $searchName]);
 
         return view('areas.VasoDeLecheViews.Committees.index', compact('committees'));
     }

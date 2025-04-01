@@ -14,6 +14,8 @@ use App\Http\Requests\VasoDeLecheRequests\VlMinors\DestroyVlMinorRequest;
 
 use App\Models\VasoDeLecheModels\VlFamilyMember;
 
+use Illuminate\Support\Facades\DB;
+
 class VlMinorController extends Controller
 {
     /**
@@ -24,7 +26,22 @@ class VlMinorController extends Controller
      */
     public function index(IndexVlMinorRequest $request)
     {
-        $vlMinors = VlMinor::paginate(15);
+        $validated = $request->validated();
+        $searchId = $validated['search_id'] ?? null;
+
+        $vlMinors = VlMinor::when($searchId, function($query) use ($searchId) {
+                return $query->where(DB::raw('CAST(id AS CHAR)'), 'LIKE', "%{$searchId}%");
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(15)
+            ->appends(['search_id' => $searchId]);
+
+        // Mensaje si no hay resultados en búsqueda
+        if($searchId && $vlMinors->isEmpty()) {
+            return redirect()->route('vl_minors.index')
+                ->with('info', 'No se encontraron menores con el ID: ' . $searchId);
+        }
+
         return view('areas.VasoDeLecheViews.VlMinors.index', compact('vlMinors'));
     }
 

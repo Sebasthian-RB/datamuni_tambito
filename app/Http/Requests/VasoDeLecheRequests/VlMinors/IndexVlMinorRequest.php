@@ -26,7 +26,7 @@ class IndexVlMinorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'search_id' => 'nullable|regex:/^\d+$/'
         ];
     }
 
@@ -38,7 +38,7 @@ class IndexVlMinorRequest extends FormRequest
     public function messages()
     {
         return [
-            // Mensajes
+            'search_id.regex' => 'Solo se permiten números enteros en la búsqueda'
         ];
     }
 }
