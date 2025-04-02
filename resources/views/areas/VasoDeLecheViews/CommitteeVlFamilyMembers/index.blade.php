@@ -287,6 +287,8 @@
 @stop
 
 @section('css')
+    <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
+
     <style>
         /* Información del comité */
         .committee-info {
