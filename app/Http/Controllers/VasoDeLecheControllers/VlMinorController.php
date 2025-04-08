@@ -65,14 +65,14 @@ class VlMinorController extends Controller
             1 => 'Masculino',
         ];
         $educationLevels = ['Ninguno', 'Inicial', 'Primaria', 'Secundaria', 'Técnico', 'Superior', 'Educación Especial'];
-        $conditions = ['Gestante', 'Lactante', 'Menores de 7 años', 'Anciano', 'Desnutrición Severa', 'Discapacitado', 'Persona con TBC'];
+        $conditions = ['Gestante', 'Lactante', 'Niños de 0 a 6 años', 'Anciano', 'Desnutrición Severa', 'Discapacitado', 'Persona con TBC'];
         $disabilities = [
             0 => 'No',
             1 => 'Sí',
         ];
-        $dwellingTypes = ['Propio', 'Alquilado', 'Cedido', 'Vivienda Social'];
+        $dwellingTypes = ['Propio', 'Alquilado', 'Cedido', 'Vivienda Social', 'Otros'];
 
-        $kinships = ['Hijo(a)', 'Socio(a)', 'Otro Familiar'];
+        $kinships = ['Hijo(a)', 'Nieto(a)', 'Sobrino(a)', 'Hermano(a)', 'Primo(a)', 'Socio(a)', 'Otro Familiar'];
 
         $status = [
             0 => 'No',
@@ -154,14 +154,14 @@ class VlMinorController extends Controller
             1 => 'Masculino',
         ];
         $educationLevels = ['Ninguno', 'Inicial', 'Primaria', 'Secundaria', 'Técnico', 'Superior', 'Educación Especial'];
-        $conditions = ['Gestante', 'Lactante', 'Menores de 7 años', 'Anciano', 'Desnutrición Severa', 'Discapacitado', 'Persona con TBC'];
+        $conditions = ['Gestante', 'Lactante', 'Niños de 0 a 6 años', 'Anciano', 'Desnutrición Severa', 'Discapacitado', 'Persona con TBC'];
         $disabilities = [
             0 => 'No',
             1 => 'Sí',
         ];
-        $dwellingTypes = ['Propio', 'Alquilado', 'Cedido', 'Vivienda Social'];
+        $dwellingTypes = ['Propio', 'Alquilado', 'Cedido', 'Vivienda Social', 'Otros'];
 
-        $kinships = ['Hijo(a)', 'Socio(a)', 'Otro Familiar'];
+        $kinships = ['Hijo(a)', 'Nieto(a)', 'Sobrino(a)', 'Hermano(a)', 'Primo(a)', 'Socio(a)', 'Otro Familiar'];
 
         $status = [
             0 => 'No',

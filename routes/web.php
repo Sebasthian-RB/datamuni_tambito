@@ -65,6 +65,7 @@ use App\Http\Controllers\OmapedControllers\OmDwellingController;
 use App\Http\Controllers\OmapedControllers\OmPersonController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\VasoDeLecheControllers\VasoDeLecheExportController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -135,6 +136,9 @@ Route::middleware([
 
         //Dashboard
         Route::get('/vaso-de-leche/dashboard', [VasoDeLecheDashboardController::class, 'index'])->name('pvl_dashboard.index');
+
+        //Exportar Padron de Beneficiarios
+        Route::get('/export-vaso-de-leche/{committeeId}', [VasoDeLecheExportController::class, 'export'])->name('export.vaso-de-leche');
     });
 
 

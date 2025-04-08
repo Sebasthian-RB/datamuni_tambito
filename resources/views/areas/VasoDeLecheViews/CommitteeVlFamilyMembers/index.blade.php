@@ -45,22 +45,7 @@
             <!-- Cuerpo de la tarjeta con información organizada -->
             <div class="card-body" style="padding: 20px;">
                 <div class="row">
-                    <!-- Columna 1: Ubicación -->
-                    <div class="col-md-3 mb-3">
-                        <div class="info-card"
-                            style="background-color: #f8f9fa; border-radius: 10px; padding: 15px; height: 100%; box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);">
-                            <div class="d-flex align-items-center mb-2">
-                                <i class="fas fa-map-marker-alt"
-                                    style="font-size: 1.2rem; color: #8E6AB8; margin-right: 8px;"></i>
-                                <label class="font-weight-semibold"
-                                    style="color: #2c2c2c; font-size: 1rem; margin-bottom: 0;">Ubicación</label>
-                            </div>
-                            <p style="font-size: 1rem; color: #343a40; font-weight: 500; margin-bottom: 0;">
-                                {{ $committee->location ?? 'No disponible' }}</p>
-                        </div>
-                    </div>
-
-                    <!-- Columna 2: Presidente(a) -->
+                    <!-- Columna 1: Presidente(a) -->
                     <div class="col-md-3 mb-3">
                         <div class="info-card"
                             style="background-color: #f8f9fa; border-radius: 10px; padding: 15px; height: 100%; box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);">
@@ -75,7 +60,7 @@
                         </div>
                     </div>
 
-                    <!-- Columna 3: Urban Core -->
+                    <!-- Columna 2: Urban Core -->
                     <div class="col-md-3 mb-3">
                         <div class="info-card"
                             style="background-color: #f8f9fa; border-radius: 10px; padding: 15px; height: 100%; box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);">
@@ -89,7 +74,7 @@
                         </div>
                     </div>
 
-                    <!-- Columna 4: Sector -->
+                    <!-- Columna 3: Sector -->
                     <div class="col-md-3 mb-3">
                         <div class="info-card"
                             style="background-color: #f8f9fa; border-radius: 10px; padding: 15px; height: 100%; box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);">
@@ -101,6 +86,23 @@
                             </div>
                             <p style="font-size: 1rem; color: #343a40; font-weight: 500; margin-bottom: 0;">
                                 {{ $committee->sector->name ?? 'No disponible' }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Columna 4: Exportar -->
+                    <div class="col-md-3 mb-3">
+                        <div class="info-card"
+                            style="background-color: #f8f9fa; border-radius: 10px; padding: 15px; height: 100%; box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-download"
+                                    style="font-size: 1.2rem; color: #8E6AB8; margin-right: 8px;"></i>
+                                <label class="font-weight-semibold"
+                                    style="color: #2c2c2c; font-size: 1rem; margin-bottom: 0;">Exportar</label>
+                            </div>
+                            <!-- Botón para exportar Excel -->
+                            <div class="d-flex align-items-center justify-content-center mb-3">
+                                <a href="{{ route('export.vaso-de-leche', $committee->id) }}" class="btn btn-success">Descargar Excel</a>
+                            </div>
                         </div>
                     </div>
                 </div>

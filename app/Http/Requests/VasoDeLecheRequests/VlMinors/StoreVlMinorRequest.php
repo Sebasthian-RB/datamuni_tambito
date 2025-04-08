@@ -105,7 +105,7 @@ class StoreVlMinorRequest extends FormRequest
             ],
             'dwelling_type' => [
                 'nullable',
-                'in:Propio,Alquilado,Cedido,Vivienda Social',
+                'in:Propio,Alquilado,Cedido,Vivienda Social,Otros',
             ],
             'education_level' => [
                 'nullable',
@@ -114,7 +114,7 @@ class StoreVlMinorRequest extends FormRequest
             'condition' => [
                 'required',
                 'string',
-                'regex:/^[A-Za-záéíóúüñÑÜ\s\'-]+$/', // Permitido: letras (con acentos, ñ, ü) y espacios
+                'regex:/^[A-Za-záéíóúüñÑÜ0-9\s\'-]+$/', // Permitido: letras (con acentos, ñ, ü), números y espacios
             ],
             'disability' => [
                 'nullable',
@@ -133,8 +133,7 @@ class StoreVlMinorRequest extends FormRequest
                 'required',
                 'string',
                 'max:100',
-                'in:Hijo(a),Socio(a),Otro Familiar',
-            ],
+                'in:Hijo(a),Nieto(a),Sobrino(a),Hermano(a),Primo(a),Socio(a),Otro Familiar',            ],
         ];
     }
 
@@ -193,14 +192,14 @@ class StoreVlMinorRequest extends FormRequest
             'address.regex' => 'El campo solo puede contener letras (mayúsculas y minúsculas) del alfabeto español, números, espacios, y los siguientes caracteres especiales: punto, coma, apóstrofe, guion, barra, paréntesis, corchetes, dos puntos y punto y coma.',
 
             'dwelling_type.required' => 'El tipo de vivienda es obligatorio.',
-            'dwelling_type.in' => 'El tipo de vivienda debe ser: Propio, Alquilado, Cedido, Vivienda Social.',
+            'dwelling_type.in' => 'El tipo de vivienda debe ser: Propio, Alquilado, Cedido, Vivienda Social, Otros.',
     
             'education_level.nullable' => 'El nivel educativo es opcional.',
             'education_level.in' => 'El nivel educativo debe ser uno de los siguientes: Ninguno, Inicial, Primaria, Secundaria, Técnico, Superior, Educación Especial.',
     
             'condition.required' => 'La condición es obligatoria.',
             'condition.string' => 'La condición debe ser un texto válido.',
-            'condition.regex' => 'La condición solo puede contener letras, espacios y caracteres especiales como acentos, ñ, ü, y guiones.',
+            'condition.regex' => 'El campo condición solo admite: letras (a-z, A-Z, áéíóúüñÑ), números (0-9), espacios, apóstrofes (\') y guiones (-).',
 
             'disability.required' => 'El campo discapacidad es obligatorio.',
             'disability.boolean' => 'El campo discapacidad debe ser un valor booleano (verdadero o falso).',
@@ -215,7 +214,7 @@ class StoreVlMinorRequest extends FormRequest
             'kinship.required' => 'El parentesco con el familiar es obligatorio.',
             'kinship.string' => 'El parentesco con el familiar debe ser una cadena de texto.',
             'kinship.max' => 'El parentesco con el familiar no debe exceder los 100 caracteres.',
-            'kinship.in' => 'El parentesco debe ser uno de los siguientes: Hijo(a), Socio(a), Otro Familiar.',
+            'kinship.in' => 'El parentesco debe ser uno de los siguientes: Hijo(a), Nieto(a), Sobrino(a), Hermano(a), Primo(a), Socio(a), Otro Familiar.',
         ];
     }
 

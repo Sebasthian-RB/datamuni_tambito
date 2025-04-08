@@ -68,11 +68,11 @@ class CommitteeVlFamilyMemberController extends Controller
         
         $educationLevels = ['Ninguno', 'Inicial', 'Primaria', 'Secundaria', 'Técnico', 'Superior', 'Educación Especial'];
         
-        $conditions = ['Gestante', 'Lactante', 'Menores de 7 años', 'Anciano', 'Desnutrición Severa', 'Discapacitado', 'Persona con TBC'];
+        $conditions = ['Gestante', 'Lactante', 'Niños de 0 a 6 años', 'Anciano', 'Desnutrición Severa', 'Discapacitado', 'Persona con TBC'];
         
-        $dwellingTypes = ['Propio', 'Alquilado', 'Cedido', 'Vivienda Social'];
+        $dwellingTypes = ['Propio', 'Alquilado', 'Cedido', 'Vivienda Social', 'Otros'];
 
-        $kinships = ['Hijo(a)', 'Socio(a)', 'Otro Familiar'];
+        $kinships = ['Hijo(a)', 'Nieto(a)', 'Sobrino(a)', 'Hermano(a)', 'Primo(a)', 'Socio(a)', 'Otro Familiar'];
 
         $sexTypes = [
             1 => 'Masculino',
@@ -204,11 +204,11 @@ class CommitteeVlFamilyMemberController extends Controller
         
         $educationLevels = ['Ninguno', 'Inicial', 'Primaria', 'Secundaria', 'Técnico', 'Superior', 'Educación Especial'];
         
-        $conditions = ['Gestante', 'Lactante', 'Menores de 7 años', 'Anciano', 'Desnutrición Severa', 'Discapacitado', 'Persona con TBC'];
+        $conditions = ['Gestante', 'Lactante', 'Niños de 0 a 6 años', 'Anciano', 'Desnutrición Severa', 'Discapacitado', 'Persona con TBC'];
         
-        $dwellingTypes = ['Propio', 'Alquilado', 'Cedido', 'Vivienda Social'];
+        $dwellingTypes = ['Propio', 'Alquilado', 'Cedido', 'Vivienda Social', 'Otros'];
 
-        $kinships = ['Hijo(a)', 'Socio(a)', 'Otro Familiar'];
+        $kinships = ['Hijo(a)', 'Nieto(a)', 'Sobrino(a)', 'Hermano(a)', 'Primo(a)', 'Socio(a)', 'Otro Familiar'];
 
         $sexTypes = [
             1 => 'Masculino',
