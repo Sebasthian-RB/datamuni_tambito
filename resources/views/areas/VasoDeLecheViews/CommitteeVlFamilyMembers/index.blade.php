@@ -152,10 +152,12 @@
                                                 <strong>
                                                     @if ($register->vlFamilyMember->identity_document == 'DNI')
                                                         DNI N°
+                                                    @elseif($register->vlFamilyMember->identity_document == 'Carnet de Extranjería')
+                                                        Car. Extr. N°
                                                     @elseif($register->vlFamilyMember->identity_document == 'Pasaporte')
                                                         Pas. N°
-                                                    @elseif($register->vlFamilyMember->identity_document == 'Cédula')
-                                                        Ced. N°
+                                                    @elseif($register->vlFamilyMember->identity_document == 'Otro')
+                                                        Doc. N°
                                                     @else
                                                         Error:
                                                     @endif
@@ -195,10 +197,12 @@
                                                         <strong>
                                                             @if ($register->vlFamilyMember->identity_document == 'DNI')
                                                                 DNI N°
+                                                            @elseif($register->vlFamilyMember->identity_document == 'Carnet de Extranjería')
+                                                                Car. Extr. N°
                                                             @elseif($register->vlFamilyMember->identity_document == 'Pasaporte')
                                                                 Pas. N°
-                                                            @elseif($register->vlFamilyMember->identity_document == 'Cédula')
-                                                                Ced. N°
+                                                            @elseif($register->vlFamilyMember->identity_document == 'Otro')
+                                                                Doc. N°
                                                             @else
                                                                 Error:
                                                             @endif
@@ -215,10 +219,14 @@
                                                     <strong>
                                                         @if ($minor->identity_document == 'DNI')
                                                             DNI N°
+                                                        @elseif($minor->identity_document == 'CNV')
+                                                            CNV N°
+                                                        @elseif($minor->identity_document == 'Carnet de Extranjería')
+                                                            Car. Extr. N°
                                                         @elseif($minor->identity_document == 'Pasaporte')
                                                             Pas. N°
-                                                        @elseif($minor->identity_document == 'Cédula')
-                                                            Ced. N°
+                                                        @elseif($minor->identity_document == 'Otro')
+                                                            Doc. N°
                                                         @else
                                                             Error:
                                                         @endif
@@ -261,7 +269,9 @@
                                             <td class="text-center">{{ $minor->education_level ?? '-' }}</td>
                                             <td class="text-center">{{ $minor->dwelling_type ?? '-' }}</td>
                                             <td>{{ $minor->address ?? '-' }}</td>
-                                            <td>{{ $register->description ?? '-' }}</td>
+                                            @if ($index === 0)
+                                                <td rowspan="{{ count($minors) }}" class="text-center align-middle">{{ $register->description ?? '-' }}</td>
+                                            @endif
                                             @if ($index === 0)
                                                 <!-- Solo para la primera fila de menores -->
                                                 <td rowspan="{{ count($minors) }}" class="text-center align-middle">

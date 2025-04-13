@@ -83,23 +83,23 @@ class VasoDeLecheExportController extends Controller
             ['F6', 'SEXO', 'F6:G6', 8],
             ['F7', 'M', null, 10],
             ['G7', 'F', null, 10],
-            ['H6', 'FECHA DE NACIMIENTO', 'H6:H7', 10],
+            ['H6', 'FECHA DE NACIMIENTO', 'H6:H7', 9],
             ['I6', 'BENEFICIARIO (EDAD Y CONDICIÓN)', 'I6:U6', 8],
-            ['I7', '0', null, 10],
-            ['J7', '1', null, 10],
-            ['K7', '2', null, 10],
-            ['L7', '3', null, 10],
-            ['M7', '4', null, 10],
-            ['N7', '5', null, 10],
-            ['O7', '6', null, 10],
-            ['P7', '7-13', null, 10],
-            ['Q7', 'GESTANTE', null, 10, 90],
-            ['R7', 'LACTANTE', null, 10, 90],
-            ['S7', 'ANCIANO', null, 10, 90],
-            ['T7', 'DISCAPACITADO', null, 10, 90],
-            ['U7', 'PERSONA CON TBC', null, 10, 90],
+            ['I7', '0', null, 9],
+            ['J7', '1', null, 9],
+            ['K7', '2', null, 9],
+            ['L7', '3', null, 9],
+            ['M7', '4', null, 9],
+            ['N7', '5', null, 9],
+            ['O7', '6', null, 9],
+            ['P7', '7-13', null, 9],
+            ['Q7', 'GESTANTE', null, 9, 90],
+            ['R7', 'LACTANTE', null, 9, 90],
+            ['S7', 'ANCIANO', null, 9, 90],
+            ['T7', 'DISCAPACITADO', null, 9, 90],
+            ['U7', 'PERSONA CON TBC', null, 9, 90],
             ['V6', 'FECHA DE', 'V6:W6', 8],
-            ['V7', 'EMPADRONAMIENTO', null, 10, 90],
+            ['V7', 'EMPADRONAMIENTO', null, 9, 90],
             ['W7', 'RETIRO', null, 10, 90],
             ['X6', 'GRADO DE INST.', 'X6:X7', 10, 90],
             ['Y6', 'VIVIENDA', 'Y6:Y7', 10, 90],
@@ -130,14 +130,38 @@ class VasoDeLecheExportController extends Controller
             'wrapText' => true,
         ]);
 
+        $sheet->getStyle('B6:C6')->applyFromArray([
+            'alignment' => [
+                'wrapText' => true,            // Forzar salto de línea automático
+                'vertical' => Alignment::VERTICAL_CENTER,  // Alinear arriba (aprovecha mejor el espacio)
+                'horizontal' => Alignment::HORIZONTAL_CENTER,  // Alinear a la izquierda
+                'shrinkToFit' => false         // Desactivar reducción automática
+            ],
+            'font' => [
+                'size' => 10
+            ]
+        ]);
+
+        $sheet->getStyle('H6')->applyFromArray([
+            'alignment' => [
+                'wrapText' => true,            // Forzar salto de línea automático
+                'vertical' => Alignment::VERTICAL_CENTER,  // Alinear arriba (aprovecha mejor el espacio)
+                'horizontal' => Alignment::HORIZONTAL_CENTER,  // Alinear a la izquierda
+                'shrinkToFit' => false         // Desactivar reducción automática
+            ],
+            'font' => [
+                'size' => 9
+            ]
+        ]);
+
         // Configurar anchos de columnas
         $columnWidths = [
-            'A' => 4, 'B' => 30, 'C' => 30, 'D' => 3, 'E' => 3, 
-            'F' => 3, 'G' => 3, 'H' => 11, 'I' => 2, 'J' => 2, 
+            'A' => 4, 'B' => 18, 'C' => 18, 'D' => 3, 'E' => 3, 
+            'F' => 3, 'G' => 3, 'H' => 10, 'I' => 2, 'J' => 2, 
             'K' => 2, 'L' => 2, 'M' => 2, 'N' => 2, 'O' => 2, 
             'P' => 4, 'Q' => 3, 'R' => 3, 'S' => 3, 'T' => 3, 
             'U' => 3, 'V' => 3, 'W' => 3, 'X' => 3, 'Y' => 3, 
-            'Z' => 20, 'AA' => 10, 'AB' => 15
+            'Z' => 20, 'AA' => 15, 'AB' => 15
         ];
 
         foreach ($columnWidths as $col => $width) {
@@ -146,7 +170,7 @@ class VasoDeLecheExportController extends Controller
 
         // Configurar alturas de filas
         $sheet->getRowDimension(6)->setRowHeight(20);
-        $sheet->getRowDimension(7)->setRowHeight(100);
+        $sheet->getRowDimension(7)->setRowHeight(90);
        
         // Insertar los datos de los beneficiarios
         $row = 8; // Comienza a partir de la fila 8
@@ -163,103 +187,162 @@ class VasoDeLecheExportController extends Controller
             
             // Construir nombre completo
             $fullName = trim("$paternalLastName $maternalLastName $givenName");
-            $fullName = ($fullName !== '') ? $fullName : '-';
+            $fullName = ($fullName !== '') ? $fullName : '';
             
             // Formatear documento de identidad (mayúsculas)
-            $familyDocType = strtoupper($familyMember->identity_document ?? '-');
-            $familyDocNumber = strtoupper($familyMember->id ?? '-');
+            $familyDocType = strtoupper($familyMember->identity_document ?? '');
+            $familyDocNumber = strtoupper($familyMember->id ?? '');
 
             if ($minors->isEmpty()) {
                 // ===================== SIN MENORES =====================
                 $sheet->setCellValue('A' . $row, $num++);
                 $sheet->mergeCells('A' . $row . ':A' . ($row + 1));
                 
-                $sheet->setCellValue('B' . $row, $familyDocType);
-                $sheet->mergeCells('B' . $row . ':B' . ($row + 1));
-                
-                $sheet->setCellValue('C' . $row, $familyDocNumber);
-                $sheet->mergeCells('C' . $row . ':C' . ($row + 1));
-                
-                $sheet->setCellValue('D' . $row, $fullName);
-                $sheet->mergeCells('D' . $row . ':D' . ($row + 1));
+                $sheet->setCellValue('B' . $row, $fullName);
+                $docPrefixFamilyMemberNoMinor = match($familyMember->identity_document) {
+                    'DNI' => 'DNI N° ',
+                    'Carnet de Extranjería' => 'Car. Extr. N° ',
+                    'Pasaporte' => 'Pas. N° ',
+                    'Otro' => 'Doc. N° ',
+                    default => 'Doc. N° '
+                };
+                $sheet->setCellValue('B' . ($row + 1), $docPrefixFamilyMemberNoMinor . $familyDocNumber);
+
                 
                 // Resto de campos con valores por defecto
-                $fields = ['E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q'];
+                $fields = ['C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'AA', 'AB'];
                 foreach ($fields as $field) {
-                    $sheet->setCellValue($field . $row, '-');
+                    $sheet->setCellValue($field . $row, '');
                     $sheet->mergeCells($field . $row . ':' . $field . ($row + 1));
                 }
                 
                 $row += 2;
             } else {
                 // ===================== CON MENORES =====================
+                $firstRow = $row; // Guardar la primera fila del familiar
+                
                 foreach ($minors as $minor) {
                     // Formatear datos del menor
                     $minorPaternal = strtoupper(trim($minor->paternal_last_name ?? ''));
                     $minorMaternal = strtoupper(trim($minor->maternal_last_name ?? ''));
                     $minorGiven = strtoupper(trim($minor->given_name ?? ''));
                     $minorFullName = trim("$minorPaternal $minorMaternal $minorGiven");
-                    $minorFullName = ($minorFullName !== '') ? $minorFullName : '-';
+                    $minorFullName = ($minorFullName !== '') ? $minorFullName : '';
                     
                     // Documentos
-                    $minorDocType = strtoupper($minor->identity_document ?? '-');
-                    $minorDocNumber = strtoupper($minor->id ?? '-');
+                    $minorDocType = strtoupper($minor->identity_document ?? '');
+                    $minorDocNumber = strtoupper($minor->id ?? '');
                     
                     // Parentesco y sexo (mayúsculas)
-                    $kinship = strtoupper($minor->kinship ?? '-');
-                    $sexType = strtoupper($minor->sex_type ?? '-');
+                    $kinship = strtoupper($minor->kinship ?? '');
+                    $sexType = $minor->sex_type ?? null; 
                     
                     // Formatear fechas (DD/MM/YYYY)
-                    $birthDate = $minor->birth_date ? Carbon::parse($minor->birth_date)->format('d/m/Y') : '-';
-                    $regDate = $minor->registration_date ? Carbon::parse($minor->registration_date)->format('d/m/Y') : '-';
-                    $withdrawalDate = $minor->withdrawal_date ? Carbon::parse($minor->withdrawal_date)->format('d/m/Y') : '-';
+                    $birthDate = $minor->birth_date ? Carbon::parse($minor->birth_date)->format('d/m/Y') : '';
+                    $regDate = $minor->registration_date ? Carbon::parse($minor->registration_date)->format('d/m/Y') : '';
+                    $withdrawalDate = $minor->withdrawal_date ? Carbon::parse($minor->withdrawal_date)->format('d/m/Y') : '';
                     
                     // Edad (calculada desde la fecha de nacimiento)
-                    $age = $minor->birth_date ? Carbon::parse($minor->birth_date)->age : '-';
+                    $age = $minor->birth_date ? Carbon::parse($minor->birth_date)->age : '';
                     
                     // Otros campos (mayúsculas)
-                    $condition = strtoupper($minor->condition ?? '-');
-                    $education = strtoupper($minor->education_level ?? '-');
-                    $dwelling = strtoupper($minor->dwelling_type ?? '-');
-                    $address = strtoupper($minor->address ?? '-');
+                    $condition = strtoupper($minor->condition ?? '');
+                    $education = strtoupper($minor->education_level ?? '');
+                    $dwelling = strtoupper($minor->dwelling_type ?? '');
+                    $address = strtoupper($minor->address ?? '');
                     
-                    // Insertar datos
-                    $sheet->setCellValue('A' . $row, $num++);
-                    $sheet->mergeCells('A' . $row . ':A' . ($row + 1));
-                    
-                    $sheet->setCellValue('B' . $row, $familyDocType);
-                    $sheet->mergeCells('B' . $row . ':B' . ($row + 1));
-                    
-                    $sheet->setCellValue('C' . $row, $familyDocNumber);
-                    $sheet->mergeCells('C' . $row . ':C' . ($row + 1));
-                    
-                    $sheet->setCellValue('D' . $row, $fullName);
-                    $sheet->mergeCells('D' . $row . ':D' . ($row + 1));
-                    
+                    // Insertar datos                    
+                    $sheet->setCellValue('B' . $row, $fullName);
+                    $docPrefixFamilyMember = match($familyMember->identity_document) {
+                        'DNI' => 'DNI N° ',
+                        'Carnet de Extranjería' => 'Car. Extr. N° ',
+                        'Pasaporte' => 'Pas. N° ',
+                        'Otro' => 'Doc. N° ',
+                        default => 'Doc. N° '
+                    };
+                    $sheet->setCellValue('b' . ($row + 1), $docPrefixFamilyMember . $familyDocNumber);
+
+                    $sheet->setCellValue('C' . $row, $minorFullName);
+                    $docPrefixMinor = match($minor->identity_document) {
+                        'DNI' => 'DNI N° ',
+                        'CNV' => 'CNV N° ',
+                        'Carnet de Extranjería' => 'Car. Extr. N° ',
+                        'Pasaporte' => 'Pas. N° ',
+                        'Otro' => 'Doc. N° ',
+                        default => 'Doc. N° '
+                    };
+                    $sheet->setCellValue('C' . ($row + 1), $docPrefixMinor . $minorDocNumber);
+
+
                     // Datos del menor
-                    $sheet->setCellValue('E' . $row, $minorDocType);
+                    $sheet->setCellValue('D' . $row, $minorDocType);
+                    $sheet->mergeCells('D' . $row . ':D' . ($row + 1));
+
+                    $sheet->setCellValue('E' . $row, $kinship);
                     $sheet->mergeCells('E' . $row . ':E' . ($row + 1));
-                    
-                    $sheet->setCellValue('F' . $row, $minorDocNumber);
+
+
+                    // Limpiar ambas celdas primero para el sexo del menor
+                    $sheet->setCellValue('F' . $row, '');
+                    $sheet->setCellValue('G' . $row, '');
+
+                    // Marcar X según el sexo (sex_type es booleano: true=masculino, false=femenino)
+                    if ($minor->sex_type === true || $minor->sex_type === 1) {
+                        $sheet->setCellValue('F' . $row, 'X'); // Masculino
+                    } else {
+                        $sheet->setCellValue('G' . $row, 'X'); // Femenino
+                    }
+
+                    // Aplicar merge cells (como ya lo tienes)
                     $sheet->mergeCells('F' . $row . ':F' . ($row + 1));
-                    
-                    $sheet->setCellValue('G' . $row, $minorFullName);
                     $sheet->mergeCells('G' . $row . ':G' . ($row + 1));
-                    
-                    $sheet->setCellValue('H' . $row, $kinship);
+
+                    $sheet->setCellValue('H' . $row, $birthDate);
                     $sheet->mergeCells('H' . $row . ':H' . ($row + 1));
+
                     
-                    $sheet->setCellValue('I' . $row, $sexType);
-                    $sheet->mergeCells('I' . $row . ':I' . ($row + 1));
-                    
-                    $sheet->setCellValue('J' . $row, $birthDate);
-                    $sheet->mergeCells('J' . $row . ':J' . ($row + 1));
-                    
-                    $sheet->setCellValue('K' . $row, $age);
-                    $sheet->mergeCells('K' . $row . ':K' . ($row + 1));
-                    
-                    $sheet->setCellValue('L' . $row, $condition);
-                    $sheet->mergeCells('L' . $row . ':L' . ($row + 1));
+                    // Inicializar todas las celdas de condición como vacías
+                    $conditionColumns = [
+                        'I' => '', 'J' => '', 'K' => '', 'L' => '','M' => '', 'N' => '', 'O' => '', 'P' => '', 'Q' => '', 
+                        'R' => '', 'S' => '', 'T' => '', 'U' => ''
+                    ];
+
+                    // Asignar 'X' según la condición del menor
+                    switch ($minor->condition) {
+                        case 'Menor de 1 año':
+                            $conditionColumns['I'] = 'X';
+                            break;
+                        case 'Niño de 1 a 6 años':
+                            if ($age >= 1 && $age <= 6) {
+                                $col = chr(73 + $age); // 73 = ASCII para 'I' (I=0, J=1...O=6)
+                                $conditionColumns[$col] = 'X';
+                            }
+                            break;
+                        case 'Niño de 7 a 13 años':
+                            $conditionColumns['P'] = 'X';
+                            break;
+                        case 'Madre gestante':
+                            $conditionColumns['Q'] = 'X';
+                            break;
+                        case 'Madre lactante':
+                            $conditionColumns['R'] = 'X';
+                            break;
+                        case 'Anciano':
+                            $conditionColumns['S'] = 'X';
+                            break;
+                        case 'Discapacitado':
+                            $conditionColumns['T'] = 'X';
+                            break;
+                        case 'Persona con TBC':
+                            $conditionColumns['U'] = 'X';
+                            break;
+                    }
+
+                    // Aplicar los valores a las celdas
+                    foreach ($conditionColumns as $column => $value) {
+                        $sheet->setCellValue($column . $row, $value);
+                        $sheet->mergeCells($column . $row . ':' . $column . ($row + 1));
+                    }
                     
                     $sheet->setCellValue('V' . $row, $regDate);
                     $sheet->mergeCells('V' . $row . ':V' . ($row + 1));
@@ -276,8 +359,17 @@ class VasoDeLecheExportController extends Controller
                     $sheet->setCellValue('Z' . $row, $address);
                     $sheet->mergeCells('Z' . $row . ':Z' . ($row + 1));
                     
+                    $sheet->setCellValue('AA' . $row, "");
+                    $sheet->mergeCells('AA' . $row . ':AA' . ($row + 1));
+
+                    $sheet->setCellValue('AB' . $row, "");
+                    $sheet->mergeCells('AB' . $row . ':AB' . ($row + 1));
+
                     $row += 2;
                 }
+
+                $sheet->setCellValue('A' . $firstRow, $num++);
+                $sheet->mergeCells('A' . $firstRow . ':A' . ($firstRow + 1));
             }
         }   
 
@@ -309,9 +401,48 @@ class VasoDeLecheExportController extends Controller
                     'vertical' => Alignment::VERTICAL_CENTER,
                     'wrapText' => true, // Ajustar texto si es necesario
                 ],
+                'font' => [
+                    'size' => 8
+                ]
             ]);
         }
 
+        $sheet->getStyle('Z8:Z'.$lastRow)->applyFromArray([
+            'alignment' => [
+                'wrapText' => true,            // Forzar salto de línea automático
+                'vertical' => Alignment::VERTICAL_CENTER,  // Alinear arriba (aprovecha mejor el espacio)
+                'horizontal' => Alignment::HORIZONTAL_CENTER,  // Alinear a la izquierda
+                'shrinkToFit' => false         // Desactivar reducción automática
+            ],
+            'font' => [
+                'size' => 9
+            ]
+        ]);
+
+        $sheet->getStyle('B8:B'.$lastRow)->applyFromArray([
+            'alignment' => [
+                'wrapText' => true,            // Forzar salto de línea automático
+                'vertical' => Alignment::VERTICAL_CENTER,  // Alinear arriba (aprovecha mejor el espacio)
+                'horizontal' => Alignment::HORIZONTAL_CENTER,  // Alinear a la izquierda
+                'shrinkToFit' => false         // Desactivar reducción automática
+            ],
+            'font' => [
+                'size' => 9
+            ]
+        ]);
+
+        $sheet->getStyle('C8:C'.$lastRow)->applyFromArray([
+            'alignment' => [
+                'wrapText' => true,            // Forzar salto de línea automático
+                'vertical' => Alignment::VERTICAL_CENTER,  // Alinear arriba (aprovecha mejor el espacio)
+                'horizontal' => Alignment::HORIZONTAL_CENTER,  // Alinear a la izquierda
+                'shrinkToFit' => false         // Desactivar reducción automática
+            ],
+            'font' => [
+                'size' => 9
+            ]
+        ]);
+        
         // Ajustar altura de filas fusionadas alternadamente (50 y 20 puntos)
         for ($i = 8; $i <= $lastRow; $i += 2) {
             // Primera fila del grupo fusionado (altura 50)
@@ -340,11 +471,12 @@ class VasoDeLecheExportController extends Controller
         $sheet->getPageSetup()->setPrintArea("A1:AB" . $lastRow);
 
         // Repetir filas de encabezado en cada página
-        $sheet->getPageSetup()->setRowsToRepeatAtTopByStartAndEnd(1, 7);
+        $sheet->getPageSetup()->setRowsToRepeatAtTopByStartAndEnd(1, 7);    
 
-        // Opcional: Ajustar escala si el contenido no cabe
-        $sheet->getPageSetup()->setScale(85); // 85% de escala
-
+        
+        // Centrar tabla
+        $sheet->getPageSetup()->setHorizontalCentered(true);
+        $sheet->getPageSetup()->setVerticalCentered(true);
 
         // Crear un escritor y guardar el archivo Excel
         $writer = new Xlsx($spreadsheet);

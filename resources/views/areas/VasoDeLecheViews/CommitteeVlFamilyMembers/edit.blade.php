@@ -378,25 +378,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Sección de Menores -->
-                    <div class="row mb-4">
-                        <div class="col-12">
-                            <h5 class="mb-3" style="color: var(--color-primary); font-weight: 600;">
-                                <i class="fas fa-child mr-2"></i>Menores asociados
-                                <span class="badge badge-secondary">{{ $committeeVlFamilyMember->vlFamilyMember->vlMinors->count() }}</span>
-                            </h5>
-
-                            @forelse($committeeVlFamilyMember->vlFamilyMember->vlMinors as $minor)
-                                <!-- Mantener la sección de menores como estaba -->
-                            @empty
-                                <div class="info-card text-center py-3">
-                                    <i class="fas fa-child fa-lg text-muted mb-2"></i>
-                                    <div class="text-muted">No hay menores registrados</div>
-                                </div>
-                            @endforelse
-                        </div>
-                    </div>
                 </div>
 
                 <div class="card-footer text-right">
