@@ -262,20 +262,23 @@
                                             <td class="text-center">{{ $minor->dwelling_type ?? '-' }}</td>
                                             <td>{{ $minor->address ?? '-' }}</td>
                                             <td>{{ $register->description ?? '-' }}</td>
-                                            <td class="text-center">
-                                                <a href="{{ route('committee_vl_family_members.show', $register->id) }}"
-                                                    class="btn btn-info btn-sm">Ver</a>
-                                                <a href="{{ route('committee_vl_family_members.edit', $register->id) }}"
-                                                    class="btn btn-warning btn-sm">Editar</a>
-                                                <form
-                                                    action="{{ route('committee_vl_family_members.destroy', $register->id) }}"
-                                                    method="POST" class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"
-                                                        onclick="return confirm('¿Está seguro de eliminar este miembro?')">Eliminar</button>
-                                                </form>
-                                            </td>
+                                            @if ($index === 0)
+                                                <!-- Solo para la primera fila de menores -->
+                                                <td rowspan="{{ count($minors) }}" class="text-center align-middle">
+                                                    <a href="{{ route('committee_vl_family_members.show', $register->id) }}"
+                                                        class="btn btn-info btn-sm">Ver</a>
+                                                    <a href="{{ route('committee_vl_family_members.edit', $register->id) }}"
+                                                        class="btn btn-warning btn-sm">Editar</a>
+                                                    <form
+                                                        action="{{ route('committee_vl_family_members.destroy', $register->id) }}"
+                                                        method="POST" class="d-inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger btn-sm"
+                                                            onclick="return confirm('¿Está seguro de eliminar este miembro?')">Eliminar</button>
+                                                    </form>
+                                                </td>
+                                            @endif
                                         </tr>
                                     @endforeach
                                 @endif

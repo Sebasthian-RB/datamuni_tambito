@@ -179,6 +179,20 @@
                     @endif
                 </span>
             </p>
+            <p><span class="detail-label">¿Tiene SISFOH?:</span> 
+                <span class="detail-value">
+                    @if($vlMinor->has_sisfoh !== null)
+                        {{ $vlMinor->has_sisfoh ? 'Sí' : 'No' }}
+                    @else
+                        <span class="no-data">No disponible</span>
+                    @endif
+                </span>
+            </p>
+            <p><span class="detail-label">Clasificación SISFOH:</span> 
+                <span class="detail-value">
+                    {!! $vlMinor->sisfoh_classification ?? '<span class="no-data">No disponible</span>' !!}
+                </span>
+            </p>
             <p><span class="detail-label">Familiar:</span> 
                 <span class="detail-value">
                     @if($vlMinor->vlFamilyMember)

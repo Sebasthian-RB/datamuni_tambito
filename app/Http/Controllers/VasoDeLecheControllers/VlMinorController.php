@@ -54,10 +54,11 @@ class VlMinorController extends Controller
     public function create(CreateVlMinorRequest $request)
     {
         // Definir las opciones disponibles para los selects
-        $documentTypes = ['DNI', 'Pasaporte', 'Cédula de Extranjería'];  //Para el menor de edad
+        $documentTypes = ['DNI', 'CNV', 'Pasaporte', 'Carnet de Extranjería', 'Otro'];  //Para el menor de edad
         $identityDocumentTypes = [
             'DNI' => 'DNI',
             'Carnet de Extranjería' => 'Carnet de Extranjería',
+            'Pasaporte' => 'Pasaporte',
             'Otro' => 'Otro',
         ]; // Para el familiar (agregar)
         $sexTypes = [
@@ -65,7 +66,7 @@ class VlMinorController extends Controller
             1 => 'Masculino',
         ];
         $educationLevels = ['Ninguno', 'Inicial', 'Primaria', 'Secundaria', 'Técnico', 'Superior', 'Educación Especial'];
-        $conditions = ['Gestante', 'Lactante', 'Niños de 0 a 6 años', 'Anciano', 'Desnutrición Severa', 'Discapacitado', 'Persona con TBC'];
+        $conditions = ['Menor de 1 año', 'Niño de 1 a 6 años', 'Niño de 7 a 13 años', 'Madre gestante', 'Madre lactante', 'Anciano', 'Discapacitado', 'Persona con TBC'];
         $disabilities = [
             0 => 'No',
             1 => 'Sí',
@@ -74,6 +75,13 @@ class VlMinorController extends Controller
 
         $kinships = ['Hijo(a)', 'Nieto(a)', 'Sobrino(a)', 'Hermano(a)', 'Primo(a)', 'Socio(a)', 'Otro Familiar'];
 
+        $sisfohClassifications = ['No Pobre', 'Pobre', 'Pobre Extremo'];
+
+        $hasSisfoh = [
+            '0' => 'No',
+            '1' => 'Sí',
+        ];
+        
         $status = [
             0 => 'No',
             1 => 'Sí',
@@ -93,7 +101,8 @@ class VlMinorController extends Controller
             'vlFamilyMembers',
             'kinships', 
             'status',
-            'identityDocumentTypes'
+            'identityDocumentTypes',
+            'sisfohClassifications'
         ));
     }
 
@@ -142,11 +151,12 @@ class VlMinorController extends Controller
      */
     public function edit(EditVlMinorRequest $request, VlMinor $vlMinor)
     {
-        // Aquí se definen las opciones disponibles para los selects
-        $documentTypes = ['DNI', 'Pasaporte', 'Cédula de Extranjería'];  //Para el menor de edad
+        // Definir las opciones disponibles para los selects
+        $documentTypes = ['DNI', 'CNV', 'Pasaporte', 'Carnet de Extranjería', 'Otro'];  //Para el menor de edad
         $identityDocumentTypes = [
             'DNI' => 'DNI',
             'Carnet de Extranjería' => 'Carnet de Extranjería',
+            'Pasaporte' => 'Pasaporte',
             'Otro' => 'Otro',
         ]; // Para el familiar (agregar)
         $sexTypes = [
@@ -154,7 +164,7 @@ class VlMinorController extends Controller
             1 => 'Masculino',
         ];
         $educationLevels = ['Ninguno', 'Inicial', 'Primaria', 'Secundaria', 'Técnico', 'Superior', 'Educación Especial'];
-        $conditions = ['Gestante', 'Lactante', 'Niños de 0 a 6 años', 'Anciano', 'Desnutrición Severa', 'Discapacitado', 'Persona con TBC'];
+        $conditions = ['Menor de 1 año', 'Niño de 1 a 6 años', 'Niño de 7 a 13 años', 'Madre gestante', 'Madre lactante', 'Anciano', 'Discapacitado', 'Persona con TBC'];
         $disabilities = [
             0 => 'No',
             1 => 'Sí',
@@ -162,6 +172,13 @@ class VlMinorController extends Controller
         $dwellingTypes = ['Propio', 'Alquilado', 'Cedido', 'Vivienda Social', 'Otros'];
 
         $kinships = ['Hijo(a)', 'Nieto(a)', 'Sobrino(a)', 'Hermano(a)', 'Primo(a)', 'Socio(a)', 'Otro Familiar'];
+
+        $sisfohClassifications = ['No Pobre', 'Pobre', 'Pobre Extremo'];
+
+        $hasSisfoh = [
+            '0' => 'No',
+            '1' => 'Sí',
+        ];
 
         $status = [
             0 => 'No',
@@ -188,7 +205,8 @@ class VlMinorController extends Controller
             'kinships',
             'status',
             'identityDocumentTypes',
-            'vlMinor'
+            'vlMinor',
+            'sisfohClassifications'
         ));
     } 
 

@@ -1076,6 +1076,63 @@
                             </div>
                             <div style="margin-bottom: 30px;"></div>
     
+
+                            <div class="row justify-content-around mt-4">
+                                <!-- Campo: Tiene SISFOH -->
+                                <div class="col-md-4"> 
+                                    <div class="form-group mb-4 d-flex align-items-center">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <div class="d-flex align-items-center mr-2">
+                                                <i class="fas fa-file-contract mr-2 align-self-center"></i>
+                                                <label for="has_sisfoh" class="font-weight-bold mb-0">
+                                                    ¿Tiene SISFOH?
+                                                </label>
+                                                <span class="text-danger">*</span>
+                                            </div>
+                                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                                <!-- Opción No -->
+                                                <label class="btn sex-button">
+                                                    <input type="radio" name="has_sisfoh" value="0">
+                                                    <i class="fas fa-times-circle mr-2"></i> No
+                                                </label>
+                                                <!-- Opción Sí -->
+                                                <label class="btn sex-button">
+                                                    <input type="radio" name="has_sisfoh" value="1">
+                                                    <i class="fas fa-check-circle mr-2"></i> Sí
+                                                </label>
+                                            </div>
+                                        </div>
+                                        @error('has_sisfoh')
+                                            <span class="invalid-feedback d-block">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                                        
+                                <!-- Campo: Clasificación SISFOH -->
+                                <div class="col-md-6" id="sisfohClassificationContainer">
+                                    <div class="form-group mb-4 d-flex align-items-center">
+                                        <div class="d-flex align-items-center mr-2">
+                                            <i class="fas fa-list-ol mr-2 align-self-center"></i>
+                                            <label for="sisfoh_classification" class="font-weight-bold mb-0">
+                                                Clasificación SISFOH
+                                            </label>
+                                        </div>
+                                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                            @foreach($sisfohClassifications as $classification)
+                                                <label class="btn sex-button">
+                                                    <input type="radio" name="sisfoh_classification" value="{{ $classification }}">
+                                                    {{ $classification }}
+                                                </label>
+                                            @endforeach
+                                        </div>
+                                        @error('sisfoh_classification')
+                                            <span class="invalid-feedback d-block">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 30px;"></div>
+
                             <div class="row">
                                 <!-- Columna izquierda -->
                                 <div class="col-md-5">
@@ -1558,6 +1615,34 @@
                                                     </label>
                                                     <input type="text" class="form-control" id="given_name_${minor.id}" disabled value="${minor.given_name}" style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
                                                 </div>
+
+                                                <!-- Información SISFOH -->
+                                                <div class="info-box d-flex flex-column mt-4" style="background: white; border-radius: 10px; padding: 15px 20px; border-left: 4px solid #B8B8B8; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.05);">
+                                                    <div class="row g-3 align-items-center">
+                                                        <div class="col-md-6">
+                                                            <label style="color: #3B1E54; font-weight: 600; font-size: 14px;">
+                                                                <i class="fas fa-file-contract"></i> ¿Tiene SISFOH?
+                                                            </label>
+                                                            <select class="form-control" id="has_sisfoh_${minor.id}" disabled 
+                                                                style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
+                                                                <option value="1" ${minor.has_sisfoh ? 'selected' : ''}>Sí</option>
+                                                                <option value="0" ${!minor.has_sisfoh ? 'selected' : ''}>No</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label style="color: #3B1E54; font-weight: 600; font-size: 14px;">
+                                                                <i class="fas fa-list-ol"></i> Clasificación
+                                                            </label>
+                                                            <select class="form-control" id="sisfoh_classification_${minor.id}" disabled 
+                                                                style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
+                                                                <option value="">No especificado</option>
+                                                                ${@json($sisfohClassifications).map(classification => 
+                                                                    `<option value="${classification}" ${minor.sisfoh_classification === classification ? 'selected' : ''}>${classification}</option>`
+                                                                ).join('')}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             <!-- Columna 2: Información adicional -->
@@ -1565,13 +1650,13 @@
                                                 <div class="info-box d-flex flex-column" style="background: white; border-radius: 10px; padding: 15px 20px; border-left: 4px solid #B8B8B8; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.05);">
                                                     
                                                     <div class="row g-3 align-items-center">
-                                                        <div class="col-md-6 mb-1">
+                                                        <div class="col-md-6 mb-3">
                                                             <label style="color: #3B1E54; font-weight: 600; font-size: 14px;">
                                                                 <i class="fas fa-calendar-alt"></i> Fecha de Nacimiento
                                                             </label>
                                                             <input type="date" class="form-control" id="birth_date_${minor.id}" disabled value="${formatDate(minor.birth_date)}" style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
                                                         </div>
-                                                        <div class="col-md-6 mb-1">
+                                                        <div class="col-md-6 mb-3">
                                                             <label style="color: #3B1E54; font-weight: 600; font-size: 14px;">
                                                                 <i class="fas fa-venus-mars"></i> Sexo
                                                             </label>
@@ -1585,7 +1670,7 @@
                                                     </div>
 
                                                     <div class="row g-3 align-items-center">
-                                                        <div class="col-md-4 mb-1">
+                                                        <div class="col-md-4 mb-3">
                                                             <label style="color: #3B1E54; font-weight: 600; font-size: 14px; padding-top: 15px;">
                                                                 <i class="fas fa-clipboard-list"></i> Condición
                                                             </label>
@@ -1596,7 +1681,7 @@
                                                                 ).join('')}
                                                             </select>
                                                         </div>
-                                                        <div class="col-md-4 mb-1">
+                                                        <div class="col-md-4 mb-3">
                                                             <label style="color: #3B1E54; font-weight: 600; font-size: 14px; padding-top: 15px;">
                                                                 <i class="fas fa-users"></i> Relación
                                                             </label>
@@ -1608,7 +1693,7 @@
                                                             </select>
                                                         </div>
 
-                                                        <div class="col-md-4 mb-1">
+                                                        <div class="col-md-4 mb-3">
                                                             <label style="color: #3B1E54; font-weight: 600; font-size: 14px; padding-top: 15px;">
                                                                 <i class="fas fa-wheelchair"></i> Discapacidad
                                                             </label>
@@ -1621,7 +1706,7 @@
                                                         </div>
                                                     </div>
 
-                                                    <div>
+                                                    <div class="mb-3">
                                                         <label style="color: #3B1E54; font-weight: 600; font-size: 14px; padding-top: 15px;">
                                                             <i class="fas fa-map-marker-alt"></i> Dirección
                                                         </label>
@@ -1629,7 +1714,7 @@
                                                     </div>
 
                                                     <div class="row g-3 align-items-center">
-                                                        <div class="col-md-6 mb-1">
+                                                        <div class="col-md-6 mb-3">
                                                             <label style="color: #3B1E54; font-weight: 600; font-size: 14px; padding-top: 15px;">
                                                                 <i class="fas fa-home"></i> Tipo de Vivienda
                                                             </label>
@@ -1641,7 +1726,7 @@
                                                             </select>
                                                         </div>
                                                         
-                                                        <div class="col-md-6 mb-1">
+                                                        <div class="col-md-6 mb-3">
                                                             <label style="color: #3B1E54; font-weight: 600; font-size: 14px; padding-top: 15px;">
                                                                 <i class="fas fa-graduation-cap"></i> Nivel de Educación
                                                             </label>
@@ -1745,7 +1830,7 @@
                 // Habilitar todos los campos EXCEPTO ID y Documento de Identidad
                 $(`#given_name_${minorId}, #paternal_last_name_${minorId}, #maternal_last_name_${minorId}, 
                 #birth_date_${minorId}, #sex_type_${minorId}, #address_${minorId}, 
-                #dwelling_type_${minorId}, #education_level_${minorId}, #condition_${minorId}, #kinship_${minorId}, #disability_${minorId}`)
+                #dwelling_type_${minorId}, #education_level_${minorId}, #condition_${minorId}, #kinship_${minorId}, #disability_${minorId}, #has_sisfoh_${minorId}, #sisfoh_classification_${minorId}`)
                     .prop('disabled', false)
                     .css('background-color', 'white')
                     .addClass('editable-field-minor');
@@ -1788,6 +1873,13 @@
                     const disabilityValue = originalMinorValues[minorId].disability ? '1' : '0';
                     $(`#disability_${minorId}`).val(disabilityValue).prop('disabled', true).css('background-color', 'transparent').removeClass('editable-field-minor');
                     
+                    // Restaurar valor de has_sisfoh (formato booleano)
+                    const hasSisfohValue = originalMinorValues[minorId].has_sisfoh ? '1' : '0';
+                    $(`#has_sisfoh_${minorId}`).val(hasSisfohValue).prop('disabled', true).css('background-color', 'transparent').removeClass('editable-field-minor');
+
+                    // Restaurar clasificación SISFOH
+                    $(`#sisfoh_classification_${minorId}`).val(originalMinorValues[minorId].sisfoh_classification || '').prop('disabled', true).css('background-color', 'transparent').removeClass('editable-field-minor');
+
                 } else {
                     console.log("No se encontraron valores originales para este menor.");
                 }
@@ -1811,21 +1903,23 @@
                     _token: "{{ csrf_token() }}",
                     _method: "PUT",
                     id: String(minorId), // Convertir a string porque en la BD es VARCHAR
-                    identity_document: $(`#identity_document_${minorId}`).val() || originalMinorValues[minorId]?.identity_document || "",
-                    given_name: $(`#given_name_${minorId}`).val() || originalMinorValues[minorId]?.given_name || "",
-                    paternal_last_name: $(`#paternal_last_name_${minorId}`).val() || originalMinorValues[minorId]?.paternal_last_name || "",
-                    maternal_last_name: $(`#maternal_last_name_${minorId}`).val() || originalMinorValues[minorId]?.maternal_last_name || "",
+                    identity_document: $(`#identity_document_${minorId}`).val() || originalMinorValues[minorId]?.identity_document || null,
+                    given_name: $(`#given_name_${minorId}`).val() || originalMinorValues[minorId]?.given_name || null,
+                    paternal_last_name: $(`#paternal_last_name_${minorId}`).val() || originalMinorValues[minorId]?.paternal_last_name || null,
+                    maternal_last_name: $(`#maternal_last_name_${minorId}`).val() || originalMinorValues[minorId]?.maternal_last_name || null,
                     birth_date: formatDate($(`#birth_date_${minorId}`).val() || originalMinorValues[minorId]?.birth_date),
                     sex_type: $(`#sex_type_${minorId}`).val() !== undefined ? parseInt($(`#sex_type_${minorId}`).val()) : (originalMinorValues[minorId]?.sex_type ? 1 : 0),
                     registration_date: formatDate($(`#registration_date_${minorId}`).val() || originalMinorValues[minorId]?.registration_date),
                     withdrawal_date: formatDate($(`#withdrawal_date_${minorId}`).val() || originalMinorValues[minorId]?.withdrawal_date),
-                    address: $(`#address_${minorId}`).val() || originalMinorValues[minorId]?.address || "",
-                    dwelling_type: $(`#dwelling_type_${minorId}`).val() || originalMinorValues[minorId]?.dwelling_type || "Propio",
-                    education_level: $(`#education_level_${minorId}`).val() || originalMinorValues[minorId]?.education_level || "Ninguno",
-                    condition: $(`#condition_${minorId}`).val() || originalMinorValues[minorId]?.condition || "Lact.",
+                    address: $(`#address_${minorId}`).val() || originalMinorValues[minorId]?.address || null,
+                    dwelling_type: $(`#dwelling_type_${minorId}`).val() || originalMinorValues[minorId]?.dwelling_type || null,
+                    education_level: $(`#education_level_${minorId}`).val() || originalMinorValues[minorId]?.education_level || null,
+                    condition: $(`#condition_${minorId}`).val() || originalMinorValues[minorId]?.condition || null,
                     disability: $(`#disability_${minorId}`).val() !== undefined ? parseInt($(`#disability_${minorId}`).val()) : (originalMinorValues[minorId]?.disability ? 1 : 0),
-                    kinship: $(`#kinship_${minorId}`).val() || originalMinorValues[minorId]?.kinship || "Hijo(a)",
-                    vl_family_member_id: $(`#vl_family_member_id_${minorId}`).val() || originalMinorValues[minorId]?.vl_family_member_id || "",
+                    kinship: $(`#kinship_${minorId}`).val() || originalMinorValues[minorId]?.kinship || null,
+                    has_sisfoh: $(`#has_sisfoh_${minorId}`).val() !== undefined ? parseInt($(`#has_sisfoh_${minorId}`).val()) : (originalMinorValues[minorId]?.has_sisfoh ? 1 : 0),
+                    sisfoh_classification: $(`#sisfoh_classification_${minorId}`).val() || originalMinorValues[minorId]?.sisfoh_classification || null,
+                    vl_family_member_id: $(`#vl_family_member_id_${minorId}`).val() || originalMinorValues[minorId]?.vl_family_member_id || null,
                     status: $(`#status_${minorId}`).val() !== undefined ? parseInt($(`#status_${minorId}`).val()) : (originalMinorValues[minorId]?.status ? 1 : 0),
                 };
 
@@ -1848,7 +1942,7 @@
                         // Deshabilitar los campos nuevamente
                         $(`#given_name_${minorId}, #paternal_last_name_${minorId}, #maternal_last_name_${minorId}, 
                         #birth_date_${minorId}, #sex_type_${minorId}, #address_${minorId}, 
-                        #dwelling_type_${minorId}, #education_level_${minorId}, #condition_${minorId}, #kinship_${minorId}, #disability_${minorId}`)
+                        #dwelling_type_${minorId}, #education_level_${minorId}, #condition_${minorId}, #kinship_${minorId}, #disability_${minorId}, #has_sisfoh_${minorId}, #sisfoh_classification_${minorId}`)
                             .prop('disabled', true)
                             .removeClass('editable-field-minor')
                             .css('background-color', 'transparent');
@@ -1987,7 +2081,7 @@
                         console.log("✅ Datos del menor:", minorData);
 
                         // Verificar que los atributos obligatorios están presentes
-                        const requiredFields = ['id', 'identity_document', 'given_name', 'paternal_last_name', 'birth_date', 'sex_type', 'condition', 'kinship'];
+                        const requiredFields = ['id', 'identity_document', 'given_name', 'paternal_last_name', 'birth_date', 'sex_type', 'condition', 'kinship', 'has_sisfoh'];
                         const missingFields = requiredFields.filter(field => minorData[field] === undefined || minorData[field] === null || minorData[field] === '');
                         
                         if (missingFields.length > 0) {
@@ -2010,13 +2104,15 @@
                             registration_date: new Date().toISOString().split('T')[0], // Fecha actual
                             condition: minorData.condition,
                             kinship: minorData.kinship,
+                            has_sisfoh: Boolean(minorData.has_sisfoh),
                             // Campos opcionales
                             address: minorData.address || '',
                             dwelling_type: minorData.dwelling_type ?? null,
                             education_level: minorData.education_level ?? null,
                             disability: minorData.disability !== undefined ? Boolean(minorData.disability) : null,
                             status: true, // Siempre activo por defecto
-                            vl_family_member_id: selectedOption.val()
+                            vl_family_member_id: selectedOption.val(),
+                            sisfoh_classification: minorData.sisfoh_classification ?? null,
                         });
 
                         selectedOption.attr('data-minors', JSON.stringify(currentMinors));
@@ -2049,6 +2145,12 @@
                 $('.invalid-feedback').remove();
                 $('.is-invalid').removeClass('is-invalid');
                 
+                // 2. Limpiar clases activas de TODOS los grupos de botones
+    $(this).find('.btn-group .btn').each(function() {
+        $(this).removeClass('active'); // Elimina la clase visual
+        $(this).find('input[type="radio"]').prop('checked', false); // Asegura deselección
+    });
+
                 // Eliminar backdrop residual
                 $('.modal-backdrop').remove();
                 $('body').removeClass('modal-open').css('padding-right', '');

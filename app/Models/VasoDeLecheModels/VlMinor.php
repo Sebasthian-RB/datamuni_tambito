@@ -41,8 +41,10 @@ class VlMinor extends Model
         'address', // Domicilio del menor
         'dwelling_type',  // (Tipo) Vivienda del menor
         'education_level',  // Grado de Instrucción del menor
-        'condition', // Condición del menor (GEST. | LACT. | ANC.)
+        'condition', // Condición del menor 
         'disability',// Discapacidad del menor
+        'has_sisfoh', // Si tiene o no clasificación SISFOH
+        'sisfoh_classification', // Clasificación SISFOH
         'status',// Estado (activo o inactivo) del menor
         'vl_family_member_id', // Id del familiar
         'kinship', //Parentesco con familiar
@@ -68,6 +70,8 @@ class VlMinor extends Model
         'education_level' => 'string',
         'condition' => 'string',
         'disability' => 'boolean',
+        'has_sisfoh' => 'boolean', 
+        'sisfoh_classification' => 'string',
         'status' => 'boolean',
         'vl_family_member_id' => 'string',
         'kinship' => 'string',

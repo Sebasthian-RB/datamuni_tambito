@@ -34,8 +34,11 @@ class StoreVlMinorRequest extends FormRequest
 
         // Definir el tamaño máximo de id utilizando el operador match
         $this->maxIdLength = match ($identityDocument) {
-            'DNI' => 8,
-            'CNV' => 12,
+            'DNI' => 8, 
+            'CNV' => 8, 
+            'Carnet de Extranjería' => 9, 
+            'Pasaporte' => 20, 
+            'Otro' => 20, 
             default => 8, 
         };
 
@@ -43,10 +46,12 @@ class StoreVlMinorRequest extends FormRequest
             'id' => [
                 'required',
                 'string',
-                'min:' . $this->maxIdLength, 
-                'max:' . $this->maxIdLength, // Aplica la longitud dinámica para el id
-                'unique:vl_minors,id', //El id debe ser único
-                'regex:/^\d+$/', // El id debe ser un número entero
+                // Solo se aplica min y max para "DNI", "CNV", "Carnet de Extranjería" y "Pasaporte", no para "Otro"
+                $identityDocument == 'Otro' ? 'max:' . $this->maxIdLength : 'min:' . $this->maxIdLength, 
+                'max:' . ($identityDocument == 'Otro' ? 20 : $this->maxIdLength), // Para 'Otro' solo max, y para otros documentos min/max igual
+                'unique:vl_minors,id',  // El id debe ser único
+                // Ajustar el regex según el tipo de documento
+                'regex:/^' . ($identityDocument == 'Pasaporte' || $identityDocument == 'Otro' ? '[A-Za-z0-9]+' : '\d+') . '$/',  // Alfanumérico para Pasaporte y Otro, numérico solo para otros documentos
             ],
             'identity_document' => [
                 'required',
@@ -124,6 +129,16 @@ class StoreVlMinorRequest extends FormRequest
                 'required',
                 'boolean',
             ],
+            'has_sisfoh' => [
+                'required',
+                'boolean',
+            ],
+            'sisfoh_classification' => [
+                'nullable',
+                'string',
+                'max:50',
+                'regex:/^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9\s]+$/'
+            ],
             'vl_family_member_id' => [
                 'required',
                 'string',
@@ -133,7 +148,8 @@ class StoreVlMinorRequest extends FormRequest
                 'required',
                 'string',
                 'max:100',
-                'in:Hijo(a),Nieto(a),Sobrino(a),Hermano(a),Primo(a),Socio(a),Otro Familiar',            ],
+                'in:Hijo(a),Nieto(a),Sobrino(a),Hermano(a),Primo(a),Socio(a),Otro Familiar',
+            ],
         ];
     }
 
@@ -144,13 +160,20 @@ class StoreVlMinorRequest extends FormRequest
      */
     public function messages(): array
     {
+        $identityDocument = $this->input('identity_document'); 
+
         return [
             'id.required' => 'El campo ID es obligatorio.',
             'id.string' => 'El ID debe ser una cadena de texto.',
             'id.min' => 'El ID debe tener al menos ' . $this->maxIdLength . ' caracteres.',
             'id.max' => "El ID no debe exceder los {$this->maxIdLength} caracteres.",
             'id.unique' => 'El ID ya está registrado en el sistema.',
-            'id.regex' => 'El ID debe ser un número entero.',
+            'id.regex' => match ($identityDocument) {
+                'Pasaporte' => 'El ID debe ser alfanumérico.',
+                'Otro' => 'El ID debe ser alfanumérico.',
+                default => 'El ID debe ser un número entero.',
+            },
+
     
             'identity_document.required' => 'El documento de identidad es obligatorio.',
             'identity_document.string' => 'El documento de identidad debe ser una cadena de texto.',
@@ -207,6 +230,13 @@ class StoreVlMinorRequest extends FormRequest
             'status.required' => 'El estado es obligatorio.',
             'status.boolean' => 'El estado debe ser un valor booleano (verdadero o falso).',
     
+            'has_sisfoh.required' => 'El campo "¿Tiene SISFOH?" es obligatorio.',
+            'has_sisfoh.boolean' => 'El campo "¿Tiene SISFOH?" debe ser verdadero o falso.',
+
+            'sisfoh_classification.string' => 'La clasificación SISFOH debe ser un texto.',
+            'sisfoh_classification.max' => 'La clasificación SISFOH no debe exceder los 20 caracteres.',
+            'sisfoh_classification.regex' => 'La clasificación SISFOH solo puede contener letras (incluyendo ñ y acentos), números y espacios.',
+
             'vl_family_member_id.required' => 'El miembro de familia relacionado es obligatorio.',
             'vl_family_member_id.string' => 'El ID del miembro de familia debe ser una cadena de texto.',
             'vl_family_member_id.exists' => 'El miembro de familia seleccionado no existe en el sistema.',
@@ -241,6 +271,8 @@ class StoreVlMinorRequest extends FormRequest
             'condition' => 'condición',
             'disability' => 'discapacidad',
             'status' => 'estado',
+            'has_sisfoh' => 'estado SISFOH?',
+            'sisfoh_classification' => 'clasificación SISFOH',
             'vl_family_member_id' => 'miembro de familia relacionado',
             'kinship' => 'parentesco',
         ];

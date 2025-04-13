@@ -95,7 +95,13 @@
         <!-- Card Body -->
         <div class="card-body">
             <p><span class="detail-label">Comité:</span> <span class="detail-value">{{ $committeeVlFamilyMember->committee->name }}</span></p>
-            <p><span class="detail-label">Miembro de Familia:</span> <span class="detail-value">{{ $committeeVlFamilyMember->vlFamilyMember->name }}</span></p>
+            <p>
+                <span class="detail-label">Miembro de Familia:</span> 
+                <span class="detail-value">
+                    {{ $committeeVlFamilyMember->vlFamilyMember->paternal_last_name }}
+                    {{ $committeeVlFamilyMember->vlFamilyMember->maternal_last_name ?? '' }}
+                    {{ $committeeVlFamilyMember->vlFamilyMember->given_name }}
+                </span>            </p>
             <p><span class="detail-label">Fecha de Cambio:</span> <span class="detail-value">{{ $committeeVlFamilyMember->change_date }}</span></p>
             <p><span class="detail-label">Descripción:</span> 
                 @if ($committeeVlFamilyMember->description)
