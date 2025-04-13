@@ -76,9 +76,8 @@
                                 {{ $committee->president ?? 'No disponible' }}</p>
                         </div>
                     </div>
-
                     
-                    <!-- Columna 4: Sector -->
+                    <!-- Columna 3: Sector -->
                     <div class="col-md-3 mb-3">
                         <div class="info-card"
                             style="background-color: #f8f9fa; border-radius: 10px; padding: 15px; height: 100%; box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);">
@@ -92,6 +91,27 @@
                                 {{ $committee->sector->name ?? 'No disponible' }}</p>
                         </div>
                     </div>
+
+                    <!-- Columna 4: Exportar -->
+                    <div class="col-md-3 mb-3">
+                        <div class="info-card"
+                            style="background-color: #f8f9fa; border-radius: 10px; padding: 15px; height: 100%; box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-download"
+                                    style="font-size: 1.2rem; color: #8E6AB8; margin-right: 8px;"></i>
+                                <label class="font-weight-semibold"
+                                    style="color: #2c2c2c; font-size: 1rem; margin-bottom: 0;">Exportar</label>
+                            </div>
+                            <!-- Botón para exportar Excel -->
+                            <div class="d-flex align-items-center justify-content-center mb-3">
+                                <a href="{{ route('export.hoja-distribucion', $committee->id) }}" class="btn btn-success">Descargar Excel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Nota informativa -->
+                <div class="alert alert-info p-2 mb-0" style="font-size: 0.8rem; border-radius: 5px;">
+                    <i class="fas fa-info-circle mr-1"></i> El documento exportado incluye solo familiares y menores activos en el comité.
                 </div>
             </div>
         </section>

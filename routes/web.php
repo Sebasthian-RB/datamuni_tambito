@@ -14,7 +14,8 @@ use App\Http\Controllers\VasoDeLecheControllers\VlMinorController;
 
 use App\Http\Controllers\VasoDeLecheControllers\VasoDeLecheController;
 use App\Http\Controllers\VasoDeLecheControllers\VasoDeLecheDashboardController;
-
+use App\Http\Controllers\VasoDeLecheControllers\HojaDistribucionExportController;
+use App\Http\Controllers\VasoDeLecheControllers\VasoDeLecheExportController;
 
 //Controladores deL Área: ÁREA DE LA MUJER
 use App\Http\Controllers\AreaDeLaMujerControllers\AmPersonController;
@@ -65,7 +66,7 @@ use App\Http\Controllers\OmapedControllers\OmDwellingController;
 use App\Http\Controllers\OmapedControllers\OmPersonController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\VasoDeLecheControllers\VasoDeLecheExportController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -139,6 +140,9 @@ Route::middleware([
 
         //Exportar Padron de Beneficiarios
         Route::get('/export-vaso-de-leche/{committeeId}', [VasoDeLecheExportController::class, 'export'])->name('export.vaso-de-leche');
+
+        //Exportar Hoja de Distribción de Productos
+        Route::get('/export-hoja-distribucion/{committeeId}', [HojaDistribucionExportController::class, 'export'])->name('export.hoja-distribucion');
     });
 
 

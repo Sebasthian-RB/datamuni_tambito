@@ -106,6 +106,10 @@
                         </div>
                     </div>
                 </div>
+                <!-- Nota informativa -->
+                <div class="alert alert-info p-2 mb-0" style="font-size: 0.8rem; border-radius: 5px;">
+                    <i class="fas fa-info-circle mr-1"></i> El documento exportado incluye solo familiares y menores activos en el comité.
+                </div>
             </div>
         </section>
 
