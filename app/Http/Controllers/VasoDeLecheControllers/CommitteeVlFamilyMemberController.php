@@ -33,9 +33,23 @@ class CommitteeVlFamilyMemberController extends Controller
             ->with(['vlFamilyMember.vlMinors'])
             ->get();
 
-        return view('areas.VasoDeLecheViews.CommitteeVlFamilyMembers.index', compact('committee', 'committeeVlFamilyMembers'));
-    }
+        // Separar en activos e inactivos
+        $activeCommitteeVlFamilyMembers = $committeeVlFamilyMembers->where('status', 1);
+        $inactiveCommitteeVlFamilyMembers = $committeeVlFamilyMembers->where('status', 0);
 
+        // Contar los registros
+        $activeCount = $activeCommitteeVlFamilyMembers->count();
+        $inactiveCount = $inactiveCommitteeVlFamilyMembers->count();
+
+        return view('areas.VasoDeLecheViews.CommitteeVlFamilyMembers.index', compact(
+            'committee',
+            'committeeVlFamilyMembers',
+            'activeCommitteeVlFamilyMembers',
+            'inactiveCommitteeVlFamilyMembers',
+            'activeCount',
+            'inactiveCount'
+        ));
+    }
 
     /**
      * Muestra el formulario para crear un nuevo miembro familiar en un comité.

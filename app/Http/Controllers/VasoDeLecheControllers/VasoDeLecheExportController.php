@@ -20,8 +20,13 @@ class VasoDeLecheExportController extends Controller
         // Establecer el locale en español para Carbon
         Carbon::setLocale('es');
 
-        // Obtener el comité con sus miembros y menores
-        $committee = Committee::with('vlFamilyMembers.vlMinors')->findOrFail($committeeId);
+        // Obtener el comité con sus miembros ACTIVOS y menores ACTIVOS
+        $committee = Committee::with(['vlFamilyMembers' => function($query) {
+            $query->where('status', 1)
+                ->with(['vlMinors' => function($query) {
+                    $query->where('status', 1); // Solo menores con status = 1
+                }]);
+        }])->findOrFail($committeeId);
 
         // Formatear la fecha en español y convertir a mayúsculas
         $mesEnEspanol = strtoupper(now()->translatedFormat('F Y')); 
@@ -220,7 +225,8 @@ class VasoDeLecheExportController extends Controller
             } else {
                 // ===================== CON MENORES =====================
                 $firstRow = $row; // Guardar la primera fila del familiar
-                
+                $firstMinor = true; // Bandera para identificar el primer menor
+
                 foreach ($minors as $minor) {
                     // Formatear datos del menor
                     $minorPaternal = strtoupper(trim($minor->paternal_last_name ?? ''));
@@ -251,16 +257,27 @@ class VasoDeLecheExportController extends Controller
                     $dwelling = strtoupper($minor->dwelling_type ?? '');
                     $address = strtoupper($minor->address ?? '');
                     
-                    // Insertar datos                    
-                    $sheet->setCellValue('B' . $row, $fullName);
-                    $docPrefixFamilyMember = match($familyMember->identity_document) {
-                        'DNI' => 'DNI N° ',
-                        'Carnet de Extranjería' => 'Car. Extr. N° ',
-                        'Pasaporte' => 'Pas. N° ',
-                        'Otro' => 'Doc. N° ',
-                        default => 'Doc. N° '
-                    };
-                    $sheet->setCellValue('b' . ($row + 1), $docPrefixFamilyMember . $familyDocNumber);
+                    // Insertar datos  
+                    $sheet->mergeCells('A' . $row . ':A' . ($row + 1));
+
+                    // Solo poner datos en la columna B para el primer menor
+                    if ($firstMinor) {
+                        $sheet->setCellValue('B' . $row, $fullName);
+                        $docPrefixFamilyMember = match($familyMember->identity_document) {
+                            'DNI' => 'DNI N° ',
+                            'Carnet de Extranjería' => 'Car. Extr. N° ',
+                            'Pasaporte' => 'Pas. N° ',
+                            'Otro' => 'Doc. N° ',
+                            default => 'Doc. N° '
+                        };
+                        $sheet->setCellValue('B' . ($row + 1), $docPrefixFamilyMember . $familyDocNumber);
+                        $firstMinor = false;
+                    } else {
+                        // Para los menores subsiguientes, dejar vacío
+                        $sheet->setCellValue('B' . $row, '');
+                        $sheet->setCellValue('B' . ($row + 1), '');
+                        $sheet->mergeCells('B' . $row . ':B' . ($row + 1));
+                    }
 
                     $sheet->setCellValue('C' . $row, $minorFullName);
                     $docPrefixMinor = match($minor->identity_document) {
