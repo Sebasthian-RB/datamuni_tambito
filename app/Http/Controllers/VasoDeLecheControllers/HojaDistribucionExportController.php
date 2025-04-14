@@ -60,7 +60,7 @@ class HojaDistribucionExportController extends Controller
         $sheet->getStyle('A5:D5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
         $sheet->getStyle('A5:D5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT); // Centrado horizontal
 
-        $sheet->setCellValue('E5', 'NÚMERO DE COMITÉ           : ' . $committee->id);
+        $sheet->setCellValue('E5', 'NÚMERO DE COMITÉ           : ' . $committee->committee_number);
         $sheet->mergeCells('E5:G5');
         $sheet->getStyle('E5')->getFont()->setSize(9);
         $sheet->getStyle('E5:G5')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);

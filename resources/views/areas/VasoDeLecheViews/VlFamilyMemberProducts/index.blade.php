@@ -141,12 +141,16 @@
                                         {{ $asignacion->vlFamilyMember->given_name }}
                                     </td>
                                     <td>
-                                        @if($asignacion->vlFamilyMember->identity_document == 'DNI')
-                                            DNI: 
+                                        @if ($asignacion->vlFamilyMember->identity_document == 'DNI')
+                                            DNI N°
+                                        @elseif($asignacion->vlFamilyMember->identity_document == 'Carnet de Extranjería')
+                                            Car. Extr. N°
                                         @elseif($asignacion->vlFamilyMember->identity_document == 'Pasaporte')
-                                            PAS: 
-                                        @elseif($asignacion->vlFamilyMember->identity_document == 'Cédula')
-                                            CED: 
+                                            Pas. N°
+                                        @elseif($asignacion->vlFamilyMember->identity_document == 'Otro')
+                                            Doc. N°
+                                        @else
+                                            Error:
                                         @endif
                                         {{ $asignacion->vlFamilyMember->id }}
                                     </td>

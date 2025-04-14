@@ -94,7 +94,7 @@
 
         <!-- Card Body -->
         <div class="card-body">
-            <p><span class="detail-label">ID:</span> <span class="detail-value">{{ $committee->id }}</span></p>
+            <p><span class="detail-label">Número de Comité:</span> <span class="detail-value">{{ $committee->committee_number }}</span></p>
             <p><span class="detail-label">Nombre del Comité:</span> <span class="detail-value">{{ $committee->name }}</span></p>
             <p><span class="detail-label">Presidente(a):</span> <span class="detail-value">{{ $committee->president }}</span></p>
             <p><span class="detail-label">Núcleo Urbano:</span> <span class="detail-value">{{ $committee->urban_core }}</span></p>

@@ -471,6 +471,7 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
+                                <th>Número de Comité</th>
                                 <th>Nombre</th>
                                 <th>Sector</th>
                                 <th>Presidente(a)</th>
@@ -481,6 +482,7 @@
                             @foreach ($committees as $committee)
                                 <tr>
                                     <td>{{ $committee->id }}</td>
+                                    <td>{{ $committee->committee_number }}</td>
                                     <td>{{ $committee->name }}</td>
                                     <td>{{ $committee->sector->name }}</td>
                                     <td>{{ $committee->president }}</td>
