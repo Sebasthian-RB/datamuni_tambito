@@ -497,7 +497,17 @@ class VasoDeLecheExportController extends Controller
 
         // Crear un escritor y guardar el archivo Excel
         $writer = new Xlsx($spreadsheet);
-        $fileName = 'vaso_de_leche_padrón.xlsx';
+        
+        // Formatear el nombre del comité para el nombre del archivo
+        $nombreComite = strtolower(str_replace(' ', '-', $committee->name));
+        $nombreComite = preg_replace('/[^a-z0-9\-]/', '', $nombreComite); // Eliminar caracteres especiales
+        
+        // Formatear la fecha de descarga
+        $fechaDescarga = now()->format('d-m-Y');
+        
+        // Crear el nombre del archivo
+        $fileName = "padron-beneficiarios-{$nombreComite}-{$fechaDescarga}.xlsx";
+
 
         // Forzar la descarga del archivo
         return response()->stream(function () use ($writer) {
