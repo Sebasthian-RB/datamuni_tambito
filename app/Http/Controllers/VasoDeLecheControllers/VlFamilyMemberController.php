@@ -48,6 +48,7 @@ class VlFamilyMemberController extends Controller
         $identityDocumentTypes = [
             'DNI' => 'DNI',
             'Carnet de Extranjería' => 'Carnet de Extranjería',
+            'Pasaporte' => 'Pasaporte',
             'Otro' => 'Otro',
         ];
 
@@ -108,6 +109,7 @@ class VlFamilyMemberController extends Controller
         $identityDocumentTypes = [
             'DNI' => 'DNI',
             'Carnet de Extranjería' => 'Carnet de Extranjería',
+            'Pasaporte' => 'Pasaporte',
             'Otro' => 'Otro',
         ];
 

@@ -7,6 +7,8 @@
 
 @section('css')
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
+
     <style>
         :root {
             --color-primary: #3B1E54;

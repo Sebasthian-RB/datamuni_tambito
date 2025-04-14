@@ -6,6 +6,8 @@
 @stop
 
 @section('css')
+    <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
+
     <!-- Estilos personalizados -->
     <style>
         /* Colores de la paleta */
@@ -211,12 +213,12 @@
                                     <!-- Columna para Número de comité (más pequeño) -->
                                     <div class="col-md-4">
                                         <div class="form-group mb-4">
-                                            <label for="id" class="font-weight-bold">
+                                            <label for="committee_number" class="font-weight-bold">
                                                 <i class="fas fa-hashtag mr-2"></i>Número de comité
                                             </label>
                                             <span class="text-danger">*</span>
-                                            <input type="text" class="form-control @error('id') is-invalid @enderror" id="id" name="id" value="{{ old('id', $committee->id) }}" placeholder="Ej: 1234" required>
-                                            @error('id')
+                                            <input type="text" class="form-control @error('committee_number') is-invalid @enderror" id="committee_number" name="committee_number" value="{{ old('committee_number', $committee->committee_number) }}" placeholder="Ej: 1234" required>
+                                            @error('committee_number')
                                                 <span class="invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>

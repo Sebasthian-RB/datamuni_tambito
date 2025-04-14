@@ -8,6 +8,8 @@
 @endpush
 
 @section('css')
+    <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
+
     <style>
         /* Contenedor principal */
         .header-container {
@@ -340,7 +342,7 @@
                             {{ $committee->name }}
                         </h3>
                         <p style="font-size: 0.8rem; font-weight: 300; color: white; margin-top: 2px; margin-bottom: 0;">
-                            Comité N° {{ $committee->id }}
+                            Comité N° {{ $committee->committee_number }}
                         </p>
                     </div>
 

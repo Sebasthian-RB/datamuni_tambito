@@ -8,7 +8,9 @@ use App\Models\VasoDeLecheModels\Committee;
 use App\Models\VasoDeLecheModels\Product;
 use App\Models\VasoDeLecheModels\Sector;
 use App\Models\VasoDeLecheModels\VlFamilyMember;
+use App\Models\VasoDeLecheModels\CommitteeVLFamilyMember;
 use App\Models\VasoDeLecheModels\VlMinor;
+
 
 class VasoDeLecheController extends Controller
 {
@@ -75,11 +77,32 @@ class VasoDeLecheController extends Controller
 
         // Agregar la cantidad de menores de edad a cada comité
         foreach ($committees as $committee) {
-            $committee->minors_count = $committee->vlFamilyMembers->sum(function ($familyMember) {
-                return $familyMember->vlMinors->count();
-            });
+            // Acceder al ID del comité
+            $committeeId = $committee->id;
+        
+            // Sumar los menores de edad con status = 1 y los familiares asociados con status = 1
+            $committee->minors_count = 0; // Inicializamos el contador en 0
+        
+            // Obtener los familiares activos (status 1) asociados a este comité
+            $activeFamilyMembers = CommitteeVlFamilyMember::where('committee_id', $committeeId)
+                ->where('status', 1)
+                ->get();
+        
+            // Para cada miembro de la familia activo
+            foreach ($activeFamilyMembers as $familyMemberAssociation) {
+                // Acceder al ID del miembro de la familia
+                $familyMemberId = $familyMemberAssociation->vl_family_member_id;
+        
+                // Obtener los menores de edad asociados a este miembro de la familia, con status 1
+                $minorsCountForFamilyMember = VlMinor::where('vl_family_member_id', $familyMemberId)
+                    ->where('status', 1)  // Solo contar los menores con status 1
+                    ->count();
+        
+                // Sumar los menores encontrados para este miembro de la familia
+                $committee->minors_count += $minorsCountForFamilyMember;
+            }
         }
-
+        
         // Obtener todos los sectores disponibles para el filtro
         $sectors = Sector::all();
 

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('committee_vl_family_members', function (Blueprint $table) {
             $table->id();                                   // Clave primaria
-            $table->string('committee_id');     // Clave foránea hacia 'committees'
+            $table->unsignedBigInteger('committee_id');     // Clave foránea hacia 'committees'
             $table->string('vl_family_member_id');          // Clave foránea hacia 'vaso_leche_family_members'
             $table->date('change_date');                    // Fecha de cambio
             $table->string('description')->nullable(); // Descripción, puede ser nula

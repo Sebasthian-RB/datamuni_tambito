@@ -29,7 +29,7 @@ class Committee extends Model
      * @var array
      */
     protected $fillable = [
-        'id',                           // ID personalizado de comité 
+        'committee_number',             // Número de comité 
         'name',                         // Nombre del comité
         'president',                    // Nombre completo de presidente(a)
         'urban_core',                   // Núcleo urbano
@@ -42,7 +42,7 @@ class Committee extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'string',
+        'committee_number' => 'string',
         'name' => 'string',
         'president' => 'string',
         'urban_core' => 'string',
