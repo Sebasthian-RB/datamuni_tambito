@@ -102,4 +102,8 @@ class OmPerson extends Model
     {
         return Carbon::parse($this->birth_date)->age;
     }
+    public function getFullNameAttribute()
+{
+    return $this->given_name . ' ' . $this->paternal_last_name . ' ' . $this->maternal_last_name;
+}
 }

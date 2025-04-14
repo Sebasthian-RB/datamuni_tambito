@@ -27,7 +27,6 @@ use App\Http\Controllers\AreaDeLaMujerControllers\ProgramController;
 use App\Http\Controllers\AreaDeLaMujerControllers\ViolenceController;
 
 use App\Http\Controllers\AreaDeLaMujerControllers\AmDashboardController; //dashboard de AM
-
 // Controladores del Área: Sisfoh
 
 use App\Http\Controllers\SisfohControllers\EnumeratorController;
@@ -55,14 +54,17 @@ use App\Http\Controllers\CiamControllers\SocialProgramController;
 
 use App\Http\Controllers\CiamControllers\CiamHomeController; //dashboard de CIAM
 use App\Http\Controllers\CiamControllers\CiamDashboardController; //dashboard de CIAM
-
-
+use App\Http\Controllers\OmapedControllers\AttendanceRecordController;
 //Controladores deL Área: OMAPED
 use App\Http\Controllers\OmapedControllers\CaregiverController;
 use App\Http\Controllers\OmapedControllers\DisabilityController;
 use App\Http\Controllers\OmapedControllers\OmDashboardController; //Dashboard de OMAPED
 use App\Http\Controllers\OmapedControllers\OmDwellingController;
 use App\Http\Controllers\OmapedControllers\OmPersonController;
+use App\Http\Controllers\OmapedControllers\PsychologicalConsultationController;
+use App\Http\Controllers\OmapedControllers\PsychologicalDiagnosisController;
+use App\Http\Controllers\OmapedControllers\PsychologicalSessionController;
+//Roles y permisos
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 
@@ -103,7 +105,7 @@ Route::middleware([
         Route::resource('am_person_events', AmPersonEventController::class);
         Route::get('/am_dashboard', [AmDashboardController::class, 'index'])->name('amdashboard');
     });
-    
+
     // Rutas de los controladores de Vaso de Leche dentro del grupo de autenticación    
     // 🔥 Vaso de Leche
     Route::middleware('role:Vaso de Leche|Administrador')->group(function () {
@@ -111,10 +113,10 @@ Route::middleware([
         Route::resource('products', ProductController::class);
         Route::resource('sectors', SectorController::class);
         Route::resource('vl_family_members', VlFamilyMemberController::class);
-        
+
         Route::resource('vl_minors', VlMinorController::class);
         Route::get('/vaso-de-leche', [VasoDeLecheController::class, 'index'])->name('vaso-de-leche.index');
-        
+
         //Rutas de "committee_vl_family_members" (Padrón de Beneficiarios)
         Route::get('padron-de-beneficiarios/{committee_id}', [CommitteeVlFamilyMemberController::class, 'index'])->name('committee_vl_family_members.index');
         Route::get('committee_vl_family_members/create/{committee_id}', [CommitteeVlFamilyMemberController::class, 'create'])->name('committee_vl_family_members.create'); // Formulario de creación
@@ -123,7 +125,7 @@ Route::middleware([
         Route::get('committee_vl_family_members/{committee_vl_family_member}/edit', [CommitteeVlFamilyMemberController::class, 'edit'])->name('committee_vl_family_members.edit'); // Formulario de edición
         Route::put('committee_vl_family_members/{committee_vl_family_member}', [CommitteeVlFamilyMemberController::class, 'update'])->name('committee_vl_family_members.update'); // Actualizar un miembro
         Route::delete('committee_vl_family_members/{committee_vl_family_member}', [CommitteeVlFamilyMemberController::class, 'destroy'])->name('committee_vl_family_members.destroy'); // Eliminar un miembro
-    
+
         //Rutas de "vl_family_members_products" (Hoja de Distribución de Productos)
         Route::get('vl_family_member_products/{committee_id}', [VlFamilyMemberProductController::class, 'index'])->name('vl_family_member_products.index'); // Mostrar lista de productos
         Route::get('vl_family_members_products/create/{committee_id}', [VlFamilyMemberProductController::class, 'create'])->name('vl_family_member_products.create'); // Formulario de creación
@@ -152,7 +154,7 @@ Route::middleware([
         Route::get('/sisfoh_home', [SfhHomeController::class, 'index'])->name('sisfohHome');
         Route::get('/sisfoh_dashboard', [SfhDashboardController::class, 'index'])->name('sfhdashboard');
     });
-    
+
     // Rutas de los controladores de Ciam dentro del grupo de autenticación    
     // 🔥 CIAM
     Route::middleware('role:CIAM|Administrador')->group(function () {
@@ -169,7 +171,8 @@ Route::middleware([
         Route::resource('om-dwellings', OmDwellingController::class);
         Route::resource('disabilities', DisabilityController::class);
         Route::resource('om-people', OmPersonController::class);
+        Route::resource('psychological-diagnoses', PsychologicalDiagnosisController::class);
+        Route::resource('psychological-sessions', PsychologicalSessionController::class);
         Route::get('/om_dashboard', [OmDashboardController::class, 'index'])->name('omdashboard');
     });
-    
 });
