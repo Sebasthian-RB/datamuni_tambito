@@ -24,35 +24,34 @@ class StoreGuardianRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'document_type' => [
-                'required',
-                'string',
-                Rule::in(['DNI', 'Pasaporte', 'Carnet', 'Cedula']), // Solo valores permitidos
-            ],
+            'document_type' => 'required|in:DNI,Pasaporte,Carnet,Cedula',
             'id' => [
                 'required',
                 'string',
-                Rule::unique('guardians', 'id'), // Garantiza unicidad
+                Rule::unique('guardians', 'id'),
                 function ($attribute, $value, $fail) {
                     $documentType = $this->input('document_type');
-
-                    if ($documentType === 'DNI' && !preg_match('/^\d{8}$/', $value)) {
-                        return $fail('El DNI debe tener exactamente 8 dígitos numéricos.');
-                    }
-
-                    if ($documentType === 'Pasaporte' && !preg_match('/^[a-zA-Z0-9]{1,20}$/', $value)) {
-                        return $fail('El Pasaporte debe tener máximo 20 caracteres alfanuméricos.');
-                    }
-
-                    if ($documentType === 'Carnet' && !preg_match('/^[a-zA-Z0-9]{1,20}$/', $value)) {
-                        return $fail('El Carnet debe tener máximo 20 caracteres alfanuméricos.');
-                    }
-
-                    if ($documentType === 'Cedula' && !preg_match('/^\d{10}$/', $value)) {
-                        return $fail('La Cédula debe tener exactamente 10 dígitos numéricos.');
+                    
+                    if ($documentType === 'DNI') {
+                        if (!preg_match('/^\d{8}$/', $value)) {
+                            $fail('El DNI debe tener exactamente 8 dígitos numéricos.');
+                        }
+                    } elseif ($documentType === 'Pasaporte') {
+                        if (!preg_match('/^[A-Za-z0-9]{9}$/', $value)) {
+                            $fail('El Pasaporte debe tener 9 caracteres alfanuméricos.');
+                        }
+                    } elseif ($documentType === 'Carnet') {
+                        if (!preg_match('/^\d{12}$/', $value)) {
+                            $fail('El Carnet debe tener 12 dígitos numéricos.');
+                        }
+                    } elseif ($documentType === 'Cedula') {
+                        if (!preg_match('/^\d{10}$/', $value)) {
+                            $fail('La Cédula debe tener 10 dígitos numéricos.');
+                        }
                     }
                 },
             ],
+            
             'given_name' => 'required|string|max:50',
             'paternal_last_name' => 'required|string|max:50',
             'maternal_last_name' => 'nullable|string|max:50',

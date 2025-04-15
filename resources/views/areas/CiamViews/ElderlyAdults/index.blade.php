@@ -153,6 +153,8 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
 <!-- Incluir DataTables CSS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+<!-- Incluir DataTables Buttons CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
 
 <style>
     /* Colores de la paleta CIAM */
@@ -351,6 +353,36 @@
         /* Duración de 0.5 segundos */
     }
 </style>
+
+<style>
+    /* Estilos para los botones de exportación */
+    .btn-export {
+        margin-left: 10px;
+    }
+    
+    .dropdown-menu {
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .dropdown-item {
+        padding: 8px 15px;
+        transition: all 0.3s ease;
+    }
+    
+    .dropdown-item:hover {
+        background-color: #f8f9fa;
+    }
+    
+    /* Ajustar el espaciado de los botones en móviles */
+    @media (max-width: 768px) {
+        .btn-group {
+            margin-bottom: 10px;
+        }
+    }
+    
+    /* Resto de tus estilos existentes... */
+</style>
 @stop
 
 @section('js')
@@ -358,6 +390,13 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+
 <script>
     $(document).ready(function() {
         $('#elderlyAdultsTable').DataTable({
@@ -366,20 +405,51 @@
             },
             responsive: true,
             autoWidth: false,
+            dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'Bf>>" +
+                 "<'row'<'col-sm-12'tr>>" +
+                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+            buttons: [
+                {
+                    extend: 'excel',
+                    text: '<i class="fas fa-file-excel"></i> Exportar a Excel',
+                    className: 'btn btn-success btn-sm',
+                    exportOptions: {
+                        columns: ':not(:last-child)', // Excluye la columna de acciones
+                        modifier: {
+                            page: 'all' // Exportar todas las páginas
+                        }
+                    },
+                    title: 'Listado de Adultos Mayores',
+                    filename: 'adultos_mayores_' + new Date().toISOString().slice(0, 10)
+                },
+                {
+                    extend: 'pdf',
+                    text: '<i class="fas fa-file-pdf"></i> Exportar a PDF',
+                    className: 'btn btn-danger btn-sm',
+                    exportOptions: {
+                        columns: ':not(:last-child)', // Excluye la columna de acciones
+                        modifier: {
+                            page: 'all' // Exportar todas las páginas
+                        }
+                    },
+                    title: 'Listado de Adultos Mayores',
+                    filename: 'adultos_mayores_' + new Date().toISOString().slice(0, 10),
+                    customize: function(doc) {
+                        doc.defaultStyle.fontSize = 10;
+                        doc.styles.tableHeader.fontSize = 11;
+                        doc.content[1].table.widths = 
+                            Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+                    }
+                }
+            ]
         });
     });
-</script>
 
-<!-- Script para hacer que los mensajes desaparezcan automáticamente -->
-<script>
-    // Desvanecer y eliminar los mensajes después de 5 segundos (5000 ms)
+    // Script para hacer que los mensajes desaparezcan automáticamente
     setTimeout(function() {
         const alerts = document.querySelectorAll('.auto-dismiss');
         alerts.forEach(alert => {
-            // Agregar la clase de desvanecimiento
             alert.classList.add('fade-out');
-
-            // Eliminar el mensaje del DOM después de que termine la animación
             alert.addEventListener('animationend', () => {
                 alert.remove();
             });
