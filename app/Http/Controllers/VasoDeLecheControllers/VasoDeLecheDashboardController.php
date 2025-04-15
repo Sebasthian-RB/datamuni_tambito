@@ -137,8 +137,17 @@ class VasoDeLecheDashboardController extends Controller
 
     private function getCommitteeStats($committeeId)
     {
-        $committee = Committee::with(['sector', 'vlFamilyMembers.vlMinors'])->find($committeeId);
-
+        // Cargar el comité con los familiares activos y sus menores activos
+        $committee = Committee::with([
+            'sector', 
+            'vlFamilyMembers' => function ($query) {
+                $query->where('status', 1) // Solo familiares con status activo
+                    ->with(['vlMinors' => function ($query) {
+                        $query->where('status', 1); // Solo menores con status activo
+                    }]);
+            }
+        ])->find($committeeId);
+        
         $stats = [
             'total_beneficiarios' => $committee->vlFamilyMembers->flatMap->vlMinors->where('status', true)->count(),
             'total_miembros' => $committee->vlFamilyMembers->count(),
