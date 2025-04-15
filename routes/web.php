@@ -65,6 +65,7 @@ use App\Http\Controllers\OmapedControllers\OmPersonController;
 use App\Http\Controllers\OmapedControllers\PsychologicalConsultationController;
 use App\Http\Controllers\OmapedControllers\PsychologicalDiagnosisController;
 use App\Http\Controllers\OmapedControllers\PsychologicalSessionController;
+use App\Http\Controllers\OmapedControllers\PsychologyDashboardController;
 //Roles y permisos
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
@@ -179,8 +180,12 @@ Route::middleware([
         Route::resource('om-dwellings', OmDwellingController::class);
         Route::resource('disabilities', DisabilityController::class);
         Route::resource('om-people', OmPersonController::class);
-        Route::resource('psychological-diagnoses', PsychologicalDiagnosisController::class);
-        Route::resource('psychological-sessions', PsychologicalSessionController::class);
+        Route::middleware(['permission:psicologiaOmaped'])->group(function () {
+            Route::resource('psychological-diagnoses', PsychologicalDiagnosisController::class);
+            Route::resource('psychological-sessions', PsychologicalSessionController::class);
+        });
         Route::get('/om_dashboard', [OmDashboardController::class, 'index'])->name('omdashboard');
+        Route::get('/psy_dashboard', [PsychologyDashboardController::class, 'index'])->name('psydashboard');
+
     });
 });

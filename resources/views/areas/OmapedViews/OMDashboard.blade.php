@@ -50,7 +50,7 @@
                     Certificados de Discapacidad
                 </a>
                 <!-- Nuevo botón agregado -->
-                <a href="{{ route('psychological-diagnoses.index') }}" class="secondary-button">
+                <a href="{{ route('psydashboard') }}" class="secondary-button">
                     <i class="fas fa-brain"></i>
                     Diagnósticos Psicológicos
                 </a>
