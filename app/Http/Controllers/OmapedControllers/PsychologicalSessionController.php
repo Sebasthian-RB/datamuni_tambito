@@ -5,6 +5,7 @@ namespace App\Http\Controllers\OmapedControllers;
 use App\Http\Controllers\Controller;
 use App\Models\OmapedModels\PsychologicalDiagnosis;
 use App\Models\OmapedModels\PsychologicalSession;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PsychologicalSessionController extends Controller
@@ -12,11 +13,39 @@ class PsychologicalSessionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $sessions = PsychologicalSession::all();
-        return view('areas.OmapedViews.psychological_sessions.index', compact('sessions'));
+    
+    public function index(Request $request)
+{
+    $query = PsychologicalSession::with(['diagnosis.person'])
+        ->latest('scheduled_date');
+
+    // Filtro por nombre
+    if ($request->has('search') && !empty($request->search)) {
+        $search = $request->search;
+        $query->whereHas('diagnosis.person', function($q) use ($search) {
+            $q->where('given_name', 'like', "%$search%")
+              ->orWhere('paternal_last_name', 'like', "%$search%")
+              ->orWhere('maternal_last_name', 'like', "%$search%");
+        });
     }
+
+    // Filtro por rango de fechas
+    if ($request->has('date_range') && !empty($request->date_range)) {
+        try {
+            $dates = explode(' - ', $request->date_range);
+            $startDate = Carbon::createFromFormat('d/m/Y', $dates[0])->startOfDay();
+            $endDate = Carbon::createFromFormat('d/m/Y', $dates[1])->endOfDay();
+            
+            $query->whereBetween('scheduled_date', [$startDate, $endDate]);
+        } catch (\Exception $e) {
+            // Manejar error de formato de fecha
+        }
+    }
+
+    $sessions = $query->paginate(15);
+
+    return view('areas.OmapedViews.psychological_sessions.index', compact('sessions'));
+}
 
     /**
      * Show the form for creating a new resource.
@@ -59,6 +88,7 @@ class PsychologicalSessionController extends Controller
     public function edit(PsychologicalSession $psychologicalSession)
     {
         $diagnoses = PsychologicalDiagnosis::all();
+        
         return view('areas.OmapedViews.psychological_sessions.edit', compact('psychologicalSession', 'diagnoses'));
     }
 

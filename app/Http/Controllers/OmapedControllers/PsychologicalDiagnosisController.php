@@ -5,6 +5,7 @@ namespace App\Http\Controllers\OmapedControllers;
 use App\Http\Controllers\Controller;
 use App\Models\OmapedModels\OmPerson;
 use App\Models\OmapedModels\PsychologicalDiagnosis;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PsychologicalDiagnosisController extends Controller
@@ -12,12 +13,39 @@ class PsychologicalDiagnosisController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+
+    public function index(Request $request)
     {
-        $diagnoses = PsychologicalDiagnosis::all();
+        $query = PsychologicalDiagnosis::with('person')
+            ->latest('diagnosis_date');
+
+        // Filtro de búsqueda
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->whereHas('person', function ($q) use ($search) {
+                $q->where('given_name', 'like', "%$search%")
+                    ->orWhere('paternal_last_name', 'like', "%$search%")
+                    ->orWhere('maternal_last_name', 'like', "%$search%");
+            });
+        }
+
+        // Filtro por fecha
+        if ($request->has('date_range')) {
+            try {
+                $dates = explode(' - ', $request->date_range);
+                $start = Carbon::createFromFormat('d/m/Y', $dates[0])->startOfDay();
+                $end = Carbon::createFromFormat('d/m/Y', $dates[1])->endOfDay();
+
+                $query->whereBetween('diagnosis_date', [$start, $end]);
+            } catch (\Exception $e) {
+                // Manejar error de formato de fecha
+            }
+        }
+
+        $diagnoses = $query->paginate(10);
+
         return view('areas.OmapedViews.psychological_diagnoses.index', compact('diagnoses'));
     }
-
     /**
      * Show the form for creating a new resource.
      */
