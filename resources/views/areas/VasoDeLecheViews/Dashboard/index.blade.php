@@ -15,6 +15,7 @@
             --color-secondary: #9B7EBD;
             --color-accent: #D4BEE4;
             --color-background: #EEEEEE;
+            --color-gray: #6c757d; /* Color gris para el botón de Volver */
         }
 
         .card {
@@ -140,11 +141,57 @@
             height: 300px !important;
             width: 100% !important;
         }
+        /* Estilos para los botones principales */
+        .btn-main {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center; /* Centra el contenido */
+            gap: 8px;
+            padding: 12px 24px; /* Aumenté el padding para más espacio */
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            width: 100%; /* Ocupa el 100% del ancho en móviles */
+            margin-top: 10px;
+            margin-bottom: 10px; /* Separa los botones verticalmente */
+        }
+
+        .btn-secondary {
+            background-color: var(--color-gray); /* Color gris para el botón de Volver */
+            color: white;
+        }
+
+        .btn-main:hover {
+            background-color: var(--color-primary); /* Mismo color para todos los hovers */
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra suave */
+        }
+
+        /* Estilos responsivos */
+        @media (min-width: 768px) {
+            .btn-main {
+                width: auto; /* Ancho automático en pantallas grandes */
+                margin-bottom: 0; /* Elimina el margen inferior */
+                margin-right: 10px; /* Separa los botones horizontalmente */
+            }
+        }
     </style>
 @endsection
 
 @section('content')
 <div class="container-fluid">
+
+    <!-- Botón "Volver" -->
+    <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3 mb-4">
+        <a href="{{ route('vaso-de-leche.index') }}" class="btn btn-secondary btn-main">
+            <i class="fas fa-arrow-left me-2"></i> <!-- Ícono más grande y descriptivo -->
+            <span>Volver</span>
+        </a>
+    </div>
+
     <!-- Encabezado -->
     <div class="card mb-4">
         <div class="card-header">
@@ -241,6 +288,182 @@
         </div>
     </div>
 
+    <!-- Datos para Contraloría -->
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Beneficiarios por Condición</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Gráfico arriba -->
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="urbanConditionChart"></canvas>
+                    </div>
+                
+                    <!-- Tabla debajo -->
+                    <div class="table-responsive mt-4">
+                        <table class="table table-bordered table-sm">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th rowspan="2" class="align-middle">Condición</th>
+                                    <th colspan="2" class="text-center">Núcleo Urbano</th>
+                                    <th rowspan="2" class="align-middle">Total</th>
+                                </tr>
+                                <tr>
+                                    <th class="text-center">Urbano</th>
+                                    <th class="text-center">Rural</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $conditions = collect();
+                                    foreach($chartData['urbanCoreConditions'] as $type => $items) {
+                                        foreach($items as $item) {
+                                            $conditions->push($item->condition);
+                                        }
+                                    }
+                                    $conditions = $conditions->unique()->sort();
+                                    
+                                    $totalUrban = 0;
+                                    $totalRural = 0;
+                                @endphp
+                                
+                                @foreach($conditions as $condition)
+                                    @php
+                                        $urban = isset($chartData['urbanCoreConditions']['Urbano']) ? 
+                                            collect($chartData['urbanCoreConditions']['Urbano'])->where('condition', $condition)->sum('total') : 0;
+                                        $rural = isset($chartData['urbanCoreConditions']['Rural']) ? 
+                                            collect($chartData['urbanCoreConditions']['Rural'])->where('condition', $condition)->sum('total') : 0;
+                                        $total = $urban + $rural;
+                                        
+                                        $totalUrban += $urban;
+                                        $totalRural += $rural;
+                                    @endphp
+                                    <tr>
+                                        <td>{{ $condition }}</td>
+                                        <td class="text-center">{{ $urban }}</td>
+                                        <td class="text-center">{{ $rural }}</td>
+                                        <td class="text-center font-weight-bold">{{ $total }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                            <tfoot>
+                                <tr class="table-active">
+                                    <th>Total General</th>
+                                    <th class="text-center">{{ $totalUrban }}</th>
+                                    <th class="text-center">{{ $totalRural }}</th>
+                                    <th class="text-center">{{ $totalUrban + $totalRural }}</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Beneficiarios Elegibles en SISFOH</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover" id="sisfohTable">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th rowspan="2" class="align-middle">Indicador</th>
+                                    <th colspan="2" class="text-center">Beneficiarios</th>
+                                    <th rowspan="2" class="align-middle">Total</th>
+                                </tr>
+                                <tr>
+                                    <th class="text-center">Antiguos</th>
+                                    <th class="text-center">Nuevos</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Fila 1: N° de atendidos -->
+                                <tr>
+                                    <td>N° de atendidos</td>
+                                    <td class="text-center">{{ $sisfohStats['total']['antiguos'] }}</td>
+                                    <td class="text-center">{{ $sisfohStats['total']['nuevos'] }}</td>
+                                    <td class="text-center font-weight-bold">{{ $sisfohStats['total']['antiguos'] + $sisfohStats['total']['nuevos'] }}</td>
+                                </tr>
+                                
+                                <!-- Fila 2: N° de beneficiarios con DNI -->
+                                <tr>
+                                    <td>N° de beneficiarios con DNI</td>
+                                    <td class="text-center">{{ $sisfohStats['con_dni']['antiguos'] }}</td>
+                                    <td class="text-center">{{ $sisfohStats['con_dni']['nuevos'] }}</td>
+                                    <td class="text-center font-weight-bold">{{ $sisfohStats['con_dni']['antiguos'] + $sisfohStats['con_dni']['nuevos'] }}</td>
+                                </tr>
+                                
+                                <!-- Fila 3: Valor porcentual (DNI) -->
+                                <tr>
+                                    <td>Valor porcentual (DNI)</td>
+                                    <td class="text-center" id="porcDniAntiguos">0%</td>
+                                    <td class="text-center" id="porcDniNuevos">0%</td>
+                                    <td class="text-center font-weight-bold" id="porcDniTotal">0%</td>
+                                </tr>
+                                
+                                <!-- Fila 4: N° de beneficiarios con clasificación socioeconómica -->
+                                <tr>
+                                    <td>N° con clasificación socioeconómica</td>
+                                    <td class="text-center">{{ $sisfohStats['con_sisfoh']['antiguos'] }}</td>
+                                    <td class="text-center">{{ $sisfohStats['con_sisfoh']['nuevos'] }}</td>
+                                    <td class="text-center font-weight-bold">{{ $sisfohStats['con_sisfoh']['antiguos'] + $sisfohStats['con_sisfoh']['nuevos'] }}</td>
+                                </tr>
+                                
+                                <!-- Fila 5: Valor porcentual (SISFOH) -->
+                                <tr>
+                                    <td>Valor porcentual (SISFOH)</td>
+                                    <td class="text-center" id="porcSisfohAntiguos">0%</td>
+                                    <td class="text-center" id="porcSisfohNuevos">0%</td>
+                                    <td class="text-center font-weight-bold" id="porcSisfohTotal">0%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="chart-container">
+                                <div class="col-md-10">
+                                    <p style="text-align: center; 
+                                                font-size: 1rem; 
+                                                font-weight: 600; 
+                                                color: #3B1E54;
+                                                margin-bottom: 0.1rem;
+                                                padding-top: 0.5rem;
+                                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                                        Total de Benef. con DNI (%)
+                                    </p>
+                                </div>
+                                <canvas id="dniDoughnutChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="chart-container">
+                                <div class="col-md-11">
+                                    <p style="text-align: center; 
+                                                font-size: 1rem; 
+                                                font-weight: 600; 
+                                                color: #3B1E54;
+                                                margin-bottom: 0.1rem;
+                                                padding-top: 0.5rem;
+                                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                                        Total de Beneficiarios con SISFOH (%)
+                                    </p>
+                                </div>
+                                <canvas id="sisfohDoughnutChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Tablas recientes -->
     <div class="row mt-4">
         <div class="col-md-6">
@@ -301,7 +524,7 @@
                                 @foreach($latestRecords['committeeChanges'] as $change)
                                 <tr>
                                     <!-- Verificación en cadena completa -->
-                                    <td>{{ $change->familyMember?->given_name ?? 'N/A' }}</td>
+                                    <td>{{ $change->vlFamilyMember?->id ?? 'N/A' }}</td>
                                     <td>{{ $change->committee?->name ?? 'Comité no encontrado' }}</td>
                                     <td>{{ $change->committee?->sector?->name ?? 'Sector no asignado' }}</td>
                                     <td>{{ $change->change_date->format('d/m/Y') }}</td>
@@ -428,6 +651,232 @@
                 legend: { position: 'right' }
             }
         }
+    });
+
+    // Nuevo gráfico de condiciones por núcleo urbano
+    document.addEventListener('DOMContentLoaded', function() {
+        // Preparar datos para el gráfico apilado
+        const conditions = @json($chartData['conditions']->pluck('condition'));
+        const urbanData = [];
+        const ruralData = [];
+        
+        // Obtener datos urbanos y rurales para cada condición
+        conditions.forEach(condition => {
+            let urbanCount = 0;
+            let ruralCount = 0;
+            
+            if(@json(isset($chartData['urbanCoreConditions']['Urbano']))) {
+                const urban = @json($chartData['urbanCoreConditions']['Urbano'] ?? []);
+                urbanCount = urban.filter(item => item.condition === condition)
+                                .reduce((sum, item) => sum + item.total, 0);
+            }
+            
+            if(@json(isset($chartData['urbanCoreConditions']['Rural']))) {
+                const rural = @json($chartData['urbanCoreConditions']['Rural'] ?? []);
+                ruralCount = rural.filter(item => item.condition === condition)
+                                .reduce((sum, item) => sum + item.total, 0);
+            }
+            
+            urbanData.push(urbanCount);
+            ruralData.push(ruralCount);
+        });
+
+        // Crear gráfico de barras apiladas
+        new Chart(document.getElementById('urbanConditionChart'), {
+            type: 'bar',
+            data: {
+                labels: conditions,
+                datasets: [
+                    {
+                        label: 'Urbano',
+                        data: urbanData,
+                        backgroundColor: '#3B1E54',
+                        borderColor: '#3B1E54',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Rural',
+                        data: ruralData,
+                        backgroundColor: '#9B7EBD',
+                        borderColor: '#9B7EBD',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        stacked: true,
+                        ticks: { color: '#3B1E54' }
+                    },
+                    y: {
+                        stacked: true,
+                        beginAtZero: true,
+                        ticks: { color: '#3B1E54' }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { color: '#3B1E54' }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            afterBody: function(context) {
+                                const total = context[0].parsed._stacks.y[context[0].datasetIndex];
+                                return `Total: ${total}`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Calcular y mostrar porcentajes SISFOH
+        function calculatePercentages() {
+            try {
+                // Datos desde PHP
+                const stats = @json($sisfohStats);
+                console.log('Datos SISFOH:', stats); // Para depuración
+                
+                // Calcular totales
+                const totalAntiguos = stats.total.antiguos;
+                const totalNuevos = stats.total.nuevos;
+                const totalGeneral = totalAntiguos + totalNuevos;
+                
+                // Función auxiliar para calcular porcentajes seguros
+                const safePercentage = (part, total) => {
+                    if (total <= 0) return 0;
+                    const percentage = (part / total) * 100;
+                    return Math.round(percentage * 10) / 10; // Redondea a 1 decimal
+                };
+                
+                // Porcentajes DNI
+                const porcDniAntiguos = safePercentage(stats.con_dni.antiguos, totalAntiguos);
+                const porcDniNuevos = safePercentage(stats.con_dni.nuevos, totalNuevos);
+                const porcDniTotal = safePercentage(
+                    (stats.con_dni.antiguos + stats.con_dni.nuevos), 
+                    totalGeneral
+                );
+                
+                // Porcentajes SISFOH
+                const porcSisfohAntiguos = safePercentage(stats.con_sisfoh.antiguos, totalAntiguos);
+                const porcSisfohNuevos = safePercentage(stats.con_sisfoh.nuevos, totalNuevos);
+                const porcSisfohTotal = safePercentage(
+                    (stats.con_sisfoh.antiguos + stats.con_sisfoh.nuevos), 
+                    totalGeneral
+                );
+                
+                // Actualizar DOM
+                const updateElement = (id, value) => {
+                    const element = document.getElementById(id);
+                    if (element) element.textContent = `${value}%`;
+                };
+                
+                updateElement('porcDniAntiguos', porcDniAntiguos);
+                updateElement('porcDniNuevos', porcDniNuevos);
+                updateElement('porcDniTotal', porcDniTotal);
+                
+                updateElement('porcSisfohAntiguos', porcSisfohAntiguos);
+                updateElement('porcSisfohNuevos', porcSisfohNuevos);
+                updateElement('porcSisfohTotal', porcSisfohTotal);
+                
+            } catch (error) {
+                console.error('Error al calcular porcentajes:', error);
+            }
+        }
+
+        // Función para crear los gráficos de dona
+        function createDoughnutCharts() {
+            try {
+                // Obtener valores porcentuales del DOM
+                const getPercentageValue = (id) => {
+                    const element = document.getElementById(id);
+                    return element ? parseFloat(element.textContent.replace('%', '')) : 0;
+                };
+
+                // Configuración común para los gráficos de dona
+                const doughnutOptions = {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                color: '#3B1E54',
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    }
+                };
+
+                // Gráfico de DNI (Dona)
+                new Chart(document.getElementById('dniDoughnutChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Con DNI', 'Sin DNI'],
+                        datasets: [{
+                            data: [
+                                getPercentageValue('porcDniTotal'),
+                                100 - getPercentageValue('porcDniTotal')
+                            ],
+                            backgroundColor: [
+                                'rgba(59, 30, 84, 0.8)',
+                                'rgba(212, 190, 228, 0.8)'
+                            ],
+                            borderColor: [
+                                'rgba(59, 30, 84, 1)',
+                                'rgba(212, 190, 228, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: doughnutOptions
+                });
+
+                // Gráfico de SISFOH (Dona)
+                new Chart(document.getElementById('sisfohDoughnutChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['En SISFOH', 'No en SISFOH'],
+                        datasets: [{
+                            data: [
+                                getPercentageValue('porcSisfohTotal'),
+                                100 - getPercentageValue('porcSisfohTotal')
+                            ],
+                            backgroundColor: [
+                                'rgba(155, 126, 189, 0.8)',
+                                'rgba(228, 218, 238, 0.8)'
+                            ],
+                            borderColor: [
+                                'rgba(155, 126, 189, 1)',
+                                'rgba(228, 218, 238, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: doughnutOptions
+                });
+
+            } catch (error) {
+                console.error('Error al crear gráficos de dona:', error);
+            }
+        }
+
+        calculatePercentages();
+        createDoughnutCharts();        
     });
 </script>
 

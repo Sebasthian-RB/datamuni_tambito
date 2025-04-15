@@ -117,12 +117,12 @@
         <ul class="nav nav-tabs" id="beneficiaryTabs" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" id="active-tab" data-toggle="tab" href="#active" role="tab" aria-controls="active" aria-selected="true">
-                    Beneficiarios Activos <span class="badge badge-primary">{{ $activeCount }}</span>
+                    Familiares y/o Apoderados Activos <span class="badge badge-primary">{{ $activeCount }}</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" id="inactive-tab" data-toggle="tab" href="#inactive" role="tab" aria-controls="inactive" aria-selected="false">
-                    Beneficiarios Inactivos <span class="badge badge-secondary">{{ $inactiveCount }}</span>
+                    Familiares y/o Apoderados Inactivos <span class="badge badge-secondary">{{ $inactiveCount }}</span>
                 </a>
             </li>
         </ul>
