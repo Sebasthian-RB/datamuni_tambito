@@ -1710,7 +1710,7 @@
                                                         <label style="color: #3B1E54; font-weight: 600; font-size: 14px; padding-top: 15px;">
                                                             <i class="fas fa-map-marker-alt"></i> Dirección
                                                         </label>
-                                                        <input type="text" class="form-control" id="address_${minor.id}" disabled value="${minor.address}" style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
+                                                        <input type="text" class="form-control" id="address_${minor.id}" disabled value="${minor.address || ''}" style="border: none; background: transparent; font-size: 16px; font-weight: bold; color: #3B1E54;">
                                                     </div>
 
                                                     <div class="row g-3 align-items-center">
@@ -1911,7 +1911,7 @@
                     sex_type: $(`#sex_type_${minorId}`).val() !== undefined ? parseInt($(`#sex_type_${minorId}`).val()) : (originalMinorValues[minorId]?.sex_type ? 1 : 0),
                     registration_date: formatDate($(`#registration_date_${minorId}`).val() || originalMinorValues[minorId]?.registration_date),
                     withdrawal_date: formatDate($(`#withdrawal_date_${minorId}`).val() || originalMinorValues[minorId]?.withdrawal_date),
-                    address: $(`#address_${minorId}`).val() || originalMinorValues[minorId]?.address || null,
+                    address: $(`#address_${minorId}`).val() || originalMinorValues[minorId]?.address,
                     dwelling_type: $(`#dwelling_type_${minorId}`).val() || originalMinorValues[minorId]?.dwelling_type || null,
                     education_level: $(`#education_level_${minorId}`).val() || originalMinorValues[minorId]?.education_level || null,
                     condition: $(`#condition_${minorId}`).val() || originalMinorValues[minorId]?.condition || null,
