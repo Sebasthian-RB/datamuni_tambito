@@ -54,6 +54,9 @@ class CommitteeController extends Controller
      */
     public function create(CreateCommitteeRequest $request)
     {
+        // Verificación de permiso
+        $this->authorize('crear');
+
         // Obtener los sectores desde el modelo Sector
         $sectors = Sector::all();  // O la consulta adecuada para obtener los sectores
 
@@ -72,6 +75,9 @@ class CommitteeController extends Controller
      */
     public function store(StoreCommitteeRequest $request)
     {
+        // Verificación de permiso
+        $this->authorize('crear');
+
         Committee::create($request->validated());
         return redirect()->route('committees.index')->with('success', 'Comité creado correctamente.');
     }
@@ -85,6 +91,9 @@ class CommitteeController extends Controller
      */
     public function show(ShowCommitteeRequest $request, Committee $committee)
     {
+        // Verificación de permiso
+        $this->authorize('ver detalles');
+
         return view('areas.VasoDeLecheViews.Committees.show', compact('committee'));
     }
 
@@ -97,6 +106,9 @@ class CommitteeController extends Controller
      */
     public function edit(EditCommitteeRequest $request, Committee $committee)
     {
+        // Verificación de permiso
+        $this->authorize('editar');
+        
         // Obtener todos los sectores para pasarlos a la vista
         $sectors = Sector::all();
 
@@ -120,6 +132,9 @@ class CommitteeController extends Controller
      */
     public function update(UpdateCommitteeRequest $request, Committee $committee)
     {
+        // Verificación de permiso
+        $this->authorize('editar');
+
         // Validar los datos de la solicitud
         $data = $request->validated();
 
@@ -147,6 +162,9 @@ class CommitteeController extends Controller
      */
     public function destroy(DestroyCommitteeRequest $request, Committee $committee)
     {
+        // Verificación de permiso
+        $this->authorize('eliminar');
+
         $committee->delete();
         return redirect()->route('committees.index')->with('success', 'Comité eliminado correctamente.');
     }

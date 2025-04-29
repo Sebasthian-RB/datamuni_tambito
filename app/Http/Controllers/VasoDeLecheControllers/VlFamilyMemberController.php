@@ -13,9 +13,12 @@ use App\Http\Requests\VasoDeLecheRequests\VlFamilyMembers\UpdateVlFamilyMemberRe
 use App\Http\Requests\VasoDeLecheRequests\VlFamilyMembers\DestroyVlFamilyMemberRequest;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class VlFamilyMemberController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Muestra una lista de todos los miembros familiares.
      *
@@ -24,6 +27,9 @@ class VlFamilyMemberController extends Controller
      */
     public function index(IndexVlFamilyMemberRequest $request)
     {
+        // Verificación de permiso
+        $this->authorize('ver BD');
+
         $searchId = $request->input('search_id');
     
         $vlFamilyMembers = VlFamilyMember::when($searchId, function($query) use ($searchId) {
@@ -45,6 +51,9 @@ class VlFamilyMemberController extends Controller
      */
     public function create(CreateVlFamilyMemberRequest $request)
     {
+        // Verificación de permiso
+        $this->authorize('crear');
+        
         $identityDocumentTypes = [
             'DNI' => 'DNI',
             'Carnet de Extranjería' => 'Carnet de Extranjería',
@@ -63,6 +72,9 @@ class VlFamilyMemberController extends Controller
      */
     public function store(StoreVlFamilyMemberRequest $request)
     {
+        // Verificación de permiso
+        $this->authorize('crear');
+        
         // Creamos el miembro de la familia
         $newFamilyMember = VlFamilyMember::create($request->validated());
         // Si la solicitud es AJAX, devolvemos una respuesta JSON
@@ -94,6 +106,9 @@ class VlFamilyMemberController extends Controller
      */
     public function show(ShowVlFamilyMemberRequest $request, VlFamilyMember $vlFamilyMember)
     {
+        // Verificación de permiso
+        $this->authorize('ver detalles');
+        
         return view('areas.VasoDeLecheViews.VlFamilyMembers.show', compact('vlFamilyMember'));
     }
 
@@ -106,6 +121,9 @@ class VlFamilyMemberController extends Controller
      */
     public function edit(EditVlFamilyMemberRequest $request, VlFamilyMember $vlFamilyMember)
     {
+        // Verificación de permiso
+        $this->authorize('editar');
+        
         $identityDocumentTypes = [
             'DNI' => 'DNI',
             'Carnet de Extranjería' => 'Carnet de Extranjería',
@@ -125,6 +143,9 @@ class VlFamilyMemberController extends Controller
      */
     public function update(UpdateVlFamilyMemberRequest $request, VlFamilyMember $vlFamilyMember)
     {
+        // Verificación de permiso
+        $this->authorize('editar');
+        
         // Validar los datos de la solicitud
         $data = $request->validated();
 
@@ -152,6 +173,9 @@ class VlFamilyMemberController extends Controller
      */
     public function destroy(DestroyVlFamilyMemberRequest $request, VlFamilyMember $vlFamilyMember)
     {
+        // Verificación de permiso
+        $this->authorize('eliminar');
+        
         $vlFamilyMember->delete();
 
         return redirect()

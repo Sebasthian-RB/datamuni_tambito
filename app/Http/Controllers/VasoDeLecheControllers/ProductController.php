@@ -12,8 +12,12 @@ use App\Http\Requests\VasoDeLecheRequests\Products\EditProductRequest;
 use App\Http\Requests\VasoDeLecheRequests\Products\UpdateProductRequest;
 use App\Http\Requests\VasoDeLecheRequests\Products\DestroyProductRequest;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 class ProductController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Muestra una lista de todos los productos.
      *
@@ -22,6 +26,9 @@ class ProductController extends Controller
      */
     public function index(IndexProductRequest $request)
     {
+        // Verificación de permiso
+        $this->authorize('ver BD');
+
         $products = Product::paginate(10);
         return view('areas.VasoDeLecheViews.Products.index', compact('products'));
     }
@@ -34,6 +41,9 @@ class ProductController extends Controller
      */
     public function create(CreateProductRequest $request)
     {
+        // Verificación de permiso
+        $this->authorize('crear');
+        
         return view('areas.VasoDeLecheViews.Products.create');
     }
 
@@ -45,6 +55,9 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
+        // Verificación de permiso
+        $this->authorize('crear');
+        
         Product::create($request->validated());
         return redirect()->route('products.index')->with('success', 'Producto creado correctamente.');
     }
@@ -58,6 +71,9 @@ class ProductController extends Controller
      */
     public function show(ShowProductRequest $request, Product $product)
     {
+        // Verificación de permiso
+        $this->authorize('ver detalles');
+        
         return view('areas.VasoDeLecheViews.Products.show', compact('product'));
     }
 
@@ -70,6 +86,9 @@ class ProductController extends Controller
      */
     public function edit(EditProductRequest $request, Product $product)
     {
+        // Verificación de permiso
+        $this->authorize('editar');
+        
         return view('areas.VasoDeLecheViews.Products.edit', compact('product'));
     }
 
@@ -82,6 +101,9 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
+        // Verificación de permiso
+        $this->authorize('editar');
+        
         // Validar los datos de la solicitud
         $data = $request->validated();
     
@@ -115,6 +137,9 @@ class ProductController extends Controller
      */
     public function destroy(DestroyProductRequest $request, Product $product)
     {
+        // Verificación de permiso
+        $this->authorize('eliminar');
+        
         $product->delete();
         return redirect()->route('products.index')->with('success', 'Producto eliminado correctamente.');
     }

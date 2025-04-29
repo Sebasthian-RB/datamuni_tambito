@@ -15,9 +15,12 @@ use App\Http\Requests\VasoDeLecheRequests\VlMinors\DestroyVlMinorRequest;
 use App\Models\VasoDeLecheModels\VlFamilyMember;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class VlMinorController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Muestra una lista de todos los menores.
      *
@@ -26,6 +29,9 @@ class VlMinorController extends Controller
      */
     public function index(IndexVlMinorRequest $request)
     {
+        // Verificación de permiso
+        $this->authorize('ver BD');
+
         $validated = $request->validated();
         $searchId = $validated['search_id'] ?? null;
 
@@ -53,6 +59,9 @@ class VlMinorController extends Controller
      */
     public function create(CreateVlMinorRequest $request)
     {
+        // Verificación de permiso
+        $this->authorize('crear');
+        
         // Definir las opciones disponibles para los selects
         $documentTypes = ['DNI', 'CNV', 'Pasaporte', 'Carnet de Extranjería', 'Otro'];  //Para el menor de edad
         $identityDocumentTypes = [
@@ -114,6 +123,9 @@ class VlMinorController extends Controller
      */
     public function store(StoreVlMinorRequest $request)
     {
+        // Verificación de permiso
+        $this->authorize('crear');
+        
         // Validación de datos y creación del registro
         $minor = VlMinor::create($request->validated());
 
@@ -139,6 +151,9 @@ class VlMinorController extends Controller
      */
     public function show(ShowVlMinorRequest $request, VlMinor $vlMinor)
     {
+        // Verificación de permiso
+        $this->authorize('ver detalles');
+        
         return view('areas.VasoDeLecheViews.VlMinors.show', compact('vlMinor'));
     }
 
@@ -151,6 +166,9 @@ class VlMinorController extends Controller
      */
     public function edit(EditVlMinorRequest $request, VlMinor $vlMinor)
     {
+        // Verificación de permiso
+        $this->authorize('editar');
+        
         // Definir las opciones disponibles para los selects
         $documentTypes = ['DNI', 'CNV', 'Pasaporte', 'Carnet de Extranjería', 'Otro'];  //Para el menor de edad
         $identityDocumentTypes = [
@@ -219,6 +237,9 @@ class VlMinorController extends Controller
      */
     public function update(UpdateVlMinorRequest $request, VlMinor $vlMinor)
     {
+        // Verificación de permiso
+        $this->authorize('editar');
+        
         // Validar los datos de la solicitud
         $data = $request->validated();
 
@@ -246,6 +267,9 @@ class VlMinorController extends Controller
      */
     public function destroy(DestroyVlMinorRequest $request, VlMinor $vlMinor)
     {
+        // Verificación de permiso
+        $this->authorize('eliminar');
+        
         $vlMinor->delete();
         return redirect()->route('vl_minors.index')->with('success', 'Menor eliminado correctamente.');
     }

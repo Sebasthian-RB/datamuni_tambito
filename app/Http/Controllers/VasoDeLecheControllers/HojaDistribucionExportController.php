@@ -11,10 +11,17 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use App\Models\VasoDeLecheModels\Committee;
 use Carbon\Carbon;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 class HojaDistribucionExportController extends Controller
 {
+    use AuthorizesRequests;
+    
     public function export($committeeId)
     {
+        // Verificación de permiso
+        $this->authorize('ver BD');
+
         // Establecer el locale en español para Carbon
         Carbon::setLocale('es');
 

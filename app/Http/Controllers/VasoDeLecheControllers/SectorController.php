@@ -13,8 +13,12 @@ use App\Http\Requests\VasoDeLecheRequests\Sectors\EditSectorRequest;
 use App\Http\Requests\VasoDeLecheRequests\Sectors\UpdateSectorRequest;
 use App\Http\Requests\VasoDeLecheRequests\Sectors\DestroySectorRequest;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 class SectorController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Muestra una lista de todos los sectores.
      *
@@ -23,6 +27,9 @@ class SectorController extends Controller
      */
     public function index(IndexSectorRequest $request)
     {
+        // Verificación de permiso
+        $this->authorize('ver BD');
+
         $sectors = Sector::paginate(10);
         return view('areas.VasoDeLecheViews.Sectors.index', compact('sectors'));
     }
@@ -35,6 +42,9 @@ class SectorController extends Controller
      */
     public function create(CreateSectorRequest $request)
     {
+        // Verificación de permiso
+        $this->authorize('crear');
+        
         return view('areas.VasoDeLecheViews.Sectors.create');
     }
 
@@ -46,6 +56,9 @@ class SectorController extends Controller
      */
     public function store(StoreSectorRequest $request)
     {
+        // Verificación de permiso
+        $this->authorize('crear');
+        
         Sector::create($request->validated());
         return redirect()->route('sectors.index')->with('success', 'Sector creado correctamente.');
     }
@@ -59,6 +72,9 @@ class SectorController extends Controller
      */
     public function show(ShowSectorRequest $request, Sector $sector)
     {
+        // Verificación de permiso
+        $this->authorize('ver detalles');
+        
         return view('areas.VasoDeLecheViews.Sectors.show', compact('sector'));
     }
 
@@ -71,6 +87,9 @@ class SectorController extends Controller
      */
     public function edit(EditSectorRequest $request, Sector $sector)
     {
+        // Verificación de permiso
+        $this->authorize('editar');
+        
         return view('areas.VasoDeLecheViews.Sectors.edit', compact('sector'));
     }
 
@@ -83,6 +102,9 @@ class SectorController extends Controller
      */
     public function update(UpdateSectorRequest $request, Sector $sector)
     {
+        // Verificación de permiso
+        $this->authorize('editar');
+        
         // Validar los datos de la solicitud
         $data = $request->validated();
 
@@ -116,6 +138,9 @@ class SectorController extends Controller
      */
     public function destroy(DestroySectorRequest $request, Sector $sector)
     {
+        // Verificación de permiso
+        $this->authorize('eliminar');
+        
         $sector->delete();
         return redirect()->route('sectors.index')->with('success', 'Sector eliminado correctamente.');
     }
