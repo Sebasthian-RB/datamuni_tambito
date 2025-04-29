@@ -16,8 +16,12 @@ use App\Models\VasoDeLecheModels\Committee;
 use App\Models\VasoDeLecheModels\Product;
 use App\Models\VasoDeLecheModels\VlFamilyMember;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 class VlFamilyMemberProductController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Muestra una lista de productos asignados a los miembros familiares.
      *
@@ -26,6 +30,9 @@ class VlFamilyMemberProductController extends Controller
      */
     public function index(IndexVlFamilyMemberProductRequest $request, $committee_id)
     {
+        // Verificación de permiso
+        $this->authorize('ver BD');
+
         $committee = Committee::findOrFail($committee_id);
 
         // Obtiene los familiares que pertenecen al comité y tienen status = 1
@@ -52,6 +59,9 @@ class VlFamilyMemberProductController extends Controller
      */
     public function create(CreateVlFamilyMemberProductRequest $request, $committee_id)
     {
+        // Verificación de permiso
+        $this->authorize('crear');
+        
         // Obtener solo miembros familiares activos del comité específico
         $vlFamilyMembers = VlFamilyMember::whereHas('committees', function($query) use ($committee_id) {
             $query->where('committee_id', $committee_id)
@@ -75,6 +85,9 @@ class VlFamilyMemberProductController extends Controller
      */
     public function store(StoreVlFamilyMemberProductRequest $request)
     {
+        // Verificación de permiso
+        $this->authorize('crear');
+        
         // Los datos ya incluyen committee_id gracias al campo oculto
         $validatedData = $request->validated();
         
@@ -98,6 +111,9 @@ class VlFamilyMemberProductController extends Controller
      */
     public function show(ShowVlFamilyMemberProductRequest $request, VlFamilyMemberProduct $vlFamilyMemberProduct)
     {
+        // Verificación de permiso
+        $this->authorize('ver detalles');
+        
         return view('areas.VasoDeLecheViews.VlFamilyMemberProducts.show', compact('vlFamilyMemberProduct'));
     }
 
@@ -110,6 +126,9 @@ class VlFamilyMemberProductController extends Controller
      */
     public function edit(EditVlFamilyMemberProductRequest $request, VlFamilyMemberProduct $vlFamilyMemberProduct, $committee_id)
     {
+        // Verificación de permiso
+        $this->authorize('editar');
+        
         // Obtener solo miembros familiares activos del comité específico
         $vlFamilyMembers = VlFamilyMember::whereHas('committees', function($query) use ($committee_id) {
             $query->where('committee_id', $committee_id)
@@ -135,6 +154,9 @@ class VlFamilyMemberProductController extends Controller
      */
     public function update(UpdateVlFamilyMemberProductRequest $request, VlFamilyMemberProduct $vlFamilyMemberProduct)
     {
+        // Verificación de permiso
+        $this->authorize('editar');
+        
         // Los datos ya incluyen committee_id gracias al campo oculto
         $validatedData = $request->validated();
         
@@ -158,6 +180,9 @@ class VlFamilyMemberProductController extends Controller
      */
     public function destroy(DestroyVlFamilyMemberProductRequest $request, VlFamilyMemberProduct $vlFamilyMemberProduct)
     {
+        // Verificación de permiso
+        $this->authorize('eliminar');
+        
         // Obtener committee_id directamente del request (sin validar)
         $committee_id = $request->input('committee_id');
 

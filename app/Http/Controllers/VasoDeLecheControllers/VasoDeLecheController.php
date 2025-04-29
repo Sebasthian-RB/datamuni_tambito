@@ -11,9 +11,12 @@ use App\Models\VasoDeLecheModels\VlFamilyMember;
 use App\Models\VasoDeLecheModels\CommitteeVlFamilyMember;
 use App\Models\VasoDeLecheModels\VlMinor;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class VasoDeLecheController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Muestra una lista de todos los comités.
      *
@@ -22,6 +25,9 @@ class VasoDeLecheController extends Controller
      */
     public function index(IndexVasoDeLecheRequest $request)
     {
+        // Verificación de permiso
+        $this->authorize('ver BD');
+
         // Recuperar los parámetros de filtrado desde la solicitud
         $name = $request->input('name'); // Puede ser nombre o ID de comité
         $president = $request->input('president');

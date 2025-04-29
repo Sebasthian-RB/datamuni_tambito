@@ -16,9 +16,12 @@ use App\Models\VasoDeLecheModels\CommitteeVlFamilyMember;
 use App\Models\VasoDeLecheModels\VlFamilyMember;
 
 use Illuminate\Support\Carbon;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class CommitteeVlFamilyMemberController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Muestra una lista de los miembros familiares asignados a comités.
      *
@@ -27,6 +30,9 @@ class CommitteeVlFamilyMemberController extends Controller
      */
     public function index(IndexCommitteeVlFamilyMemberRequest $request, $committee_id)
     {
+        // Verificación de permiso
+        $this->authorize('ver BD');
+
         $committee = Committee::findOrFail($committee_id);
 
         $committeeVlFamilyMembers = CommitteeVlFamilyMember::where('committee_id', $committee_id)
@@ -59,6 +65,9 @@ class CommitteeVlFamilyMemberController extends Controller
      */
     public function create(CreateCommitteeVlFamilyMemberRequest $request, $committee_id)
     {
+        // Verificación de permiso
+        $this->authorize('crear');
+
         // Obtener el comité específico
         $committee = Committee::findOrFail($committee_id);
 
@@ -130,6 +139,9 @@ class CommitteeVlFamilyMemberController extends Controller
      */
     public function store(StoreCommitteeVlFamilyMemberRequest $request)
     {
+        // Verificación de permiso
+        $this->authorize('crear');
+        
         // Verificar que los datos obligatorios estén presentes
         if (!$request->has('committee_id') || !$request->has('vl_family_member_id')) {
             return redirect()->back()->with('error', 'Faltan datos necesarios para continuar.');
@@ -192,6 +204,9 @@ class CommitteeVlFamilyMemberController extends Controller
      */
     public function show(ShowCommitteeVlFamilyMemberRequest $request, CommitteeVlFamilyMember $committeeVlFamilyMember)
     {
+        // Verificación de permiso
+        $this->authorize('ver detalles');
+
         return view('areas.VasoDeLecheViews.CommitteeVlFamilyMembers.show', compact('committeeVlFamilyMember'));
     }
 
@@ -204,6 +219,9 @@ class CommitteeVlFamilyMemberController extends Controller
      */
     public function edit(EditCommitteeVlFamilyMemberRequest $request, CommitteeVlFamilyMember $committeeVlFamilyMember)
     {
+        // Verificación de permiso
+        $this->authorize('editar');
+        
         // Obtener el comité específico
         $committee = $committeeVlFamilyMember->committee;
 
@@ -276,6 +294,9 @@ class CommitteeVlFamilyMemberController extends Controller
      */
     public function update(UpdateCommitteeVlFamilyMemberRequest $request, CommitteeVlFamilyMember $committeeVlFamilyMember)
     {
+        // Verificación de permiso
+        $this->authorize('editar');
+        
         $committeeVlFamilyMember->update($request->validated());
 
         return redirect()->route('committee_vl_family_members.index', [
@@ -292,6 +313,9 @@ class CommitteeVlFamilyMemberController extends Controller
      */
     public function destroy(DestroyCommitteeVlFamilyMemberRequest $request, CommitteeVlFamilyMember $committeeVlFamilyMember)
     {    
+        // Verificación de permiso
+        $this->authorize('eliminar');
+        
         $committeeId = $committeeVlFamilyMember->committee_id; 
         
         $committeeVlFamilyMember->delete();
