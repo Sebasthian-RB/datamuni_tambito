@@ -38,7 +38,8 @@
                             <option value="" disabled selected>Seleccione un tipo de documento...</option>
                             <option value="DNI" {{ old('identity_document') == 'DNI' ? 'selected' : '' }}>DNI</option>
                             <option value="Pasaporte" {{ old('identity_document') == 'Pasaporte' ? 'selected' : '' }}>Pasaporte</option>
-                            <option value="Carnet" {{ old('identity_document') == 'Carnet' ? 'selected' : '' }}>Carnet</option>
+                            <option value="Carnet de extranjeria" {{ old('identity_document') == 'Carnet de extranjeria' ? 'selected' : '' }}>Carnet de extranjeria</option>
+                            <option value="CPP" {{ old('identity_document') == 'CPP' ? 'selected' : '' }}>CPP</option>
                             <option value="Cedula" {{ old('identity_document') == 'Cedula' ? 'selected' : '' }}>Cédula</option>
                         </select>
                         @error('identity_document')
@@ -157,7 +158,7 @@
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label for="sfh_consultation" class="font-weight-bold">Categoría SISFOH</label>
+                        <label for="sfh_consultation" class="font-weight-bold">Consulta SISFOH</label>
                         <select id="sfh_consultation" name="sfh_consultation" class="form-control @error('sfh_consultation') is-invalid @enderror" required>
                             <option value="" disabled selected>Seleccione una consulta...</option>
                             <option value="Atendido" {{ old('sfh_consultation') == 'Atendido' ? 'selected' : '' }}>Atendido</option>

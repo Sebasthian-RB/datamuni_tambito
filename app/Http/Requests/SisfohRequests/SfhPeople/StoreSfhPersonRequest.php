@@ -27,7 +27,7 @@ class StoreSfhPersonRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'identity_document' => 'required|in:DNI,Pasaporte,Carnet,Cedula', // Solo estos tipos de documento son permitidos
+            'identity_document' => 'required|in:DNI,Pasaporte,Carnet de extranjeria, CPP,Cedula', // Solo estos tipos de documento son permitidos
             'given_name' => 'required|string|max:80', // El nombre no puede exceder los 80 caracteres
             'paternal_last_name' => 'required|string|max:50', // El apellido paterno no puede exceder los 50 caracteres
             'maternal_last_name' => 'required|string|max:50', // El apellido materno no puede exceder los 50 caracteres
@@ -53,8 +53,11 @@ class StoreSfhPersonRequest extends FormRequest
             case 'Cedula':
                 $rules['id'] = 'required|string|max:20|unique:sfh_people,id'; // El ID para cédula puede ser hasta de 20 caracteres
                 break;
-            case 'Carnet':
-                $rules['id'] = 'required|string|max:50|unique:sfh_people,id'; // El ID para carnet puede ser hasta de 50 caracteres
+            case 'Carnet de extranjeria':
+                $rules['id'] = 'required|string|max:50|unique:sfh_people,id'; // El ID para carnet de extranjeria puede ser hasta de 50 caracteres
+                break;
+            case 'CPP':
+                $rules['id'] = 'required|string|max:15|unique:sfh_people,id'; // El ID para carnet de extranjeria puede ser hasta de 50 caracteres
                 break;
             default:
                 $rules['id'] = 'required|string|max:50|unique:sfh_people,id'; // En caso de que no coincida con los anteriores
@@ -101,7 +104,7 @@ class StoreSfhPersonRequest extends FormRequest
             'id.size' => 'El :attribute debe tener exactamente 36 caracteres.',
             'id.unique' => 'El :attribute ya existe en la base de datos.',
             'identity_document.required' => 'El :attribute es obligatorio.',
-            'identity_document.in' => 'El :attribute debe ser uno de los siguientes valores: DNI, Pasaporte, Carnet, Cedula.',
+            'identity_document.in' => 'El :attribute debe ser uno de los siguientes valores: DNI, Pasaporte, Carnet de extranjeria, CPP, Cedula.',
             'given_name.required' => 'El :attribute es obligatorio.',
             'given_name.max' => 'El :attribute no puede tener más de 80 caracteres.',
             'paternal_last_name.required' => 'El :attribute es obligatorio.',

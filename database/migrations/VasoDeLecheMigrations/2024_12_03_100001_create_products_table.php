@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();                               // Id autogenerado
             $table->string('name', 50);                 // Nombre del producto
             $table->text('description')->nullable();    // Descripción del producto
-            $table->int('year');                       // Año de entrega
+            $table->date('year');                       // Año de entrega
             $table->timestamps();                       // Columnas created_at y updated_at
         });
     }

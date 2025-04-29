@@ -3,6 +3,7 @@
 namespace App\Http\Requests\SisfohRequests\SfhDwellings;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 /**
  * Form Request para crear una vivienda.
@@ -57,6 +58,20 @@ class StoreSfhDwellingRequest extends FormRequest
                 'string',
                 'max:100',
             ],
+            'zone' => [
+                'required',
+                Rule::in(['urbano', 'rural']), // Solo acepta "urbano" o "rural"
+            ],
+            'creation_date' => [
+                'required',
+                'date',
+                'before_or_equal:today', // No puede ser una fecha futura
+            ],
+            'expiration_date' => [
+                'required',
+                'date',
+                'after:creation_date', // Debe ser posterior a la fecha de creación
+            ],
         ];
     }
 
@@ -89,6 +104,17 @@ class StoreSfhDwellingRequest extends FormRequest
             'region.required' => 'La región es obligatoria.',
             'region.string' => 'La región debe ser una cadena de texto.',
             'region.max' => 'La región no puede exceder los 100 caracteres.',
+
+            'zone.required' => 'La zona es obligatoria.',
+            'zone.in' => 'La zona debe ser "urbano" o "rural".',
+
+            'creation_date.required' => 'La fecha de registro es obligatoria.',
+            'creation_date.date' => 'La fecha de registro debe ser una fecha válida.',
+            'creation_date.before_or_equal' => 'La fecha de registro no puede ser en el futuro.',
+
+            'expiration_date.required' => 'La fecha de caducidad es obligatoria.',
+            'expiration_date.date' => 'La fecha de caducidad debe ser una fecha válida.',
+            'expiration_date.after' => 'La fecha de caducidad debe ser posterior a la fecha de registro.',
         ];
     }
 
@@ -106,6 +132,9 @@ class StoreSfhDwellingRequest extends FormRequest
             'district' => 'distrito',
             'provincia' => 'provincia',
             'region' => 'región',
+            // 'zone' => 'zona',
+            // 'creation_date' => 'fecha de registro',
+            // 'expiration_date' => 'fecha de caducidad',
         ];
     }
 

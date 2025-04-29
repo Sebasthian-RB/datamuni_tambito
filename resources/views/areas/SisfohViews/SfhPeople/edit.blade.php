@@ -49,7 +49,8 @@
                                         <option value="" disabled>Seleccione un tipo de documento...</option>
                                         <option value="DNI" {{ old('identity_document', $sfhPerson->identity_document) == 'DNI' ? 'selected' : '' }}>DNI</option>
                                         <option value="Pasaporte" {{ old('identity_document', $sfhPerson->identity_document) == 'Pasaporte' ? 'selected' : '' }}>Pasaporte</option>
-                                        <option value="Carnet" {{ old('identity_document', $sfhPerson->identity_document) == 'Carnet' ? 'selected' : '' }}>Carnet</option>
+                                        <option value="Carnet" {{ old('identity_document', $sfhPerson->identity_document) == 'Carnet de extranjeria' ? 'selected' : '' }}>Carnet de extranjería</option>
+                                        <option value="CPP" {{ old('identity_document', $sfhPerson->identity_document) == 'CPP' ? 'selected' : '' }}>CPP</option>
                                         <option value="Cedula" {{ old('identity_document', $sfhPerson->identity_document) == 'Cedula' ? 'selected' : '' }}>Cédula</option>
                                     </select>
                                     @error('identity_document')
