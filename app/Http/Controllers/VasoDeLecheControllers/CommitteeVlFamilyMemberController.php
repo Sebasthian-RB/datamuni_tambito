@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\VasoDeLecheControllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\VasoDeLecheModels\CommitteeVlFamilyMember;
 use App\Http\Requests\VasoDeLecheRequests\CommitteeVlFamilyMembers\IndexCommitteeVlFamilyMemberRequest;
 use App\Http\Requests\VasoDeLecheRequests\CommitteeVlFamilyMembers\ShowCommitteeVlFamilyMemberRequest;
 use App\Http\Requests\VasoDeLecheRequests\CommitteeVlFamilyMembers\CreateCommitteeVlFamilyMemberRequest;
@@ -13,6 +12,7 @@ use App\Http\Requests\VasoDeLecheRequests\CommitteeVlFamilyMembers\UpdateCommitt
 use App\Http\Requests\VasoDeLecheRequests\CommitteeVlFamilyMembers\DestroyCommitteeVlFamilyMemberRequest;
 
 use App\Models\VasoDeLecheModels\Committee;
+use App\Models\VasoDeLecheModels\CommitteeVlFamilyMember;
 use App\Models\VasoDeLecheModels\VlFamilyMember;
 
 use Illuminate\Support\Carbon;

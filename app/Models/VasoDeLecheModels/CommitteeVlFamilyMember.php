@@ -5,7 +5,7 @@ namespace App\Models\VasoDeLecheModels;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CommitteeVLFamilyMember extends Model
+class CommitteeVlFamilyMember extends Model
 {
     use HasFactory;
 

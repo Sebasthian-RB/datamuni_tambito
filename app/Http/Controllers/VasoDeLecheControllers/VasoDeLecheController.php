@@ -8,7 +8,7 @@ use App\Models\VasoDeLecheModels\Committee;
 use App\Models\VasoDeLecheModels\Product;
 use App\Models\VasoDeLecheModels\Sector;
 use App\Models\VasoDeLecheModels\VlFamilyMember;
-use App\Models\VasoDeLecheModels\CommitteeVLFamilyMember;
+use App\Models\VasoDeLecheModels\CommitteeVlFamilyMember;
 use App\Models\VasoDeLecheModels\VlMinor;
 
 
