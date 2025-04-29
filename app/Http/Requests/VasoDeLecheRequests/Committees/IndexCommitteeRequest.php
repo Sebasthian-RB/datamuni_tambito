@@ -26,7 +26,7 @@ class IndexCommitteeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'search_name' => 'nullable|string|max:100'
         ];
     }
 
@@ -38,7 +38,7 @@ class IndexCommitteeRequest extends FormRequest
     public function messages()
     {
         return [
-            // Mensajes
+            'search_name.max' => 'La búsqueda no debe exceder los 100 caracteres'
         ];
     }
 }

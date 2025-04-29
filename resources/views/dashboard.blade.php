@@ -104,7 +104,7 @@
                                 Sistema de focalización de hogares para identificación y clasificación socioeconómica 
                                 de beneficiarios de programas sociales.
                             </p>
-                            <a href="{{ route('sfhdashboard') }}" class="stretched-link"></a>
+                            <a href="{{ route('sisfohHome') }}" class="stretched-link"></a>
                         </div>
                     </div>
                 </div>

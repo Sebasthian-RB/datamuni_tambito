@@ -49,6 +49,11 @@
                     <i class="fas fa-wheelchair"></i>
                     Certificados de Discapacidad
                 </a>
+                <!-- Nuevo botón agregado -->
+                <a href="{{ route('psydashboard') }}" class="secondary-button">
+                    <i class="fas fa-brain"></i>
+                    Diagnósticos Psicológicos
+                </a>
             </div>
         </div>
         <!-- Grid de métricas -->

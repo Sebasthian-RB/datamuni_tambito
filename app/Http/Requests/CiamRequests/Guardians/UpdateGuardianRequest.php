@@ -27,35 +27,32 @@ class UpdateGuardianRequest extends FormRequest
         $guardianId = $this->route('guardian'); // Obtener ID del guardián actual
 
         return [
+            'document_type' => 'required|in:DNI,Pasaporte,Carnet,Cedula',
             'id' => [
                 'required',
                 'string',
-                Rule::unique('guardians', 'id')->ignore($guardianId), // Evita duplicados
+                Rule::unique('guardians', 'id')->ignore($guardianId),
                 function ($attribute, $value, $fail) {
                     $documentType = $this->input('document_type');
-
-                    // Validaciones según el tipo de documento
-                    if ($documentType === 'DNI' && !preg_match('/^\d{8}$/', $value)) {
-                        $fail('El DNI debe contener exactamente 8 dígitos numéricos.');
+                    
+                    if ($documentType === 'DNI') {
+                        if (!preg_match('/^\d{8}$/', $value)) {
+                            $fail('El DNI debe tener exactamente 8 dígitos numéricos.');
+                        }
+                    } elseif ($documentType === 'Pasaporte') {
+                        if (!preg_match('/^[A-Za-z0-9]{9}$/', $value)) {
+                            $fail('El Pasaporte debe tener 9 caracteres alfanuméricos.');
+                        }
+                    } elseif ($documentType === 'Carnet') {
+                        if (!preg_match('/^\d{12}$/', $value)) {
+                            $fail('El Carnet debe tener 12 dígitos numéricos.');
+                        }
+                    } elseif ($documentType === 'Cedula') {
+                        if (!preg_match('/^\d{10}$/', $value)) {
+                            $fail('La Cédula debe tener 10 dígitos numéricos.');
+                        }
                     }
-
-                    if ($documentType === 'Pasaporte' && !preg_match('/^[a-zA-Z0-9]{1,20}$/', $value)) {
-                        $fail('El Pasaporte debe contener hasta 20 caracteres alfanuméricos.');
-                    }
-
-                    if ($documentType === 'Carnet' && !preg_match('/^[a-zA-Z0-9]{1,20}$/', $value)) {
-                        $fail('El Carnet debe contener hasta 20 caracteres alfanuméricos.');
-                    }
-
-                    if ($documentType === 'Cedula' && !preg_match('/^\d{10}$/', $value)) {
-                        $fail('La Cédula debe contener exactamente 10 caracteres numéricos.');
-                    }
-                }
-            ],
-            'document_type' => [
-                'required',
-                'string',
-                Rule::in(['DNI', 'Pasaporte', 'Carnet', 'Cedula']), // Solo estos tipos de documento
+                },
             ],
             'given_name' => [
                 'required',

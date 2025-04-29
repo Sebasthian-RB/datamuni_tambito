@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('committees', function (Blueprint $table) {
-            $table->string('id')->primary();            // Columna de clave primaria auto-incremental
+            $table->id();            // Columna de clave primaria auto-incremental
+            $table->string('committee_number',10);      // Columna de número de comité
             $table->string('name', 150);                // Columna para el nombre del comité
             $table->string('president');                // Columna para el presidente del comité
             $table->string('urban_core');               // Columna para el núcleo urbano

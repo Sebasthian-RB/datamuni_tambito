@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
         foreach ($permissions as $permission) {
             Permission::firstOrCreate(['name' => $permission, 'guard_name' => 'sanctum']);
         }
+        
+        Permission::firstOrCreate(['name' => 'psicologiaOmaped', 'guard_name' => 'sanctum']);
 
         // Crear roles para cada área si no existen
         $roles = ['Super Administrador', 'Administrador', 'Área de la Mujer', 'Vaso de Leche', 'SISFOH', 'CIAM', 'OMAPED'];

@@ -72,7 +72,7 @@ class VlFamilyMember extends Model
      */
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'vl_family_member_products', 'vl_family_member_id', 'product_id');
+        return $this->belongsToMany(Product::class, 'vl_family_member_products', 'vl_family_member_id', 'product_id')->withPivot('quantity');
     }
     
     /**

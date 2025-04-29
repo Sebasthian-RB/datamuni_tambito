@@ -7,6 +7,7 @@
 
 @section('css')
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
 
     <!-- Estilos personalizados -->
     <style>
@@ -428,34 +429,78 @@
                                     </div>   
                                 </div>
 
-                                <!-- Campo: Dirección -->
-                                <div class="form-group mb-4">
-                                    <label for="address" class="font-weight-bold">
-                                        <i class="fas fa-map-marker-alt mr-2"></i>Dirección
-                                    </label>
-                                    <input type="text" class="form-control @error('address') is-invalid @enderror" id="address" name="address" value="{{ old('address') }}" placeholder="Ej: Av. Principal 123">
-                                    @error('address')
-                                        <span class="invalid-feedback">{{ $message }}</span>
-                                    @enderror
+                                <div class="row">
+                                    <!-- Campo: Dirección -->
+                                    <div class="col-md-8">
+                                        <div class="form-group mb-4">
+                                            <label for="address" class="font-weight-bold">
+                                                <i class="fas fa-map-marker-alt mr-2"></i>Dirección
+                                            </label>
+                                            <input type="text" class="form-control @error('address') is-invalid @enderror" id="address" name="address" value="{{ old('address') }}" placeholder="Ej: Av. Principal 123">
+                                            @error('address')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <!-- Campo: Tipo de Vivienda -->
+                                    <div class="col-md-4">
+                                        <div class="form-group mb-4">
+                                            <label for="dwelling_type" class="font-weight-bold">
+                                                <i class="fas fa-home mr-2"></i>Tipo de Vivienda
+                                            </label>
+                                            <select class="form-control @error('dwelling_type') is-invalid @enderror" id="dwelling_type" name="dwelling_type">
+                                                <option value="" disabled selected>Seleccione el tipo de vivienda</option>
+                                                @foreach($dwellingTypes as $type)
+                                                    <option value="{{ $type }}" {{ old('dwelling_type') == $type ? 'selected' : '' }}>{{ $type }}</option>
+                                                @endforeach
+                                            </select>
+                                            
+                                            @error('dwelling_type')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <!-- Campo: Tipo de Vivienda -->
-                                <div class="form-group mb-4">
-                                    <label for="dwelling_type" class="font-weight-bold">
-                                        <i class="fas fa-home mr-2"></i>Tipo de Vivienda
-                                    </label>
-                                    <select class="form-control @error('dwelling_type') is-invalid @enderror" id="dwelling_type" name="dwelling_type">
-                                        <option value="" disabled selected>Seleccione el tipo de vivienda</option>
-                                        @foreach($dwellingTypes as $type)
-                                            <option value="{{ $type }}" {{ old('dwelling_type') == $type ? 'selected' : '' }}>{{ $type }}</option>
-                                        @endforeach
-                                    </select>
-                                    
-                                    @error('dwelling_type')
-                                        <span class="invalid-feedback">{{ $message }}</span>
-                                    @enderror
-                                </div>
+                                <div class="row">
+                                    <!-- Campo: Estado de SISFOH -->
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-4">
+                                            <label for="has_sisfoh" class="font-weight-bold">
+                                                <i class="fas fa-money-check mr-2"></i>Estado SISFOH
+                                            </label>
+                                            <span class="text-danger">*</span>
+                                            <select class="form-control @error('has_sisfoh') is-invalid @enderror" id="has_sisfoh" name="has_sisfoh" required>
+                                                <option value="" disabled selected>Seleccione el estado SISFOH</option>
+                                                <option value="1" {{ old('has_sisfoh') == '1' ? 'selected' : '' }}>Sí</option>
+                                                <option value="0" {{ old('has_sisfoh') == '0' ? 'selected' : '' }}>No</option>
+                                            </select>
+                                            @error('has_sisfoh')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
 
+                                    <!-- Campo: Clasificación SISFOH -->
+                                    <div class="col-md-6">                                        
+                                        <div class="form-group mb-4">
+                                            <label for="sisfoh_classification" class="font-weight-bold">
+                                                <i class="fas fa-list-alt mr-2"></i>Clasificación SISFOH
+                                            </label>
+                                            <select class="form-control @error('sisfoh_classification') is-invalid @enderror" id="sisfoh_classification" name="sisfoh_classification">
+                                                <option value="" disabled selected>Seleccione la clasificación SISFOH</option>
+                                                @foreach($sisfohClassifications as $classification)
+                                                    <option value="{{ $classification }}" {{ old('sisfoh_classification') == $classification ? 'selected' : '' }}>{{ $classification }}</option>
+                                                @endforeach
+                                            </select>                                    
+                                            @error('sisfoh_classification')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>                                   
+                                    </div>   
+                                </div>
+                                
                                 <!-- Campo: Nivel Educativo -->
                                 <div class="form-group mb-4">
                                     <label for="education_level" class="font-weight-bold">

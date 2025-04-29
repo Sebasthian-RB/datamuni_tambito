@@ -34,19 +34,23 @@ class UpdateVlMinorRequest extends FormRequest
 
         // Definir el tamaño máximo de id utilizando el operador match
         $this->maxIdLength = match ($identityDocument) {
-            'DNI' => 8,
-            'CNV' => 12,
-            default => 8,
+            'DNI' => 8, 
+            'CNV' => 8, 
+            'Carnet de Extranjería' => 9, 
+            'Pasaporte' => 20, 
+            'Otro' => 20, 
+            default => 8, 
         };
 
         return [
             'id' => [
                 'required',
                 'string',
-                'min:' . $this->maxIdLength, 
-                'max:' . $this->maxIdLength, // Aplica la longitud dinámica para el id
+                // Solo se aplica min y max para "DNI", "CNV", "Carnet de Extranjería" y "Pasaporte", no para "Otro"
+                $identityDocument == 'Otro' ? 'max:' . $this->maxIdLength : 'min:' . $this->maxIdLength, 
+                'max:' . ($identityDocument == 'Otro' ? 20 : $this->maxIdLength), // Para 'Otro' solo max, y para otros documentos min/max igual
                 'unique:vl_minors,id,' . $this->vl_minor->id, //El id debe ser único
-                'regex:/^\d+$/', // El id debe ser un número entero
+                'regex:/^' . ($identityDocument == 'Pasaporte' || $identityDocument == 'Otro' ? '[A-Za-z0-9]+' : '\d+') . '$/',  // Alfanumérico para Pasaporte y Otro, numérico solo para otros documentos
             ],
             'identity_document' => [
                 'required',
@@ -105,7 +109,7 @@ class UpdateVlMinorRequest extends FormRequest
             ],
             'dwelling_type' => [
                 'nullable',
-                'in:Propio,Alquilado,Cedido,Vivienda Social',
+                'in:Propio,Alquilado,Cedido,Vivienda Social,Otros',
             ],
             'education_level' => [
                 'nullable',
@@ -114,7 +118,7 @@ class UpdateVlMinorRequest extends FormRequest
             'condition' => [
                 'required',
                 'string',
-                'regex:/^[A-Za-záéíóúüñÑÜ\s\'-]+$/', // Permitido: letras (con acentos, ñ, ü) y espacios
+                'regex:/^[A-Za-záéíóúüñÑÜ0-9\s\'-]+$/', // Permitido: letras (con acentos, ñ, ü), números y espacios
             ],
             'disability' => [
                 'nullable',
@@ -123,6 +127,16 @@ class UpdateVlMinorRequest extends FormRequest
             'status' => [
                 'required',
                 'boolean',
+            ],
+            'has_sisfoh' => [
+                'required',
+                'boolean',
+            ],
+            'sisfoh_classification' => [
+                'nullable',
+                'string',
+                'max:20',
+                'regex:/^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9\s]+$/'
             ],
             'vl_family_member_id' => [
                 'required',
@@ -133,7 +147,7 @@ class UpdateVlMinorRequest extends FormRequest
                 'required',
                 'string',
                 'max:100',
-                'in:Hijo(a),Socio(a),Otro Familiar',
+                'in:Hijo(a),Nieto(a),Sobrino(a),Hermano(a),Primo(a),Socio(a),Otro Familiar',
             ],
         ];
     }
@@ -145,14 +159,19 @@ class UpdateVlMinorRequest extends FormRequest
      */
     public function messages(): array
     {
+        $identityDocument = $this->input('identity_document'); 
+        
         return [
             'id.required' => 'El campo ID es obligatorio.',
             'id.string' => 'El ID debe ser una cadena de texto.',
             'id.min' => 'El ID debe tener al menos ' . $this->maxIdLength . ' caracteres.',
             'id.max' => "El ID no debe exceder los {$this->maxIdLength} caracteres.",
             'id.unique' => 'El ID ya está registrado en el sistema.',
-            'id.regex' => 'El ID debe ser un número entero.',
-    
+            'id.regex' => match ($identityDocument) {
+                'Pasaporte' => 'El ID debe ser alfanumérico.',
+                'Otro' => 'El ID debe ser alfanumérico.',
+                default => 'El ID debe ser un número entero.',
+            },    
             'identity_document.required' => 'El documento de identidad es obligatorio.',
             'identity_document.string' => 'El documento de identidad debe ser una cadena de texto.',
             'identity_document.max' => 'El documento de identidad no debe exceder los 80 caracteres.',
@@ -193,14 +212,14 @@ class UpdateVlMinorRequest extends FormRequest
             'address.regex' => 'El campo solo puede contener letras (mayúsculas y minúsculas) del alfabeto español, números, espacios, y los siguientes caracteres especiales: punto, coma, apóstrofe, guion, barra, paréntesis, corchetes, dos puntos y punto y coma.',
     
             'dwelling_type.required' => 'El tipo de vivienda es obligatorio.',
-            'dwelling_type.in' => 'El tipo de vivienda debe ser: Propio, Alquilado, Cedido, Vivienda Social.',
+            'dwelling_type.in' => 'El tipo de vivienda debe ser: Propio, Alquilado, Cedido, Vivienda Social, Otros.',
     
             'education_level.nullable' => 'El nivel educativo es opcional.',
             'education_level.in' => 'El nivel educativo debe ser uno de los siguientes: Ninguno, Inicial, Primaria, Secundaria, Técnico, Superior, Educación Especial.',
     
             'condition.required' => 'La condición es obligatoria.',
             'condition.string' => 'La condición debe ser un texto válido.',
-            'condition.regex' => 'La condición solo puede contener letras, espacios y caracteres especiales como acentos, ñ, ü, y guiones.',
+            'condition.regex' => 'El campo condición solo admite: letras (a-z, A-Z, áéíóúüñÑ), números (0-9), espacios, apóstrofes (\') y guiones (-).',
 
             'disability.required' => 'El campo discapacidad es obligatorio.',
             'disability.boolean' => 'El campo discapacidad debe ser un valor booleano (verdadero o falso).',
@@ -208,6 +227,13 @@ class UpdateVlMinorRequest extends FormRequest
             'status.required' => 'El estado es obligatorio.',
             'status.boolean' => 'El estado debe ser un valor booleano (verdadero o falso).',
     
+            'has_sisfoh.required' => 'El campo "¿Tiene SISFOH?" es obligatorio.',
+            'has_sisfoh.boolean' => 'El campo "¿Tiene SISFOH?" debe ser verdadero o falso.',
+
+            'sisfoh_classification.string' => 'La clasificación SISFOH debe ser un texto.',
+            'sisfoh_classification.max' => 'La clasificación SISFOH no debe exceder los 20 caracteres.',
+            'sisfoh_classification.regex' => 'La clasificación SISFOH solo puede contener letras (incluyendo ñ y acentos), números y espacios.',
+            
             'vl_family_member_id.required' => 'El miembro de familia relacionado es obligatorio.',
             'vl_family_member_id.string' => 'El ID del miembro de familia debe ser una cadena de texto.',
             'vl_family_member_id.exists' => 'El miembro de familia seleccionado no existe en el sistema.',
@@ -215,7 +241,7 @@ class UpdateVlMinorRequest extends FormRequest
             'kinship.required' => 'El parentesco con el familiar es obligatorio.',
             'kinship.string' => 'El parentesco con el familiar debe ser una cadena de texto.',
             'kinship.max' => 'El parentesco con el familiar no debe exceder los 100 caracteres.',
-            'kinship.in' => 'El parentesco debe ser uno de los siguientes: Hijo(a), Socio(a), Otro Familiar.',
+            'kinship.in' => 'El parentesco debe ser uno de los siguientes: Hijo(a), Nieto(a), Sobrino(a), Hermano(a), Primo(a), Socio(a), Otro Familiar.',
         ];
     }
 
@@ -242,6 +268,8 @@ class UpdateVlMinorRequest extends FormRequest
             'condition' => 'condición',
             'disability' => 'discapacidad',
             'status' => 'estado',
+            'has_sisfoh' => 'estado SISFOH?',
+            'sisfoh_classification' => 'clasificación SISFOH',
             'vl_family_member_id' => 'miembro de familia relacionado',
             'kinship' => 'parentesco',
         ];

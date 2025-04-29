@@ -8,6 +8,8 @@
 @endpush
 
 @section('css')
+    <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
+
     <style>
         /* Contenedor principal */
         .header-container {
@@ -177,12 +179,6 @@
                                         <p style="font-size: 0.9rem; margin-top: 8px; margin-bottom: 0;">Estadísticas</p>
                                     </a>
                                 </div>
-                                <div class="col-lg-2 col-md-4 col-6">
-                                    <a href="{{ route('committees.create') }}" class="small-box" style="display: block; background-color: #EEEEEE; text-align: center; padding: 12px 10px; color: #3B1E54; text-decoration: none; border-radius: 8px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); transition: background-color 0.3s;">
-                                        <i class="fas fa-file-export" style="font-size: 1.5rem;"></i>
-                                        <p style="font-size: 0.9rem; margin-top: 8px; margin-bottom: 0;">Exportar</p>
-                                    </a>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -266,28 +262,6 @@
                                     </div>
                                 </div>
         
-                                <!-- Filtro de Rango de Número de Beneficiarios -->
-                                <div class="col-12 col-md-2">
-                                    <div class="input-group">
-                                        <p class="w-100 mb-1" style="font-size: 0.875rem; font-weight: 500; color: #3B1E54; margin-bottom: 5px;">Número de Beneficiarios</p>
-                                        <!-- Input de Beneficiarios (Mínimo) -->
-                                        <input type="number" name="min_beneficiaries_count" id="min_beneficiaries_count" class="form-control shadow-sm border-0 rounded-3" placeholder="Min." value="{{ request('min_beneficiaries_count') }}" style="height: 40px; font-size: 0.875rem;">
-
-                                        <!-- Guion separador sin borde -->
-                                        <span class="input-group-text" style="background-color: #ffffff; color: #4c4c4c; font-size: 1.1rem; padding: 0 5px; border: none;">
-                                            -
-                                        </span>
-
-                                        <!-- Input de Beneficiarios (Máximo) -->
-                                        <input type="number" name="max_beneficiaries_count" id="max_beneficiaries_count" class="form-control shadow-sm border-0 rounded-3" placeholder="Max." value="{{ request('max_beneficiaries_count') }}" style="height: 40px; font-size: 0.875rem;">
-                                        
-                                        <!-- Icono -->
-                                        <span class="input-group-text" style="background-color: #9B7EBD; color: white; border-radius: 0 30px 30px 0;">
-                                            <i class="fas fa-users"></i>
-                                        </span>
-                                    </div>
-                                </div>
-        
                                 <!-- Filtro de Sector -->
                                 <div class="col-12 col-md-2">
                                     <div class="input-group">
@@ -340,7 +314,7 @@
                             {{ $committee->name }}
                         </h3>
                         <p style="font-size: 0.8rem; font-weight: 300; color: white; margin-top: 2px; margin-bottom: 0;">
-                            Comité N° {{ $committee->id }}
+                            Comité N° {{ $committee->committee_number }}
                         </p>
                     </div>
 

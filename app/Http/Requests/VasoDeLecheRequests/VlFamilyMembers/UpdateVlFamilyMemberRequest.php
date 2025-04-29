@@ -34,9 +34,10 @@ class UpdateVlFamilyMemberRequest extends FormRequest
 
         // Definir el tamaño máximo de id utilizando el operador match
         $this->maxIdLength = match ($identityDocument) {
-            'DNI' => 8,
-            'Carnet de Extranjería' => 20,
-            'Otro' => 30,
+            'DNI' => 8, 
+            'Carnet de Extranjería' => 9, 
+            'Pasaporte' => 20, 
+            'Otro' => 20, 
             default => 8, 
         };
 
@@ -44,16 +45,16 @@ class UpdateVlFamilyMemberRequest extends FormRequest
             'id' => [
                 'required',
                 'string',
-                'min:' . $this->maxIdLength,  // Aplica la longitud mínima
-                'max:' . $this->maxIdLength,  // Aplica la longitud máxima
+                $identityDocument == 'Otro' ? 'max:' . $this->maxIdLength : 'min:' . $this->maxIdLength, 
+                'max:' . ($identityDocument == 'Otro' ? 20 : $this->maxIdLength), // Para 'Otro' solo max, y para otros documentos min/max igual
                 Rule::unique('vl_family_members', 'id')->ignore($this->route('vl_family_member')), // Usar ignore para excluir el ID actual
-                'regex:/^\d+$/', // El id debe ser un número entero
+                'regex:/^' . ($identityDocument == 'Pasaporte' || $identityDocument == 'Otro' ? '[A-Za-z0-9]+' : '\d+') . '$/',  // Alfanumérico para Pasaporte y Otro, numérico solo para otros documentos
             ],
             'identity_document' => [
                 'required',
                 'string',
                 'max:80',
-                'in:DNI,Carnet de Extranjería,Otro',
+                'regex:/^[A-Za-záéíóúüñÑÜ0-9\s]+$/', // Permitido: letras (con acentos, ñ, ü), números y espacios
             ],
             'given_name' => [
                 'required',
@@ -83,21 +84,27 @@ class UpdateVlFamilyMemberRequest extends FormRequest
      */
     public function messages()
     {
+        $identityDocument = $this->input('identity_document'); 
+
         return [
             'id' => [
                 'required' => 'El campo ID es obligatorio.',
                 'string' => 'El ID debe ser una cadena de texto.',
-                'min' => 'El ID debe tener ' . $this->maxIdLength . ' caracteres.',
-                'max' => 'El ID no debe exceder los ' . $this->maxIdLength . ' caracteres.',
+                'id.min' => 'El ID debe tener al menos ' . $this->maxIdLength . ' caracteres.',
+                'id.max' => "El ID no debe exceder los {$this->maxIdLength} caracteres.",
                 'unique' => 'El ID ya ha sido registrado, debe ser único.',
-                'regex' => 'El ID debe contener solo números.',
+                'id.regex' => match ($identityDocument) {
+                    'Pasaporte' => 'El ID debe ser alfanumérico.',
+                    'Otro' => 'El ID debe ser alfanumérico.',
+                    default => 'El ID debe ser un número entero.',
+                },
             ],
             
             'identity_document' => [
                 'required' => 'El tipo de documento de identidad es obligatorio.',
                 'string' => 'El tipo de documento de identidad debe ser una cadena de texto.',
                 'max' => 'El tipo de documento de identidad no debe exceder los 80 caracteres.',
-                'in' => 'El tipo de documento de identidad debe ser uno de los siguientes: DNI, Carnet de Extranjería, Otro.',
+                'regex' => 'El documento de identidad solo debe contener letras, números y espacios.',
             ],
         
             'given_name' => [

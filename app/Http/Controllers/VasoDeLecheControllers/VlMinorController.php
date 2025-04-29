@@ -14,6 +14,8 @@ use App\Http\Requests\VasoDeLecheRequests\VlMinors\DestroyVlMinorRequest;
 
 use App\Models\VasoDeLecheModels\VlFamilyMember;
 
+use Illuminate\Support\Facades\DB;
+
 class VlMinorController extends Controller
 {
     /**
@@ -24,7 +26,22 @@ class VlMinorController extends Controller
      */
     public function index(IndexVlMinorRequest $request)
     {
-        $vlMinors = VlMinor::paginate(15);
+        $validated = $request->validated();
+        $searchId = $validated['search_id'] ?? null;
+
+        $vlMinors = VlMinor::when($searchId, function($query) use ($searchId) {
+                return $query->where(DB::raw('CAST(id AS CHAR)'), 'LIKE', "%{$searchId}%");
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(15)
+            ->appends(['search_id' => $searchId]);
+
+        // Mensaje si no hay resultados en búsqueda
+        if($searchId && $vlMinors->isEmpty()) {
+            return redirect()->route('vl_minors.index')
+                ->with('info', 'No se encontraron menores con el ID: ' . $searchId);
+        }
+
         return view('areas.VasoDeLecheViews.VlMinors.index', compact('vlMinors'));
     }
 
@@ -37,10 +54,11 @@ class VlMinorController extends Controller
     public function create(CreateVlMinorRequest $request)
     {
         // Definir las opciones disponibles para los selects
-        $documentTypes = ['DNI', 'Pasaporte', 'Cédula de Extranjería'];  //Para el menor de edad
+        $documentTypes = ['DNI', 'CNV', 'Pasaporte', 'Carnet de Extranjería', 'Otro'];  //Para el menor de edad
         $identityDocumentTypes = [
             'DNI' => 'DNI',
             'Carnet de Extranjería' => 'Carnet de Extranjería',
+            'Pasaporte' => 'Pasaporte',
             'Otro' => 'Otro',
         ]; // Para el familiar (agregar)
         $sexTypes = [
@@ -48,15 +66,22 @@ class VlMinorController extends Controller
             1 => 'Masculino',
         ];
         $educationLevels = ['Ninguno', 'Inicial', 'Primaria', 'Secundaria', 'Técnico', 'Superior', 'Educación Especial'];
-        $conditions = ['Gestante', 'Lactante', 'Menores de 7 años', 'Anciano', 'Desnutrición Severa', 'Discapacitado', 'Persona con TBC'];
+        $conditions = ['Menor de 1 año', 'Niño de 1 a 6 años', 'Niño de 7 a 13 años', 'Madre gestante', 'Madre lactante', 'Anciano', 'Discapacitado', 'Persona con TBC'];
         $disabilities = [
             0 => 'No',
             1 => 'Sí',
         ];
-        $dwellingTypes = ['Propio', 'Alquilado', 'Cedido', 'Vivienda Social'];
+        $dwellingTypes = ['Propio', 'Alquilado', 'Cedido', 'Vivienda Social', 'Otros'];
 
-        $kinships = ['Hijo(a)', 'Socio(a)', 'Otro Familiar'];
+        $kinships = ['Hijo(a)', 'Nieto(a)', 'Sobrino(a)', 'Hermano(a)', 'Primo(a)', 'Socio(a)', 'Otro Familiar'];
 
+        $sisfohClassifications = ['No Pobre', 'Pobre', 'Pobre Extremo'];
+
+        $hasSisfoh = [
+            '0' => 'No',
+            '1' => 'Sí',
+        ];
+        
         $status = [
             0 => 'No',
             1 => 'Sí',
@@ -76,7 +101,8 @@ class VlMinorController extends Controller
             'vlFamilyMembers',
             'kinships', 
             'status',
-            'identityDocumentTypes'
+            'identityDocumentTypes',
+            'sisfohClassifications'
         ));
     }
 
@@ -125,11 +151,12 @@ class VlMinorController extends Controller
      */
     public function edit(EditVlMinorRequest $request, VlMinor $vlMinor)
     {
-        // Aquí se definen las opciones disponibles para los selects
-        $documentTypes = ['DNI', 'Pasaporte', 'Cédula de Extranjería'];  //Para el menor de edad
+        // Definir las opciones disponibles para los selects
+        $documentTypes = ['DNI', 'CNV', 'Pasaporte', 'Carnet de Extranjería', 'Otro'];  //Para el menor de edad
         $identityDocumentTypes = [
             'DNI' => 'DNI',
             'Carnet de Extranjería' => 'Carnet de Extranjería',
+            'Pasaporte' => 'Pasaporte',
             'Otro' => 'Otro',
         ]; // Para el familiar (agregar)
         $sexTypes = [
@@ -137,14 +164,21 @@ class VlMinorController extends Controller
             1 => 'Masculino',
         ];
         $educationLevels = ['Ninguno', 'Inicial', 'Primaria', 'Secundaria', 'Técnico', 'Superior', 'Educación Especial'];
-        $conditions = ['Gestante', 'Lactante', 'Menores de 7 años', 'Anciano', 'Desnutrición Severa', 'Discapacitado', 'Persona con TBC'];
+        $conditions = ['Menor de 1 año', 'Niño de 1 a 6 años', 'Niño de 7 a 13 años', 'Madre gestante', 'Madre lactante', 'Anciano', 'Discapacitado', 'Persona con TBC'];
         $disabilities = [
             0 => 'No',
             1 => 'Sí',
         ];
-        $dwellingTypes = ['Propio', 'Alquilado', 'Cedido', 'Vivienda Social'];
+        $dwellingTypes = ['Propio', 'Alquilado', 'Cedido', 'Vivienda Social', 'Otros'];
 
-        $kinships = ['Hijo(a)', 'Socio(a)', 'Otro Familiar'];
+        $kinships = ['Hijo(a)', 'Nieto(a)', 'Sobrino(a)', 'Hermano(a)', 'Primo(a)', 'Socio(a)', 'Otro Familiar'];
+
+        $sisfohClassifications = ['No Pobre', 'Pobre', 'Pobre Extremo'];
+
+        $hasSisfoh = [
+            '0' => 'No',
+            '1' => 'Sí',
+        ];
 
         $status = [
             0 => 'No',
@@ -171,7 +205,8 @@ class VlMinorController extends Controller
             'kinships',
             'status',
             'identityDocumentTypes',
-            'vlMinor'
+            'vlMinor',
+            'sisfohClassifications'
         ));
     } 
 

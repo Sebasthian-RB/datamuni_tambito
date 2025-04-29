@@ -371,6 +371,95 @@
     currentChartInstance = new Chart(document.getElementById('currentChart'), config);
 }
 
+
+function loadBirthdaysByMonthChart() {
+    // Configuración de meses en español
+    const monthNames = [
+        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
+        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    ];
+    
+    // Procesar datos del servidor
+    const serverData = @json($birthdaysByMonth);
+    let counts = Array(12).fill(0);
+    
+    serverData.forEach(item => {
+        if (item.month >= 1 && item.month <= 12) {
+            counts[item.month - 1] = item.count;
+        }
+    });
+
+    // Calcular total para el título
+    const total = counts.reduce((sum, count) => sum + count, 0);
+
+    // Configuración del gráfico
+    const chartData = {
+        labels: monthNames,
+        datasets: [{
+            label: 'Cantidad de Cumpleaños',
+            data: counts,
+            backgroundColor: 'rgba(75, 192, 192, 0.7)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1,
+            hoverBackgroundColor: 'rgba(75, 192, 192, 1)'
+        }]
+    };
+
+    const config = {
+        type: 'bar',
+        data: chartData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: `Cumpleaños por Mes (Total: ${total})`,
+                    font: {
+                        size: 18,
+                        weight: 'bold'
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `${context.raw} cumpleaños`;
+                        }
+                    }
+                },
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1,
+                        precision: 0
+                    }
+                },
+                x: {
+                    ticks: {
+                        autoSkip: false,
+                        maxRotation: 45,
+                        minRotation: 45
+                    }
+                }
+            }
+        }
+    };
+
+    // Renderizar el gráfico
+    if (currentChartInstance) {
+        currentChartInstance.destroy();
+    }
+    currentChartInstance = new Chart(
+        document.getElementById('currentChart'),
+        config
+    );
+}
+
         // Función para cargar un gráfico genérico (placeholder para otros gráficos)
         function loadChart(target) {
             // Destruir el gráfico actual si existe
@@ -433,6 +522,7 @@ document.querySelectorAll('.dashboard-btn').forEach(button => {
             const minAge = parseInt(document.getElementById('minAge').value);
             const maxAge = parseInt(document.getElementById('maxAge').value);
             loadAdultsByAgeChart(grouping, minAge, maxAge);
+            
         } else if (target === 'adultsByDisability') {
             loadAdultsByDisabilityChart();
         } else if (target === 'birthdaysByMonth') {

@@ -26,11 +26,20 @@ class CiamDashboardController extends Controller
         ->groupBy('disability')
         ->get();
 
+        // Nueva consulta para cumpleaños por mes
+    $birthdaysByMonth = DB::table('elderly_adults')
+    ->selectRaw('MONTH(birth_date) as month, COUNT(id) as count')
+    ->whereNotNull('birth_date')
+    ->groupBy('month')
+    ->orderBy('month')
+    ->get();
+
 
         // 📌 Pasar datos a la vista
         return view('areas.CIAMViews.CIAMDashboard', [
             'adultsByAge' => $adultsByAge,
             'adultsByDisability' => $adultsByDisability,
+            'birthdaysByMonth' => $birthdaysByMonth,
 
         ]);
     }

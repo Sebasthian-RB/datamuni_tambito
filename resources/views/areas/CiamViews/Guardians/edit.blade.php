@@ -17,27 +17,29 @@
             @method('PUT')
 
             <!-- Campo para Tipo de Documento -->
-            <div class="form-group">
-                <label for="document_type" class="font-weight-bold" style="color: #6E8E59;">Tipo de Documento</label>
-                <select id="document_type" name="document_type" class="form-control @error('document_type') is-invalid @enderror" required>
-                    @foreach(['DNI', 'Pasaporte', 'Carnet', 'Cedula'] as $type)
-                    <option value="{{ $type }}" {{ old('document_type', $guardian->document_type) == $type ? 'selected' : '' }}>{{ $type }}</option>
-                    @endforeach
-                </select>
-                @error('document_type')
-                <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
+<div class="form-group">
+    <label for="document_type" style="color: #6E8E59;">Tipo de Documento</label>
+    <select id="document_type" name="document_type" class="form-control @error('document_type') is-invalid @enderror" required>
+        <option value="" disabled>Seleccione</option>
+        @foreach(['DNI', 'Pasaporte', 'Carnet', 'Cedula'] as $type)
+        <option value="{{ $type }}" {{ old('document_type', $guardian->document_type) == $type ? 'selected' : '' }}>{{ $type }}</option>
+        @endforeach
+    </select>
+    @error('document_type')
+    <span class="text-danger">{{ $message }}</span>
+    @enderror
+</div>
 
-            <!-- Campo para el ID (Número de Documento) -->
-            <div class="form-group">
-                <label for="id" class="font-weight-bold" style="color: #6E8E59;">Número de Documento</label>
-                <input type="text" id="id" name="id" class="form-control @error('id') is-invalid @enderror"
-                    value="{{ old('id', $guardian->id) }}" placeholder="Ingrese el número de documento" required>
-                @error('id')
-                <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
+<!-- Campo para el ID (Número de Documento) -->
+<div class="form-group">
+    <label for="id" style="color: #6E8E59;">Número de Documento</label>
+    <input type="text" id="id" name="id" class="form-control @error('id') is-invalid @enderror"
+        value="{{ old('id', $guardian->id) }}" placeholder="Seleccione tipo de documento primero" required>
+    @error('id')
+    <span class="text-danger">{{ $message }}</span>
+    @enderror
+    <small id="idHelp" class="form-text text-muted"></small>
+</div>
 
             <!-- Campo para Nombres -->
             <div class="form-group">
@@ -129,5 +131,64 @@
         relationshipSelect.addEventListener('change', toggleOtherRelationship);
         toggleOtherRelationship(); // Ejecutar al cargar la página
     });
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const documentType = document.getElementById('document_type');
+    const idInput = document.getElementById('id');
+    const idHelp = document.getElementById('idHelp');
+    
+    function updateInputRestrictions() {
+        const selectedType = documentType.value;
+        
+        switch(selectedType) {
+            case 'DNI':
+                idInput.maxLength = 8;
+                idInput.pattern = '[0-9]*';
+                idInput.placeholder = 'Ingrese 8 dígitos numéricos';
+                idInput.title = 'Solo se permiten números (8 dígitos)';
+                idHelp.textContent = 'Solo se permiten números (8 dígitos)';
+                break;
+            case 'Pasaporte':
+                idInput.maxLength = 9;
+                idInput.pattern = '[A-Za-z0-9]*';
+                idInput.placeholder = 'Ingrese 9 caracteres alfanuméricos';
+                idInput.title = 'Se permiten letras y números (9 caracteres)';
+                idHelp.textContent = 'Se permiten letras y números (9 caracteres)';
+                break;
+            case 'Carnet':
+                idInput.maxLength = 12;
+                idInput.pattern = '[0-9]*';
+                idInput.placeholder = 'Ingrese 12 dígitos numéricos';
+                idInput.title = 'Solo se permiten números (12 dígitos)';
+                idHelp.textContent = 'Solo se permiten números (12 dígitos)';
+                break;
+            case 'Cedula':
+                idInput.maxLength = 10;
+                idInput.pattern = '[0-9]*';
+                idInput.placeholder = 'Ingrese 10 dígitos numéricos';
+                idInput.title = 'Solo se permiten números (10 dígitos)';
+                idHelp.textContent = 'Solo se permiten números (10 dígitos)';
+                break;
+            default:
+                idInput.maxLength = 12;
+                idInput.pattern = '[A-Za-z0-9]*';
+                idInput.placeholder = 'Seleccione tipo de documento primero';
+                idHelp.textContent = '';
+        }
+    }
+    
+    documentType.addEventListener('change', updateInputRestrictions);
+    
+    // Validar en tiempo real mientras se escribe
+    idInput.addEventListener('input', function() {
+        const selectedType = documentType.value;
+        const regex = selectedType === 'Pasaporte' ? /[^A-Za-z0-9]/g : /[^0-9]/g;
+        this.value = this.value.replace(regex, '');
+    });
+    
+    // Inicializar según el valor actual del guardián
+    updateInputRestrictions();
+});
 </script>
 @stop

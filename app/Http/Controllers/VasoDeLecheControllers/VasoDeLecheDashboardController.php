@@ -27,19 +27,74 @@ class VasoDeLecheDashboardController extends Controller
             'activeMinors' => VlMinor::where('status', true)->count(),
             'families' => VlFamilyMember::count(),
             'committees' => Committee::count(),
-            'products' => Product::count()
+            'products' => Product::where('year', date('Y'))->count()
         ];
 
         // Distribución por sector (consulta optimizada)
         $sectorDistribution = DB::table('sectors')
-            ->select('sectors.name', DB::raw('COUNT(vl_minors.id) as total'))
+            ->select('sectors.name', DB::raw('COUNT(DISTINCT vl_minors.id) as total')) // Solo contar menores activos e ignora los repetidos
             ->join('committees', 'sectors.id', '=', 'committees.sector_id')
-            ->join('committee_vl_family_members', 'committees.id', '=', 'committee_vl_family_members.committee_id')
+            ->join('committee_vl_family_members', function ($join) {
+                $join->on('committees.id', '=', 'committee_vl_family_members.committee_id')
+                    ->where('committee_vl_family_members.status', 1); // Solo familiares activos en el comité
+            })
             ->join('vl_family_members', 'committee_vl_family_members.vl_family_member_id', '=', 'vl_family_members.id')
             ->join('vl_minors', 'vl_family_members.id', '=', 'vl_minors.vl_family_member_id')
-            ->where('vl_minors.status', true)
+            ->where('vl_minors.status', 1)  // Solo contar menores activos
             ->groupBy('sectors.id', 'sectors.name')
             ->get();
+
+
+        // Menores por condición agrupados por núcleo urbano (Urbano/Rural)
+        $urbanRuralDistribution = DB::table('vl_minors')
+            ->select(
+                'committees.urban_core',
+                'vl_minors.condition',
+                DB::raw('COUNT(DISTINCT vl_minors.id) as total')
+            )
+            ->join('vl_family_members', 'vl_minors.vl_family_member_id', '=', 'vl_family_members.id')
+            ->join('committee_vl_family_members', function($join) {
+                $join->on('vl_family_members.id', '=', 'committee_vl_family_members.vl_family_member_id')
+                    ->where('committee_vl_family_members.status', true); // Solo relaciones activas
+            })
+            ->join('committees', 'committee_vl_family_members.committee_id', '=', 'committees.id')
+            ->where('vl_minors.status', true)
+            ->groupBy('committees.urban_core', 'vl_minors.condition')
+            ->get()
+            ->groupBy('urban_core');
+
+        // Estadísticas SISFOH
+        $currentYear = date('Y');
+        $sisfohStats = [
+            'total' => [
+                'antiguos' => VlMinor::where('created_at', '<', "{$currentYear}-01-01")
+                    ->where('status', true)
+                    ->count(),
+                'nuevos' => VlMinor::whereYear('created_at', $currentYear)
+                    ->where('status', true)
+                    ->count()
+            ],
+            'con_dni' => [
+                'antiguos' => VlMinor::where('created_at', '<', "{$currentYear}-01-01")
+                    ->where('status', true)
+                    ->where('identity_document', 'DNI') // Solo verifica si el DNI está registrado
+                    ->count(),
+                'nuevos' => VlMinor::whereYear('created_at', $currentYear)
+                    ->where('status', true)
+                    ->where('identity_document', 'DNI') // Solo verifica si el DNI está registrado
+                    ->count()
+            ],
+            'con_sisfoh' => [
+                'antiguos' => VlMinor::where('created_at', '<', "{$currentYear}-01-01")
+                    ->where('status', true)
+                    ->where('has_sisfoh', true) // Asegura que el registro tenga SISFOH
+                    ->count(),
+                'nuevos' => VlMinor::whereYear('created_at', $currentYear)
+                    ->where('status', true)
+                    ->where('has_sisfoh', true) // Asegura que el registro tenga SISFOH
+                    ->count()
+            ]
+        ];
 
         // Datos para gráficos
         $chartData = [
@@ -48,7 +103,9 @@ class VasoDeLecheDashboardController extends Controller
             'conditions' => VlMinor::where('status', true)
                 ->select('condition', DB::raw('COUNT(*) as total'))
                 ->groupBy('condition')
-                ->get()
+                ->get(),
+            'urbanCoreConditions' => $urbanRuralDistribution,
+            'sisfohStats' => $sisfohStats
         ];
 
         // Últimos registros
@@ -67,7 +124,6 @@ class VasoDeLecheDashboardController extends Controller
             ->get()
         ];
 
-
         // Obtener comités para el select2
         $committees = Committee::with('sector')->get();
 
@@ -76,13 +132,22 @@ class VasoDeLecheDashboardController extends Controller
             return $this->getCommitteeStats($request->committee_id);
         }
 
-        return view('areas.VasoDeLecheViews.Dashboard.index', compact('stats', 'chartData', 'latestRecords' , 'committees'));
+        return view('areas.VasoDeLecheViews.Dashboard.index', compact('stats', 'chartData', 'latestRecords' , 'committees', 'sisfohStats'));
     }
 
     private function getCommitteeStats($committeeId)
     {
-        $committee = Committee::with(['sector', 'vlFamilyMembers.vlMinors'])->find($committeeId);
-
+        // Cargar el comité con los familiares activos y sus menores activos
+        $committee = Committee::with([
+            'sector', 
+            'vlFamilyMembers' => function ($query) {
+                $query->where('status', 1) // Solo familiares con status activo
+                    ->with(['vlMinors' => function ($query) {
+                        $query->where('status', 1); // Solo menores con status activo
+                    }]);
+            }
+        ])->find($committeeId);
+        
         $stats = [
             'total_beneficiarios' => $committee->vlFamilyMembers->flatMap->vlMinors->where('status', true)->count(),
             'total_miembros' => $committee->vlFamilyMembers->count(),
@@ -99,7 +164,8 @@ class VasoDeLecheDashboardController extends Controller
             'condition_distribution' => $committee->vlFamilyMembers->flatMap->vlMinors
                 ->where('status', true)
                 ->groupBy('condition')
-                ->map->count()
+                ->map->count(),
+            'urban_core' => $committee->urban_core 
         ];
 
         return response()->json($stats);

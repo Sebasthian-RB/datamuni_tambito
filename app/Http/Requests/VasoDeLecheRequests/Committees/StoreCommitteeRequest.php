@@ -44,10 +44,10 @@ class StoreCommitteeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => [
+            'committee_number' => [
                 'required',
                 'string',
-                'unique:committees,id', // Validación única del ID
+                'max:10',
                 'regex:/^\d+$/', // El id debe ser un número entero
             ],
 
@@ -88,11 +88,11 @@ class StoreCommitteeRequest extends FormRequest
     public function messages()
     {
         return [
-            'id' => [
-                'required' => 'El campo ID es obligatorio.',
-                'string' => 'El ID debe ser una cadena de texto.',
-                'unique' => 'El ID debe ser único. Este ya está en uso.',
-                'regex' => 'El ID solo puede contener números enteros.',
+            'committee_number' => [
+                'required' => 'El número de comité es obligatorio.',
+                'string' => 'El número de comité debe ser una cadena de texto.',
+                'max' => 'El número de comité debe ser máximo de 10 dígitos.',
+                'regex' => 'El número de comité solo puede contener números enteros.',
             ],
         
             'name' => [
@@ -131,7 +131,7 @@ class StoreCommitteeRequest extends FormRequest
     public function attributes()
     {
         return [
-            'id' => 'Número de comité',
+            'committee_number' => 'Número de comité',
             'name' => 'nombre del comité',
             'president' => 'nombre completo del presidente(a)',
             'urban_core' => 'núcleo urbano',
