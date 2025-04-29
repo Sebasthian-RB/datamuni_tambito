@@ -180,10 +180,9 @@ Route::middleware([
         Route::resource('om-dwellings', OmDwellingController::class);
         Route::resource('disabilities', DisabilityController::class);
         Route::resource('om-people', OmPersonController::class);
-        Route::middleware(['permission:psicologiaOmaped'])->group(function () {
             Route::resource('psychological-diagnoses', PsychologicalDiagnosisController::class);
             Route::resource('psychological-sessions', PsychologicalSessionController::class);
-        });
+        
         Route::get('/om_dashboard', [OmDashboardController::class, 'index'])->name('omdashboard');
         Route::get('/psy_dashboard', [PsychologyDashboardController::class, 'index'])->name('psydashboard');
 
