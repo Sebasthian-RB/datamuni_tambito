@@ -31,7 +31,7 @@ class StoreGuardianRequest extends FormRequest
                 Rule::unique('guardians', 'id'),
                 function ($attribute, $value, $fail) {
                     $documentType = $this->input('document_type');
-                    
+
                     if ($documentType === 'DNI') {
                         if (!preg_match('/^\d{8}$/', $value)) {
                             $fail('El DNI debe tener exactamente 8 dígitos numéricos.');
@@ -51,15 +51,15 @@ class StoreGuardianRequest extends FormRequest
                     }
                 },
             ],
-            
+
             'given_name' => 'required|string|max:50',
             'paternal_last_name' => 'required|string|max:50',
             'maternal_last_name' => 'nullable|string|max:50',
             'phone_number' => [
                 'nullable',
                 'string',
-                'max:15',
-                'regex:/^\+?[0-9]*$/', // Solo números y opcionalmente el prefijo "+"
+                'size:9',
+                'regex:/^[0-9]{9}$/',
             ],
             'relationship' => 'required|string|max:50',
             function ($attribute, $value, $fail) {
@@ -87,8 +87,8 @@ class StoreGuardianRequest extends FormRequest
             'paternal_last_name.required' => 'El apellido paterno es obligatorio.',
             'maternal_last_name.max' => 'El apellido materno no debe exceder los 50 caracteres.',
 
-            'phone_number.max' => 'El número de teléfono no debe exceder los 15 caracteres.',
-            'phone_number.regex' => 'El número de teléfono solo puede contener números y un signo "+" opcional.',
+            'phone_number.size' => 'El teléfono debe tener exactamente 9 dígitos.',
+            'phone_number.regex' => 'El teléfono solo debe contener números (0-9).',
 
             'relationship.required' => 'La relación con el adulto mayor es obligatoria.',
             'relationship.max' => 'La relación no debe exceder los 50 caracteres.',

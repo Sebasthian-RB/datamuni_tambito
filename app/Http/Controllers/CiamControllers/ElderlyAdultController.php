@@ -66,7 +66,10 @@ class ElderlyAdultController extends Controller
         } catch (QueryException $e) {
             DB::rollBack();
             Log::error('Error al guardar el adulto mayor: ' . $e->getMessage());
-            return back()->withErrors(['error' => 'Hubo un problema al guardar los datos.']);
+            // Mantiene todos los datos del formulario en caso de error
+            return back()
+                ->withInput()
+                ->withErrors(['error' => 'Hubo un problema al guardar los datos. Por favor, verifique la información.']);
         }
     }
 
@@ -110,7 +113,9 @@ class ElderlyAdultController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error al actualizar el adulto mayor: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Ocurrió un error al actualizar el adulto mayor.');
+            return back()
+                ->withInput()
+                ->withErrors(['error' => 'Ocurrió un error al actualizar. Verifique los datos.']);
         }
     }
 

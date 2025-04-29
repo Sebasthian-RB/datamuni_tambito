@@ -36,7 +36,7 @@ class UpdateSfhPersonRequest extends FormRequest
             'identity_document' => [
                 'required',
                 'string',
-                Rule::in(['DNI', 'Pasaporte', 'Carnet', 'Cedula']), // Solo estas opciones
+                Rule::in(['DNI', 'Pasaporte', 'Carnet de extranjeria', 'CPP', 'Cedula']), // Solo estas opciones
             ],
             'given_name' => [
                 'required',
@@ -122,7 +122,7 @@ class UpdateSfhPersonRequest extends FormRequest
 
             'identity_document.required' => 'El documento de identidad es obligatorio.',
             'identity_document.string' => 'El tipo de documento de identidad debe ser una cadena de texto.',
-            'identity_document.in' => 'El tipo de documento de identidad debe ser uno de los siguientes: DNI, Pasaporte, Carnet, Cedula.',
+            'identity_document.in' => 'El tipo de documento de identidad debe ser uno de los siguientes: DNI, Pasaporte, Carnet de extranjeria, CPP, Cedula.',
 
             'given_name.required' => 'El nombre es obligatorio.',
             'given_name.string' => 'El nombre debe ser una cadena de texto.',

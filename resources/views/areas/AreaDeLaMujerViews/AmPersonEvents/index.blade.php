@@ -29,12 +29,16 @@
                 <i class="fa fa-arrow-left"></i> Volver
             </a>
         </div>
+
+        <a href="{{ route('areaMujerAsistenciasExport', request()->query()) }}" class="btn btn-success shadow-sm"
+            style="border-radius: 8px; font-size: 1.1rem;">
+            <i class="fa fa-file-excel"></i> Exportar Excel
+        </a>
         <!-- Formulario de búsqueda con diseño compacto -->
         <div class="d-flex justify-content-start">
             <form method="GET" action="{{ route('am_person_events.index') }}" class="d-flex" style="max-width: 600px;">
                 <input type="text" name="search" class="form-control me-2" placeholder="Buscar por nombre o DNI"
                     value="{{ request('search') }}" style="border-radius: 8px; max-width: 250px;">
-
                 <select name="event" class="form-control me-2" style="border-radius: 8px; max-width: 250px;">
                     <option value="">Todos los eventos</option>
                     @foreach ($events as $event)

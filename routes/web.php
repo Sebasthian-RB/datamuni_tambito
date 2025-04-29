@@ -28,6 +28,7 @@ use App\Http\Controllers\AreaDeLaMujerControllers\ProgramController;
 use App\Http\Controllers\AreaDeLaMujerControllers\ViolenceController;
 
 use App\Http\Controllers\AreaDeLaMujerControllers\AmDashboardController; //dashboard de AM
+use App\Http\Controllers\AreaDeLaMujerControllers\ExportController;
 // Controladores del Área: Sisfoh
 
 use App\Http\Controllers\SisfohControllers\EnumeratorController;
@@ -106,6 +107,7 @@ Route::middleware([
         Route::resource('am_person_interventions', AmPersonInterventionController::class);
         Route::resource('am_person_violences', AmPersonViolenceController::class);
         Route::resource('am_person_events', AmPersonEventController::class);
+        Route::get('/am_person_events/asistencias/export', [ExportController::class, 'exportAsistencias'])->name('areaMujerAsistenciasExport');
         Route::get('/am_dashboard', [AmDashboardController::class, 'index'])->name('amdashboard');
     });
 

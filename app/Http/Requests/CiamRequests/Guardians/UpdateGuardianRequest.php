@@ -34,7 +34,7 @@ class UpdateGuardianRequest extends FormRequest
                 Rule::unique('guardians', 'id')->ignore($guardianId),
                 function ($attribute, $value, $fail) {
                     $documentType = $this->input('document_type');
-                    
+
                     if ($documentType === 'DNI') {
                         if (!preg_match('/^\d{8}$/', $value)) {
                             $fail('El DNI debe tener exactamente 8 dígitos numéricos.');
@@ -72,8 +72,8 @@ class UpdateGuardianRequest extends FormRequest
             'phone_number' => [
                 'nullable',
                 'string',
-                'max:15',
-                'regex:/^\+?[0-9]*$/', // Solo números y opcionalmente el prefijo "+"
+                'size:9', // Exactamente 9 caracteres
+                'regex:/^[0-9]{9}$/', // Solo 9 dígitos numéricos
             ],
             'relationship' => [
                 'required',
@@ -103,8 +103,8 @@ class UpdateGuardianRequest extends FormRequest
             'paternal_last_name.required' => 'El apellido paterno es obligatorio.',
             'paternal_last_name.max' => 'El apellido paterno no debe exceder los 50 caracteres.',
             'maternal_last_name.max' => 'El apellido materno no debe exceder los 50 caracteres.',
-            'phone_number.max' => 'El número de teléfono no debe exceder los 15 caracteres.',
-            'phone_number.regex' => 'El número de teléfono solo puede contener números y un signo "+" opcional.',
+            'phone_number.size' => 'El teléfono debe tener exactamente 9 dígitos.',
+            'phone_number.regex' => 'El teléfono solo debe contener números (0-9).',
             'relationship.required' => 'La relación con el adulto mayor es obligatoria.',
             'relationship.max' => 'La relación no debe exceder los 50 caracteres.',
         ];

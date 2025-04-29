@@ -90,8 +90,8 @@ class UpdateElderlyAdultRequest extends FormRequest
             'birth_date' => [
                 'required',
                 'date',
-                'before_or_equal:today', // No puede ser una fecha futura
-                'after_or_equal:' . now()->subYears(120)->format('Y-m-d'), // No debe tener más de 120 años
+                'before_or_equal:' . now()->subYears(60)->format('Y-m-d'), // No puede ser menor de 60 años
+                'after_or_equal:' . now()->subYears(125)->format('Y-m-d'), // No puede ser mayor de 125 años
             ],
 
             'address' => 'nullable|string|max:255',
@@ -99,6 +99,8 @@ class UpdateElderlyAdultRequest extends FormRequest
 
             'phone_number' => [
                 'nullable',
+                'string',
+                'size:9',
                 'regex:/^\d{9}$/',
             ],
 
@@ -155,7 +157,8 @@ class UpdateElderlyAdultRequest extends FormRequest
             'language.required' => 'Debe seleccionar al menos un idioma.',
             'language.min' => 'Debe seleccionar al menos un idioma.',
             'language.*.in' => 'El idioma seleccionado no es válido.',
-            'phone_number.regex' => 'El número de teléfono debe contener exactamente 9 dígitos numéricos.',
+            'phone_number.size' => 'El teléfono debe tener exactamente 9 dígitos.',
+            'phone_number.regex' => 'El teléfono solo debe contener números (0-9).',
 
             'household_members.integer' => 'El número de miembros del hogar debe ser un número entero.',
             'household_members.min' => 'Debe haber al menos 1 miembro en el hogar.',
