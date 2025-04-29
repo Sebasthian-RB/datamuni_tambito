@@ -45,6 +45,7 @@ class DisabilityController extends Controller
      */
     public function store(StoreDisabilityRequest $request)
     {
+        $this->authorize('crear');
         $disability = Disability::create($request->validated());
 
         if ($request->ajax()) {
@@ -86,6 +87,7 @@ class DisabilityController extends Controller
      */
     public function update(UpdateDisabilityRequest $request, Disability $disability)
     {
+        $this->authorize('editar');
         $disability->update($request->validated());
         return redirect()->route('disabilities.index')->with('success', '¡Discapacidad actualizada exitosamente!');
     }

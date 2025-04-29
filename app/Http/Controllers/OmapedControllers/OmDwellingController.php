@@ -45,6 +45,7 @@ class OmDwellingController extends Controller
      */
     public function store(StoreOmDwellingRequest $request)
     {
+        $this->authorize('crear');
         $dwelling = OmDwelling::create($request->validated());
 
         if ($request->ajax()) { // Cambiar de wantsJson() a ajax()
@@ -83,6 +84,7 @@ class OmDwellingController extends Controller
      */
     public function update(UpdateOmDwellingRequest $request, OmDwelling $omDwelling)
     {
+        $this->authorize('editar');
         $omDwelling->update($request->validated());
         return redirect()->route('om-dwellings.index')->with('success', '¡Vivienda actualizada exitosamente!');
     }

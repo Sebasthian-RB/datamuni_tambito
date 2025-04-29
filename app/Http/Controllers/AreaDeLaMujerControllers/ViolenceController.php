@@ -36,6 +36,7 @@ class ViolenceController extends Controller
      */
     public function store(StoreViolenceRequest $request)
     {
+        $this->authorize('crear');
         Violence::create($request->validated());
 
         return redirect()->route('violences.index')->with('success', 'Violencia creada exitosamente.');
@@ -64,6 +65,7 @@ class ViolenceController extends Controller
      */
     public function update(StoreViolenceRequest $request, Violence $violence)
     {
+        $this->authorize('editar');
 
         $violence->update($request->validated());
 

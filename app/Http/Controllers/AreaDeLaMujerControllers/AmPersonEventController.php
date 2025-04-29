@@ -66,7 +66,7 @@ class AmPersonEventController extends Controller
      */
     public function store(StoreAmPersonEventRequest $request)
     {
-
+        $this->authorize('crear');
         // Crea un nuevo registro utilizando los datos validados.
         AmPersonEvent::create($request->validated());
 
@@ -109,7 +109,7 @@ class AmPersonEventController extends Controller
      */
     public function update(UpdateAmPersonEventRequest $request, AmPersonEvent $amPersonEvent)
     {
-
+        $this->authorize('editar');
         // Actualiza el registro utilizando los datos validados.
         $amPersonEvent->update($request->validated());
 

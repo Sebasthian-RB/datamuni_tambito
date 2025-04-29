@@ -27,9 +27,10 @@
                 <span class="title-text">Gestión de Personas</span>
                 <div class="title-line"></div>
             </h1>
-            @can('crear')
-                <!-- Acciones principales -->
-                <div class="action-bar animate__animated animate__fadeInUp">
+
+            <!-- Acciones principales -->
+            <div class="action-bar animate__animated animate__fadeInUp">
+                @can('crear')
                     <a href="{{ route('om-people.create') }}" class="neo-btn">
                         <i class="fas fa-user-plus mr-2"></i>
                         <span class="btn-gradient-text">Nueva Persona</span>
@@ -100,9 +101,10 @@
                                     </div>
                                 </div>
                             </div>
-                            @can('ver detalles')
-                                <!-- Actualiza la sección de acciones de la tarjeta -->
-                                <div class="card-actions">
+
+                            <!-- Actualiza la sección de acciones de la tarjeta -->
+                            <div class="card-actions">
+                                @can('ver detalles')
                                     <a href="{{ route('om-people.show', $person->id) }}" class="action-btn view-btn"
                                         data-toggle="tooltip" title="Ver detalles">
                                         <i class="fas fa-eye"></i>

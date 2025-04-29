@@ -40,7 +40,7 @@ class ProgramController extends Controller
      */
     public function store(StoreProgramRequest $request)
     {
-
+        $this->authorize('crear');
         Program::create($request->validated());
         return redirect()->route('programs.index')->with('success', 'Programa creado con éxito.');
     }
@@ -68,7 +68,7 @@ class ProgramController extends Controller
      */
     public function update(UpdateProgramRequest $request, Program $program)
     {
-
+        $this->authorize('editar');
         $program->update($request->validated());
         return redirect()->route('programs.index')->with('success', 'Programa actualizado con éxito.');
     }

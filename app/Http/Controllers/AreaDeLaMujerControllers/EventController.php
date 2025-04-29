@@ -43,6 +43,7 @@ class EventController extends Controller
      */
     public function store(StoreEventRequest $request)
     {
+        $this->authorize('crear');
         Event::create($request->validated());
         return redirect()->route('events.index')->with('success', 'Evento creado con éxito.');
     }
@@ -71,6 +72,7 @@ class EventController extends Controller
      */
     public function update(UpdateEventRequest $request, Event $event)
     {
+        $this->authorize('editar');
         $event->update($request->validated());
         return redirect()->route('events.index')->with('success', 'Evento actualizado con éxito.');
     }

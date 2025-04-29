@@ -55,6 +55,7 @@ class AmPersonController extends Controller
      */
     public function store(StoreAmPersonRequest $request)
     {
+        $this->authorize('crear');
         // Crear la nueva persona con los datos validados
         $person = AmPerson::create($request->validated());
 
@@ -94,6 +95,7 @@ class AmPersonController extends Controller
      */
     public function update(UpdateAmPersonRequest $request, AmPerson $amPerson)
     {
+        $this->authorize('editar');
         $amPerson->update($request->validated());
 
         return redirect()->route('am_people.index')->with('success', 'Persona actualizada correctamente.');

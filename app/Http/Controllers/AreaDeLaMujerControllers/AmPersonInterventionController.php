@@ -50,6 +50,7 @@ class AmPersonInterventionController extends Controller
      */
     public function store(StoreAmPersonInterventionsRequest $request)
     {
+        $this->authorize('crear');
         AmPersonIntervention::create($request->validated());
         return redirect()->route('am_person_interventions.index')->with('success', 'Relación creada exitosamente.');
     }
@@ -79,6 +80,7 @@ class AmPersonInterventionController extends Controller
      */
     public function update(UpdateAmPersonInterventionsRequest $request, AmPersonIntervention $amPersonIntervention)
     {
+        $this->authorize('editar');
         $amPersonIntervention->update($request->validated());
         return redirect()->route('am_person_interventions.index')->with('success', 'Relación actualizada exitosamente.');
     }

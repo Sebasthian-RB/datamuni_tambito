@@ -45,6 +45,7 @@ class CaregiverController extends Controller
      */
     public function store(StoreCaregiverRequest $request)
     {
+        $this->authorize('crear');
         // Crear un nuevo cuidador con los datos validados
         $caregiver = Caregiver::create($request->validated());
 
@@ -85,6 +86,7 @@ class CaregiverController extends Controller
      */
     public function update(UpdateCaregiverRequest $request, Caregiver $caregiver)
     {
+        $this->authorize('editar');
         // Validar datos de entrada
         $caregiver->update($request->validated());
         return redirect()->route('caregivers.index')->with('success', '¡Cuidador actualizado exitosamente!');

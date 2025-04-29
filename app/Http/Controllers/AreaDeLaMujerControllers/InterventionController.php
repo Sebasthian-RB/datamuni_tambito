@@ -37,22 +37,22 @@ class InterventionController extends Controller
      */
     public function store(StoreInterventionRequest $request)
     {
+        $this->authorize('crear');
+        // Crear la intervención con datos validados
+        $intervention = Intervention::create($request->validated());
 
-       // Crear la intervención con datos validados
-    $intervention = Intervention::create($request->validated());
+        // Verificar si la solicitud es AJAX
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Intervención creada correctamente.',
+                'data' => $intervention
+            ]);
+        }
 
-    // Verificar si la solicitud es AJAX
-    if ($request->ajax()) {
-        return response()->json([
-            'success' => true,
-            'message' => 'Intervención creada correctamente.',
-            'data' => $intervention
-        ]);
+        // Redirección tradicional si no es una solicitud AJAX
+        return redirect()->route('interventions.index')->with('success', 'Intervención creada correctamente.');
     }
-
-    // Redirección tradicional si no es una solicitud AJAX
-    return redirect()->route('interventions.index')->with('success', 'Intervención creada correctamente.');
-}
 
     /**
      * Display the specified resource.
@@ -77,6 +77,7 @@ class InterventionController extends Controller
      */
     public function update(UpdateInterventionRequest $request, Intervention $intervention)
     {
+        $this->authorize('editar');
         $intervention->update($request->validated());
 
         return redirect()->route('interventions.index')->with('success', 'Intervención actualizada correctamente.');

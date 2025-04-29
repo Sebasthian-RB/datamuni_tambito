@@ -43,6 +43,7 @@ class OmPersonController extends Controller
      */
     public function store(StoreOmPersonRequest $request)
     {
+        $this->authorize('crear');
         // Obtener los datos validados
         $validatedData = $request->validated();
 
@@ -83,7 +84,7 @@ class OmPersonController extends Controller
      */
     public function update(UpdateOmPersonRequest $request, OmPerson $omPerson)
     {
-        
+        $this->authorize('editar');        
         $validatedData = $request->validated();
 
         unset($validatedData['age']);

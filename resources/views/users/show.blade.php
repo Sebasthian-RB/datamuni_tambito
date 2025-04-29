@@ -84,9 +84,9 @@
         </a>
     </div>
 </div>
-
-@push('css')
-<link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">P
+@endsection
+@section('css')
+<link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
 <style>
     .user-badge {
         width: 120px;
@@ -122,6 +122,5 @@
         margin-right: 10px;
     }
 </style>
-@endpush
 
-@stop
+@endsection

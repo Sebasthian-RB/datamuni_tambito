@@ -17,22 +17,25 @@
 
 @section('content')
     <div class="container-fluid">
-        <div class="row mb-4">
-            <div class="col-md-6 mb-3">
-                <a href="{{ route('psychological-diagnoses.index') }}" class="btn btn-outline-primary btn-elevate w-100 py-3">
-                    <i class="fas fa-brain fa-2x"></i><br>
-                    <span class="h5">Ver Diagnósticos</span>
-                </a>
+        @can('psicologiaOmaped')
+            <div class="row mb-4">
+                <div class="col-md-6 mb-3">
+                    <a href="{{ route('psychological-diagnoses.index') }}"
+                        class="btn btn-outline-primary btn-elevate w-100 py-3">
+                        <i class="fas fa-brain fa-2x"></i><br>
+                        <span class="h5">Ver Diagnósticos</span>
+                    </a>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <a href="{{ route('psychological-sessions.index') }}"
+                        class="btn btn-outline-success btn-elevate w-100 py-3">
+                        <i class="fas fa-notes-medical fa-2x"></i><br>
+                        <span class="h5">Ver Sesiones</span>
+                    </a>
+                </div>
             </div>
-            <div class="col-md-6 mb-3">
-                <a href="{{ route('psychological-sessions.index') }}"
-                    class="btn btn-outline-success btn-elevate w-100 py-3">
-                    <i class="fas fa-notes-medical fa-2x"></i><br>
-                    <span class="h5">Ver Sesiones</span>
-                </a>
-            </div>
-            
-        </div>
+        @endcan
+
 
         <div class="row mb-4">
             <div class="col-md-4 mb-3">
