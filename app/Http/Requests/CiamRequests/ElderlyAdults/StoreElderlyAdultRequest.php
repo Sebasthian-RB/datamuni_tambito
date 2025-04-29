@@ -90,7 +90,9 @@ class StoreElderlyAdultRequest extends FormRequest
             'reference' => 'nullable|string|max:255',
 
             'phone_number' => [
-                'nullable',
+                'required', // Cambié de nullable a required
+                'string',
+                'size:9',
                 'regex:/^\d{9}$/',
             ],
 
