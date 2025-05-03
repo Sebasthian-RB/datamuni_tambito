@@ -220,11 +220,13 @@
                         <input type="number" class="form-control @error('household_members') is-invalid @enderror"
                             id="household_members" name="household_members"
                             value="{{ old('household_members', $elderlyAdult->household_members) }}" min="1"
-                            max="20">
+                            max="20"
+                            onkeydown="return event.key !== 'e' && event.key !== 'E' && event.key !== '-' && event.key !== '+' && event.key !== '.'">
                         @error('household_members')
                             <span class="invalid-feedback">{{ $message }}</span>
                         @enderror
                     </div>
+
 
 
                     <!-- Guardian (Campo para seleccionar el guardián con Select2) -->
@@ -657,6 +659,38 @@
 
             function formatGuardianSelection(guardian) {
                 return guardian.text; // Texto seleccionado
+            }
+        });
+    </script>
+
+    <!-- PARA MIEMBROS DEL hogar  -->
+    <script>
+        // Bloquear caracteres no numéricos
+        document.getElementById('household_members').addEventListener('keydown', function(e) {
+            // Permitir: teclas de navegación, borrado y tab
+            if ([46, 8, 9, 27, 13, 110].includes(e.keyCode) ||
+                (e.keyCode === 65 && e.ctrlKey === true) || // Ctrl+A
+                (e.keyCode === 67 && e.ctrlKey === true) || // Ctrl+C
+                (e.keyCode === 86 && e.ctrlKey === true) || // Ctrl+V
+                (e.keyCode === 88 && e.ctrlKey === true) || // Ctrl+X
+                (e.keyCode >= 35 && e.keyCode <= 39)) { // Home, End, Left, Right
+                return;
+            }
+
+            // Bloquear letras (incluyendo 'e'), símbolos y puntos
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+
+        // Validación al enviar el formulario
+        document.querySelector('form').addEventListener('submit', function(event) {
+            var householdMembers = document.getElementById('household_members').value;
+            var numMembers = parseInt(householdMembers, 10);
+
+            if (numMembers > 20) {
+                alert('Error: Solo puedes ingresar hasta 20 miembros del hogar.');
+                event.preventDefault();
             }
         });
     </script>
