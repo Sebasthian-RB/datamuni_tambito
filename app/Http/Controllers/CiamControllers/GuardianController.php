@@ -12,6 +12,9 @@ use App\Http\Requests\CiamRequests\Guardians\EditGuardianRequest;
 use App\Http\Requests\CiamRequests\Guardians\UpdateGuardianRequest;
 use App\Http\Requests\CiamRequests\Guardians\DestroyGuardianRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
 
 
 class GuardianController extends Controller
@@ -98,13 +101,24 @@ class GuardianController extends Controller
     public function destroy(DestroyGuardianRequest $request, Guardian $guardian)
     {
         $this->authorize('eliminar');
-        // Validar si el guardián tiene adultos mayores asignados
-        if ($guardian->elderlyAdults()->exists()) {
-            return redirect()->route('guardians.index')->with('error', 'No se puede eliminar este guardián porque tiene adultos mayores asignados.');
+
+        try {
+            DB::beginTransaction();
+
+            // Desasignar adultos mayores
+            $guardian->elderlyAdults()->update(['guardian_id' => null]);
+
+            // Eliminar el guardián
+            $guardian->delete();
+
+            DB::commit();
+
+            return redirect()->route('guardians.index')
+                ->with('success', 'Guardián eliminado exitosamente.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error eliminando guardián: ' . $e->getMessage());
+            return back()->with('error', 'Error al eliminar el guardián');
         }
-
-        $guardian->delete();
-
-        return redirect()->route('guardians.index')->with('success', 'Guardián eliminado con éxito.');
     }
 }
