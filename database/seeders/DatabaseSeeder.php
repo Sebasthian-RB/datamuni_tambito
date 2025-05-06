@@ -60,6 +60,5 @@ class DatabaseSeeder extends Seeder
         // Llamar seeders de áreas
         $this->call(AreaDeLaMujerSeeder::class);
         $this->call(VasoDeLecheSeeder::class);
-        $this->call(SisfohSeeder::class);
     }
 }
