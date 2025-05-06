@@ -377,18 +377,26 @@
                                 <td>{{ $sector->responsible_person }}</td>
                                 <td>
                                     <div class="d-flex flex-column flex-md-row gap-2">
-                                        <a href="{{ route('sectors.show', $sector->id) }}" class="btn btn-view btn-action">
-                                            <i class="fas fa-eye me-1"></i> Ver
-                                        </a>
-                                        <a href="{{ route('sectors.edit', $sector->id) }}" class="btn btn-edit btn-action">
-                                            <i class="fas fa-edit me-1"></i> Editar
-                                        </a>
+                                        @can('ver detalles')
+                                            <a href="{{ route('sectors.show', $sector->id) }}" class="btn btn-view btn-action">
+                                                <i class="fas fa-eye me-1"></i> Ver
+                                            </a>
+                                        @endcan
+
+                                        @can('editar')
+                                            <a href="{{ route('sectors.edit', $sector->id) }}" class="btn btn-edit btn-action">
+                                                <i class="fas fa-edit me-1"></i> Editar
+                                            </a>
+                                        @endcan
+
                                         <form action="{{ route('sectors.destroy', $sector->id) }}" method="POST" style="display:inline-block;">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-delete btn-action" onclick="return confirm('¿Está seguro de eliminar este sector?')">
-                                                <i class="fas fa-trash me-1"></i> Eliminar
-                                            </button>
+                                            @can('eliminar')
+                                                <button type="submit" class="btn btn-delete btn-action" onclick="return confirm('¿Está seguro de eliminar este sector?')">
+                                                    <i class="fas fa-trash me-1"></i> Eliminar
+                                                </button>
+                                            @endcan
                                         </form>
                                     </div>
                                 </td>
@@ -439,9 +447,11 @@
     @endif
 
     <!-- Botón flotante "Agregar Sector" -->
-    <a href="{{ route('sectors.create') }}" class="btn btn-custom btn-main floating-btn">
-        <i class="fas fa-plus-circle me-2"></i>
-        <span>Agregar Sector</span>
-    </a>
+    @can('crear')
+        <a href="{{ route('sectors.create') }}" class="btn btn-custom btn-main floating-btn">
+            <i class="fas fa-plus-circle me-2"></i>
+            <span>Agregar Sector</span>
+        </a>
+    @endcan
 </div>
 @stop

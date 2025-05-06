@@ -385,18 +385,26 @@
                                 <td>{{ $product->year }}</td>
                                 <td>
                                     <div class="d-flex flex-column flex-md-row gap-2">
-                                        <a href="{{ route('products.show', $product->id) }}" class="btn btn-view btn-action">
-                                            <i class="fas fa-eye me-1"></i> Ver
-                                        </a>
-                                        <a href="{{ route('products.edit', $product->id) }}" class="btn btn-edit btn-action">
-                                            <i class="fas fa-edit me-1"></i> Editar
-                                        </a>
+                                        @can('ver detalles')
+                                            <a href="{{ route('products.show', $product->id) }}" class="btn btn-view btn-action">
+                                                <i class="fas fa-eye me-1"></i> Ver
+                                            </a>
+                                        @endcan
+
+                                        @can('editar')
+                                            <a href="{{ route('products.edit', $product->id) }}" class="btn btn-edit btn-action">
+                                                <i class="fas fa-edit me-1"></i> Editar
+                                            </a>
+                                        @endcan
+
                                         <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline-block;">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-delete btn-action" onclick="return confirm('¿Está seguro de eliminar este producto?')">
-                                                <i class="fas fa-trash me-1"></i> Eliminar
-                                            </button>
+                                            @can('eliminar')
+                                                <button type="submit" class="btn btn-delete btn-action" onclick="return confirm('¿Está seguro de eliminar este producto?')">
+                                                    <i class="fas fa-trash me-1"></i> Eliminar
+                                                </button>
+                                            @endcan
                                         </form>
                                     </div>
                                 </td>
@@ -447,9 +455,11 @@
     @endif
 
     <!-- Botón flotante "Agregar Producto" -->
-    <a href="{{ route('products.create') }}" class="btn btn-custom btn-main floating-btn">
-        <i class="fas fa-plus-circle me-2"></i>
-        <span>Agregar Producto</span>
-    </a>
+    @can('crear')
+        <a href="{{ route('products.create') }}" class="btn btn-custom btn-main floating-btn">
+            <i class="fas fa-plus-circle me-2"></i>
+            <span>Agregar Producto</span>
+        </a>
+    @endcan
 </div>
 @stop

@@ -8,9 +8,11 @@
 
 @section('content')
     <div class="container">
-        <a href="{{ route('committee_vl_family_members.create', ['committee_id' => $committee->id]) }}" class="btn mb-3"
-            style="background-color: #9B7EBD; color: white;">Agregar Beneficiario</a>
-        <a href="{{ route('vaso-de-leche.index') }}" class="btn btn-secondary mb-3">Volver</a>
+        @can('crear')
+            <a href="{{ route('committee_vl_family_members.create', ['committee_id' => $committee->id]) }}" class="btn mb-3"
+                style="background-color: #9B7EBD; color: white;">Agregar Beneficiario</a>
+            <a href="{{ route('vaso-de-leche.index') }}" class="btn btn-secondary mb-3">Volver</a>
+        @endcan
 
         @if (session('success'))
             <div class="alert alert-success">
@@ -101,7 +103,9 @@
                             </div>
                             <!-- Botón para exportar Excel -->
                             <div class="d-flex align-items-center justify-content-center mb-3">
-                                <a href="{{ route('export.vaso-de-leche', $committee->id) }}" class="btn btn-success">Descargar Excel</a>
+                                @can('ver detalles')
+                                    <a href="{{ route('export.vaso-de-leche', $committee->id) }}" class="btn btn-success">Descargar Excel</a>
+                                @endcan
                             </div>
                         </div>
                     </div>
@@ -191,17 +195,25 @@
                                                 </td>
                                                 <td colspan="15" class="text-center">No tiene menores registrados</td>
                                                 <td class="text-center">
-                                                    <a href="{{ route('committee_vl_family_members.show', $register->id) }}"
-                                                        class="btn btn-info btn-sm">Ver</a>
-                                                    <a href="{{ route('committee_vl_family_members.edit', $register->id) }}"
-                                                        class="btn btn-warning btn-sm">Editar</a>
+                                                    @can('ver detalles')
+                                                        <a href="{{ route('committee_vl_family_members.show', $register->id) }}"
+                                                            class="btn btn-info btn-sm">Ver</a>
+                                                    @endcan
+
+                                                    @can('editar')
+                                                        <a href="{{ route('committee_vl_family_members.edit', $register->id) }}"
+                                                            class="btn btn-warning btn-sm">Editar</a>
+                                                    @endcan
+
                                                     <form
                                                         action="{{ route('committee_vl_family_members.destroy', $register->id) }}"
                                                         method="POST" class="d-inline">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('¿Está seguro de eliminar este miembro?')">Eliminar</button>
+                                                        @can('eliminar')
+                                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                                onclick="return confirm('¿Está seguro de eliminar este miembro?')">Eliminar</button>
+                                                        @endcan
                                                     </form>
                                                 </td>
                                             </tr>
@@ -301,12 +313,14 @@
                                                         @endif
                                                     </td>
                                                     <td class="text-center align-middle">
-                                                        <a href="{{ route('vl_minors.edit', $minor->id) }}" 
-                                                           class="btn btn-sm" 
-                                                           target="_blank"
-                                                           style="background-color: #8E6AB8; color: white; font-size: 0.75rem; padding: 0.25rem 0.5rem;">
-                                                            <i class="fas fa-edit"></i> Editar
-                                                        </a>
+                                                        @can('editar')
+                                                            <a href="{{ route('vl_minors.edit', $minor->id) }}" 
+                                                            class="btn btn-sm" 
+                                                            target="_blank"
+                                                            style="background-color: #8E6AB8; color: white; font-size: 0.75rem; padding: 0.25rem 0.5rem;">
+                                                                <i class="fas fa-edit"></i> Editar
+                                                            </a>
+                                                        @endcan
                                                     </td>
                                                     @if ($index === 0)
                                                         <td rowspan="{{ count($minors) }}" class="text-center align-middle">{{ $register->description ?? '-' }}</td>
@@ -314,17 +328,25 @@
                                                     @if ($index === 0)
                                                         <!-- Solo para la primera fila de menores -->
                                                         <td rowspan="{{ count($minors) }}" class="text-center align-middle">
-                                                            <a href="{{ route('committee_vl_family_members.show', $register->id) }}"
-                                                                class="btn btn-info btn-sm">Ver</a>
-                                                            <a href="{{ route('committee_vl_family_members.edit', $register->id) }}"
-                                                                class="btn btn-warning btn-sm">Editar</a>
+                                                            @can('ver detalles')
+                                                                <a href="{{ route('committee_vl_family_members.show', $register->id) }}"
+                                                                    class="btn btn-info btn-sm">Ver</a>
+                                                            @endcan
+
+                                                            @can('editar')
+                                                                <a href="{{ route('committee_vl_family_members.edit', $register->id) }}"
+                                                                    class="btn btn-warning btn-sm">Editar</a>
+                                                            @endcan
+
                                                             <form
                                                                 action="{{ route('committee_vl_family_members.destroy', $register->id) }}"
                                                                 method="POST" class="d-inline">
                                                                 @csrf
                                                                 @method('DELETE')
-                                                                <button type="submit" class="btn btn-danger btn-sm"
-                                                                    onclick="return confirm('¿Está seguro de eliminar este miembro?')">Eliminar</button>
+                                                                @can('eliminar')
+                                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                                        onclick="return confirm('¿Está seguro de eliminar este miembro?')">Eliminar</button>
+                                                                @endcan
                                                             </form>
                                                         </td>
                                                     @endif
@@ -399,17 +421,25 @@
                                                 </td>
                                                 <td colspan="13" class="text-center">No tiene menores registrados</td>
                                                 <td class="text-center">
-                                                    <a href="{{ route('committee_vl_family_members.show', $register->id) }}"
-                                                        class="btn btn-info btn-sm">Ver</a>
-                                                    <a href="{{ route('committee_vl_family_members.edit', $register->id) }}"
-                                                        class="btn btn-warning btn-sm">Editar</a>
+                                                    @can('ver detalles')
+                                                        <a href="{{ route('committee_vl_family_members.show', $register->id) }}"
+                                                            class="btn btn-info btn-sm">Ver</a>
+                                                    @endcan
+
+                                                    @can('editar')
+                                                        <a href="{{ route('committee_vl_family_members.edit', $register->id) }}"
+                                                            class="btn btn-warning btn-sm">Editar</a>
+                                                    @endcan
+
                                                     <form
                                                         action="{{ route('committee_vl_family_members.destroy', $register->id) }}"
                                                         method="POST" class="d-inline">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('¿Está seguro de eliminar este miembro?')">Eliminar</button>
+                                                        @can('eliminar')
+                                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                                onclick="return confirm('¿Está seguro de eliminar este miembro?')">Eliminar</button>
+                                                        @endcan
                                                     </form>
                                                 </td>
                                             </tr>
@@ -507,17 +537,24 @@
                                                     @if ($index === 0)
                                                         <!-- Solo para la primera fila de menores -->
                                                         <td rowspan="{{ count($minors) }}" class="text-center align-middle">
-                                                            <a href="{{ route('committee_vl_family_members.show', $register->id) }}"
-                                                                class="btn btn-info btn-sm">Ver</a>
-                                                            <a href="{{ route('committee_vl_family_members.edit', $register->id) }}"
-                                                                class="btn btn-warning btn-sm">Editar</a>
+                                                            @can('ver detalles')
+                                                                <a href="{{ route('committee_vl_family_members.show', $register->id) }}"
+                                                                    class="btn btn-info btn-sm">Ver</a>
+                                                            @endcan
+
+                                                            @can('editar')
+                                                                <a href="{{ route('committee_vl_family_members.edit', $register->id) }}"
+                                                                    class="btn btn-warning btn-sm">Editar</a>
+                                                            @endcan
                                                             <form
                                                                 action="{{ route('committee_vl_family_members.destroy', $register->id) }}"
                                                                 method="POST" class="d-inline">
                                                                 @csrf
                                                                 @method('DELETE')
-                                                                <button type="submit" class="btn btn-danger btn-sm"
-                                                                    onclick="return confirm('¿Está seguro de eliminar este miembro?')">Eliminar</button>
+                                                                @can('eliminar')
+                                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                                        onclick="return confirm('¿Está seguro de eliminar este miembro?')">Eliminar</button>
+                                                                @endcan
                                                             </form>
                                                         </td>
                                                     @endif

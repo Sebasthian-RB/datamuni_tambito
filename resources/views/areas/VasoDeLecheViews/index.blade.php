@@ -138,34 +138,44 @@
                         <div class="carousel-item active">
                             <div class="row justify-content-center"> 
                                 <div class="col-lg-2 col-md-4 col-6">
-                                    <a href="{{ route('products.index') }}" class="small-box" style="display: block; background-color: #9B7EBD; text-align: center; padding: 12px 10px; color: white; text-decoration: none; border-radius: 8px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); transition: background-color 0.3s;">
-                                        <i class="fas fa-box" style="font-size: 1.5rem;"></i>
-                                        <p style="font-size: 0.9rem; margin-top: 8px; margin-bottom: 0;">Configurar Productos</p>
-                                    </a>
+                                    @can('ver detalles')
+                                        <a href="{{ route('products.index') }}" class="small-box" style="display: block; background-color: #9B7EBD; text-align: center; padding: 12px 10px; color: white; text-decoration: none; border-radius: 8px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); transition: background-color 0.3s;">
+                                            <i class="fas fa-box" style="font-size: 1.5rem;"></i>
+                                            <p style="font-size: 0.9rem; margin-top: 8px; margin-bottom: 0;">Configurar Productos</p>
+                                        </a>
+                                    @endcan
                                 </div>
                                 <div class="col-lg-2 col-md-4 col-6">
-                                    <a href="{{ route('sectors.index') }}" class="small-box" style="display: block; background-color: #9B7EBD; text-align: center; padding: 12px 10px; color: white; text-decoration: none; border-radius: 8px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); transition: background-color 0.3s;">
-                                        <i class="fas fa-bullseye" style="font-size: 1.5rem;"></i>
-                                        <p style="font-size: 0.9rem; margin-top: 8px; margin-bottom: 0;">Configurar Sectores</p>
-                                    </a>
+                                    @can('ver detalles')
+                                        <a href="{{ route('sectors.index') }}" class="small-box" style="display: block; background-color: #9B7EBD; text-align: center; padding: 12px 10px; color: white; text-decoration: none; border-radius: 8px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); transition: background-color 0.3s;">
+                                            <i class="fas fa-bullseye" style="font-size: 1.5rem;"></i>
+                                            <p style="font-size: 0.9rem; margin-top: 8px; margin-bottom: 0;">Configurar Sectores</p>
+                                        </a>
+                                    @endcan
                                 </div>
                                 <div class="col-lg-2 col-md-4 col-6">
-                                    <a href="{{ route('committees.index') }}" class="small-box" style="display: block; background-color: #9B7EBD; text-align: center; padding: 12px 10px; color: white; text-decoration: none; border-radius: 8px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); transition: background-color 0.3s;">
-                                        <i class="fas fa-flag" style="font-size: 1.5rem;"></i>
-                                        <p style="font-size: 0.9rem; margin-top: 8px; margin-bottom: 0;">Configurar Comités</p>
-                                    </a>
+                                    @can('ver detalles')
+                                        <a href="{{ route('committees.index') }}" class="small-box" style="display: block; background-color: #9B7EBD; text-align: center; padding: 12px 10px; color: white; text-decoration: none; border-radius: 8px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); transition: background-color 0.3s;">
+                                            <i class="fas fa-flag" style="font-size: 1.5rem;"></i>
+                                            <p style="font-size: 0.9rem; margin-top: 8px; margin-bottom: 0;">Configurar Comités</p>
+                                        </a>
+                                    @endcan
                                 </div>
                                 <div class="col-lg-2 col-md-4 col-6">
-                                    <a href="{{ route('vl_family_members.index') }}" class="small-box" style="display: block; background-color: #9B7EBD; text-align: center; padding: 12px 10px; color: white; text-decoration: none; border-radius: 8px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); transition: background-color 0.3s;">
-                                        <i class="fas fa-users" style="font-size: 1.5rem;"></i>
-                                        <p style="font-size: 0.9rem; margin-top: 8px; margin-bottom: 0;">Configurar Familiares</p>
-                                    </a>
+                                    @can('ver detalles')
+                                        <a href="{{ route('vl_family_members.index') }}" class="small-box" style="display: block; background-color: #9B7EBD; text-align: center; padding: 12px 10px; color: white; text-decoration: none; border-radius: 8px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); transition: background-color 0.3s;">
+                                            <i class="fas fa-users" style="font-size: 1.5rem;"></i>
+                                            <p style="font-size: 0.9rem; margin-top: 8px; margin-bottom: 0;">Configurar Familiares</p>
+                                        </a>
+                                    @endcan
                                 </div>
                                 <div class="col-lg-2 col-md-4 col-6">
-                                    <a href="{{ route('vl_minors.index') }}" class="small-box" style="display: block; background-color: #9B7EBD; text-align: center; padding: 12px 10px; color: white; text-decoration: none; border-radius: 8px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); transition: background-color 0.3s;">
-                                        <i class="fas fa-child" style="font-size: 1.5rem;"></i>
-                                        <p style="font-size: 0.9rem; margin-top: 8px; margin-bottom: 0;">Configurar Menores</p>
-                                    </a>
+                                    @can('ver detalles')
+                                        <a href="{{ route('vl_minors.index') }}" class="small-box" style="display: block; background-color: #9B7EBD; text-align: center; padding: 12px 10px; color: white; text-decoration: none; border-radius: 8px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); transition: background-color 0.3s;">
+                                            <i class="fas fa-child" style="font-size: 1.5rem;"></i>
+                                            <p style="font-size: 0.9rem; margin-top: 8px; margin-bottom: 0;">Configurar Menores</p>
+                                        </a>
+                                    @endcan
                                 </div>
                             </div>
                         </div>
@@ -300,12 +310,17 @@
     
                     <!-- Parte superior: iconos de acción -->
                     <div class="d-flex justify-content-end p-2">
-                        <a href="{{ route('committees.show', $committee->id) }}" style="font-size: 0.9rem; color: white;" target="_blank">
-                            <i class="fas fa-eye" style="font-size: 0.9rem;"></i>
-                        </a>
-                        <a href="{{ route('committees.edit', $committee->id) }}" style="font-size: 0.9rem; color: white; margin-left: 10px;" target="_blank">
-                            <i class="fas fa-pen" style="font-size: 0.9rem;"></i>
-                        </a>
+                        @can('ver detalles')
+                            <a href="{{ route('committees.show', $committee->id) }}" style="font-size: 0.9rem; color: white;" target="_blank">
+                                <i class="fas fa-eye" style="font-size: 0.9rem;"></i>
+                            </a>
+                        @endcan
+
+                        @can('editar')
+                            <a href="{{ route('committees.edit', $committee->id) }}" style="font-size: 0.9rem; color: white; margin-left: 10px;" target="_blank">
+                                <i class="fas fa-pen" style="font-size: 0.9rem;"></i>
+                            </a>
+                        @endcan
                     </div>
     
                     <!-- Imagen de fondo -->
@@ -369,19 +384,23 @@
                     <div class="card-footer" style="background-color: #9B7EBD; padding: 8px 10px;">
                         <div class="d-flex justify-content-between align-items-center w-100">
                             <!-- Botón Padrón de Beneficiarios -->
-                            <a href="{{ route('committee_vl_family_members.index', ['committee_id' => $committee->id]) }}" class="btn btn-gradient-primary w-100 py-2 mb-0 rounded-lg font-weight-bold text-white text-center transition-all duration-300 hover:bg-primary hover:shadow-xl d-flex flex-column align-items-center justify-content-center" style="transition: transform 0.3s ease; padding: 6px;">
-                                <i class="fas fa-users mb-2" style="font-size: 1rem;"></i>
-                                <span style="font-size: 0.8rem;">Padrón de Beneficiarios</span>
-                            </a>
-                    
+                            @can('ver detalles')
+                                <a href="{{ route('committee_vl_family_members.index', ['committee_id' => $committee->id]) }}" class="btn btn-gradient-primary w-100 py-2 mb-0 rounded-lg font-weight-bold text-white text-center transition-all duration-300 hover:bg-primary hover:shadow-xl d-flex flex-column align-items-center justify-content-center" style="transition: transform 0.3s ease; padding: 6px;">
+                                    <i class="fas fa-users mb-2" style="font-size: 1rem;"></i>
+                                    <span style="font-size: 0.8rem;">Padrón de Beneficiarios</span>
+                                </a>
+                            @endcan
+
                             <!-- Línea Divisoria Blanca -->
                             <div class="vr" style="border-left: 2px solid #ffffff; height: 40px; margin-top: 0px; margin: 0px 8px 0px 8px;"></div>
                     
                             <!-- Botón Distribución de Productos -->
-                            <a href="{{ route('vl_family_member_products.index', ['committee_id' => $committee->id]) }}" class="btn btn-gradient-secondary w-100 py-2 mb-0 rounded-lg font-weight-bold text-white text-center transition-all duration-300 hover:bg-secondary hover:shadow-xl d-flex flex-column align-items-center justify-content-center" style="transition: transform 0.3s ease; padding: 6px;">
-                                <i class="fas fa-box-open mb-2" style="font-size: 1rem;"></i>
-                                <span style="font-size: 0.8rem;">Distribución de Productos</span>
-                            </a>
+                            @can('ver detalles')
+                                <a href="{{ route('vl_family_member_products.index', ['committee_id' => $committee->id]) }}" class="btn btn-gradient-secondary w-100 py-2 mb-0 rounded-lg font-weight-bold text-white text-center transition-all duration-300 hover:bg-secondary hover:shadow-xl d-flex flex-column align-items-center justify-content-center" style="transition: transform 0.3s ease; padding: 6px;">
+                                    <i class="fas fa-box-open mb-2" style="font-size: 1rem;"></i>
+                                    <span style="font-size: 0.8rem;">Distribución de Productos</span>
+                                </a>
+                            @endcan
                         </div>
                     </div>
                     

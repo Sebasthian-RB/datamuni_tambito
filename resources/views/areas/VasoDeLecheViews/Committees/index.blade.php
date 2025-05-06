@@ -488,14 +488,20 @@
                                     <td>{{ $committee->president }}</td>
                                     <td>
                                         <div class="d-flex flex-column flex-md-row gap-2">
-                                            <a href="{{ route('committees.show', $committee->id) }}"
-                                                class="btn btn-view btn-action">
-                                                <i class="fas fa-eye me-1"></i> Ver
-                                            </a>
-                                            <a href="{{ route('committees.edit', $committee->id) }}"
-                                                class="btn btn-edit btn-action">
-                                                <i class="fas fa-edit me-1"></i> Editar
-                                            </a>
+                                            @can('ver detalles')
+                                                <a href="{{ route('committees.show', $committee->id) }}"
+                                                    class="btn btn-view btn-action">
+                                                    <i class="fas fa-eye me-1"></i> Ver
+                                                </a>
+                                            @endcan
+
+                                            @can('editar')
+                                                <a href="{{ route('committees.edit', $committee->id) }}"
+                                                    class="btn btn-edit btn-action">
+                                                    <i class="fas fa-edit me-1"></i> Editar
+                                                </a>
+                                            @endcan
+
                                             <form action="{{ route('committees.destroy', $committee->id) }}" method="POST"
                                                 style="display:inline-block;">
                                                 @csrf
@@ -558,9 +564,11 @@
         @endif
 
         <!-- Botón flotante "Agregar Comité" -->
-        <a href="{{ route('committees.create') }}" class="btn btn-custom btn-main floating-btn">
-            <i class="fas fa-plus-circle me-2"></i>
-            <span>Agregar Comité</span>
-        </a>
+        @can('crear')
+            <a href="{{ route('committees.create') }}" class="btn btn-custom btn-main floating-btn">
+                <i class="fas fa-plus-circle me-2"></i>
+                <span>Agregar Comité</span>
+            </a>
+        @endcan
     </div>
 @stop

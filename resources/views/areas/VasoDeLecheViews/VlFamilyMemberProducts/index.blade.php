@@ -8,11 +8,13 @@
 
 @section('content')
     <div class="container">
-        <a href="{{ route('vl_family_member_products.create', $committee->id) }}" 
-            class="btn mb-3" 
-            style="background-color: #9B7EBD; color: white;">
-             Nueva Asignación
-         </a>
+        @can('crear')
+            <a href="{{ route('vl_family_member_products.create', $committee->id) }}" 
+                class="btn mb-3" 
+                style="background-color: #9B7EBD; color: white;">
+                Nueva Asignación
+            </a>
+        @endcan
         <a href="{{ route('vaso-de-leche.index') }}" class="btn btn-secondary mb-3">Volver</a>
 
         @if (session('success'))
@@ -104,7 +106,9 @@
                             </div>
                             <!-- Botón para exportar Excel -->
                             <div class="d-flex align-items-center justify-content-center mb-3">
-                                <a href="{{ route('export.hoja-distribucion', $committee->id) }}" class="btn btn-success">Descargar Excel</a>
+                                @can('ver detalles')
+                                    <a href="{{ route('export.hoja-distribucion', $committee->id) }}" class="btn btn-success">Descargar Excel</a>
+                                @endcan
                             </div>
                         </div>
                     </div>
@@ -158,24 +162,32 @@
                                     <td class="text-center">{{ $asignacion->quantity }}</td>
                                     <td class="text-center">
                                         <div class="btn-group" role="group">
-                                            <a href="{{ route('vl_family_member_products.show', [$asignacion->id, 'committee_id' => $committee->id]) }}" 
-                                               class="btn btn-sm btn-info" title="Ver">
-                                                <i class="fas fa-eye"></i>
-                                            </a>
-                                            <a href="{{ route('vl_family_member_products.edit', [
-                                                    'vl_family_member_product' => $asignacion->id,
-                                                    'committee_id' => $committee->id
-                                                    ]) }}" class="btn btn-sm btn-warning" title="Editar">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
+                                            @can('ver detalles')
+                                                <a href="{{ route('vl_family_member_products.show', [$asignacion->id, 'committee_id' => $committee->id]) }}" 
+                                                class="btn btn-sm btn-info" title="Ver">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                            @endcan
+
+                                            @can('editar')
+                                                <a href="{{ route('vl_family_member_products.edit', [
+                                                        'vl_family_member_product' => $asignacion->id,
+                                                        'committee_id' => $committee->id
+                                                        ]) }}" class="btn btn-sm btn-warning" title="Editar">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            @endcan
+
                                             <form action="{{ route('vl_family_member_products.destroy', [$asignacion->id, 'committee_id' => $committee->id]) }}" 
                                                   method="POST" class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger" 
-                                                        onclick="return confirm('¿Eliminar esta asignación?')" title="Eliminar">
-                                                    <i class="fas fa-trash-alt"></i>
-                                                </button>
+                                                @can('eliminar')
+                                                    <button type="submit" class="btn btn-sm btn-danger" 
+                                                            onclick="return confirm('¿Eliminar esta asignación?')" title="Eliminar">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </button>
+                                                @endcan
                                             </form>
                                         </div>
                                     </td>
